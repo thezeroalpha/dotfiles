@@ -1,0 +1,15 @@
+#!/bin/bash
+current_directory=`pwd`
+if [ $# -eq 0 ];
+	then
+		echo "Pass the URL as an argument."
+		exit 0
+fi
+cd ~/.bin/wattpad-ebook-scraper/
+python3 scrape.py $1
+book_title=`ls | grep *.epub`
+mv $book_title $current_directory/
+folder_title=`echo $book_title | sed s/\.epub//g`
+rm -r $folder_title
+cd $current_directory
+echo "Book $book_title extracted!"
