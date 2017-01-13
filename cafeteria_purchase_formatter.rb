@@ -10,7 +10,7 @@ lines.each do |text|
   replace=text.gsub(/(^.+)[A|P]M/,'\1')
   replace=replace.gsub(/(\d{4})\sat\s\d{2}:\d{2},(.*$)/,'\1,\2')
   arr = replace.scan(/\w+\s\d{1,2},\s\d{4}/)
-  ar2 = arr.map { |e| DateConverter.verbal_date_to_numeric(e) }
+  ar2 = arr.map { |e| DateConverter.verbal_date_to_numeric(e,'-') }
 
   arr.each_with_index {|e,i| replace = replace.gsub(e,ar2[i])}
   newlines << replace
