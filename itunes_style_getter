@@ -1,0 +1,6 @@
+#!/bin/bash
+artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`
+album=`osascript -e "tell application \"iTunes\" to return album of selection"`
+style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb \"$artist\" \"$album\")
+echo $style
+osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" to \"$style\"" > /dev/null
