@@ -11,3 +11,5 @@ search.results.each do |result|
     exit
   end
 end
+
+p search["results"][0].genre[0].split(",")
