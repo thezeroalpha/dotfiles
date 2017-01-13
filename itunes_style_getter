@@ -3,17 +3,36 @@ artist=`osascript -e "tell application \"iTunes\" to return artist of selection"
 album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
 name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
 
-style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb \"$artist\" \"$album\" \"$name\");
-echo $style;
-echo "Manual override?";
+# Get the style using a Ruby helper script (much easier to use the API in Ruby...)
+style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb ${artist} ${album} ${name});
+echo $style
+
+# Parsing the array
+# Split the Ruby array into a Bash array, do some replacements
+IFS=',' read -ra style <<< "${style}"
+style[0]=$(echo ${style[0]} | sed -e 's/\[//') # Remove front [
+style[$((${#style[@]}-1))]=$(echo ${style[$((${#style[@]}-1))]} | sed -e 's/\]//') # Remove back ]
+
+echo "You're changing the album \"$album\" by \"$artist\""
+echo "The options:"
+printf '%s\n' "${style[@]}"
+echo "Would you like to use one of these?"
 select yn in "Yes" "No"; do
   case $yn in
-    Yes )
-      read -p "What genre? " genre;
-      style=$genre;
+    Yes)
+      select opt in "${style[@]}"; do
+        case $opt in
+          *)
+            final=$(echo $opt | sed -e 's/"//g')
+            break;;
+        esac
+      done
       break;;
-    No ) break;;
+    No)
+      echo "Write your own then:"
+      read final
+      break;;
   esac
 done
 
-osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"$artist\" to \"$style\"" > /dev/null
+osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"${artist}\" to \"$final\"" > /dev/null
