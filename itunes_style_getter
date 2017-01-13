@@ -1,7 +1,9 @@
 #!/bin/bash
 artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
 album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
-style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb \"$artist\" \"$album\");
+name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
+
+style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb \"$artist\" \"$album\" \"$name\");
 echo $style;
 echo "Manual override?";
 select yn in "Yes" "No"; do
