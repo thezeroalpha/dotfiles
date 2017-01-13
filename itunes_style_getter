@@ -1,6 +1,17 @@
 #!/bin/bash
-artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`
-album=`osascript -e "tell application \"iTunes\" to return album of selection"`
-style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb \"$artist\" \"$album\")
-echo $style
-osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" to \"$style\"" > /dev/null
+artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
+album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
+style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb \"$artist\" \"$album\");
+echo $style;
+echo "Manual override?";
+select yn in "Yes" "No"; do
+  case $yn in
+    Yes )
+      read -p "What genre? " genre;
+      style=$genre;
+      break;;
+    No ) break;;
+  esac
+done
+
+osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"$artist\" to \"$style\"" > /dev/null
