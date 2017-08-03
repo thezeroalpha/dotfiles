@@ -1,0 +1,8 @@
+#!/bin/bash
+for f in "$@"
+do
+	filePathNoExtension="${f%.*}"
+	textutil -convert html -output "$filePathNoExtension.html" "$f"
+	cupsfilter "$filePathNoExtension.html" > "$filePathNoExtension.pdf"
+	rm "$filePathNoExtension.html" > /dev/null
+done
