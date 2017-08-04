@@ -1,2 +1,0 @@
-Fixes a fucked CORE keygen. Check Info.plist in bundle. If the version is lower than system version, and the crash log says "UPX compressed binary"
-Just run `upx.out -d $coreKeygenBinaryPath` and you good.
