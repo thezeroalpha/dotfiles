@@ -46,6 +46,7 @@ select yn in "Yes" "No"; do
 				case $opt in
 					*)
 						finalg=$(echo $opt | sed -e 's/"//g')
+						if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
 						break;;
 				esac
 			done
@@ -53,6 +54,7 @@ select yn in "Yes" "No"; do
 		No)
 			echo "Write your own then:"
 			read finalg
+			if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
 			break;;
 	esac
 done
