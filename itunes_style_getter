@@ -1,8 +1,33 @@
 #!/bin/bash
-# Get info about currently selected track from iTunes (AppleScript)
-artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
-album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
-name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
+
+if [ $# -ne 0 ]; then
+	case $1 in
+		"-p")
+			artist=`osascript -e "tell application \"iTunes\" to return artist of current track"`;
+			album=`osascript -e "tell application \"iTunes\" to return album of current track"`;
+			name=`osascript -e "tell application \"iTunes\" to return name of current track"`;
+			;;
+		"-s")
+			artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
+			album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
+			name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
+	esac
+else
+	echo "Which track?"
+	select sc in "Selected" "Playing"; do
+		case $sc in
+			Selected)
+				artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
+				album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
+				name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
+				break;;
+			Playing)
+				artist=`osascript -e "tell application \"iTunes\" to return artist of current track"`;
+				album=`osascript -e "tell application \"iTunes\" to return album of current track"`;
+				name=`osascript -e "tell application \"iTunes\" to return name of current track"`;
+		esac
+	done
+fi
 
 if [ -z "$album" ]; then
 	# If there's no album, query without an album
@@ -55,6 +80,7 @@ select yn in "Yes" "No"; do
 			echo "Write your own then:"
 			read finalg
 			if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
+			if [[ $finalg = "Post-Rock" ]]; then finalg="Post Rock"; fi
 			break;;
 	esac
 done
