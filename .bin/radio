@@ -1,0 +1,44 @@
+#!/bin/bash
+
+## RADIO CONFIG (MOVE TO SEPARATE FILE) ##
+# Maybe move to hash table? #
+# Drive RADIO - http://driveradio.be
+drive_radio="http://streaming.radionomy.com/DRIVE"
+
+# Nightwave Plaza - http://plaza.one
+nw_plaza="https://plaza.one/mp3"
+
+# SOMA FM #
+groove_salad="https://somafm.com/groovesalad256.pls"			# Ambient/downtempo
+mission_control="https://somafm.com/missioncontrol.pls"			# Ambient with sounds from space 
+the_trip="https://somafm.com/thetrip.pls"				# Prog house/trance
+beat_blender="https://somafm.com/beatblender.pls"			# Deep house, downtempo chill
+dub_step="https://somafm.com/dubstep256.pls"				# Dubstep, dub 
+defcon="https://somafm.com/defcon256.pls"				# Music for hacking
+deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/experimental
+
+##############################################################################################################
+
+## MAIN SCRIPT ##
+# TODO: load these dynamically
+radios=($drive_radio $nw_plaza $groove_salad $mission_control $the_trip $beat_blender $dub_step $defcon $deep_space)
+radio_names=("Drive Radio" "Nightwave Plaza" "Groove Salad" "Mission Control" "The Trip" "Beat Blender" "Dub Step" "Defcon" "Deep Space")
+
+echo "Welcome to the command line radio player."
+PS3="Select a radio, or type q to exit: "
+select RADIO in "${radio_names[@]}"
+do
+	if [[ $RADIO = "q" ]]; then
+		break;
+	else
+		for i in "${!radio_names[@]}"; do
+			if [[ "${radio_names[$i]}" = "${RADIO}" ]]; then
+				clear
+				echo "Now playing $RADIO"
+				mpv ${radios[$i]}
+				break;
+			fi
+		done
+		break;
+	fi
+done
