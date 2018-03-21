@@ -2,11 +2,16 @@
 
 ## RADIO CONFIG (MOVE TO SEPARATE FILE) ##
 # Maybe move to hash table? #
+
 # Drive RADIO - http://driveradio.be
 drive_radio="http://streaming.radionomy.com/DRIVE"
 
 # Nightwave Plaza - http://plaza.one
 nw_plaza="https://plaza.one/mp3"
+
+# Psystation
+classic_goa="http://hestia2.cdnstream.com/1458_128"
+prog_psy_trance="http://hestia2.cdnstream.com/1453_128"
 
 # SOMA FM #
 groove_salad="https://somafm.com/groovesalad256.pls"			# Ambient/downtempo
@@ -21,9 +26,10 @@ deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/exp
 
 ## MAIN SCRIPT ##
 # TODO: load these dynamically
-radios=($drive_radio $nw_plaza $groove_salad $mission_control $the_trip $beat_blender $dub_step $defcon $deep_space)
-radio_names=("Drive Radio" "Nightwave Plaza" "Groove Salad" "Mission Control" "The Trip" "Beat Blender" "Dub Step" "Defcon" "Deep Space")
+radios=($drive_radio $nw_plaza $groove_salad $mission_control $the_trip $beat_blender $dub_step $defcon $deep_space $classic_goa $prog_psy_trance)
+radio_names=("Drive Radio" "Nightwave Plaza" "Groove Salad" "Mission Control" "The Trip" "Beat Blender" "Dub Step" "Defcon" "Deep Space" "Classic Goa" "Progressive Psy Trance")
 
+clear
 echo "Welcome to the command line radio player."
 PS3="Select a radio, or type q to exit: "
 select RADIO in "${radio_names[@]}"
