@@ -44,8 +44,9 @@ notify() {
 brewmaster() {
 	brew update;
 	brew update;
-	brew outdated | less;
+	{ brew outdated; brew cask outdated; } | less;
 	brew upgrade;
+	brew cask upgrade;
 	brew cleanup -s;
 	brew cask cleanup;
 	brew prune;
