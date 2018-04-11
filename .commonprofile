@@ -8,7 +8,7 @@ alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
 alias l="ls -FGlAhp"           # Preferred 'ls' implementation
 alias less='less -FRXc'
 alias top='sudo htop'
-alias g = 'git'
+alias g='git'
 cd() { builtin cd "$@"; ls; }
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }
 procinfo() { ps -aux | grep $1 }
@@ -119,9 +119,7 @@ cdf() {
 # Include my scripts in PATH #
 export PATH=$PATH:/Users/alex/.bin
 
-# Haskell path changes #
-export PATH="$HOME/Library/Haskell/bin:$PATH"
-######################
+#####################
 
 ### HOMEBREW VARIABLE CHANGES ###
 export EDITOR="vim"
