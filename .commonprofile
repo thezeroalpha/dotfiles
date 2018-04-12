@@ -9,6 +9,7 @@ alias l="ls -FGlAhp"           # Preferred 'ls' implementation
 alias less='less -FRXc'
 alias top='sudo htop'
 alias g='git'
+alias r='ranger'
 cd() { builtin cd "$@"; ls; }
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }
 procinfo() { ps -aux | grep $1 }
