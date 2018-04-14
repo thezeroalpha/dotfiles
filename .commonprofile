@@ -112,6 +112,31 @@ gdf() {
     echo `osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
 }
 
+realpath() {
+    if [ $# -eq 1 ]; then
+        if [ -e $1 ]; then
+            if [ -L $1 ]; then
+                echo `readlink $1 | rev | cut -d/ -f2- | rev`
+            else
+                echo `pwd`/`readlink $1 | rev | cut -d/ -f2- | rev`
+            fi
+        else
+            echo "File does not exist."
+        fi
+    elif [ "$1" = "-w" ]; then
+        if [ -e $2 ]; then
+            if [ -L $2 ]; then
+                echo `readlink $2`
+            else
+                echo `pwd`/`readlink $2`
+            fi
+        else
+            echo "File does not exist."
+        fi
+    else
+        echo 'idk what you want dude'
+    fi
+}
 
 ######################
 
