@@ -145,6 +145,12 @@ unalias() {
         unset p
     done
 }
+linkdir() {
+    for i in $1*; do
+        ln -s "$i" "`echo $i | rev | cut -d/ -f1 | rev`"
+        echo "'$i' -> './`echo $i | rev | cut -d/ -f1 | rev`'"
+    done
+}
 ######################
 
 ### PATH CHANGES ###
