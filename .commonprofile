@@ -137,7 +137,14 @@ realpath() {
         echo 'idk what you want dude'
     fi
 }
-
+unalias() {
+    for i in $@; do
+        p=`realpath -w $i`
+        rm $i
+        mv $p .
+        unset p
+    done
+}
 ######################
 
 ### PATH CHANGES ###
