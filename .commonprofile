@@ -2,18 +2,19 @@
 alias c="clear"
 alias fucking="sudo"
 alias virc="vim ~/.vimrc"
-alias cp='cp -iv'                           # Preferred 'cp' implementation
-alias mv='mv -iv'                           # Preferred 'mv' implementation
-alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
-alias l="ls -lah"           # Preferred 'ls' implementation
-alias ll="ls -FGlAhpO@"           # Preferred 'ls' implementation
-alias less='less -RXc'
-alias top='sudo htop'
+alias cp='cp -iv'                               # Preferred 'cp' implementation
+alias mv='mv -iv'                               # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                         # Preferred 'mkdir' implementation
+alias l="ls -lah"                               # Preferred 'ls' implementation
+alias ll="ls -FGlAhpO@"                         # Preferred 'ls' implementation
+alias less='less -RXc'                          # Preferred 'less' implementation
+alias rsync='rsync -avhW --progress'            # Preferred 'rsync' implementation
+alias top='sudo htop'                           # Top should launch htop with sudo
 alias g='git'
 alias r='ranger'
-cd() { builtin cd -P "$@"; ls; }
-mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }
-procinfo() { ps -aux | grep $1 }
+cd() { builtin cd -P "$@"; ls; }                # List contents after cding
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }    # Make dir and cd at the same time
+procinfo() { ps -aux | grep $1 }                # Get info about a process (by name)
 
 ### DOUG SCRIPTS TRIAL RESET ###
 alias rs_notinplaylist="rm /Users/alex/Library/iTunes/.ntnny.txt"
