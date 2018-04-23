@@ -15,6 +15,7 @@ alias r='ranger'
 cd() { builtin cd -P "$@"; ls; }                # List contents after cding
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }    # Make dir and cd at the same time
 procinfo() { ps -aux | grep $1 }                # Get info about a process (by name)
+alias rrsync='rsync -avhW --progress --remove-source-files'
 
 ### DOUG SCRIPTS TRIAL RESET ###
 alias rs_notinplaylist="rm /Users/alex/Library/iTunes/.ntnny.txt"
