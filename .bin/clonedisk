@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Disc backup/clone script
+# Requires rsync 3
+
+# Ask for the administrator password upfront
+sudo -v
+
+if [ $# -ne 2 ]; then
+    echo "Usage: clonedisk [source] [destination]"
+    exit 1
+else
+    SRC=$1
+    DST=$2
+fi
+
+EXCLUDE="clonedisk-ignore"
+
+PROG=$0
+
+if [ ! -r "$SRC" ]; then
+    logger -t $PROG "Source $SRC not readable - Cannot start the sync process"
+    exit;
+fi
+
+if [ ! -w "$DST" ]; then
+    logger -t $PROG "Destination $DST not writeable - Cannot start the sync process"
+    exit;
+fi
+
+logger -t $PROG "Start rsync"
+
+sudo /usr/local/bin/rsync --acls \
+                          --archive \
+                          --delete \
+                          --delete-excluded \
+                          --exclude-from=$EXCLUDE \
+                          --hard-links \
+                          --one-file-system \
+                          --sparse \
+                          --verbose \
+                          --xattrs \
+                          "$SRC" "$DST"
+
+logger -t $PROG "End rsync"
+
+echo -n "Make the backup disk bootable? [Y/n]: "
+read -nq shouldboot
+
+if [ $shouldboot == "y" ]; then
+    # Make the backup bootable
+    sudo bless -folder "$DST"/System/Library/CoreServices
+fi
+
+exit 0
