@@ -48,7 +48,10 @@ notify() {
 brewmaster() {
     brew update;
     brew update;
-    { brew outdated; brew cask outdated; } | less;
+    brew outdated;
+    brew cask outdated;
+    /usr/bin/read -n1 -p "Press any key to continue..." -s;
+    echo "Continuing with upgrade."
     brew upgrade;
     brew cask upgrade;
     brew cleanup -s;
