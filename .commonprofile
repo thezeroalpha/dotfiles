@@ -169,5 +169,6 @@ export PATH=$PATH:/Users/alex/.bin
 export EDITOR="vim"
 export HOMEBREW_EDITOR="atom"
 
+export CASK_REPO=`brew --repository`/Library/Taps/caskroom/homebrew-cask
 
 ######################
