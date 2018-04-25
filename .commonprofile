@@ -188,3 +188,7 @@ export HOMEBREW_EDITOR="atom"
 export CASK_REPO=`brew --repository`/Library/Taps/caskroom/homebrew-cask
 
 ######################
+
+### THEFUCK ###
+eval $(thefuck --alias)
+##############
