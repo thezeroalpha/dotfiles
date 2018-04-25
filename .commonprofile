@@ -56,15 +56,22 @@ brewmaster() {
     brew update;
     brew outdated;
     brew cask outdated;
-    /usr/bin/read -n1 -p "Press any key to continue..." -s;
-    echo "Continuing with upgrade."
+    notify "Finished reading updates" "Click to view outdated packages."
+    echo -n "Continue? [Y/n]"
+    read -sqn CONF
+
+    if [ "$CONF" != "y" ]; then
+        echo "\nUser cancelled."
+        return 1
+    fi 
+    echo "\nContinuing with upgrade."
     brew upgrade;
     brew cask upgrade;
     brew cleanup -s;
     brew cask cleanup;
     brew prune;
     brew doctor;
-    notify;
+    notify "Brewed." "All packages have been upgraded.";
 }
 
 gemmaster() {
