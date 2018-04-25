@@ -44,7 +44,11 @@ pip3-upgrade() {
 }
 
 notify() {
-    terminal-notifier -title "Task Finished" -message "Done"
+    if type terminal-notifier &> /dev/null; then
+        terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
+    else
+        echo '\a'
+    fi 
 }
 
 brewmaster() {
