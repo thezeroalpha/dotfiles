@@ -27,22 +27,35 @@ deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/exp
 radios=($drive_radio $nw_plaza $groove_salad $mission_control $the_trip $beat_blender $dub_step $defcon $deep_space $classic_goa $prog_psy_trance)
 radio_names=("Drive Radio" "Nightwave Plaza" "SOMA - Groove Salad" "SOMA - Mission Control" "SOMA - The Trip" "SOMA - Beat Blender" "SOMA - Dub Step" "SOMA - Defcon" "SOMA - Deep Space" "PSYSTATION - Classic Goa" "PSYSTATION - Progressive Psy Trance")
 
+VISUALISER=true
+while getopts ":n" opt; do
+  case ${opt} in
+    n )
+        VISUALISER=false      
+  esac
+done
+
 clear
 echo "Welcome to the command line radio player."
 PS3="Select a radio, or type q to exit: "
 select RADIO in "${radio_names[@]}"
 do
 	if [[ $RADIO = "q" ]]; then
-		break;
+		break
 	else
 		for i in "${!radio_names[@]}"; do
 			if [[ "${radio_names[$i]}" = "${RADIO}" ]]; then
 				clear
 				echo "Now playing $RADIO"
-				mpv ${radios[$i]}
-				break;
+                                echo "Loading..."
+                                if $VISUALISER; then
+                                    mpv ${radios[$i]} --script="/Users/alex/.config/mpv/visualizer.lua" --really-quiet -vo caca
+                                else
+                                    mpv ${radios[$i]}
+                                fi
+				break
 			fi
 		done
-		break;
+		break
 	fi
 done
