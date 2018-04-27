@@ -27,9 +27,9 @@ do
 				echo "Now playing $RADIO"
                                 echo "Loading..."
                                 if $VISUALISER; then
-                                    mpv ${radios[$i]} --script="/Users/alex/.config/mpv/visualizer.lua" --really-quiet -vo caca
+                                    nice -n 20 mpv ${radios[$i]} --script="/Users/alex/.config/mpv/visualizer.lua" --really-quiet -vo caca
                                 else
-                                    mpv ${radios[$i]}
+                                    nice -n 20 mpv ${radios[$i]}
                                 fi
 				break
 			fi
