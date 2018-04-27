@@ -1,31 +1,9 @@
 #!/bin/bash
 
-## RADIO CONFIG (MOVE TO SEPARATE FILE) ##
-# Drive RADIO - http://driveradio.be
-drive_radio="http://streaming.radionomy.com/DRIVE"
-
-# Nightwave Plaza - http://plaza.one
-nw_plaza="https://plaza.one/mp3"
-
-# Psystation
-classic_goa="http://hestia2.cdnstream.com/1458_128"
-prog_psy_trance="http://hestia2.cdnstream.com/1453_128"
-
-# SOMA FM #
-groove_salad="https://somafm.com/groovesalad256.pls"			# Ambient/downtempo
-mission_control="https://somafm.com/missioncontrol.pls"			# Ambient with sounds from space 
-the_trip="https://somafm.com/thetrip.pls"				# Prog house/trance
-beat_blender="https://somafm.com/beatblender.pls"			# Deep house, downtempo chill
-dub_step="https://somafm.com/dubstep256.pls"				# Dubstep, dub 
-defcon="https://somafm.com/defcon256.pls"				# Music for hacking
-deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/experimental
-
-##############################################################################################################
+# Initial config, setting $radios and $radio_names
+source radio-config
 
 ## MAIN SCRIPT ##
-# TODO: load these dynamically
-radios=($drive_radio $nw_plaza $groove_salad $mission_control $the_trip $beat_blender $dub_step $defcon $deep_space $classic_goa $prog_psy_trance)
-radio_names=("Drive Radio" "Nightwave Plaza" "SOMA - Groove Salad" "SOMA - Mission Control" "SOMA - The Trip" "SOMA - Beat Blender" "SOMA - Dub Step" "SOMA - Defcon" "SOMA - Deep Space" "PSYSTATION - Classic Goa" "PSYSTATION - Progressive Psy Trance")
 
 VISUALISER=true
 while getopts ":n" opt; do
