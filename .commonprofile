@@ -54,6 +54,7 @@ notify() {
 brewmaster() {
     brew update;
     brew update;
+    echo "\nTo update:\n"
     brew outdated;
     brew cask outdated;
     notify "Finished reading updates" "Click to view outdated packages."
