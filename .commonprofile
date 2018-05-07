@@ -168,10 +168,23 @@ linkdir() {
     if [[ "$1" != */ ]]; then
         1=$(echo "$1" | sed "s/$/\//")
     fi
+        echo "Linking content of $1 to `pwd`..."
+    cr=0
+    for f in ./*; do
+        if [ -L "$f" ]; then
+            rm ./"$f"
+            ((cr++))
+        fi
+    done
+
+    ca=0
     for i in $1*; do
         ln -s "$i" "`echo $i | rev | cut -d/ -f1 | rev`"
         echo "'$i' -> './`echo $i | rev | cut -d/ -f1 | rev`'"
+        ((ca++))
     done
+    echo "Removed $cr symlinks."
+    echo "Linked $ca directories into current directory."
 }
 ######################
 
