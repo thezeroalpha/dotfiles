@@ -165,6 +165,9 @@ unalias() {
     done
 }
 linkdir() {
+    if [[ "$1" != */ ]]; then
+        1=$(echo "$1" | sed "s/$/\//")
+    fi
     for i in $1*; do
         ln -s "$i" "`echo $i | rev | cut -d/ -f1 | rev`"
         echo "'$i' -> './`echo $i | rev | cut -d/ -f1 | rev`'"
