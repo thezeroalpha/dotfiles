@@ -1,7 +1,14 @@
 #!/bin/bash
 
 # Initial config, setting $radios and $radio_names
-source radio-config
+if [ -e ~/.radio-config ]; then
+    source ~/.radio-config
+elif [ -e ~/.config/radio-config ]; then
+    source ~/.config/radio-config
+else
+    echo "No radios set up. Please create a config file."
+    exit 1
+fi
 
 ## MAIN SCRIPT ##
 
