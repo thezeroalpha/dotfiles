@@ -1,0 +1,121 @@
+#!/bin/bash
+
+if [ $# -ne 0 ]; then
+	case $1 in
+		"-p")
+			artist=`osascript -e "tell application \"iTunes\" to return artist of current track"`;
+			album=`osascript -e "tell application \"iTunes\" to return album of current track"`;
+			name=`osascript -e "tell application \"iTunes\" to return name of current track"`;
+			;;
+		"-s")
+			artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
+			album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
+			name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
+	esac
+else
+	echo "Which track?"
+	select sc in "Selected" "Playing"; do
+		case $sc in
+			Selected)
+				artist=`osascript -e "tell application \"iTunes\" to return artist of selection"`;
+				album=`osascript -e "tell application \"iTunes\" to return album of selection"`;
+				name=`osascript -e "tell application \"iTunes\" to return name of selection"`;
+				break;;
+			Playing)
+				artist=`osascript -e "tell application \"iTunes\" to return artist of current track"`;
+				album=`osascript -e "tell application \"iTunes\" to return album of current track"`;
+				name=`osascript -e "tell application \"iTunes\" to return name of current track"`;
+		esac
+	done
+fi
+
+if [ -z "$album" ]; then
+	# If there's no album, query without an album
+	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$name");
+	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$name");
+	url=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb u "$artist" "$name");
+else
+	# Otherwise, add the album to query for precision
+	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$album" "$name");
+	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$album" "$name");
+	url=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb u "$artist" "$name");
+fi
+
+# Parsing the arrays
+# Split the Ruby arrays into Bash arrays, do some replacements to make it look nice
+IFS=',' read -ra genre <<< "${genre}"
+genre[0]=$(echo ${genre[0]} | sed -e 's/\[//') # Remove front [
+genre[$((${#genre[@]}-1))]=$(echo ${genre[$((${#genre[@]}-1))]} | sed -e 's/\]//') # Remove back ]
+
+IFS=',' read -ra style <<< "${style}"
+style[0]=$(echo ${style[0]} | sed -e 's/\[//') # Remove front [
+style[$((${#style[@]}-1))]=$(echo ${style[$((${#style[@]}-1))]} | sed -e 's/\]//') # Remove back ]
+
+IFS=',' read -ra url <<< "${url}"
+url[0]=$(echo ${url[0]} | sed -e 's/\[//') # Remove front [
+url[$((${#url[@]}-1))]=$(echo ${url[$((${#url[@]}-1))]} | sed -e 's/\]//') # Remove back ]
+
+# Give the user the source information
+echo "URL: $url"
+echo "You're changing the album \"$album\" by \"$artist\""
+printf '\n'
+
+# Select menu for genre
+echo "Genre options:"
+printf '%s\n' "${genre[@]}"
+printf "\nWould you like to use one of these?\n"
+select yn in "Yes" "No"; do
+	case $yn in
+		Yes)
+			select opt in "${genre[@]}"; do
+				case $opt in
+					*)
+						finalg=$(echo $opt | sed -e 's/"//g')
+						if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
+						break;;
+				esac
+			done
+			break;;
+		No)
+			echo "Write your own then:"
+			read finalg
+			if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
+			if [[ $finalg = "Post-Rock" ]]; then finalg="Post Rock"; fi
+			break;;
+	esac
+done
+
+# Select menu for style
+echo "Style options:"
+printf '%s\n' "${style[@]}"
+printf "\nWould you like to use one of these?\n"
+select yn in "Yes" "No" "None needed"; do
+	case $yn in
+		Yes)
+			select opt in "${style[@]}"; do
+				case $opt in
+					*)
+						finals=$(echo \/$opt | sed -e 's/"//g')
+						break;;
+				esac
+			done
+			break;;
+		No)
+			echo "Write your own then:"
+			read finals
+			finals="/$finals"
+			break;;
+		"None needed")
+			break;;
+	esac
+done
+
+# Finally, write the info to the iTunes track (AppleScript)
+if [ -z "$album" ]; then
+	osascript -e "tell application \"iTunes\" to set the genre of every track whose name is \"$name\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
+else
+	osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
+fi
+
+# ...and give a status message.
+printf "\nGenre set to: $finalg$finals\n"

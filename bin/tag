@@ -1,0 +1,30 @@
+#!/bin/bash
+clear
+cd ~
+echo Welcome to MP3 Tagger!
+if [ $# -eq 0 ]; then
+	echo 'Sorry, you have not specified a file. Please specify a file while invoking the command, such as "tag filename.mp3"'
+	echo "Do you want to list all of the files available? (y/n) "
+	read ANSWER
+	if [ $ANSWER == "y" ]; then
+		ls ~/Music/iTunes/iTunes\ Music/
+	else
+		exit 0
+	fi
+else
+	echo The file that will be tagged is $1
+	java -jar ~/.bin/mp3tagger.jar Music/iTunes/iTunes\ Music/$1
+	cd Music/iTunes/iTunes\ Music/
+	echo The file $1 was tagged successfully.
+	cp *.mp3.tag ~/Desktop/
+	rm *.mp3.tag
+	echo "The file with the information about the tag was moved to your Desktop. Would you like to display the information it contains? (y/n)"
+	read INFODISPLAY
+	if [ $INFODISPLAY == "y" ]; then
+		clear
+		cd ~/Desktop
+		cat $1.tag
+	else
+		echo Okay, the .tag file was saved. Now exiting.
+	fi
+fi
