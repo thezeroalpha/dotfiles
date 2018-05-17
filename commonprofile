@@ -55,13 +55,13 @@ notify() {
 brewmaster() {
     brew update;
     brew update > /dev/null;
-    outdated="$(brew outdated) $(brew cask outdated)"
+    outdated="$(brew outdated) $(brew cask outdated --greedy)"
     if [ ${#outdated} = 1 ]; then
         echo "Nothing to update." 
     else
         echo "\nTo update:\n"
         brew outdated;
-        brew cask outdated;
+        brew cask outdated --greedy;
         notify "Finished reading updates" "Click to view outdated packages."
         echo -n "Continue? [Y/n]"
         read -sqn CONF
@@ -72,7 +72,7 @@ brewmaster() {
         fi 
         echo "\nContinuing with upgrade."
         brew upgrade;
-        brew cask upgrade;
+        brew cask upgrade --greedy;
     fi
     brew cleanup -s;
     brew cask cleanup;
