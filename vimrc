@@ -24,3 +24,6 @@ set ignorecase
 set hlsearch
 set incsearch
 nnoremap ; :
+
+" netrw configs
+let g:netrw_banner = 0
