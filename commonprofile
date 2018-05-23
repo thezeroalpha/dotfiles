@@ -171,7 +171,7 @@ linkdir() {
 # PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Include my scripts in PATH #
-export PATH=$PATH:/Users/alex/.bin
+export PATH=/Users/alex/.bin:$PATH
 
 #####################
 
