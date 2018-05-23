@@ -23,7 +23,10 @@ set showmatch
 set ignorecase
 set hlsearch
 set incsearch
+
+" Key bindings
 nnoremap ; :
+map q: <Nop>
 
 " netrw configs
 let g:netrw_banner = 0
