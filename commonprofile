@@ -52,57 +52,6 @@ notify() {
     fi 
 }
 
-brewmaster() {
-    brew update;
-    brew update > /dev/null;
-    outdated="$(brew outdated)"
-    outdated_c="$(brew cask outdated --greedy)"
-
-    # Potentially upgrade programs
-    if [ ${#outdated} = 1 ]; then
-        echo "No programs to update." 
-    else
-        echo "\nTo update:\n"
-        brew outdated;
-        notify "Brew: Finished reading updates" "Click to view outdated packages."
-        echo -n "Continue? [Y/n]"
-        read -sqn CONF
-
-        if [ "$CONF" != "y" ]; then
-            echo "\nUser cancelled."
-            return 1
-        fi 
-        echo "\nContinuing with brew upgrade."
-        brew upgrade;
-    fi
-
-    # Potentially upgrade casks
-    if [ ${#outdated_c} = 1 ]; then
-        echo "No casks to update." 
-    else
-        echo "\nCasks to update:\n"
-        brew cask outdated --greedy;
-        notify "Cask: Finished reading updates" "Click to view outdated casks."
-        echo -n "Continue? [Y/n]"
-        read -sqn CONF
-
-        if [ "$CONF" != "y" ]; then
-            echo "\nUser cancelled."
-            return 1
-        fi 
-        echo "\nContinuing with cask upgrade."
-        brew cask upgrade --greedy;
-    fi
-
-    # Final steps & cleanup
-    brew cleanup -s;
-    brew cask cleanup;
-    brew prune;
-    brew doctor;
-    brew missing;
-    notify "Brewed." "All packages have been upgraded.";
-}
-
 gemmaster() {
     gem update;
     gem update rails;
@@ -237,3 +186,24 @@ export CASK_REPO=`brew --repository`/Library/Taps/caskroom/homebrew-cask
 ### THEFUCK ###
 eval $(thefuck --alias)
 ##############
+
+### VIRTUALENV ###
+
+# Set python 3 location
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+
+# activate virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
+
+# pip should only run if there is a virtualenv currently activated
+export PIP_REQUIRE_VIRTUALENV=true
+
+# create commands to override pip restriction.
+# use `gpip` or `gpip3` to force installation of
+# a package in the global python environment
+gpip(){
+   PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+gpip3(){
+   PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
+}
