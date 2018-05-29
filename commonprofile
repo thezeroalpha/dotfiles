@@ -173,8 +173,10 @@ linkdir() {
 # Original path:
 # PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
-# Include my scripts in PATH #
-export PATH=/Users/alex/.bin:$PATH
+# Include my scripts in PATH (conditionally) #
+if [[ $PATH != *"/Users/alex/.bin"* ]]; then
+    export PATH=/Users/alex/.bin:$PATH
+fi
 
 #####################
 
