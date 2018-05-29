@@ -27,6 +27,7 @@ set incsearch
 " Key bindings
 nnoremap ; :
 map q: <Nop>
+cmap w!! w !sudo tee > /dev/null %
 
 " netrw configs
 let g:netrw_banner = 0
