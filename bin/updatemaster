@@ -1,5 +1,48 @@
 #!/usr/local/bin/bash
 
+# Set default variables
+OPTIND=1
+all_casks=0
+all_formulas=0
+all=0
+select_casks=0
+
+# Get passed options/arguments
+while getopts "fcash" opt; do
+    case "$opt" in
+    c)
+        all_casks=1
+        ;;
+    f)
+        all_formulas=1
+        ;;
+    a)
+        all=1
+        ;;
+    s)
+        select_casks=1
+        ;;
+    h)
+        echo "Update your Homebrew, Mac App Store, NPM, and PIP packages in one place."
+        echo "Usage: updatemaster [-fcash]"
+        echo "Options:"
+        echo "-c:           Upgrade all casks, without prompting."
+        echo "-f:           Upgrade all formulas, without prompting."
+        echo "-a:           Upgrade all casks and formulas."
+        echo "-s:           Select which casks to upgrade."
+        echo "-h:           Show this help text."
+        echo
+        echo "Options can be combined. For example:"
+        echo "  updatemaster -fs"
+        echo "Would update all formulas, and ask you to select which casks to upgrade."
+        exit 0 
+        ;;
+    *)
+        ;;
+    esac
+done
+
+        
 ### SET UP NOTIFY ###
 if ! command -v notify &> /dev/null; then
     if command -v terminal-notifier &> /dev/null; then
@@ -26,17 +69,21 @@ if command -v brew &> /dev/null; then
         echo -e "To update:\n"
         brew outdated;
         notify "Brew: Finished reading updates" "Click to view outdated packages."
-        echo; read -sn 1 -p "Continue? [Y/n]" CONF
+        if [ $all_formulas = 1 ] || [ $all = 1]; then
+            brew upgrade
+        else
+            echo; read -sn 1 -p "Continue? [Y/n]" CONF
 
-        case $CONF in
-            [yY] )
-                echo -e "\nContinuing with brew upgrade."
-                brew upgrade;
-                ;;
-            * )
-                echo -e "\nCancelled brew upgrade."
-                ;;
-        esac
+            case $CONF in
+                [yY] )
+                    echo -e "\nContinuing with brew upgrade."
+                    brew upgrade;
+                    ;;
+                * )
+                    echo -e "\nCancelled brew upgrade."
+                    ;;
+            esac
+        fi
     fi
 
     # Potentially upgrade casks
@@ -46,24 +93,33 @@ if command -v brew &> /dev/null; then
         echo -e "Casks to update:"
         brew cask outdated --greedy;
         notify "Cask: Finished reading updates" "Click to view outdated casks."
-        read -sn 1 -p "Continue? [Y(es)/n(o)/s(elect)]: " CONF
+        if [ $all_casks = 1 ] || [ $all = 1 ]; then
+            brew cask upgrade --gredy
+        elif [ $select_casks = 1 ]; then
+           read -p "Which casks would you like to upgrade? " -a CASKS;
+             for i in ${CASKS[@]}; do
+                 if ! brew cask upgrade $i; then echo -e "Could not upgrade cask $i."; fi
+             done 
+        else
+            read -sn 1 -p "Upgrade all? [Y(es)/n(o)/s(elect)] " CONF
 
-        case $CONF in
-            [Ss] | [Ss]elect )
-                echo
-                read -p "Which casks would you like to upgrade? " -a CASKS;
-                for i in ${CASKS[@]}; do
-                    if ! brew cask upgrade $i; then echo -e "Could not upgrade cask $i."; fi
-                done 
-                ;;
-            [Yy] | [Yy]es )
-                echo -e "\nContinuing with cask upgrade."
-                brew cask upgrade --greedy;
-                ;; 
-            * )
-                echo -e "\nCancelled cask upgrade."
-                ;;
-        esac
+            case $CONF in
+                [Ss] | [Ss]elect )
+                    echo
+                    read -p "Which casks would you like to upgrade? " -a CASKS;
+                    for i in ${CASKS[@]}; do
+                        if ! brew cask upgrade $i; then echo -e "Could not upgrade cask $i."; fi
+                    done 
+                    ;;
+                [Yy] | [Yy]es )
+                    echo -e "\nContinuing with cask upgrade."
+                    brew cask upgrade --greedy;
+                    ;; 
+                * )
+                    echo -e "\nCancelled cask upgrade."
+                    ;;
+            esac
+        fi
     fi
 
     # Final steps & cleanup
@@ -82,21 +138,26 @@ fi
 echo -e "\n-- MAS update/upgrade."
 if command -v mas &> /dev/null; then
     echo -e "MAS outdated:"
-    mas outdated
+    outdated=$(mas outdated)
 
-    read -sn 1 -p "Continue? [Y/n]" CONF
+    if [ ${#outdated} = 0 ]; then
+        echo -e "\nEverything is up to date."
+    else
+       mas outdated
+       read -sn 1 -p "Continue? [Y/n]" CONF
 
-    case $CONF in
-        [Yy] )
-            echo -e "\nContinuing with mas upgrade."
-            mas upgrade;
-            ;;
+        case $CONF in
+            [Yy] )
+                echo -e "\nContinuing with mas upgrade."
+                mas upgrade;
+                ;;
 
-        * )
-            echo -e "\nCancelled mas upgrade."
-            ;;
-    esac
-    notify "MAS Updated." "All apps at newest version."
+            * )
+                echo -e "\nCancelled mas upgrade."
+                ;;
+        esac
+        notify "MAS Updated." "All apps at newest version."
+    fi
 else
     echo -e "\nmas not found. Install mas to update App Store apps on the command line."
     echo -e "\nCannot update Mac App Store apps. Please do so manually."
@@ -105,8 +166,13 @@ fi
 ### NPM ###
 echo -e "\n-- NPM update/upgrade."
 if command -v npm &> /dev/null; then
-    npm update -g
-    notify "NPM Update Finished" "See Terminal for info."
+    outdated=$(npm outdated)
+    if [ ${#outdated} = 0 ]; then
+        echo -e "\nEverything is up to date."
+    else
+        npm update -g
+        notify "NPM Update Finished" "See Terminal for info."
+    fi
 else
     echo -e "\nnpm not found."
     echo -e "\nCannot update NPM packages. Please do so manually."
