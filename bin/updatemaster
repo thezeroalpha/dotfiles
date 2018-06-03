@@ -96,7 +96,7 @@ if command -v brew &> /dev/null; then
         if [ $all_casks = 1 ] || [ $all = 1 ]; then
             brew cask upgrade --gredy
         elif [ $select_casks = 1 ]; then
-           read -p "Which casks would you like to upgrade? " -a CASKS;
+           read -p "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
              for i in ${CASKS[@]}; do
                  if ! brew cask upgrade $i; then echo -e "Could not upgrade cask $i."; fi
              done 
