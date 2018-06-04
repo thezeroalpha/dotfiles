@@ -199,3 +199,9 @@ if command -v pip list &> /dev/null; then
 else
     echo -e "Cannot upgrade pip packages. Please do so manully."
 fi
+
+### TLDR Database ###
+if command -v tldr &> /dev/null; then
+    echo -e "-- TLDR database update"
+    tldr -u
+fi

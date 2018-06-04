@@ -1,6 +1,7 @@
 ### SIMPLE COMMANDS ###
 alias c="clear"
 alias fucking="sudo"
+alias wtf="tldr"
 alias virc="vim ~/.vimrc"
 alias cp='cp -iv'                                               # Preferred 'cp' implementation
 alias mv='mv -iv'                                               # Preferred 'mv' implementation
