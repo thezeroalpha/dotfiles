@@ -16,6 +16,7 @@ alias g='git'
 alias r='ranger'
 
 ### SIMPLE FUNCTIONS ###
+mark() { mdvl $1 | less }
 cd() { builtin cd -P "$@"; ls; }                                # List contents after cding
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }                    # Make dir and cd at the same time
 procinfo() { ps -aux | grep $1 }                                # Get info about a process (by name)
