@@ -69,7 +69,7 @@ if command -v brew &> /dev/null; then
         echo -e "To update:\n"
         brew outdated;
         notify "Brew: Finished reading updates" "Click to view outdated packages."
-        if [ $all_formulas = 1 ] || [ $all = 1]; then
+        if [ $all_formulas = 1 ] || [ $all = 1 ]; then
             brew upgrade
         else
             echo; read -sn 1 -p "Continue? [Y/n]" CONF
