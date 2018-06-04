@@ -118,6 +118,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs histor
 # Aliases
 source ~/.commonprofile
 alias configure="vim ~/.zshrc"
+alias configure-common="vim ~/.commonprofile"
 alias reload="source ~/.zshrc"
 
 # Z initialization
