@@ -123,3 +123,6 @@ alias reload="source ~/.zshrc"
 
 # Z initialization
 . /usr/local/etc/profile.d/z.sh
+
+# rbenv init
+eval "$(rbenv init -)"
