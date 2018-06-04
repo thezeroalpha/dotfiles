@@ -204,4 +204,8 @@ fi
 if command -v tldr &> /dev/null; then
     echo -e "-- TLDR database update"
     tldr -u
+    echo "Exit code: $?"
 fi
+
+echo -e "All systems checked."
+notify "All systems checked." "Everything you indicated should be upgraded."
