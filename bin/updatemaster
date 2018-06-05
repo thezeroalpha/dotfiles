@@ -3,12 +3,15 @@
 # Set default variables
 OPTIND=1
 all_casks=0
+no_casks=0
 all_formulas=0
+no_formulas=0
 all=0
+none=0
 select_casks=0
 
 # Get passed options/arguments
-while getopts "fcash" opt; do
+while getopts "fcashFAC" opt; do
     case "$opt" in
     c)
         all_casks=1
@@ -22,15 +25,27 @@ while getopts "fcash" opt; do
     s)
         select_casks=1
         ;;
+    F)
+	no_formulas=1
+	;;
+    C)
+	no_casks=1
+	;;
+    A)
+	none=1
+	;;
     h)
         echo "Update your Homebrew, Mac App Store, NPM, and PIP packages in one place."
-        echo "Usage: updatemaster [-fcash]"
+        echo "Usage: updatemaster [-aAcCfFsh]"
         echo "Options:"
-        echo "-c:           Upgrade all casks, without prompting."
-        echo "-f:           Upgrade all formulas, without prompting."
-        echo "-a:           Upgrade all casks and formulas."
-        echo "-s:           Select which casks to upgrade."
-        echo "-h:           Show this help text."
+        echo "-c:		Upgrade all casks, without prompting."
+        echo "-C:		Don't update any casks."
+        echo "-f:		Upgrade all formulas, without prompting."
+        echo "-F:		Don't upgrade any formulas."
+        echo "-a:		Upgrade all casks and formulas."
+        echo "-A:		Don't upgrade any Brew programs (maintenance only)."
+        echo "-s:		Select which casks to upgrade."
+        echo "-h:		Show this help text."
         echo
         echo "Options can be combined. For example:"
         echo "  updatemaster -fs"
@@ -63,7 +78,9 @@ if command -v brew &> /dev/null; then
     echo
 
     # Potentially upgrade programs
-    if [ ${#outdated} = 0 ]; then
+    if [ $no_formulas = 1 ] || [ $none = 1 ]; then
+	echo -e "\nNo programs will be updated." 
+    elif [ ${#outdated} = 0 ]; then
         echo -e "No programs to update." 
     else
         echo -e "To update:\n"
@@ -89,6 +106,8 @@ if command -v brew &> /dev/null; then
     # Potentially upgrade casks
     if [ ${#outdated_c} = 0 ]; then
         echo -e "No casks to update." 
+    elif [ $no_casks = 1 ] || [ $none = 1 ]; then
+	echo -e "\nNo casks will be updated."
     else
         echo -e "Casks to update:"
         brew cask outdated --greedy;
@@ -202,10 +221,10 @@ fi
 
 ### TLDR Database ###
 if command -v tldr &> /dev/null; then
-    echo -e "-- TLDR database update"
+    echo -e "\n-- TLDR database update"
     tldr -u
     echo "Exit code: $?"
 fi
 
-echo -e "All systems checked."
+echo -e "\n-- All systems checked."
 notify "All systems checked." "Everything you indicated should be upgraded."
