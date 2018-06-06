@@ -25,6 +25,7 @@ else
 				artist=`osascript -e "tell application \"iTunes\" to return artist of current track"`;
 				album=`osascript -e "tell application \"iTunes\" to return album of current track"`;
 				name=`osascript -e "tell application \"iTunes\" to return name of current track"`;
+				break;;
 		esac
 	done
 fi
