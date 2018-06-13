@@ -1,6 +1,9 @@
 " Update file when changed from the outside
 set autoread
 
+" Highlight current line
+set cursorline
+
 " Hide buffers instead of closing
 set hidden
 
@@ -38,6 +41,9 @@ set nowrap
 " Status bar
 set laststatus=2
 
+" Folding
+set foldmethod=indent
+
 " Searching
 set ignorecase
 set hlsearch
@@ -60,11 +66,6 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 
-" Key bindings
-nnoremap ; :
-map q: <Nop>
-cmap w!! w !sudo tee > /dev/null %
-
 " netrw configs
 let g:netrw_banner = 0
 
@@ -84,6 +85,12 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
+" Custom commands
+command Todo vimgrep /TODO\C/ **/*.* | copen
+command Note vimgrep /NOTE\C/ **/*.* | copen
+command Fix vimgrep /FIXME\C/ **/*.* | copen
+command CDC cd %:p:h
+
 " Retain visual mode after > and <
 vmap < <gv
 vmap > >gv
@@ -93,18 +100,23 @@ vnoremap J :m '>+1<cr>gv=gv
 vnoremap K :m '<-2<cr>gv=gv
 
 
-" dont know what these do
+" For encoding/formats
+set encoding=utf-8 nobomb
+set fileformats=unix,dos,mac
 
-set bomb
+" For editing binaries
 set binary
+
+" Send more characters at a given time
 set ttyfast
 
-set fileformats=unix,dos,mac
+" Show partial command on last line
 set showcmd
 
-" ================
-" Colors and Fonts
-" ================
+" How to split new windows
+set splitbelow splitright
+
+" ======= Colors and Fonts ======== "
 
 " Syntax highlighting
 syntax on
@@ -118,4 +130,11 @@ set t_Co=256
 " Mouse tweak
 set mousemodel=popup
 
+" ====== COMMANDS/MAPPINGS ======= "
 
+let mapleader=","   " Set the mapleader to be ,
+
+" 
+nnoremap ; :
+map q: <Nop>
+cmap w!! w !sudo tee > /dev/null %
