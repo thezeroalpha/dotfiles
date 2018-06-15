@@ -17,3 +17,4 @@ email = EMAIL
 	changes = diff --summary --stat
 	co = checkout
 	fa = fetch --all
+	pushf = push --force-with-lease
