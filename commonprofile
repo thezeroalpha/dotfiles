@@ -62,17 +62,21 @@ gemmaster() {
     gem cleanup;
 }
 
-webmTOmp4() {
+### FFMPEG CONVERSIONS ###
+webm-mp4() {
     ffmpeg -i "$1" -qscale 0 "$1".mp4
 }
 
-mp4TOmp3() {
+mp4-mp3() {
     ffmpeg -i "$1" "$1".mp3
 }
 
 gifify() {
     ffmpeg -i $1 -r 25 -f image2pipe -vcodec ppm - | \
         convert -delay 4 -loop 0 - output.gif
+}
+gif-mp4() {
+    ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" `echo $1|cut -d. -f1`.mp4
 }
 
 extract () {
