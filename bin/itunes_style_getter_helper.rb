@@ -31,10 +31,6 @@ elsif (flag=="s")
   end
 # If searching for url
 else
-  search.results.each do |result|
-    if result.style? && !result.style.empty?
-      res="http://discogs.com#{result.uri}".split(" ")
-    end
-    p res
-  end
+  res="http://discogs.com#{search.results[0].uri}".split(" ")
+  p res
 end
