@@ -1,6 +1,9 @@
 " Update file when changed from the outside
 set autoread
 
+" For editing binaries
+set binary
+
 " Highlight current line
 set cursorline
 
@@ -90,6 +93,7 @@ command Todo vimgrep /TODO\C/ **/*.* | copen
 command Note vimgrep /NOTE\C/ **/*.* | copen
 command Fix vimgrep /FIXME\C/ **/*.* | copen
 command CDC cd %:p:h
+command Maketab set noet ts=2 | %retab!
 
 " Retain visual mode after > and <
 vmap < <gv
@@ -103,9 +107,6 @@ vnoremap K :m '<-2<cr>gv=gv
 " For encoding/formats
 set encoding=utf-8 nobomb
 set fileformats=unix,dos,mac
-
-" For editing binaries
-set binary
 
 " Send more characters at a given time
 set ttyfast
