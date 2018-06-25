@@ -177,6 +177,8 @@ linkdir() {
     done
     echo "Removed $cr symlinks."
     echo "Linked $ca directories into current directory."
+    unset cr
+    unset ca
 }
 ######################
 
