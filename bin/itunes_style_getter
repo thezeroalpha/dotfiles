@@ -1,4 +1,4 @@
-    #!/bin/bash
+#!/bin/bash
 while :; do
     if [ $# -ne 0 ]; then
 	case $1 in
