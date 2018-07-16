@@ -4,6 +4,8 @@ set autoread
 " For editing binaries
 set binary
 
+" No swp please, I save all the time
+set noswapfile
 " Highlight current line
 set cursorline
 
@@ -135,7 +137,6 @@ set mousemodel=popup
 
 let mapleader=","   " Set the mapleader to be ,
 
-" 
 nnoremap ; :
 map q: <Nop>
 cmap w!! w !sudo tee > /dev/null %
