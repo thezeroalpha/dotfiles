@@ -1,6 +1,4 @@
-# This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
 name = <name>
 email = EMAIL
 [alias]
@@ -18,3 +16,4 @@ email = EMAIL
 	co = checkout
 	fa = fetch --all
 	pushf = push --force-with-lease
+	mergetest = merge --no-commit --no-f
