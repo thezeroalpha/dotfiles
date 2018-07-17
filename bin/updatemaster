@@ -1,4 +1,5 @@
 #!/usr/local/bin/bash
+echo -e "### STARTING UPDATE SCRIPT ###\n"
 
 # Set default variables
 OPTIND=1
@@ -9,6 +10,7 @@ no_formulas=0
 all=0
 none=0
 select_casks=0
+sudo_auth=0
 
 # Get passed options/arguments
 while getopts "fcashFAC" opt; do
@@ -56,7 +58,6 @@ while getopts "fcashFAC" opt; do
         ;;
     esac
 done
-
         
 ### SET UP NOTIFY ###
 if ! command -v notify &> /dev/null; then
@@ -67,6 +68,15 @@ if ! command -v notify &> /dev/null; then
         notify() { echo -e '\a'; }
     fi
 fi
+
+### Pre-authorise sudo ###
+echo -e "Root permissions will be needed for global pip update.\n"
+if sudo -v; then
+    sudo_auth=1
+else
+    sudo_auth=0
+fi
+echo
 
 ### HOMEBREW ###
 echo -e "-- Homebrew update/upgrade."
@@ -221,10 +231,14 @@ fi
 
 ### SUDO PIP ###
 echo -e "\n-- Global pip."
-if command -v sudo pip list &> /dev/null; then
-    sudo pip freeze | grep -v '^\-e' | cut -d = -f 1 | xargs sudo pip install -U
+if [ $sudo_auth -eq 1 ]; then
+    if command -v sudo -H pip list &> /dev/null; then
+        sudo -H pip freeze | grep -v '^\-e' | cut -d = -f 1 | xargs sudo -H pip install -U
+    else
+        echo -e "Cannot upgrade global pip packages. Please do so manually."
+    fi
 else
-    echo -e "Cannot upgrade global pip packages. Please do so manually."
+    echo -e "Sudo not authorised."
 fi
 
 ### TLDR Database ###
