@@ -124,6 +124,8 @@ map q: <Nop>
 " Custom mappings
 nnoremap <leader>dif :Diff<cr>
 nnoremap <leader>/ :noh<cr>
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
 
 " Custom commands
 command Todo vimgrep /TODO\C/ **/*.* | copen
@@ -133,6 +135,15 @@ command CDC cd %:p:h
 command Maketab set noet ts=2 | %retab!
 command Diff w !diff % -
 command Diffc w !git diff % -
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+
 
 " Retain visual mode after > and <
 vmap < <gv
