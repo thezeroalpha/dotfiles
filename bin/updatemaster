@@ -192,8 +192,8 @@ else
     echo -e "\nCannot update Mac App Store apps. Please do so manually."
 fi
 
-### NPM ###
-echo -e "\n-- NPM update/upgrade."
+### GLOBAL NPM ###
+echo -e "\n-- NPM global update/upgrade."
 if command -v npm &> /dev/null; then
     outdated=$(npm outdated)
     if [ ${#outdated} = 0 ]; then
@@ -202,6 +202,7 @@ if command -v npm &> /dev/null; then
         npm update -g
         notify "NPM Update Finished" "See Terminal for info."
     fi
+    npm cache verify
 else
     echo -e "\nnpm not found."
     echo -e "\nCannot update NPM packages. Please do so manually."
