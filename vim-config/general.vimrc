@@ -1,6 +1,6 @@
 "====== GENERAL ======"
 " Update file when changed from the outside
-set autoread
+" set autoread
 
 " For editing binaries
 set binary

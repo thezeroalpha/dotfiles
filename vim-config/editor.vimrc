@@ -61,3 +61,6 @@ set whichwrap+=<,>,h,l
 " How to split new windows
 set splitbelow splitright
 
+" Better completion
+set complete=.,w,b,u,t
+set completeopt=longest,menuone,preview
