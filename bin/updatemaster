@@ -157,6 +157,7 @@ if command -v brew &> /dev/null; then
     brew prune;
     brew doctor;
     brew missing;
+    brew bundle dump --force --file=~/.cfg/exclude/Brewfile;
     notify "Brewed." "All packages have been upgraded.";
 else
     echo -e "brew not found."
