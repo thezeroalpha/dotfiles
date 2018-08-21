@@ -1,14 +1,17 @@
 #!/bin/bash
+
 for i in *; do
     case "$i" in
         "vim-config")
-            echo "ln -sf $(pwd)\"$i\" ~/.config/\"$i\""
-            ln -sf $(pwd)/"$i" ~/.config/"$i"
+            echo "ln -shf $(pwd)\"$i\" ~/.config/\"$i\""
+            ln -shf $(pwd)/"$i" ~/.config/"$i"
+            ;;
+        "exclude")
             ;;
         *)
-            echo "ln -sf $(pwd)/$i ~/.$i"
-            ln -sf $(pwd)/$i ~/.$i
+            echo "ln -shf $(pwd)/$i ~/.$i"
+            ln -shf $(pwd)/$i ~/.$i
             ;;
     esac
 done
-ln -sf ~/.config/vim-config/init.vimrc ~/.vimrc
+ln -shf ~/.config/vim-config/init.vimrc ~/.vimrc
