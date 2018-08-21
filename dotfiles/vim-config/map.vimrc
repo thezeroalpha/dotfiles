@@ -6,18 +6,7 @@ nnoremap ; :
 " NERDTree
 nnoremap <leader>f :NERDTreeToggle<cr>
 
-" Fat finger fixes
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
-cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qall qall
-cnoreabbrev E Explore
+" Disable q: cuz I hate it
 map q: <Nop>
 
 " Normal mode shortcuts
@@ -48,3 +37,6 @@ nnoremap <leader>qq mzggg?G`z
 
 " 'zoom to head level'
 nnoremap zh mzzt10<c-u>`z
+
+" Quick switch to shell
+noremap <C-s> :sh<cr>
