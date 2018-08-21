@@ -153,7 +153,6 @@ if command -v brew &> /dev/null; then
 
     # Final steps & cleanup
     brew cleanup -s;
-    brew cask cleanup;
     brew prune;
     brew doctor;
     brew missing;
