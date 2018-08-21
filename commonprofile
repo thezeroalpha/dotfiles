@@ -63,7 +63,7 @@ gemmaster() {
     gem cleanup;
 }
 
-config() {
+conf() {
     if [ $# -gt 0 ]; then
         if [ $1 = 'cd' ]; then
             cd ~/.cfg;
