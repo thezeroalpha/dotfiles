@@ -12,8 +12,8 @@ alias less='less -RXc'                                          # Preferred 'les
 alias rsync='rsync -avhW --progress'                            # Preferred 'rsync' implementation
 alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but remove source
 alias top='sudo htop'                                           # Top should launch htop with sudo
-alias g='git'
-alias r='ranger'
+alias g='git'                                                   # Make git easier to type
+alias r='ranger'                                                # Make Ranger easier to type
 
 ### SIMPLE FUNCTIONS ###
 mark() { mdvl $1 | less }
@@ -61,6 +61,18 @@ gemmaster() {
     gem update;
     gem update rails;
     gem cleanup;
+}
+
+config() {
+    if [ $# -gt 0 ]; then
+        if [ $1 = 'cd' ]; then
+            cd ~/.cfg;
+        else
+            `which git` --git-dir=$HOME/.cfg/.git --work-tree $HOME/.cfg/ $@
+        fi
+    else
+        echo "At least one argument needed."
+    fi
 }
 
 ### FFMPEG CONVERSIONS ###
