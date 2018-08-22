@@ -35,6 +35,7 @@
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     p = push
     pushf = push --force-with-lease
-        
+    fuckitall = reset --hard HEAD
+
 [merge]
     tool = vimdiff
