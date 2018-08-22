@@ -6,6 +6,7 @@ command CDC cd %:p:h
 command Maketab set noet ts=2 | %retab!
 command Diff w !diff % -
 command Diffc w !git diff % -
+command Fuckwindows %s///g
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
