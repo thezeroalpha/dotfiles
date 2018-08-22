@@ -1,5 +1,4 @@
 #!/usr/local/bin/bash
-echo -e "### STARTING UPDATE SCRIPT ###\n"
 
 # Set default variables
 OPTIND=1
@@ -11,6 +10,21 @@ all=0
 none=0
 select_casks=0
 sudo_auth=0
+
+echo_succ() {
+    echo -e "\e[1;32m$1\e[0m"
+}
+echo_err() {
+    echo -e "\e[1;31m$1\e[0m"
+}
+echo_warn() {
+    echo -e "\e[1;34m$1\e[0m"
+}
+echo_progress() {
+    echo -e "\e[1;36m$1\e[0m"
+}
+
+echo_progress "### STARTING UPDATE SCRIPT ###\n"
 
 # Get passed options/arguments
 while getopts "fcashFAC" opt; do
@@ -64,7 +78,7 @@ if ! command -v notify &> /dev/null; then
     if command -v terminal-notifier &> /dev/null; then
         notify() { terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2; }
     else
-        echo -e "terminal-notifier not found, defaulting to bell. Install terminal-notifier to get the most out of this script."
+        echo_warn "terminal-notifier not found, defaulting to bell. Install terminal-notifier to get the most out of this script."
         notify() { echo -e '\a'; }
     fi
 fi
@@ -79,7 +93,7 @@ fi
 echo
 
 ### HOMEBREW ###
-echo -e "-- Homebrew update/upgrade."
+echo_progress "-- Homebrew update/upgrade."
 if command -v brew &> /dev/null; then
     brew update;
     brew update > /dev/null;
@@ -89,7 +103,7 @@ if command -v brew &> /dev/null; then
 
     # Potentially upgrade programs
     if [ $no_formulas = 1 ] || [ $none = 1 ]; then
-	echo -e "\nNo programs will be updated." 
+	echo_succ  "\nNo programs will be updated." 
     elif [ ${#outdated} = 0 ]; then
         echo -e "No programs to update." 
     else
@@ -115,9 +129,9 @@ if command -v brew &> /dev/null; then
 
     # Potentially upgrade casks
     if [ ${#outdated_c} = 0 ]; then
-        echo -e "No casks to update." 
+        echo_succ "No casks to update." 
     elif [ $no_casks = 1 ] || [ $none = 1 ]; then
-	echo -e "\nNo casks will be updated."
+	echo_succ "\nNo casks will be updated."
     else
         echo -e "Casks to update:"
         brew cask outdated --greedy;
@@ -156,28 +170,30 @@ if command -v brew &> /dev/null; then
     brew prune;
     brew doctor;
     brew missing;
+    echo "Backuping up Brew installation..."
     brew bundle dump --force --file=~/.cfg/Brewfile;
+    echo_succ "Backup complete."
     notify "Brewed." "All packages have been upgraded.";
 else
-    echo -e "brew not found."
-    echo -e "Cannot upgrade Homebrew packages. Please do so manually."
+    echo_err "brew not found."
+    echo_err "Cannot upgrade Homebrew packages. Please do so manually."
 fi
 
 ### Mac App Store (MAS) ###
-echo -e "\n-- MAS update/upgrade."
+echo_progress "\n-- MAS update/upgrade."
 if command -v mas &> /dev/null; then
     echo -e "MAS outdated:"
     outdated=$(mas outdated)
 
     if [ ${#outdated} = 0 ]; then
-        echo -e "\nEverything is up to date."
+        echo_succ "\nEverything is up to date."
     else
        mas outdated
        read -sn 1 -p "Continue? [Y/n]" CONF
 
         case $CONF in
             [Yy] )
-                echo -e "\nContinuing with mas upgrade."
+                echo_succ -e "\nContinuing with mas upgrade."
                 mas upgrade;
                 ;;
 
@@ -188,53 +204,55 @@ if command -v mas &> /dev/null; then
         notify "MAS Updated." "All apps at newest version."
     fi
 else
-    echo -e "\nmas not found. Install mas to update App Store apps on the command line."
-    echo -e "\nCannot update Mac App Store apps. Please do so manually."
+    echo_err -e "\nmas not found. Install mas to update App Store apps on the command line."
+    echo_err -e "\nCannot update Mac App Store apps. Please do so manually."
 fi
 
 ### GLOBAL NPM ###
-echo -e "\n-- NPM global update/upgrade."
+echo_progress "\n-- NPM global update/upgrade."
 if command -v npm &> /dev/null; then
     outdated=$(npm outdated)
     if [ ${#outdated} = 0 ]; then
-        echo -e "\nEverything is up to date."
+        echo_succ "\nEverything is up to date."
     else
         npm update -g
         notify "NPM Update Finished" "See Terminal for info."
     fi
     npm cache verify
+    echo_succ "NPM update complete."
 else
-    echo -e "\nnpm not found."
-    echo -e "\nCannot update NPM packages. Please do so manually."
+    echo_err "\nnpm not found."
+    echo_err "\nCannot update NPM packages. Please do so manually."
 fi
 
 ### PIP3 ###
-echo -e "\n-- PIP3 update/upgrade."
+echo_progress "\n-- PIP3 update/upgrade."
 if command -v pip3 list &> /dev/null; then
     pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
     notify "Pip3 Update Finished" "See Terminal for info."
 else
-    echo -e "\nCannot upgrade pip3 packages. Please do so manually."
+    echo_err "\nCannot upgrade pip3 packages. Please do so manually."
 fi
 
 ### PIP ###
-echo -e "-- PIP update/upgrade."
+echo_progress "-- PIP update/upgrade."
 if command -v pip list &> /dev/null; then
     if pip freeze; then
         pip freeze — local | grep -v '^\-e' | cut -d = -f 1 | xargs pip install -U
     else
-        echo -e "Cannot upgrade pip packages. Please do so manually."
+        echo_err "Cannot upgrade pip packages. Please do so manually."
     fi
     notify "Pip Update Finished" "See Terminal for info."
 else
-    echo -e "Cannot upgrade pip packages. Please do so manually."
+    echo_err "Cannot upgrade pip packages. Please do so manually."
 fi
 
 ### SUDO PIP ###
-echo -e "\n-- Global pip."
+echo_progress "\n-- Global pip."
 if [ $sudo_auth -eq 1 ]; then
     if command -v sudo -H pip list &> /dev/null; then
         sudo -H pip freeze | grep -v '^\-e' | cut -d = -f 1 | xargs sudo -H pip install -U
+        echo_succ "Global pip upgrade complete."
     else
         echo -e "Cannot upgrade global pip packages. Please do so manually."
     fi
@@ -244,10 +262,15 @@ fi
 
 ### TLDR Database ###
 if command -v tldr &> /dev/null; then
-    echo -e "\n-- TLDR database update"
+    echo_progress "\n-- TLDR database update"
     tldr --update
-    echo "Exit code: $?"
+    tldr_exit=$?
+    if [ $tldr_exit -eq 0 ]; then
+        echo_succ "Exit code: $tldr_exit"
+    else
+        echo_err "Exit code: $tldr_exit"
+    fi
 fi
 
-echo -e "\n-- All systems checked."
+echo_progress "\n-- All systems checked. \e[1;32m\u2714\e[0m"
 notify "All systems checked." "Everything you indicated should be upgraded."
