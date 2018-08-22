@@ -16,7 +16,7 @@ nnoremap <leader>b :ls<cr>
 
 " Tab completion
 inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+inoremap <s-tab> <c-p>
 
 " Retain visual mode after > and <
 vmap < <gv
