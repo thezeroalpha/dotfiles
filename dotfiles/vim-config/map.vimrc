@@ -40,3 +40,7 @@ nnoremap zh mzzt10<c-u>`z
 
 " Quick switch to shell
 noremap <C-s> :sh<cr>
+
+" Tab mappings
+nnoremap <C-t> :tabnew<cr>
+nnoremap <C-c> :tabclose<cr>
