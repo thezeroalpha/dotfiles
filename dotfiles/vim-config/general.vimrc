@@ -33,6 +33,9 @@ set showcmd
 " Syntax highlighting
 syntax on
 
+" Colorscheme
+colorscheme default
+
 " Enable dark background
 set background=dark
 
