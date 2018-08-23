@@ -28,4 +28,8 @@ Plug 'tpope/vim-endwise'
 
 " Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
 Plug 'tpope/vim-surround'
+
+" Delete hidden unused buffers
+Plug 'arithran/vim-delete-hidden-buffers'
+
 call plug#end()

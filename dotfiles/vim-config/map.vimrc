@@ -44,3 +44,6 @@ noremap <C-s> :sh<cr>
 " Tab mappings
 nnoremap <C-t> :tabnew<cr>
 nnoremap <C-c> :tabclose<cr>
+
+" Delete hidden buffers
+nnoremap <leader>dh :DeleteHiddenBuffers<cr>
