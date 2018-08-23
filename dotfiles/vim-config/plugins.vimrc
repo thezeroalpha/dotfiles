@@ -26,9 +26,6 @@ Plug 'tpope/vim-sleuth'
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
 
-" Visual guides for indent levels
-Plug 'nathanaelkane/vim-indent-guides'
-
 " Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
 Plug 'tpope/vim-surround'
 call plug#end()
