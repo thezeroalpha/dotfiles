@@ -260,7 +260,7 @@ else
     echo -e "Sudo not authorised."
 fi
 
-### TLDR Database ###
+### TLDR DATABASE ###
 if command -v tldr &> /dev/null; then
     echo_progress "\n-- TLDR database update"
     tldr --update
@@ -272,5 +272,18 @@ if command -v tldr &> /dev/null; then
     fi
 fi
 
+### ATOM PACKAGES ###
+if command -v apm &> /dev/null; then
+   echo_progress "\n-- Atom package upgrades"
+    if apm outdated &> /dev/null; then
+        apm upgrade --no-confirm;
+        echo_succ "All packages upgraded."
+    else
+        echo_err "Cannot upgrade Atom packages. Please do so manually."
+    fi
+else
+    echo_err "Atom not installed (or APM not functioning properly)."
+fi
+notify "APM Upgrade Complete" "See Terminal for info."
 echo_progress "\n-- All systems checked. \e[1;32m\u2714\e[0m"
 notify "All systems checked." "Everything you indicated should be upgraded."
