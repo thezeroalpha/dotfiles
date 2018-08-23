@@ -4,4 +4,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'mattn/emmet-vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-endwise'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'tpope/vim-surround'
 call plug#end()
