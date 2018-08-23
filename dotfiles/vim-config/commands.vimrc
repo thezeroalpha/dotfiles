@@ -28,4 +28,4 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 cnoreabbrev E Explore
-
+cnoreabbrev Colors XtermColorTable

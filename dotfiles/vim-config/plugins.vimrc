@@ -4,6 +4,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+
+" A color table with xterm color codes
+Plug 'guns/xterm-color-table.vim'
+
 " NERDTree - file browser
 Plug 'scrooloose/nerdtree'
 
