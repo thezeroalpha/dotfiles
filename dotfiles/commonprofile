@@ -1,3 +1,4 @@
+#!/bin/bash
 ### SIMPLE COMMANDS ###
 alias c="clear"
 alias fucking="sudo"
@@ -16,12 +17,12 @@ alias g='git'                                                   # Make git easie
 alias r='ranger'                                                # Make Ranger easier to type
 
 ### SIMPLE FUNCTIONS ###
-mark() { mdvl $1 | less }
-cd() { builtin cd -P "$@"; ls; }                                # List contents after cding
-mkcd() { mkdir -p -- "$1" && cd -P -- "$1" }                    # Make dir and cd at the same time
-procinfo() { ps -aux | grep $1 }                                # Get info about a process (by name)
-rmempty() { find ${1-.}  -type d -empty -depth -delete }        # Remove empty directories
-todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO" }
+mark() { mdvl "$1" | less; }
+cd() { builtin cd -P "$@" || return; ls; }                                # List contents after cding
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                    # Make dir and cd at the same time
+procinfo() { ps aux | grep "$1"; }                                # Get info about a process (by name)
+rmempty() { find "${1-.}"  -type d -empty -depth -delete; }        # Remove empty directories
+todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }
 batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
 
 ### DOUG SCRIPTS TRIAL RESET ###
@@ -31,7 +32,7 @@ alias rs_removedeadtracks="rm /Users/alex/Library/iTunes/.superremoveapp.plist"
 ### MAC UI CUSTOMISATIONS ###
 alias changedock="defaults write com.apple.dock contents-immutable -bool false;killall Dock"
 alias nochangedock="defaults write com.apple.dock contents-immutable -bool true;killall Dock"
-alias dockspacer="defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'; killall Dock"
+alias dockspacer="defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'; killall Dock"
 alias spotlighton="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
 alias spotlightoff="sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
 
@@ -42,156 +43,164 @@ alias startftp="sudo launchctl start com.apple.ftpd"
 alias stopftp="sudo launchctl stop com.apple.ftpd"
 alias startapache="sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.httpd.plist"
 alias stopapache="sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist"
-alias startpg="pg_ctl -D $(brew --prefix)/var/postgres start"
+alias startpg='pg_ctl -D $(brew --prefix)/var/postgres start'
 
 ### MORE COMPLEX FUNCTIONS ###
 pip3-upgrade() {
-    pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
+   pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
 }
 
 notify() {
-    if type terminal-notifier &> /dev/null; then
-        terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
-    else
-        echo '\a'
-    fi 
+   if type terminal-notifier &> /dev/null; then
+      terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
+   else
+      echo '\a'
+   fi
 }
 
 gemmaster() {
-    gem update;
-    gem update rails;
-    gem cleanup;
+   gem update;
+   gem update rails;
+   gem cleanup;
 }
 
 conf() {
-    if [ $# -gt 0 ]; then
-        if [ $1 = 'cd' ]; then
-            cd ~/.cfg;
-        else
-            `which git` --git-dir=$HOME/.cfg/.git --work-tree $HOME/.cfg/ $@
-        fi
-    else
-        echo "At least one argument needed."
-    fi
+   if [ $# -gt 0 ]; then
+      if [ "$1" = 'cd' ]; then
+         cd ~/.cfg || return;
+      elif [ "$1" = 'rc' ]; then
+         if [[ $0 = *"zsh"* ]]; then
+            vim ~/.zshrc
+         elif [[ $0 = *"bash"* ]]; then
+            vim ~/.bashrc
+         fi
+      elif [ "$1" = 'common' ]; then
+         vim ~/.commonprofile
+      else
+         $(command -v git) --git-dir="$HOME"/.cfg/.git --work-tree "$HOME"/.cfg/ "$@"
+      fi
+   else
+      echo "At least one argument needed."
+   fi
 }
 
 ### FFMPEG CONVERSIONS ###
 webm-mp4() {
-    ffmpeg -i "$1" -qscale 0 "$1".mp4
+   ffmpeg -i "$1" -qscale 0 "$1".mp4
 }
 
 mp4-mp3() {
-    ffmpeg -i "$1" "$1".mp3
+   ffmpeg -i "$1" "$1".mp3
 }
 
 gifify() {
-    ffmpeg -i $1 -r 25 -f image2pipe -vcodec ppm - | \
-        convert -delay 4 -loop 0 - output.gif
+   ffmpeg -i "$1" -r 25 -f image2pipe -vcodec ppm - | \
+      convert -delay 4 -loop 0 - output.gif
 }
 gif-mp4() {
-    ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" `echo $1|cut -d. -f1`.mp4
+   ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
 }
 
 extract () {
-    if [ -f $1 ] ; then
-        case $1 in
-            *.tar.bz2)   tar xjf $1     ;;
-    *.tar.gz)    tar xzf $1     ;;
-    *.bz2)       bunzip2 $1     ;;
-    *.rar)       unrar e $1     ;;
-    *.gz)        gunzip $1      ;;
-    *.tar)       tar xf $1      ;;
-    *.tbz2)      tar xjf $1     ;;
-    *.tgz)       tar xzf $1     ;;
-    *.zip)       unzip $1       ;;
-    *.Z)         uncompress $1  ;;
-    *.7z)        7z x $1        ;;
-    *)     echo "'$1' cannot be extracted via extract()" ;;
-    esac
-    else
-        echo "'$1' is not a valid file"
-            fi
+   if [ -f "$1" ] ; then
+      case $1 in
+         *.tar.bz2)   tar xjf "$1"     ;;
+         *.tar.gz)    tar xzf "$1"     ;;
+         *.bz2)       bunzip2 "$1"     ;;
+         *.rar)       unrar e "$1"     ;;
+         *.gz)        gunzip "$1"      ;;
+         *.tar)       tar xf "$1"      ;;
+         *.tbz2)      tar xjf "$1"     ;;
+         *.tgz)       tar xzf "$1"     ;;
+         *.zip)       unzip "$1"       ;;
+         *.Z)         uncompress "$1"  ;;
+         *.7z)        7z x "$1"        ;;
+         *)     echo "'$1' cannot be extracted via extract()" ;;
+      esac
+   else
+      echo "'$1' is not a valid file"
+   fi
 }
 
 current_wifi_password() {
-    security find-generic-password -ga "$1" | grep password
+   security find-generic-password -ga "$1" | grep password
 }
 
 ### MAC FINDER-SPECIFIC ###
 if command -v osascript &> /dev/null; then
-    cdf() {
-        target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
-            if [ "$target" != "" ]; then
-                cd "$target"; pwd
-            else
-                echo 'No Finder window found' >&2
-                    fi
-    }
-    gdf() {
-        echo `osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
-    }
-    fsel() { 
-        osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev; 
-    };
+   cdf() {
+      target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
+      if [ "$target" != "" ]; then
+         cd "$target" || return; pwd
+      else
+         echo 'No Finder window found' >&2
+      fi
+   }
+   gdf() {
+      osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+   }
+   fsel() {
+      osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+   };
 fi
 
 # This is still a bit buggy
 realpath() {
-    if [ $# -eq 1 ]; then
-        if [ -e $1 ]; then
-            if [ -L $1 ]; then
-                echo `readlink $1 | rev | cut -d/ -f2- | rev`
-            else
-                echo `pwd`/`readlink $1 | rev | cut -d/ -f2- | rev`
-            fi
-        else
-            echo "File does not exist."
-        fi
-    elif [ "$1" = "-w" ]; then
-        if [ -e $2 ]; then
-            if [ -L $2 ]; then
-                echo `readlink $2`
-            else
-                echo `pwd`/`readlink $2`
-            fi
-        else
-            echo "File does not exist."
-        fi
-    else
-        echo 'idk what you want dude'
-    fi
+   if [ $# -eq 1 ]; then
+      if [ -e "$1" ]; then
+         if [ -L "$1" ]; then
+            readlink "$1" | rev | cut -d/ -f2- | rev
+         else
+            echo "$(pwd)"/"$(readlink "$1" | rev | cut -d/ -f2- | rev)"
+         fi
+      else
+         echo "File does not exist."
+      fi
+   elif [ "$1" = "-w" ]; then
+      if [ -e "$2" ]; then
+         if [ -L "$2" ]; then
+            readlink "$2"
+         else
+            echo "$(pwd)"/"$(readlink "$2")"
+         fi
+      else
+         echo "File does not exist."
+      fi
+   else
+      echo 'idk what you want dude'
+   fi
 }
 unalias() {
-    for i in $@; do
-        p=`realpath -w $i`
-        rm $i
-        mv $p .
-        unset p
-    done
+   for i in "$@"; do
+      p=$(realpath -w "$i")
+      rm "$i"
+      mv "$p" .
+      unset p
+   done
 }
 linkdir() {
-    if [[ "$1" != */ ]]; then
-        1=$(echo "$1" | sed "s/$/\//")
-    fi
-        echo "Linking content of $1 to `pwd`..."
-    cr=0
-    for f in ./*; do
-        if [ -L "$f" ]; then
-            rm ./"$f"
-            ((cr++))
-        fi
-    done
+   if [[ "$1" != */ ]]; then
+      1="$(echo "$1" | sed "s/$/\\//")"
+   fi
+   echo "Linking content of $1 to $(pwd)..."
+   cr=0
+   for f in ./*; do
+      if [ -L "$f" ]; then
+         rm ./"$f"
+         ((cr++))
+      fi
+   done
 
-    ca=0
-    for i in $1*; do
-        ln -s "$i" "`echo $i | rev | cut -d/ -f1 | rev`"
-        echo "'$i' -> './`echo $i | rev | cut -d/ -f1 | rev`'"
-        ((ca++))
-    done
-    echo "Removed $cr symlinks."
-    echo "Linked $ca directories into current directory."
-    unset cr
-    unset ca
+   ca=0
+   for i in "$1"*; do
+      ln -s "$i" "$(echo "$i" | rev | cut -d/ -f1 | rev)"
+      echo "'$i' -> './$(echo "$i" | rev | cut -d/ -f1 | rev)'"
+      ((ca++))
+   done
+   echo "Removed $cr symlinks."
+   echo "Linked $ca directories into current directory."
+   unset cr
+   unset ca
 }
 ######################
 
@@ -202,7 +211,7 @@ linkdir() {
 
 # Include my scripts in PATH (conditionally) #
 if [[ $PATH != *"/Users/alex/.bin"* ]]; then
-    export PATH=/Users/alex/.bin:$PATH
+   export PATH=/Users/alex/.bin:$PATH
 fi
 
 #####################
@@ -211,12 +220,12 @@ fi
 export EDITOR="vim"
 export HOMEBREW_EDITOR="atom"
 
-export CASK_REPO=`brew --repository`/Library/Taps/caskroom/homebrew-cask
-
+CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
+export CASK_REPO
 ######################
 
 ### THEFUCK ###
-eval $(thefuck --alias)
+eval "$(thefuck --alias)"
 ##############
 
 ### VIRTUALENV ###
