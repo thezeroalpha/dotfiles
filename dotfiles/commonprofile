@@ -70,13 +70,24 @@ conf() {
       if [ "$1" = 'cd' ]; then
          cd ~/.cfg || return;
       elif [ "$1" = 'rc' ]; then
-         if [[ $0 = *"zsh"* ]]; then
+         if [[ $SHELL = *"zsh"* ]]; then
             vim ~/.zshrc
-         elif [[ $0 = *"bash"* ]]; then
+         elif [[ $SHELL = *"bash"* ]]; then
             vim ~/.bashrc
          fi
       elif [ "$1" = 'common' ]; then
          vim ~/.commonprofile
+      elif [ "$1" = 'reload' ]; then
+         if [[ $SHELL = *"zsh"* ]]; then
+            START_TIME=$SECONDS
+            source ~/.zshrc
+            echo "Reloaded zsh config ($(( $SECONDS-$START_TIME )) sec)."
+         elif [[ $SHELL = *"bash"* ]]; then
+            START_TIME=$SECONDS
+            source ~/.bashrc
+            echo "Reloaded bash config ($(( $SECONDS-$START_TIME )) sec)."
+         fi
+
       else
          $(command -v git) --git-dir="$HOME"/.cfg/.git --work-tree "$HOME"/.cfg/ "$@"
       fi
