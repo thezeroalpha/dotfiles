@@ -23,6 +23,7 @@ mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                    # Mak
 procinfo() { ps aux | grep "$1"; }                                # Get info about a process (by name)
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }        # Remove empty directories
 todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }
+find_in_files() { grep -rnw "$1" -e "$2"; }
 batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
 
 ### DOUG SCRIPTS TRIAL RESET ###
