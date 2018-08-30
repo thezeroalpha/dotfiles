@@ -34,11 +34,12 @@ set si
 set foldmethod=indent
 
 " Status bar
-set laststatus=2
-set statusline=\ %F%m\%r%h\ %w
-set statusline+=\ \ CWD:\ %r%{getcwd()}%h
-set statusline+=%=%l,%c
-set statusline+=\ \ B%n
+set laststatus=2                            " Always show status bar
+set statusline=\ %F%m\%r%h\ %w              " Full path, flags (modified, readonly, help, preview)
+set statusline+=\ \ CWD:\ %r%{getcwd()}%h   " Current working directory
+set statusline+=%=%l,%c                     " Line number, column number
+set statusline+=\ %y                        " File type
+set statusline+=\ \ B%n                     " Buffer number
 
 " Show matching brackets
 set showmatch
