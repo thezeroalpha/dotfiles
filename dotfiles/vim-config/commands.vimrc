@@ -1,5 +1,5 @@
 " Custom commands
-command Todo vimgrep /TODO\C/ **/*.* | copen
+command Todo vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
 command Note vimgrep /NOTE\C/ **/*.* | copen
 command Fix vimgrep /FIXME\C/ **/*.* | copen
 command CDC cd %:p:h
