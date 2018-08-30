@@ -29,6 +29,9 @@ Plug 'tpope/vim-endwise'
 " Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
 Plug 'tpope/vim-surround'
 
+" Eunuch - shell commands but in vim
+Plug 'tpope/vim-eunuch'
+
 " Delete hidden unused buffers
 Plug 'arithran/vim-delete-hidden-buffers'
 
