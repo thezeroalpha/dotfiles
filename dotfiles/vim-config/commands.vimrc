@@ -2,6 +2,7 @@
 command Todo vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
 command Note vimgrep /NOTE\C/ **/*.* | copen
 command Fix vimgrep /FIXME\C/ **/*.* | copen
+command ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
 command CDC cd %:p:h
 command Maketab set noet ts=2 | %retab!
 command Diff w !diff % -
