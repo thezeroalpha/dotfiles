@@ -47,3 +47,6 @@ nnoremap <C-c> :tabclose<cr>
 
 " Delete hidden buffers
 nnoremap <leader>dh :DeleteHiddenBuffers<cr>
+
+" Switch to alernative buffer
+nnoremap <leader>s :b#<cr>
