@@ -3,36 +3,46 @@ require "discogs-wrapper" # Needed for API access
 # Remove this if sharing. This is required and unique for each user.
 my_user_token = ENV["DISCOGS_API_TOKEN"]
 
-flag=ARGV.shift # Whether searching for genre or style
-query=ARGV.join(" ") # Join the rest of the arguments into a search string
-
-# Search, and wrap the results in an array
+# Create a wrapper
 wrapper=Discogs::Wrapper.new("iTunesStyleGetter", user_token: my_user_token)
-res=[]
+
+# Join the rest of the arguments into a search string
+query=ARGV.join(" ")
+
+# Initialise arrays
+genres,styles=[],[]
+
+# Search for the query
 search=wrapper.search("#{query}")
 
-# If searching for a genre
-if (flag=="g")
-  search.results.each do |result|
-    if result.genre? && !result.genre.empty?
-      result.genre.each do |g|
-        res.push("#{g}")
+# Add the genres of the first result
+search.results.each do |result|
+  if result.genre? && !result.genre.empty?
+    result.genre.each do |g| 
+      if g.include? ","
+	g.split(",").each { |x| genres.push "#{x}" }
+      else
+	genres.push "#{g}"
       end
-      p res
-      break
     end
-  end
-  # If searching for a style
-elsif (flag=="s")
-  search.results.each do |result|
-    if result.style? && !result.style.empty?
-      result.style.to_a.each {|x| res.push "#{x}"}
-    end
-    p res
     break
   end
-  # If searching for url
-else
-  res="http://discogs.com#{search.results[0].uri}".split(" ")
-  p res
 end
+
+# Add the styles of the first result
+search.results.each do |result|
+  if result.style? && !result.style.empty?
+    result.style.to_a.each {|x| styles.push "#{x}"}
+  end
+  break
+end
+
+# Add the url of the first result
+url = "http://discogs.com#{search.results[0].uri}".split(" ")
+
+# Join everything together into a 2d array
+# 2 different separators ("~", ",") because bash
+result = [genres.join("~"), styles.join("~"), url]
+
+# Send result to stdout
+p result

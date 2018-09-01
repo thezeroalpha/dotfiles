@@ -1,4 +1,5 @@
 #!/bin/bash
+oldifs="$IFS"
 while :; do
     if [ $# -ne 0 ]; then
 	case $1 in
@@ -34,34 +35,38 @@ while :; do
 	# If there's no album, query without an album
 	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "$artist $name")
 	echo "Querying: \"$artist $name\" (https://www.discogs.com/search/?q=$search_url)"
-	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$name");
-	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$name");
-	url=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb u "$artist" "$name");
+	response=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb "$artist" "$name");
     else
 	# Otherwise, add the album to query for precision
 	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "$artist $album")
 	echo "Querying: \"$artist $album\" (https://www.discogs.com/search/?q=$search_url)"
-	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$album");
-	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$album");
-	url=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb u "$artist" "$album");
+	response=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb "$artist" "$album");
     fi
-    
-    if [ -z "$genre" ] || [ -z "$url" ]; then
+
+    # Remove brackets from the Ruby array
+    echo $response
+    response=$(sed -e 's/^\[//' -e 's/\]$//' <<< "$response")
+
+    # Read the response into a bash array (genres, styles, url)
+    IFS=',' read -ra response <<< "${response}"; unset IFS
+
+    # Create a bash array from the genres, stripping quotes
+    IFS='~' read -ra genre <<< "${response[0]//\"/}"; unset IFS
+
+    # Create a bash array from the styles, stripping quotes
+    # potential regex to surround each style in quotes: 's/\([^~]*\)/"\1"/g'
+
+    IFS='~' read -ra style <<< "${response[1]//\"/}"; unset IFS
+
+    # Save the url as a string, stripping quotes (and remove the brackets entered by Ruby)
+    url=$(sed -e 's/^ *\[//' -e 's/\]$//' <<<${response[2]//\"/})
+
+    # If there's no url, there's no result
+    if [ -z "$url" ]; then
 	echo "Not found."
 	exit 1
     fi
-
-    # Parsing the arrays
-    # Split the Ruby arrays into Bash arrays, do some replacements to make it look nice
-    genre=$(sed -e 's/^\[//' -e 's/\]$//' <<< "$genre")	# Remove brackets from Ruby array
-    IFS=',' read -ra genre <<< "${genre}"; unset IFS	# Read it into an array
-
-    style=$(sed -e 's/^\[//' -e 's/\]$//' <<< "$style")	# Remove brackets
-    IFS=',' read -ra style <<< "${style}"; unset IFS	# Read it into an array
-
-    
-    url=$(sed -e 's/^\[//' -e 's/\]$//' <<< $url)
-    IFS=',' read -ra url <<< "${url}"; unset IFS
+    IFS="$oldifs"
 
     # Give the user the source information
     echo "URL: $url"
@@ -78,8 +83,8 @@ while :; do
 		select opt in "${genre[@]}"; do
 		    case $opt in
 			*)
-			    finalg=$(echo $opt | sed -e 's/"//g')
-			    if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
+			    finalg=$(sed -e 's/"//g' <<< $opt)
+			    if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi	# consistency
 			    break;;
 		    esac
 		done
@@ -87,8 +92,8 @@ while :; do
 	    No)
 		echo "Write your own then:"
 		read finalg
-		if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi
-		if [[ $finalg = "Post-Rock" ]]; then finalg="Post Rock"; fi
+		if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi			# consistency
+		if [[ $finalg = "Post-Rock" ]]; then finalg="Post Rock"; fi		# consistency
 		break;;
 	esac
     done
@@ -109,6 +114,8 @@ while :; do
 		    select opt in "${style[@]}"; do
 			case $opt in
 			    *)
+				# Add a forward slash at start, remove extra spaces,
+				# also remove repetitions in genre/style like "Rock/Alternative Rock"
 				finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e "s/\"//g" -e "s/ *$finalg *//")
 				break;;
 			esac
@@ -127,8 +134,10 @@ while :; do
     fi
 
     # Finally, write the info to the iTunes track (AppleScript)
+    # If there's an album, change the genre of the whole album
     if [ -z "$album" ]; then
 	osascript -e "tell application \"iTunes\" to set the genre of every track whose name is \"$name\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
+    # Otherwise, just change the genre of that one track
     else
 	osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
     fi
