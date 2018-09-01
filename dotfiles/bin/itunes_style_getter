@@ -109,7 +109,7 @@ while :; do
 		    select opt in "${style[@]}"; do
 			case $opt in
 			    *)
-				finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e 's/"//g')
+				finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e 's/"//g' -e "s/ $finalg//")
 				break;;
 			esac
 		    done
