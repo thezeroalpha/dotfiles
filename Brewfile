@@ -91,4 +91,5 @@ cask "zeronet"
 cask "zotero"
 mas "Pages", id: 409201541
 mas "Pocket", id: 568494494
+mas "Reeder", id: 880001334
 mas "Trello", id: 1278508951
