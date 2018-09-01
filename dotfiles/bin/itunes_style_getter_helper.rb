@@ -18,18 +18,20 @@ if (flag=="g")
       result.genre.each do |g|
         res.push("#{g}")
       end
-    p res
+      p res
+      break
+    end
   end
-end
-# If searching for a style
+  # If searching for a style
 elsif (flag=="s")
   search.results.each do |result|
     if result.style? && !result.style.empty?
-      result.style.to_a.each {|x| res.push x}
+      result.style.to_a.each {|x| res.push "#{x}"}
     end
     p res
+    break
   end
-# If searching for url
+  # If searching for url
 else
   res="http://discogs.com#{search.results[0].uri}".split(" ")
   p res

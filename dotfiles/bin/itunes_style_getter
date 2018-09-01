@@ -32,14 +32,21 @@ while :; do
 
     if [ -z "$album" ]; then
 	# If there's no album, query without an album
+	echo "Querying: \"$artist $name\" (https://www.discogs.com/search/?q=`sed -e 's/ /%20/g' -e 's/&/%26/g' <<< \"$artist $name\"`)"
 	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$name");
 	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$name");
 	url=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb u "$artist" "$name");
     else
 	# Otherwise, add the album to query for precision
-	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$album" "$name");
-	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$album" "$name");
+	echo "Querying: \"$artist $album\" (https://www.discogs.com/search/?q=`sed -e 's/ /%20/g' -e 's/&/%26/g' <<< \"$artist $album\"`)"
+	genre=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb g "$artist" "$album");
+	style=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb s "$artist" "$album");
 	url=$(ruby /Users/alex/.bin/itunes_style_getter_helper.rb u "$artist" "$album");
+    fi
+    
+    if [ -z "$genre" ] || [ -z "$url" ]; then
+    	echo "Not found."
+    	exit 1
     fi
 
     # Parsing the arrays
@@ -87,30 +94,37 @@ while :; do
     done
 
     # Select menu for style
-    echo "Style options:"
-    printf '%s\n' "${style[@]}"
-    printf "\nWould you like to use one of these?\n"
-    select yn in "Yes" "No" "None needed"; do
-	case $yn in
-	    Yes)
-		select opt in "${style[@]}"; do
-		    case $opt in
-			*)
-			    finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e 's/"//g')
-			    break;;
-		    esac
-		done
-		break;;
-	    No)
-		echo "Write your own then:"
-		read finals
-		finals="/$finals"
-		break;;
-	    "None needed")
-		finals=""
-		break;;
-	esac
-    done
+    if [ -z "$style" ]; then
+	echo "No style from Discogs."
+	echo "Write your own:"
+	read finals
+	finals="/$finals"
+    else
+	echo "Style options:"
+	printf '%s\n' "${style[@]}"
+	printf "\nWould you like to use one of these?\n"
+	select yn in "Yes" "No" "None needed"; do
+	    case $yn in
+		Yes)
+		    select opt in "${style[@]}"; do
+			case $opt in
+			    *)
+				finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e 's/"//g')
+				break;;
+			esac
+		    done
+		    break;;
+		No)
+		    echo "Write your own then:"
+		    read finals
+		    finals="/$finals"
+		    break;;
+		"None needed")
+		    finals=""
+		    break;;
+	    esac
+	done
+    fi
 
     # Finally, write the info to the iTunes track (AppleScript)
     if [ -z "$album" ]; then
