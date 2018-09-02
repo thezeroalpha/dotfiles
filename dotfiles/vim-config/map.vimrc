@@ -12,7 +12,7 @@ map q: <Nop>
 " Normal mode shortcuts
 nnoremap <leader>dif :Diff<cr>
 nnoremap <leader>/ :noh<cr>
-nnoremap <leader>b :ls<cr>
+nnoremap <leader>b :ls<cr>:b<Space>
 
 " Tab completion
 inoremap <expr> <tab> InsertTabWrapper()
@@ -50,3 +50,10 @@ nnoremap <leader>dh :DeleteHiddenBuffers<cr>
 
 " Switch to alernative buffer
 nnoremap <leader>s :b#<cr>
+
+" Show hidden symbols
+nnoremap <leader>hs :set list!<cr>
+
+" List marks
+nnoremap <leader>mm :<C-u>marks<CR>:normal! `
+nnoremap <leader>ml :<C-u>marks a-z<CR>:normal ! `
