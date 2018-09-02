@@ -25,7 +25,7 @@ echo "Linking content of $source_dir to $target_dir..."
 cr=0
 ca=0
 
-for f in ${source_dir}*; do
+for f in "${source_dir}"*; do
    if [ -L "${target_dir}${f##*/}" ]; then
       rm "${target_dir}${f##*/}"
       ((cr++))
@@ -34,11 +34,8 @@ for f in ${source_dir}*; do
    ln -s "$f" "${target_dir}${f##*/}"
    echo "'$f' -> '${target_dir}${f##*/}'"
    ((ca++))
-
 done
 
-for i in "$source_dir"*; do
-done
 echo "Removed $cr local symlinks with originals in $source_dir."
 echo "Linked $ca directories into $target_dir."
 unset cr ca source_dir target_dir
