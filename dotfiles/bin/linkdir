@@ -1,0 +1,44 @@
+#!/bin/bash
+if [ $# -eq 0 ]; then
+   echo "Needs at least one argument (the source directory)."
+   echo "Usage: linkdir source_directory [target_directory]"
+   exit 1
+fi
+if [[ "$1" != */ ]]; then
+   source_dir="${1}/"
+else
+   source_dir="$1"
+fi
+
+target_dir="./"
+
+if [ $# -ge 2 ]; then
+   if [[ "$2" != */ ]]; then
+      target_dir="${2}/"
+   else
+      target_dir="$2"
+   fi
+fi
+
+echo "Linking content of $source_dir to $target_dir..."
+
+cr=0
+ca=0
+
+for f in ${source_dir}*; do
+   if [ -L "${target_dir}${f##*/}" ]; then
+      rm "${target_dir}${f##*/}"
+      ((cr++))
+   fi
+
+   ln -s "$f" "${target_dir}${f##*/}"
+   echo "'$f' -> '${target_dir}${f##*/}'"
+   ((ca++))
+
+done
+
+for i in "$source_dir"*; do
+done
+echo "Removed $cr local symlinks with originals in $source_dir."
+echo "Linked $ca directories into $target_dir."
+unset cr ca source_dir target_dir
