@@ -1,3 +1,6 @@
+" Allow integration with system clipboard (only newest vim)
+set clipboard+=unnamed
+
 " Highlight current line
 set cursorline
 
