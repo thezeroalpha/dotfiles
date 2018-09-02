@@ -191,28 +191,48 @@ unalias() {
    done
 }
 linkdir() {
-   if [[ "$1" != */ ]]; then
-      1="$(echo "$1" | sed "s/$/\\//")"
-   fi
-   echo "Linking content of $1 to $(pwd)..."
-   cr=0
-   for f in ./*; do
-      if [ -L "$f" ]; then
-         rm ./"$f"
-         ((cr++))
+   if [ $# -eq 0 ]; then
+      echo "Needs an argument (the source directory)."
+   else
+      if [[ "$1" != */ ]]; then
+         source_dir="${1}/"
+      else
+         source_dir="$1"
       fi
-   done
 
-   ca=0
-   for i in "$1"*; do
-      ln -s "$i" "$(echo "$i" | rev | cut -d/ -f1 | rev)"
-      echo "'$i' -> './$(echo "$i" | rev | cut -d/ -f1 | rev)'"
-      ((ca++))
-   done
-   echo "Removed $cr symlinks."
-   echo "Linked $ca directories into current directory."
-   unset cr
-   unset ca
+      target_dir="./"
+
+      if [ $# -ge 2 ]; then
+         if [[ "$2" != */ ]]; then
+            target_dir="${2}/"
+         else
+            target_dir="$2"
+         fi
+      fi
+
+      echo "Linking content of $source_dir to $target_dir..."
+
+      cr=0
+      ca=0
+
+      for f in ${source_dir}*; do
+         if [ -L "${target_dir}${f##*/}" ]; then
+            rm "${target_dir}${f##*/}"
+            ((cr++))
+         fi
+
+         ln -s "$f" "${target_dir}${f##*/}"
+         echo "'$f' -> '${target_dir}${f##*/}'"
+         ((ca++))
+
+      done
+
+      for i in "$source_dir"*; do
+      done
+      echo "Removed $cr local symlinks with originals in $source_dir."
+      echo "Linked $ca directories into $target_dir."
+      unset cr ca source_dir target_dir
+   fi
 }
 ######################
 
