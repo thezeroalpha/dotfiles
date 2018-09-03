@@ -56,4 +56,4 @@ nnoremap <leader>hs :set list!<cr>
 
 " List marks
 nnoremap <leader>mm :<C-u>marks<CR>:normal! `
-nnoremap <leader>ml :<C-u>marks a-z<CR>:normal ! `
+nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
