@@ -2,7 +2,7 @@
 ---
 
 ## Installation:
-1. Clone repository as `~/.cfg`
+1. Clone repository as `~/.dotfiles`
 2. `cd` into repository
 3. Run `install.sh`
 

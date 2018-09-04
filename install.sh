@@ -24,6 +24,6 @@ done
 
 lncommand "other-scripts/radio-config" "$HOME/.radio-config"
 
-ln -shfv $HOME/.cfg/vim/init.vimrc $HOME/.vimrc
+ln -shfv $HOME/.dotfiles/vim/init.vimrc $HOME/.vimrc
 
 unset -f lncommand

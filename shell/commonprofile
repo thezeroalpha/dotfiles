@@ -70,7 +70,7 @@ gemmaster() {
 conf() {
    if [ $# -gt 0 ]; then
       if [ "$1" = 'cd' ]; then
-         cd ~/.cfg || return;
+         cd ~/.dotfiles || return;
       elif [ "$1" = 'rc' ]; then
          if [[ $SHELL = *"zsh"* ]]; then
             vim ~/.zshrc
@@ -80,6 +80,7 @@ conf() {
       elif [ "$1" = 'common' ]; then
          vim ~/.commonprofile
       elif [ "$1" = 'reload' ]; then
+         source ~/.commonprofile
          if [[ $SHELL = *"zsh"* ]]; then
             START_TIME=$SECONDS
             source ~/.zshrc
@@ -91,7 +92,7 @@ conf() {
          fi
 
       else
-         $(command -v git) --git-dir="$HOME"/.cfg/.git --work-tree "$HOME"/.cfg/ "$@"
+         $(command -v git) --git-dir="$HOME"/.dotfiles/.git --work-tree "$HOME"/.dotfiles/ "$@"
       fi
    else
       echo "At least one argument needed."

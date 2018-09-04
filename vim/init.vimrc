@@ -1,5 +1,5 @@
-source $HOME/.cfg/vim/plugins.vimrc
-source $HOME/.cfg/vim/general.vimrc
-source $HOME/.cfg/vim/editor.vimrc
-source $HOME/.cfg/vim/commands.vimrc
-source $HOME/.cfg/vim/map.vimrc
+source $HOME/.dotfiles/vim/plugins.vimrc
+source $HOME/.dotfiles/vim/general.vimrc
+source $HOME/.dotfiles/vim/editor.vimrc
+source $HOME/.dotfiles/vim/commands.vimrc
+source $HOME/.dotfiles/vim/map.vimrc

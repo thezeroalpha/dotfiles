@@ -186,7 +186,7 @@ if command -v brew &> /dev/null; then
    brew doctor;
    brew missing;
    echo "Backuping up Brew installation..."
-   brew bundle dump --force --file=~/.cfg/Brewfile;
+   brew bundle dump --force --file=~/.dotfiles/Brewfile;
    echo_succ "Backup complete."
    notify "Brewed." "All packages have been upgraded.";
 else
