@@ -7,9 +7,6 @@ brew bundle
 
 lncommand() { ln -shfv $(pwd)/"$1" "$2"; }
 
-homedir=("bin" "git" "oh-my-zsh" "shell" "other-scripts/gdbinit")
-config=("other-scripts/radio-config" "vim-config")
-
 lncommand "bin" "$HOME/.bin"
 lncommand "oh-my-zsh" "$HOME/.oh-my-zsh"
 lncommand "other-scripts/gdbinit" "$HOME/.gdbinit"
