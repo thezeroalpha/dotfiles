@@ -4,14 +4,26 @@ if ! command -v brew &> /dev/null; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 brew bundle
-for i in $(ls dotfiles); do
-    case "$i" in
-        "vim-config")
-            ln -shfv $(pwd)/dotfiles/"$i" ~/.config/"$i"
-            ;;
-        *)
-            ln -shfv $(pwd)/dotfiles/$i ~/.$i
-            ;;
-    esac
+
+lncommand() { ln -shfv $(pwd)/"$1" "$2"; }
+
+homedir=("bin" "git" "oh-my-zsh" "shell" "other-scripts/gdbinit")
+config=("other-scripts/radio-config" "vim-config")
+
+lncommand "bin" "$HOME/.bin"
+lncommand "oh-my-zsh" "$HOME/.oh-my-zsh"
+lncommand "other-scripts/gdbinit" "$HOME/.gdbinit"
+
+for i in $(ls shell); do
+    lncommand shell/"$i" $HOME/."$i"
 done
-ln -shfv ~/.config/vim-config/init.vimrc ~/.vimrc
+
+for i in $(ls git); do
+    lncommand git/"$i" $HOME/."$i"
+done
+
+lncommand "other-scripts/radio-config" "$HOME/.radio-config"
+
+ln -shfv $HOME/.cfg/vim/init.vimrc $HOME/.vimrc
+
+unset -f lncommand

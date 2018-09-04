@@ -184,7 +184,7 @@ realpath() {
       echo 'idk what you want dude'
    fi
 }
-unalias() {
+unlink() {
    for i in "$@"; do
       p=$(realpath -w "$i")
       rm "$i"
