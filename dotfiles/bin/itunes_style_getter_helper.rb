@@ -1,7 +1,10 @@
 require "discogs-wrapper" # Needed for API access
 
-# Remove this if sharing. This is required and unique for each user.
-my_user_token = ENV["DISCOGS_API_TOKEN"]
+my_user_token = ENV['DISCOGS_API_TOKEN']
+
+if my_user_token == nil
+  raise "No user token set."
+end
 
 # Create a wrapper
 wrapper=Discogs::Wrapper.new("iTunesStyleGetter", user_token: my_user_token)

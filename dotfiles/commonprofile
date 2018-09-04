@@ -1,4 +1,6 @@
 #!/bin/bash
+source ~/.secret_env_variables
+
 ### SIMPLE COMMANDS ###
 alias c="clear"
 alias fucking="sudo"
@@ -207,7 +209,7 @@ fi
 
 ### HOMEBREW VARIABLE CHANGES ###
 export EDITOR="vim"
-export HOMEBREW_EDITOR="atom"
+export HOMEBREW_EDITOR="vim"
 
 CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
 export CASK_REPO
