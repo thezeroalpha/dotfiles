@@ -2,6 +2,9 @@
 " Update file when changed from the outside
 " set autoread
 
+" matchit.vim is default, why not enable it
+runtime macros/matchit.vim
+
 " For editing binaries
 set binary
 
@@ -29,9 +32,15 @@ set ttyfast
 " Show partial command on last line
 set showcmd
 
+" Command completion
+set wildmenu
+
 " ======= Colors and Fonts ======== "
 " Syntax highlighting
 syntax on
+
+" Filetype-specific indenting
+filetype plugin indent on
 
 " Colorscheme
 colorscheme default

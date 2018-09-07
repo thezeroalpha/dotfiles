@@ -7,7 +7,7 @@ nnoremap ; :
 nnoremap <leader>f :NERDTreeToggle<cr>
 
 " Disable q: cuz I hate it
-map q: <Nop>
+nnoremap q: <Nop>
 
 " Normal mode shortcuts
 nnoremap <leader>dif :Diff<cr>
@@ -19,15 +19,15 @@ inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-p>
 
 " Retain visual mode after > and <
-vmap < <gv
-vmap > >gv
+vnoremap < <gv
+vnoremap > >gv
 
 " Move visual block
 vnoremap J :m '>+1<cr>gv=gv
 vnoremap K :m '<-2<cr>gv=gv
 
 " stfu and write the file
-cmap w!! w !sudo tee > /dev/null %
+cnoremap w!! w !sudo tee > /dev/null %
 
 " and don't break my colours (U for 'unfuck my screen please')
 nnoremap U :syntax sync fromstart<cr>:redraw!<cr>
@@ -39,7 +39,7 @@ nnoremap <leader>qq mzggg?G`z
 nnoremap zh mzzt10<c-u>`z
 
 " Quick switch to shell
-noremap <C-s> :sh<cr>
+nnoremap <C-s> :sh<cr>
 
 " Tab mappings
 nnoremap <C-t> :tabnew<cr>
@@ -57,3 +57,6 @@ nnoremap <leader>hs :set list!<cr>
 " List marks
 nnoremap <leader>mm :<C-u>marks<CR>:normal! `
 nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
+
+" Map '0' to act as '^' on first press and '0' on second
+nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'

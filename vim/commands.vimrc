@@ -1,13 +1,13 @@
 " Custom commands
-command Todo vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
-command Note vimgrep /NOTE\C/ **/*.* | copen
-command Fix vimgrep /FIXME\C/ **/*.* | copen
-command ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
-command CDC cd %:p:h
-command Maketab set noet ts=2 | %retab!
-command Diff w !diff % -
-command Diffc w !git diff % -
-command Fuckwindows %s///g
+command! Todo vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
+command! Note vimgrep /NOTE\C/ **/*.* | copen
+command! Fix vimgrep /FIXME\C/ **/*.* | copen
+command! ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
+command! CDC cd %:p:h
+command! Maketab set noet ts=2 | %retab!
+command! Diff w !diff % -
+command! Diffc w !git diff % -
+command! Fuckwindows %s///g
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'

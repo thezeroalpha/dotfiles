@@ -22,31 +22,36 @@ set expandtab
 set smarttab
 
 " and 1 tab == 4 spaces
+" also, shift by 4 spaces
 set shiftwidth=4
 set softtabstop=4
 set shiftround
 set copyindent
 
 " Auto indent
-set ai
+set autoindent 
 
 " Smart indent
-set si
+set smartindent
 
 " Folding
 set foldmethod=indent
 
 " Status bar
 set laststatus=2                            " Always show status bar
-set statusline=\ %F%m\%r%h\ %w              " Full path, flags (modified, readonly, help, preview)
-set statusline+=\ \ CWD:\ %r%{getcwd()}%h   " Current working directory
-set statusline+=%=%l,%c                     " Line number, column number
+set statusline=\ %F                         " Full path
+set statusline+=\ %m%r%h%w                  " Flags (modified, readonly, help, preview)
 set statusline+=\ %y                        " File type
-set statusline+=\ \ B%n                     " Buffer number
+set statusline+=\ \ CWD:\ %r%{getcwd()}%h   " Current working directory
+set statusline+=%=                          " Left/right separator
+set statusline+=%c\                         " cursor column
+set statusline+=%l/%L\                      " cursor line/total lines
+set statusline+=\ B%n                       " Buffer number
+set statusline+=\ \ %{strftime(\"%H:%M\")}  " time
 
 " Show matching brackets
 set showmatch
-set mat=2
+set matchtime=2
 
 " Searching
 set ignorecase
