@@ -38,9 +38,6 @@ nnoremap <leader>qq mzggg?G`z
 " 'zoom to head level'
 nnoremap zh mzzt10<c-u>`z
 
-" Quick switch to shell
-nnoremap <C-s> :sh<cr>
-
 " Tab mappings
 nnoremap <C-t> :tabnew<cr>
 nnoremap <C-c> :tabclose<cr>
