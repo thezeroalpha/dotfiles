@@ -44,8 +44,7 @@ set statusline+=\ %m%r%h%w                  " Flags (modified, readonly, help, p
 set statusline+=\ %y                        " File type
 set statusline+=\ \ CWD:\ %r%{getcwd()}%h   " Current working directory
 set statusline+=%=                          " Left/right separator
-set statusline+=%c\                         " cursor column
-set statusline+=%l/%L\                      " cursor line/total lines
+set statusline+=\ %l/%L\                      " cursor line/total lines
 set statusline+=\ B%n                       " Buffer number
 set statusline+=\ \ %{strftime(\"%H:%M\")}  " time
 
