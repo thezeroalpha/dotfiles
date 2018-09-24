@@ -18,6 +18,7 @@ alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but rem
 alias top='sudo htop'                                           # Top should launch htop with sudo
 alias g='git'                                                   # Make git easier to type
 alias r='ranger'                                                # Make Ranger easier to type
+alias wheredef='type -a'
 
 ### SIMPLE FUNCTIONS ###
 mark() { mdvl "$1" | less; }
