@@ -42,6 +42,12 @@ nnoremap zh mzzt10<c-u>`z
 nnoremap <C-t> :tabnew<cr>
 nnoremap <C-c> :tabclose<cr>
 
+" Window resizing mappings
+nnoremap <C-k> <C-w>+
+nnoremap <C-j> <C-w>-
+nnoremap <C-h> <C-W>>
+nnoremap <C-l> <C-W><
+
 " Delete hidden buffers
 nnoremap <leader>dh :DeleteHiddenBuffers<cr>
 
