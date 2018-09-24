@@ -1,5 +1,8 @@
-" Allow integration with system clipboard (only newest vim)
-set clipboard+=unnamed
+" Syntax highlighting
+syntax on
+
+" Filetype-specific indenting
+filetype plugin indent on
 
 " Highlight current line
 set cursorline

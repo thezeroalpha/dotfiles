@@ -35,12 +35,8 @@ set showcmd
 " Command completion
 set wildmenu
 
-" ======= Colors and Fonts ======== "
-" Syntax highlighting
-syntax on
-
-" Filetype-specific indenting
-filetype plugin indent on
+" Allow integration with system clipboard (only newest vim)
+set clipboard+=unnamed
 
 " Colorscheme
 colorscheme default
