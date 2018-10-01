@@ -63,3 +63,6 @@ nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
 
 " Map '0' to act as '^' on first press and '0' on second
 nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+
+" Highlight last inserted text
+nnoremap gV `[v`]

@@ -1,8 +1,12 @@
+"====== EDITING PREFERENCES ======"
 " Syntax highlighting
 syntax on
 
 " Filetype-specific indenting
 filetype plugin indent on
+
+" In general, don't want anything concealed
+set conceallevel=0
 
 " Highlight current line
 set cursorline
@@ -11,8 +15,8 @@ set cursorline
 set nowrap
 
 " Linebreak when obsessive
-set lbr
-set tw=500
+set linebreak
+set textwidth=500
 
 " Numbered lines
 set number
@@ -25,52 +29,34 @@ set expandtab
 set smarttab
 
 " and 1 tab == 4 spaces
-" also, shift by 4 spaces
-set shiftwidth=4
-set softtabstop=4
-set shiftround
-set copyindent
+set shiftwidth=4    " when >>
+set tabstop=4       " visually
+set softtabstop=4   " and when editing
+set shiftround      " always shift by multiple of shiftwidth
+set copyindent      " smart indent based on file
 
-" Auto indent
+" Auto indent when starting new line
 set autoindent 
-
-" Smart indent
 set smartindent
 
-" Folding
+" Folding on indentation
 set foldmethod=indent
-
-" Status bar
-set laststatus=2                            " Always show status bar
-set statusline=\ %F                         " Full path
-set statusline+=\ %m%r%h%w                  " Flags (modified, readonly, help, preview)
-set statusline+=\ %y                        " File type
-set statusline+=\ \ CWD:\ %r%{getcwd()}%h   " Current working directory
-set statusline+=%=                          " Left/right separator
-set statusline+=\ %l/%L\                      " cursor line/total lines
-set statusline+=\ B%n                       " Buffer number
-set statusline+=\ \ %{strftime(\"%H:%M\")}  " time
+set foldlevelstart=5    " start with up to 5 levels open
+set foldnestmax=10      " unless callback-hell JS
 
 " Show matching brackets
 set showmatch
 set matchtime=2
 
 " Searching
-set ignorecase
-set hlsearch
-set incsearch
-set smartcase
-
-" Set 80-char column (off by default)
-" set colorcolumn=80
-highlight ColorColumn ctermbg=233
+set hlsearch    " highlight matches
+set incsearch   " search while typing
+set ignorecase  " ignore case generally
+set smartcase   " but not if searching for capital
 
 " Backspace tweaks
 set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
-
-" How to split new windows
-set splitbelow splitright
 
 " Better completion
 set complete=.,w,b,u,t

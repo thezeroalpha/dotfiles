@@ -35,4 +35,8 @@ Plug 'tpope/vim-eunuch'
 " Delete hidden unused buffers
 Plug 'arithran/vim-delete-hidden-buffers'
 
+" Markdown in vim (better than built-in)
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
 call plug#end()
