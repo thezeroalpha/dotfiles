@@ -10,6 +10,8 @@ command! Diffc w !git diff % -
 command! Fuckwindows %s///g
 command! Hexedit %!xxd
 command! Unhex %!xxd -r
+
+" Functions
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
@@ -18,6 +20,15 @@ function! InsertTabWrapper()
         return "\<c-n>"
     endif
 endfunction
+
+function! ToggleNumber()
+    if(&relativenumber == 1)
+        set norelativenumber
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
 
 " Fat finger fixes/convenience abbreviations
 cnoreabbrev W! w!

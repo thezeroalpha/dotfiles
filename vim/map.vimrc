@@ -61,6 +61,9 @@ nnoremap <leader>hs :set list!<cr>
 nnoremap <leader>mm :<C-u>marks<CR>:normal! `
 nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
 
+" Switch between relative and absolute line num
+nnoremap <leader>n :call ToggleNumber()<CR>
+
 " Map '0' to act as '^' on first press and '0' on second
 nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 
