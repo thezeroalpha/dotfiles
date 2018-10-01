@@ -34,6 +34,7 @@
     mergetest = merge --no-commit --no-f
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     p = push
+    pp = pull
     pushf = push --force-with-lease
     fuckitall = reset --hard HEAD
 
