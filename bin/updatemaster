@@ -51,7 +51,9 @@ while getopts "fcashFACn" opt; do
       A)
          none=1
          ;;
-      h)
+      n) 
+         greedy=0;;
+      h|*)
          echo "Update your Homebrew, Mac App Store, NPM, and PIP packages in one place."
          echo "Usage: updatemaster [-aAcCfFsh]"
          echo "Options:"
@@ -62,16 +64,13 @@ while getopts "fcashFACn" opt; do
          echo "-a:		Upgrade all casks and formulas."
          echo "-A:		Don't upgrade any Brew programs (maintenance only)."
          echo "-s:		Select which casks to upgrade."
+         echo "-n:              Non-greedy"
          echo "-h:		Show this help text."
          echo
          echo "Options can be combined. For example:"
          echo "  updatemaster -fs"
          echo "Would update all formulas, and ask you to select which casks to upgrade."
          exit 0 
-         ;;
-      n) 
-         greedy=0;;
-      *)
          ;;
    esac
 done
