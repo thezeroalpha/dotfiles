@@ -2,6 +2,7 @@ let mapleader=","   " Set the mapleader to be ,
 
 " So I don't have to mash shift all the time
 nnoremap ; :
+vnoremap ; :
 
 " NERDTree
 nnoremap <leader>f :NERDTreeToggle<cr>
