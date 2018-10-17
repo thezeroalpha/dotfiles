@@ -1,27 +1,53 @@
 #!/bin/bash
-echo "Setting up your Mac..."
-if ! command -v brew &> /dev/null; then
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if [[ $(uname -s) == "Darwin" ]]; then
+    echo "Setting up your Mac..."
+    if ! command -v brew &> /dev/null; then
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+elif [[ $(uname -s) == "Linux" ]]; then
+    echo "Setting up your Linux environment..."
+else
+    echo "Does not work on this OS, sorry."
+    exit 1
 fi
-brew bundle
 
-lncommand() { ln -shfv $(pwd)/"$1" "$2"; }
+if [ -f "Brewfile" ]; then
+	brew bundle
+fi
 
-lncommand "bin" "$HOME/.bin"
-lncommand "oh-my-zsh" "$HOME/.oh-my-zsh"
-lncommand "other-scripts/gdbinit" "$HOME/.gdbinit"
+lncommand() { ln -snfv $(pwd)/"$1" "$2"; }
 
-for i in $(ls shell); do
-    lncommand shell/"$i" $HOME/."$i"
-done
+if [ -d ".bin" ]; then
+	lncommand "bin" "$HOME/.bin"
+fi
 
-for i in $(ls git); do
-    lncommand git/"$i" $HOME/."$i"
-done
+if [ -d "oh-my-zsh" ]; then
+	lncommand "oh-my-zsh" "$HOME/.oh-my-zsh"
+fi
 
-lncommand "other-scripts/radio-config" "$HOME/.radio-config"
+if [ -f "other-scripts/gdbinit" ]; then
+	lncommand "other-scripts/gdbinit" "$HOME/.gdbinit"
+fi
 
-ln -shfv $HOME/.dotfiles/vim/init.vimrc $HOME/.vimrc
-ln -shfv $HOME/.dotfiles/vim/idea.vimrc $HOME/.ideavimrc
+if [ -d "shell" ]; then
+	for i in $(ls shell); do
+		lncommand shell/"$i" $HOME/."$i"
+	done
+fi
+
+if [ -d "git" ]; then
+	for i in $(ls git); do
+		lncommand git/"$i" $HOME/."$i"
+	done
+fi
+
+if [ -f "other-scripts/radio-config" ]; then
+	lncommand "other-scripts/radio-config" "$HOME/.radio-config"
+fi
+
+if [ -d "vim" ]; then
+	lncommand vim/init.vimrc $HOME/.vimrc
+	lncommand vim/idea.vimrc $HOME/.ideavimrc
+fi
 
 unset -f lncommand
