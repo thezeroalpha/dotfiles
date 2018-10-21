@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ $(pwd) != "$HOME/.dotfiles" ]; then
+    echo "Please clone this directory as $HOME/.dotfiles."
+    exit 1
+fi
+
 if [[ $(uname -s) == "Darwin" ]]; then
     echo "Setting up your Mac..."
     if ! command -v brew &> /dev/null; then
