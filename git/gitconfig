@@ -37,6 +37,7 @@
     pp = pull
     pushf = push --force-with-lease
     fuckitall = reset --hard HEAD
+    up-sub = "!git submodule foreach 'git fetch origin --tags; git checkout master; git pull' && git pull && git submodule update --init --recursive"
 
 [merge]
     tool = vimdiff
