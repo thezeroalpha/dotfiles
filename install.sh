@@ -56,3 +56,4 @@ if [ -d "vim" ]; then
 fi
 
 unset -f lncommand
+export CONFDIR="$HOME/.dotfiles"
