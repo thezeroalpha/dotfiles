@@ -1,74 +1,47 @@
 #!/bin/bash
+# vim:foldmethod=marker:foldlevel=0
+
+# Env variables {{{
+
+# Original path:
+# PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+# Add API keys and stuff
 source ~/.secret_env_variables
 
-### SIMPLE COMMANDS ###
-alias c="clear"
-alias fucking="sudo"
-alias wtf="tldr"
-alias virc="vim ~/.vimrc"
-alias cp='cp -iv'                                               # Preferred 'cp' implementation
-alias mv='mv -iv'                                               # Preferred 'mv' implementation
-alias mkdir='mkdir -pv'                                         # Preferred 'mkdir' implementation
-alias ls="ls -lh"                                               # Preferred 'ls' implementation
-alias l="ls -lah"                                               # Preferred 'ls -a' implementation
-alias ll="ls -FGlAhpO@"                                         # Preferred 'ls' implementation
-alias less='less -RXc'                                          # Preferred 'less' implementation
-alias rsync='rsync -avhW --progress'                            # Preferred 'rsync' implementation
-alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but remove source
-alias top='sudo htop'                                           # Top should launch htop with sudo
-alias g='git'                                                   # Make git easier to type
-alias r='ranger'                                                # Make Ranger easier to type
-alias wheredef='type -a'
+# Include my scripts in PATH (conditionally)
+if [[ $PATH != *"/Users/alex/.bin"* ]]; then
+   export PATH=/Users/alex/.bin:$PATH
+fi
 
-### SIMPLE FUNCTIONS ###
-mark() { mdvl "$1" | less; }
-cd() { builtin cd -P "$@" || return; ls; }                                # List contents after cding
-mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                    # Make dir and cd at the same time
-procinfo() { ps aux | grep "$1"; }                                # Get info about a process (by name)
-rmempty() { find "${1-.}"  -type d -empty -depth -delete; }        # Remove empty directories
-todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }
-find_in_files() { grep -rnw "$1" -e "$2"; }
-batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
+# Set a variable for my confidr
+export CONF_DIR="$HOME/.dotfiles"
 
-### DOUG SCRIPTS TRIAL RESET ###
-alias rs_notinplaylist="rm /Users/alex/Library/iTunes/.ntnny.txt"
-alias rs_removedeadtracks="rm /Users/alex/Library/iTunes/.superremoveapp.plist"
+# Where my music is located
+export MUSIC_DIR="$HOME/iTunes/iTunes Media/Music"
 
-### MAC UI CUSTOMISATIONS ###
-alias changedock="defaults write com.apple.dock contents-immutable -bool false;killall Dock"
-alias nochangedock="defaults write com.apple.dock contents-immutable -bool true;killall Dock"
-alias dockspacer="defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'; killall Dock"
-alias spotlighton="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
-alias spotlightoff="sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+export EDITOR="vim"
+export HOMEBREW_EDITOR="vim"
+export CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
 
-### SERVICES ###
-alias loadftp="sudo launchctl load /System/Library/LaunchDaemons/ftp.plist"
-alias unloadftp="sudo launchctl unload /System/Library/LaunchDaemons/ftp.plist"
-alias startftp="sudo launchctl start com.apple.ftpd"
-alias stopftp="sudo launchctl stop com.apple.ftpd"
-alias startapache="sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.httpd.plist"
-alias stopapache="sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist"
-alias startpg='pg_ctl -D $(brew --prefix)/var/postgres start'
+# Set python 3 location
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
-### MORE COMPLEX FUNCTIONS ###
-pip3-upgrade() {
-   pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
-}
+# pip should only run if there is a virtualenv currently activated
+export PIP_REQUIRE_VIRTUALENV=true
 
-notify() {
-   if type terminal-notifier &> /dev/null; then
-      terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
-   else
-      echo '\a'
-   fi
-}
+# }}}
 
-gemmaster() {
-   gem update;
-   gem update rails;
-   gem cleanup;
-}
+# Activate programs that need profile entries {{{
+# activate virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
 
+# activate thefuck
+eval "$(thefuck --alias)"
+
+# }}}
+
+# Set up conf command {{{
 conf() {
    if [ $# -gt 0 ]; then
       if [ "$1" = 'cd' ]; then
@@ -93,32 +66,128 @@ conf() {
             echo "Reloaded bash config ($(( $SECONDS-$START_TIME )) sec)."
          fi
       elif [ "$1" = 'get' ]; then
-         echo "$CONFDIR"
+         echo "$CONF_DIR"
       else
          $(command -v git) --git-dir="$HOME"/.dotfiles/.git --work-tree "$HOME"/.dotfiles/ "$@"
       fi
    else
-      echo "At least one argument needed."
+      echo "Usage:"
+      echo "conf cd                 Go to conf directory"
+      echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
+      echo "conf common             Edit common profile"
+      echo "conf reload             Reload configuration files"
+      echo "conf get                Print path to configuration directory"
+      echo "conf [git command]      Run git command in conf directory"
+   fi
+}
+# }}}
+
+# Aliases (simple) {{{
+alias c="clear"
+alias fucking="sudo"
+alias wtf="tldr"
+alias virc="vim ~/.vimrc"
+alias cp='cp -iv'                                               # Preferred 'cp' implementation
+alias mv='mv -iv'                                               # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                                         # Preferred 'mkdir' implementation
+alias ls="ls -lh"                                               # Preferred 'ls' implementation
+alias l="ls -lah"                                               # Preferred 'ls -a' implementation
+alias ll="ls -FGlAhpO@"                                         # Preferred 'ls' implementation
+alias less='less -RXc'                                          # Preferred 'less' implementation
+alias rsync='rsync -avhW --progress'                            # Preferred 'rsync' implementation
+alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but remove source
+alias top='sudo htop'                                           # Top should launch htop with sudo
+alias g='git'                                                   # Make git easier to type
+alias r='ranger'                                                # Make Ranger easier to type
+alias wheredef='type -a'
+# }}}
+
+# Aliases (Mac UI) {{{
+alias changedock="defaults write com.apple.dock contents-immutable -bool false;killall Dock"
+alias nochangedock="defaults write com.apple.dock contents-immutable -bool true;killall Dock"
+alias dockspacer="defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'; killall Dock"
+alias spotlighton="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+alias spotlightoff="sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+# }}}
+
+# Aliases (services) {{{
+alias loadftp="sudo launchctl load /System/Library/LaunchDaemons/ftp.plist"
+alias unloadftp="sudo launchctl unload /System/Library/LaunchDaemons/ftp.plist"
+alias startftp="sudo launchctl start com.apple.ftpd"
+alias stopftp="sudo launchctl stop com.apple.ftpd"
+alias startapache="sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.httpd.plist"
+alias stopapache="sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist"
+alias startpg='pg_ctl -D $(brew --prefix)/var/postgres start'
+# }}}
+
+# Aliases (Dougscripts trial resets) {{{
+alias rs_notinplaylist="rm /Users/alex/Library/iTunes/.ntnny.txt"
+alias rs_removedeadtracks="rm /Users/alex/Library/iTunes/.superremoveapp.plist"
+# }}}
+
+# One-liners {{{
+mark() { mdvl "$1" | less; }
+cd() { builtin cd -P "$@" || return; ls; }                                  # List contents after cding
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                     # Make dir and cd at the same time
+procinfo() { ps aux | grep "$1"; }                                          # Get info about a process (by name)
+rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # Remove empty directories
+todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Find TODO comments
+find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
+
+# Pip3 upgrade packages
+pip3-upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U }
+
+# Get current battery percentage
+batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
+
+# create commands to override pip restriction.
+# use `gpip` or `gpip3` to force installation of
+# a package in the global python environment
+gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@" }
+gpip3(){ PIP_REQUIRE_VIRTUALENV="" pip3 "$@" }
+
+# }}}
+
+# General functions {{{
+# Define a notification fuction -- notify $title $message
+notify() {
+   if type terminal-notifier &> /dev/null; then
+      terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
+   else
+      echo '\a'
    fi
 }
 
-### FFMPEG CONVERSIONS ###
+# Gem update script
+gemmaster() {
+   gem update;
+   gem update rails;
+   gem cleanup;
+}
+
+
+# Webm to mp4 video
 webm-mp4() {
    ffmpeg -i "$1" -qscale 0 "$1".mp4
 }
 
+# Extract audio from mp4
 mp4-mp3() {
    ffmpeg -i "$1" "$1".mp3
 }
 
+# Anything to a gif
 gifify() {
    ffmpeg -i "$1" -r 25 -f image2pipe -vcodec ppm - | \
       convert -delay 4 -loop 0 - output.gif
 }
+
+# Gif to mp4
 gif-mp4() {
    ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
 }
 
+# Extract any archive
 extract () {
    if [ -f "$1" ] ; then
       case $1 in
@@ -140,28 +209,12 @@ extract () {
    fi
 }
 
+# Echo the current wifi password
 current_wifi_password() {
    security find-generic-password -ga "$1" | grep password
 }
 
-### MAC FINDER-SPECIFIC ###
-if command -v osascript &> /dev/null; then
-   cdf() {
-      target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
-      if [ "$target" != "" ]; then
-         cd "$target" || return; pwd
-      else
-         echo 'No Finder window found' >&2
-      fi
-   }
-   gdf() {
-      osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
-   }
-   fsel() {
-      osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
-   };
-fi
-
+# Print real path to a folder (following links)
 # This is still a bit buggy
 realpath() {
    if [ $# -eq 1 ]; then
@@ -188,6 +241,8 @@ realpath() {
       echo 'idk what you want dude'
    fi
 }
+
+# Remove aliases & replace with original files
 unlink() {
    for i in "$@"; do
       p=$(realpath -w "$i")
@@ -196,52 +251,28 @@ unlink() {
       unset p
    done
 }
+# }}}
 
-######################
+# Applescript functions {{{
+if command -v osascript &> /dev/null; then
 
-### PATH CHANGES ###
-
-# Original path:
-# PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-
-# Include my scripts in PATH (conditionally) #
-if [[ $PATH != *"/Users/alex/.bin"* ]]; then
-   export PATH=/Users/alex/.bin:$PATH
+   # cd to current Finder directory
+   cdf() {
+      target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
+      if [ "$target" != "" ]; then
+         cd "$target" || return; pwd
+      else
+         echo 'No Finder window found' >&2
+      fi
+   }
+   # echo current Finder directory
+   gdf() {
+      osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+   }
+   # echo selected Finder file
+   fsel() {
+      osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+   };
 fi
+# }}}
 
-# Set a variable for my confidr
-export CONFDIR="$HOME/.dotfiles"
-
-#####################
-
-### HOMEBREW VARIABLE CHANGES ###
-export EDITOR="vim"
-export HOMEBREW_EDITOR="vim"
-
-export CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
-######################
-
-### THEFUCK ###
-eval "$(thefuck --alias)"
-##############
-
-### VIRTUALENV ###
-
-# Set python 3 location
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-
-# activate virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-
-# pip should only run if there is a virtualenv currently activated
-export PIP_REQUIRE_VIRTUALENV=true
-
-# create commands to override pip restriction.
-# use `gpip` or `gpip3` to force installation of
-# a package in the global python environment
-gpip(){
-   PIP_REQUIRE_VIRTUALENV="" pip "$@"
-}
-gpip3(){
-   PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
-}
