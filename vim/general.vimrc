@@ -69,3 +69,7 @@ highlight ColorColumn ctermbg=233
 
 " How to split new windows
 set splitbelow splitright
+
+" Allow per-file settings
+set modeline
+set modelines=5     "within the first/last 5 lines
