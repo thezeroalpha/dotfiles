@@ -1,0 +1,107 @@
+#!/bin/bash
+
+mpv_options="--no-video --really-quiet --volume=50"
+mpv_options_vis="--no-video --really-quiet --volume=50 --script=/Users/alex/.config/mpv/visualizer.lua -vo caca"
+
+play_track() {
+   trap '' INT
+   if [[ "$1" == "all" ]]; then
+      track=$(ls|sort -n|head -1)
+       ffmpeg -i "$track" art.jpg &>/dev/null
+       if [ -e "art.jpg" ]; then
+         im2a art.jpg -T
+         mpv "$(pwd)" $mpv_options
+         rm art.jpg
+      else
+         mpv "$(pwd)" $mpv_options_vis
+      fi
+   else
+      if [ ! -e "$1" ]; then
+         echo "File does not exist: $1"
+      else
+          ffmpeg -i "$1" art.jpg &>/dev/null 
+          if [ -e "art.jpg" ]; then
+            im2a art.jpg -T
+            mpv "$(pwd)/$1" $mpv_options
+            rm art.jpg
+         else
+            mpv "$(pwd)/$1" $mpv_options_vis
+         fi
+      fi
+   fi
+   trap clean_up INT
+   clear
+}
+read_letter() {
+   read -sn 1 -p "Continue? [Y/n]" CONF
+}
+clean_up() {
+   trap - INT
+   clear
+   exit 0
+}
+
+init_check() {
+   deps=(ffmpeg mpv im2a)
+   for dep in ${deps[@]}; do
+      if ! command -v $dep &>/dev/null; then
+         echo "Please install $dep."
+         exit 1
+      fi
+   done
+}
+
+init_check
+cd /Users/alex/Music/iTunes/iTunes\ Media/Music
+rootdir=/Users/alex/Music/iTunes/iTunes\ Media/Music
+trap clean_up INT
+clear
+echo "Music Player v1"
+while :; do
+   read -e -p "> " -a INPUT
+   CMD=${INPUT[0]}
+   ARGS=${INPUT[@]:1}
+
+   case $CMD in
+      "cd")
+         if [ -z "$ARGS" ]; then
+            echo "No directory provided."
+         elif [[ "$ARGS" == "/" ]]; then
+            cd "$rootdir"
+         elif [ ! -d "$ARGS" ]; then
+            echo "Directory does not exist."
+         else
+            pushd "$ARGS" &>/dev/null
+            if [[ $(pwd) == $rootdir* ]]; then
+               popd &>/dev/null
+               cd "$ARGS"
+            else
+               echo "Cannot enter this directory."
+               popd&>/dev/null
+            fi
+         fi
+         ;;
+      "play")
+         if [ -z "$ARGS" ]; then
+            echo "No file provided."
+         else
+            play_track "$ARGS"
+         fi
+         ;;
+      "ls")
+         ls -C;;
+      "pwd")
+         dir=$(pwd)
+         if [[ $dir == $rootdir ]]; then
+            echo "/"
+         else
+            echo ${dir##$rootdir}
+         fi
+         ;;
+      "q"|"quit")
+         clean_up;;
+      *)
+         echo "Command does not exist."
+         ;;
+   esac
+done
