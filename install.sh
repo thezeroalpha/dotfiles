@@ -59,6 +59,10 @@ fi
 if [ -f "other-scripts/gdbinit" ]; then
     lncommand "other-scripts/gdbinit" "$HOME/.gdbinit"
 fi
+if [ -f "other-scripts/visualizer.lua" ]; then
+    mkdir -p $HOME/.config/mpv
+    lncommand "other-scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
+fi
 
 if [ -f "other-scripts/radio-config" ]; then
     lncommand "other-scripts/radio-config" "$HOME/.radio-config"
