@@ -39,4 +39,7 @@ Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
+" Easy table making
+Plug 'dhruvasagar/vim-table-mode'
+
 call plug#end()
