@@ -42,4 +42,6 @@ Plug 'plasticboy/vim-markdown'
 " Easy table making
 Plug 'dhruvasagar/vim-table-mode'
 
+" Personal wiki
+Plug 'vimwiki/vimwiki'
 call plug#end()
