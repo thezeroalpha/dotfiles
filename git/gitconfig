@@ -32,12 +32,13 @@
     diffs = "diff --staged"
     changes = diff --summary --stat
     mergetest = merge --no-commit --no-f
+    mergen = --no-ff
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     p = push
     pp = pull
     pushf = push --force-with-lease
     fuckitall = reset --hard HEAD
-    up-sub = "!git submodule foreach 'git fetch origin --tags; git checkout master; git pull' && git add . && git commit -m 'Updated submodules' && git submodule update --recursive --checkout --force"
+    up-sub = "!git submodule foreach 'git fetch origin --tags; git checkout master; git pull' && git add . && git commit -m 'Updated submodules';git submodule update --recursive --checkout --force"
     home = "!git remote show origin | awk -F ': ' '/Fetch/ {print $2}'"
     open = "!open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && git add"
