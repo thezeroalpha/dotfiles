@@ -32,7 +32,7 @@
     diffs = "diff --staged"
     changes = diff --summary --stat
     mergetest = merge --no-commit --no-f
-    mergen = --no-ff
+    mergeno = merge --no-ff
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     p = push
     pp = pull
