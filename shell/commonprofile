@@ -135,7 +135,7 @@ todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Fi
 find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
 
 # Pip3 upgrade packages
-pip3-upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U }
+pip3-upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
 
 # Get current battery percentage
 batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
@@ -143,8 +143,8 @@ batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\
 # create commands to override pip restriction.
 # use `gpip` or `gpip3` to force installation of
 # a package in the global python environment
-gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@" }
-gpip3(){ PIP_REQUIRE_VIRTUALENV="" pip3 "$@" }
+gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }
+gpip3(){ PIP_REQUIRE_VIRTUALENV="" pip3 "$@"; }
 
 # }}}
 
