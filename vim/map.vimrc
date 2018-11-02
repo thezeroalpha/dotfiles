@@ -70,3 +70,13 @@ nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 
 " Highlight last inserted text
 nnoremap gV `[v`]
+
+" Delete without yanking to clipboard
+noremap <leader>d "_d
+
+" Change without yanking to clipboard
+nnoremap <leader>C "_c
+
+" Replace without yanking to clipboard
+vnoremap <leader>p "_dP
+nnoremap <leader>p "_ddP
