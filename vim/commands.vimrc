@@ -10,6 +10,7 @@ command! Diffc w !git diff % -
 command! Fuckwindows %s///g
 command! Hexedit %!xxd
 command! Unhex %!xxd -r
+command! BeautifyJson %!python -m json.tool
 
 command! -nargs=1 -complete=command Redir silent call Redir(<f-args>)
 " Usage:
