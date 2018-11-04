@@ -118,6 +118,10 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs histor
 # Aliases
 source ~/.commonprofile
 
+if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
+  source ~/.config/exercism/exercism_completion.zsh
+fi
+
 # Z initialization
 . /usr/local/etc/profile.d/z.sh
 
