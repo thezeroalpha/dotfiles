@@ -44,4 +44,8 @@ Plug 'dhruvasagar/vim-table-mode'
 
 " Personal wiki
 Plug 'vimwiki/vimwiki'
+
+" Better syntax highlighting
+Plug 'sheerun/vim-polyglot'
+
 call plug#end()
