@@ -62,3 +62,6 @@ set whichwrap+=<,>,h,l
 " Better completion
 set complete=.,w,b,u,t
 set completeopt=longest,menuone,preview
+
+" Keep cursor off top and bottom of screen
+set scrolloff=5
