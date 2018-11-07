@@ -39,6 +39,9 @@ nnoremap <leader>qq mzggg?G`z
 " 'zoom to head level'
 nnoremap zh mzzt10<c-u>`z
 
+" Reindent the file
+nnoremap <leader>= mlgg=G`lzz
+
 " Tab mappings
 nnoremap <C-t> :tabnew<cr>
 nnoremap <C-c> :tabclose<cr>
