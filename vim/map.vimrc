@@ -83,3 +83,6 @@ nnoremap <leader>C "_c
 " Replace without yanking to clipboard
 vnoremap <leader>p "_dP
 nnoremap <leader>p "_ddP
+
+" Save in insert mode
+inoremap <C-Z> <ESC>:w<CR>a
