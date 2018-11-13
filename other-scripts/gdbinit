@@ -1,3 +1,4 @@
+set startup-with-shell off
 python
 
 # GDB dashboard - Modular visual interface for GDB in Python.
