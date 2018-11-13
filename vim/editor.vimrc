@@ -46,8 +46,12 @@ set foldnestmax=10      " unless callback-hell JS
 
 " Show matching brackets
 set showmatch
-set belloff=showmatch   " Disable beeping if no match is found
 set matchtime=2
+
+" Since belloff isn't always an option
+if exists("&belloff")
+    set belloff=showmatch   " Disable beeping if no match is found
+endif
 
 " Searching
 set hlsearch    " highlight matches
