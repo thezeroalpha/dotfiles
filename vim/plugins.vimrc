@@ -39,13 +39,11 @@ Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
-" Easy table making
-Plug 'dhruvasagar/vim-table-mode'
 
 " Personal wiki
 Plug 'vimwiki/vimwiki'
 
-" Better syntax highlighting
-"Plug 'sheerun/vim-polyglot'
+" Easy table making (unnecessary because vimwiki has this built in)
+" Plug 'dhruvasagar/vim-table-mode'
 
 call plug#end()
