@@ -10,8 +10,8 @@ command! Diffc w !git diff % -
 command! Fuckwindows %s///g
 command! Hexedit %!xxd
 command! Unhex %!xxd -r
+command! JsonSimplifyObject %s/^\(\s\{16}\){\n\s\{20\}\(.*\)\n\s\{16\}}\(,\?\)/\1{\2}\3
 command! BeautifyJson %!python -m json.tool
-
 command! -nargs=1 -complete=command Redir silent call Redir(<f-args>)
 " Usage:
 " 	:Redir hi ............. show the full output of command ':hi' in a scratch window
