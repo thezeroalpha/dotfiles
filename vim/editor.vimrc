@@ -28,10 +28,10 @@ set expandtab
 " with a smart tab
 set smarttab
 
-" and 1 tab == 4 spaces
-set shiftwidth=4    " when >>
-set tabstop=4       " visually
-set softtabstop=4   " and when editing
+" and 1 tab == 2 spaces
+set shiftwidth=2    " when >>
+set tabstop=2       " visually
+set softtabstop=2   " and when editing
 set shiftround      " always shift by multiple of shiftwidth
 set copyindent      " smart indent based on file
 
