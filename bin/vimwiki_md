@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+for x in "$@"; do
+  filename=$(sed -e "s/\.wiki$/.md/" <<< "$x")
+  sed -f $(dirname "$0")/vimwiki_md_ex -E "$x" > "$filename"
+done
