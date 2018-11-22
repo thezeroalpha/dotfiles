@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+ss_dir_orig="$(defaults read com.apple.screencapture location)"
+
+cleanup() {
+  echo "..."
+  echo "Done. Screenshots saved to $new_ss_dir."
+  defaults write com.apple.screencapture location "$ss_dir_orig"
+  exit 0
+}
+if [ $# -eq 0 ]; then
+  echo "Need a new directory!"
+  echo "Usage:"
+  echo "ss-interceptor [NEW_LOCATION]"
+  exit 1
+fi
+
+trap cleanup exit
+
+echo "= Screenshot Interceptor ="
+
+if [ "${1:0:1}" = "." ]; then
+  new_ss_dir="$(pwd)/${1#*/}"
+elif [ "${1:0:1}" != "/" ]; then
+  new_ss_dir="$(pwd)/$1"
+else
+  new_ss_dir="$1"
+fi
+
+
+if ! [ -d "$new_ss_dir" ]; then
+  echo "Creating $new_ss_dir..."
+  mkdir -p "$new_ss_dir"
+fi
+defaults write com.apple.screencapture location "$new_ss_dir"
+echo "Saving screenshots to:"
+echo "$new_ss_dir"
+echo -e "\nPress Ctrl-C to stop..."
+
+while :; do sleep 1; done
