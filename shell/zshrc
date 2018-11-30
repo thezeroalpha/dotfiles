@@ -73,8 +73,6 @@ plugins=(
   python
   rails
   rake
-  rbenv
-  rvm
   sublime
   sudo
   vim-interaction
@@ -117,7 +115,6 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs histor
 
 # Aliases
 source ~/.commonprofile
-
 if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
   source ~/.config/exercism/exercism_completion.zsh
 fi
@@ -126,4 +123,6 @@ fi
 . /usr/local/etc/profile.d/z.sh
 
 # rbenv init
-eval "$(rbenv init -)"
+if [[ $PATH != *"$HOME/.rbenv/shims"* ]]; then
+  eval "$(rbenv init -)"
+fi

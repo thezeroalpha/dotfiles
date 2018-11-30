@@ -18,7 +18,7 @@ fi
 export CONF_DIR="$HOME/.dotfiles"
 
 # Where my music is located
-export MUSIC_DIR="$HOME/iTunes/iTunes Media/Music"
+export MUSIC_DIR="$HOME/Music/iTunes/iTunes Media/Music"
 
 export EDITOR="vim"
 export HOMEBREW_EDITOR="vim"
@@ -55,7 +55,6 @@ conf() {
       elif [ "$1" = 'common' ]; then
          vim ~/.commonprofile
       elif [ "$1" = 'reload' ]; then
-         source ~/.commonprofile
          if [[ $SHELL = *"zsh"* ]]; then
             START_TIME=$SECONDS
             source ~/.zshrc
