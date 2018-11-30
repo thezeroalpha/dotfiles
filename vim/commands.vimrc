@@ -68,3 +68,4 @@ cnoreabbrev Q q
 cnoreabbrev Qall qall
 cnoreabbrev E Explore
 cnoreabbrev Colors XtermColorTable
+cnoreabbrev lset setl
