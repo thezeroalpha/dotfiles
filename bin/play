@@ -1,32 +1,44 @@
 #!/bin/bash
 
-rootdir="$MUSIC_ROOT"
+rootdir="$MUSIC_DIR"
 mpv_options="--no-video --really-quiet --volume=50"
 mpv_options_vis="--no-video --really-quiet --volume=50 --script=/Users/alex/.config/mpv/visualizer.lua -vo caca"
+mpv_options_noart="--no-video --volume=50"
 
 play_track() {
    trap '' INT
+   vis=0
+   if [ -z "$2" ]; then
+      vis=1
+   fi
    if [[ "$1" == "all" ]]; then
       track=$(ls|sort -n|head -1)
-       ffmpeg -i "$track" art.jpg &>/dev/null
-       if [ -e "art.jpg" ]; then
+      ffmpeg -i "$track" art.jpg &>/dev/null
+
+      if [ -e "art.jpg" ] && [ $vis -eq 1 ]; then
          im2a art.jpg -T
          mpv "$(pwd)" $mpv_options
          rm art.jpg
-      else
+      elif [ $vis -eq 1 ]; then
          mpv "$(pwd)" $mpv_options_vis
+      else
+         clear
+         mpv "$(pwd)" $mpv_options_noart
       fi
    else
       if [ ! -e "$1" ]; then
          echo "File does not exist: $1"
       else
-          ffmpeg -i "$1" art.jpg &>/dev/null 
-          if [ -e "art.jpg" ]; then
+         ffmpeg -i "$1" art.jpg &>/dev/null 
+         if [ -e "art.jpg" ] && [ $vis -eq 1 ] ; then
             im2a art.jpg -T
             mpv "$(pwd)/$1" $mpv_options
             rm art.jpg
-         else
+         elif [ $vis -eq 1 ]; then
             mpv "$(pwd)/$1" $mpv_options_vis
+         else
+            clear
+            mpv "$(pwd)/$1" $mpv_options_noart
          fi
       fi
    fi
@@ -60,8 +72,7 @@ echo "Music Player v1"
 while :; do
    read -e -p "> " -a INPUT
    CMD=${INPUT[0]}
-   ARGS=${INPUT[@]:1}
-
+   ARGS=("${INPUT[@]:1}")
    case $CMD in
       "cd")
          if [ -z "$ARGS" ]; then
@@ -85,11 +96,18 @@ while :; do
          if [ -z "$ARGS" ]; then
             echo "No file provided."
          else
-            play_track "$ARGS"
+            play_track "${ARGS[@]}"
          fi
          ;;
       "ls")
-         ls -C;;
+         if command -v less &> /dev/null; then
+            ls -C | less
+         elif command -v more &> /dev/null; then
+            ls -C | more
+         else
+            ls -C
+         fi
+         ;;
       "pwd")
          dir=$(pwd)
          if [[ $dir == $rootdir ]]; then
@@ -100,8 +118,18 @@ while :; do
          ;;
       "q"|"quit")
          clean_up;;
+      "help")
+         echo "Commands:"
+         echo "cd:                                change to artist/album directory"
+         echo "pwd:                               print current directory"
+         echo "ls:                                list contents of current directory"
+         echo "play all:                          play everything in current directory"
+         echo "play [file]:                       play specific track"
+         echo "play [all|file] [something]:       disable visualiser/art"
+         ;;
       *)
          echo "Command does not exist."
+         echo "Type 'help' to show commands."
          ;;
    esac
 done
