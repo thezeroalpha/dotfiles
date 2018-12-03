@@ -22,6 +22,7 @@ else
     exit 1
 fi
 
+export CONF_DIR="$HOME/.dotfiles"
 
 lncommand() { ln -snfv $(pwd)/"$1" "$2"; }
 
@@ -51,9 +52,8 @@ if [ -d "shell" ]; then
 fi
 
 if [ -d "git" ]; then
-    for i in $(ls git); do
-	lncommand git/"$i" $HOME/."$i"
-    done
+    lncommand git/gitconfig $HOME/.gitconfig
+    git config --global init.templatedir $CONF_DIR/git/git_template
 fi
 
 if [ -f "other-scripts/gdbinit" ]; then
@@ -76,4 +76,3 @@ if [ -d "vim" ]; then
     lncommand vim/idea.vimrc $HOME/.ideavimrc
 fi
 
-export CONFDIR="$HOME/.dotfiles"
