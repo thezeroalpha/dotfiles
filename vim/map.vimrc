@@ -7,6 +7,9 @@ vnoremap ; :
 " NERDTree
 nnoremap <leader>f :NERDTreeToggle<cr>
 
+" Tagbar
+nnoremap <leader>t :TagbarToggle<cr>
+
 " Disable q: cuz I hate it
 nnoremap q: <Nop>
 

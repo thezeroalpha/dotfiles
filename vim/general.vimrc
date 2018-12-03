@@ -2,6 +2,9 @@
 " Update file when changed from the outside
 " set autoread
 
+" tags files
+set tags=./tags,tags,.git/tags
+
 " matchit.vim is default, why not enable it
 runtime macros/matchit.vim
 

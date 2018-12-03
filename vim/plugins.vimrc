@@ -45,5 +45,6 @@ Plug 'vimwiki/vimwiki'
 
 " Easy table making (unnecessary because vimwiki has this built in)
 " Plug 'dhruvasagar/vim-table-mode'
+Plug 'majutsushi/tagbar'
 
 call plug#end()
