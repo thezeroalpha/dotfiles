@@ -64,9 +64,10 @@ while :; do
 
     # If there's no url, there's no result
     if [ -z "$url" ]; then
-	echo "Not found."
-	exit 1
+	echo -e "\nNot found.\n"
+	continue
     fi
+
     IFS="$oldifs"
 
     # Give the user the source information
