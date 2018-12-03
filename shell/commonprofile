@@ -7,11 +7,13 @@
 # PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Add API keys and stuff
-source ~/.secret_env_variables
+if [ -f $HOME/.secret_env_variables ]; then
+   source ~/.secret_env_variables
+fi
 
 # Include my scripts in PATH (conditionally)
 if [[ $PATH != *"/Users/alex/.bin"* ]]; then
-   export PATH=/Users/alex/.bin:$PATH
+   export PATH=$HOME/.bin:$PATH
 fi
 
 # Set a variable for my confidr
@@ -21,8 +23,11 @@ export CONF_DIR="$HOME/.dotfiles"
 export MUSIC_DIR="$HOME/Music/iTunes/iTunes Media/Music"
 
 export EDITOR="vim"
-export HOMEBREW_EDITOR="vim"
-export CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
+
+if command -v brew &> /dev/null; then
+   export HOMEBREW_EDITOR="vim"
+   export CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
+fi
 
 # Set python 3 location
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
@@ -34,10 +39,14 @@ export PIP_REQUIRE_VIRTUALENV=true
 
 # Activate programs that need profile entries {{{
 # activate virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+   source /usr/local/bin/virtualenvwrapper.sh
+fi
 
 # activate thefuck
-eval "$(thefuck --alias)"
+if command -v fuck &> /dev/null; then
+   eval "$(thefuck --alias)"
+fi
 
 # }}}
 
@@ -99,6 +108,7 @@ alias top='sudo htop'                                           # Top should lau
 alias g='git'                                                   # Make git easier to type
 alias r='ranger'                                                # Make Ranger easier to type
 alias wheredef='type -a'
+alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
 # }}}
 
 # Aliases (Mac UI) {{{
