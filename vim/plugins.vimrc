@@ -39,12 +39,16 @@ Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
+" Tagbar
+Plug 'majutsushi/tagbar'
 
 " Personal wiki
 Plug 'vimwiki/vimwiki'
 
+" Git wrapper from tpope
+Plug 'tpope/vim-fugitive'
+
 " Easy table making (unnecessary because vimwiki has this built in)
 " Plug 'dhruvasagar/vim-table-mode'
-Plug 'majutsushi/tagbar'
 
 call plug#end()

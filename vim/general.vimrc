@@ -59,6 +59,9 @@ set mousemodel=popup
 set laststatus=2                                        " Always show status bar
 set statusline=\ %F                                     " Full path
 set statusline+=\ %m%r%w                                " Flags (modified, readonly, help, preview)
+if exists('g:loaded_fugitive')
+    set statusline+=\ %{FugitiveStatusline()}
+endif
 set statusline+=\ \ CWD:\ %r%{getcwd()}%h               " Current working directory
 set statusline+=%=                                      " Left/right separator
 set statusline+=\ %y                                    " File type
