@@ -1,19 +1,32 @@
 #!/usr/bin/env bash
 
-ss_dir_orig="$(defaults read com.apple.screencapture location)"
+# Preliminary tests
+if [[ $(uname -s) == "Darwin" ]]; then
+  ss_dir_orig="$(defaults read com.apple.screencapture location)"
+elif [[ $(uname -s) == "Linux" ]] && command -v gsettings &> /dev/null; then
+  ss_dir_orig="$(gsettings get org.gnome.gnome-screenshot auto-save-directory)"  
+else
+  echo "Not supported on this system."
+  exit 1
+fi
 
-cleanup() {
-  echo "..."
-  echo "Done. Screenshots saved to $new_ss_dir."
-  defaults write com.apple.screencapture location "$ss_dir_orig"
-  exit 0
-}
 if [ $# -eq 0 ]; then
   echo "Need a new directory!"
   echo "Usage:"
   echo "ss-interceptor [NEW_LOCATION]"
   exit 1
 fi
+
+cleanup() {
+  echo "..."
+  echo "Done. Screenshots saved to $new_ss_dir."
+  if [[ $(uname -s) == "Darwin" ]]; then
+    defaults write com.apple.screencapture location "$ss_dir_orig"
+  elif [[ $(uname -s) == "Linux" ]]; then
+    gsettings set org.gnome.gnome-screenshot auto-save-directory "$ss_dir_orig"
+  fi
+  exit 0
+}
 
 trap cleanup exit
 
@@ -32,7 +45,15 @@ if ! [ -d "$new_ss_dir" ]; then
   echo "Creating $new_ss_dir..."
   mkdir -p "$new_ss_dir"
 fi
-defaults write com.apple.screencapture location "$new_ss_dir"
+
+if [[ $(uname -s) == "Darwin" ]]; then
+  defaults write com.apple.screencapture location "$new_ss_dir"
+elif [[ $(uname -s) == "Linux" ]]; then
+  gsettings set org.gnome.gnome-screenshot auto-save-directory "$new_ss_dir"
+else
+  echo "Error"
+fi
+
 echo "Saving screenshots to:"
 echo "$new_ss_dir"
 echo -e "\nPress Ctrl-C to stop..."
