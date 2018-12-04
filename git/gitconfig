@@ -49,5 +49,3 @@
     tool = vimdiff
 [core]
 	autocrlf = input
-[init]
-	templatedir = /Users/alex/.dotfiles/git/git_template
