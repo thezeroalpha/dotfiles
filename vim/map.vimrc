@@ -89,3 +89,12 @@ nnoremap <leader>p "_ddP
 
 " Save in insert mode
 inoremap <C-Z> <ESC>:w<CR>a
+
+" Config edit mappings
+nnoremap <C-E><C-A> :vsplit $CONF_DIR/vim/autocmd.vimrc<CR>
+nnoremap <C-E><C-C> :vsplit $CONF_DIR/vim/commands.vimrc<CR>
+nnoremap <C-E><C-E> :vsplit $CONF_DIR/vim/editor.vimrc<CR>
+nnoremap <C-E><C-G> :vsplit $CONF_DIR/vim/general.vimrc<CR>
+nnoremap <C-E><C-V> :vsplit $CONF_DIR/vim/init.vimrc<CR>
+nnoremap <C-E><C-M> :vsplit $CONF_DIR/vim/map.vimrc<CR>
+nnoremap <C-E><C-P> :vsplit $CONF_DIR/vim/plugins.vimrc<CR>
