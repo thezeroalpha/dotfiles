@@ -21,6 +21,8 @@
     c = commit
     cm = commit -m
     cam = commit -a -m
+    camend = commit --amend
+    camende = commit --amend --no-edit
     cp = commit -p
 
     ss = stash save
