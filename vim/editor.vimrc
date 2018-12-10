@@ -18,6 +18,10 @@ set nowrap
 set linebreak
 set textwidth=500
 
+" Continue wrapped line on same indent as previous
+set breakindent
+set breakindentopt+=shift:3
+
 " Numbered lines
 set number
 set numberwidth=3
