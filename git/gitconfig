@@ -37,8 +37,9 @@
     mergeno = merge --no-ff
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     p = push
-    pp = pull --ff-only
     pushf = push --force-with-lease
+    pff = pull --ff-only
+    pnf = pull --no-ff
     fuckitall = reset --hard HEAD
     up-sub = "!git submodule foreach 'git fetch origin --tags; git checkout master; git pull' && git add . && git commit -m 'Updated submodules';git submodule update --recursive --checkout --force"
     home = "!git remote show origin | awk -F ': ' '/Fetch/ {print $2}'"
