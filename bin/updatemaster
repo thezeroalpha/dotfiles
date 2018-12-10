@@ -245,29 +245,36 @@ else
 fi
 echo
 
-### PIP3 ###
-echo_progress "PIP3 update/upgrade."
-if command -v pip3 list &> /dev/null; then
-   pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
-   notify "Pip3 Update Finished" "See Terminal for info."
-else
-   echo_err "Cannot upgrade pip3 packages. Please do so manually."
-fi
-echo
-
-### PIP ###
 echo_progress "PIP update/upgrade."
-if command -v pip list &> /dev/null; then
-   if pip freeze; then
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+   source /usr/local/bin/virtualenvwrapper.sh
+   echo "Working with virtualenv"
+   names=($(workon))
+   for pip_env in ${names[@]}; do
+      workon "$pip_env"
+      pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
       pip freeze — local | grep -v '^\-e' | cut -d = -f 1 | xargs pip install -U
+      deactivate
+   done
+else
+   if command -v pip3 list &> /dev/null; then
+      pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
+      notify "Pip3 Update Finished" "See Terminal for info."
+   else
+      echo_err "Cannot upgrade pip3 packages. Please do so manually."
+   fi
+
+   if command -v pip list &> /dev/null; then
+      if pip freeze; then
+         pip freeze — local | grep -v '^\-e' | cut -d = -f 1 | xargs pip install -U
+      else
+         echo_err "Cannot upgrade pip packages. Please do so manually."
+      fi
+      notify "Pip Update Finished" "See Terminal for info."
    else
       echo_err "Cannot upgrade pip packages. Please do so manually."
    fi
-   notify "Pip Update Finished" "See Terminal for info."
-else
-   echo_err "Cannot upgrade pip packages. Please do so manually."
 fi
-echo
 
 ### SUDO PIP ###
 echo_progress "Global pip."
