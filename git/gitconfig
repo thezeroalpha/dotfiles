@@ -42,7 +42,7 @@
     pnf = pull --no-ff
     fuckitall = reset --hard HEAD
     up-sub = "!git submodule foreach 'git fetch origin --tags; git checkout master; git pull' && git add . && git commit -m 'Updated submodules';git submodule update --recursive --checkout --force"
-    home = "!git remote show origin | awk -F ': ' '/Fetch/ {print $2}'"
+    home = "!git remote show origin | awk -F ': ' '/Fetch/ {print $2}' | sed 's/git@github.com:/https:\\/\\/github.com\\//'"
     open = "!open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && git add"
 
