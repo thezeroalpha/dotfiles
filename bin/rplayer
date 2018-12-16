@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+require 'rest-client'
+require 'json'
+
+mpv_options = "--no-video --volume=50"
+
+def posts_of sub
+  url="https://www.reddit.com/r/#{sub}/top.json?t=week&limit=100&show=all"
+  puts "Requesting posts from #{url}..."
+  response = RestClient.get(url)
+  data = JSON.parse(response)["data"]
+  data["children"]
+end
+
+print "Enter subreddit name: "
+sub = gets.chomp
+posts = posts_of sub
+
+while posts.length == 0
+  puts "Subreddit has no music posts or does not exist."
+  print "Enter subreddit name: "
+  sub = gets.chomp
+  posts = posts_of sub
+end
+
+links = []
+posts.each do |post|
+  p = post["data"]
+  if not p["is_self"] and p["post_hint"] != "image"
+    links.append(title: p["title"], url: p["url"])
+  end
+end
+
+links.each do |link|
+  puts "\n-----\n"
+  puts "# #{link[:title]}"
+  puts "(press q to skip)"
+  if not system("mpv #{mpv_options} '#{link[:url]}'")
+    puts "Cannot play #{link[:url]}"
+  end
+end

@@ -2,12 +2,12 @@
 
 # Initial config, setting $radios and $radio_names
 if [ -e ~/.radio-config ]; then
-    source ~/.radio-config
+  source ~/.radio-config
 elif [ -e ~/.config/radio-config ]; then
-    source ~/.config/radio-config
+  source ~/.config/radio-config
 else
-    echo "No radios set up. Please create a config file."
-    exit 1
+  echo "No radios set up. Please create a config file."
+  exit 1
 fi
 
 ## MAIN SCRIPT ##
@@ -16,7 +16,7 @@ VISUALISER=true
 while getopts ":n" opt; do
   case ${opt} in
     n )
-        VISUALISER=false      
+      VISUALISER=false      
   esac
 done
 
@@ -25,22 +25,30 @@ echo "Welcome to the command line radio player."
 PS3="Select a radio, or type q to exit: "
 select RADIO in "${radio_names[@]}"
 do
-	if [[ $RADIO = "q" ]]; then
-		break
+  if [[ $RADIO = "q" ]]; then
+    break
+  else
+    for i in "${!radio_names[@]}"; do
+      if [[ "${radio_names[$i]}" = "${RADIO}" ]]; then
+	if [[ "$RADIO" = "Play from music subreddit" ]]; then
+	  if command -v rplayer &> /dev/null; then
+	    rplayer
+	  else
+	    echo "rplayer not in path."
+	  fi
 	else
-		for i in "${!radio_names[@]}"; do
-			if [[ "${radio_names[$i]}" = "${RADIO}" ]]; then
-				clear
-				echo "Now playing $RADIO"
-                                echo "Loading..."
-                                if $VISUALISER; then
-                                    nice -n 20 mpv ${radios[$i]} --volume=50 --script="/Users/alex/.config/mpv/visualizer.lua" --really-quiet -vo caca
-                                else
-                                    nice -n 20 mpv ${radios[$i]} --volume=50
-                                fi
-				break
-			fi
-		done
-		break
+	  clear
+	  echo "Now playing $RADIO"
+	  echo "Loading..."
+	  if $VISUALISER; then
+	    nice -n 20 mpv ${radios[$i]} --volume=50 --script="/Users/alex/.config/mpv/visualizer.lua" --really-quiet -vo caca
+	  else
+	    nice -n 20 mpv ${radios[$i]} --volume=50
+	  fi
+	  break
 	fi
+      fi
+    done
+    break
+  fi
 done

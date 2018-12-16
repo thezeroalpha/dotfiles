@@ -21,6 +21,9 @@ dub_step="https://somafm.com/dubstep256.pls"				# Dubstep, dub
 defcon="https://somafm.com/defcon256.pls"				# Music for hacking
 deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/experimental
 
+# Subreddit
+subreddit=""
+
 #### END LIST ###
 # Initialising the arrays
 radios=(
@@ -36,6 +39,7 @@ radios=(
     $classic_goa
     $prog_psy_trance
     $six_forty
+    $subreddit
 )
 radio_names=(
     "Drive Radio"
@@ -50,4 +54,5 @@ radio_names=(
     "PSYSTATION - Classic Goa"
     "PSYSTATION - Progressive Psy Trance"
     "6forty radio - Post Rock"
+    "Play from music subreddit"
 )
