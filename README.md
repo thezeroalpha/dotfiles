@@ -15,6 +15,7 @@ If you read a script and see some improvements that could be made, let me know. 
 Scripts:
 * `AMSTracker`: Retrieves x, y, and z values from AMS (Apple Motion Sensor) hardware.
 * `anythingtogif`: converts (almost) anything to a gif. Usage: `anythingtogif clip.mov clip.gif`. Backed by ffmpeg.
+* `bfg.jar`: the big gun. A repo cleaner to remove sensitive data.
 * `class-dump`: dumps classes from binary file
 * `clonedisk`: clones one disk to another
 * `Desktop Changer.app`: an Automator application that changes the desktop background to a random image on login
@@ -23,14 +24,15 @@ Scripts:
 * `executable`: my first script. Makes any file executable, along with further options. Usage: `executable file.sh`
 * `gfx2gfx`: convert SWF into PDF. Usage: `gfx2gfx page.swf -o page.pdf`
 * `icalBuddy`: can extract information about events from the iCal application
-* `itunes_style_getter`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key). Usage: click/play a track in iTunes, and run the program.
+* `itunes_style_getter`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key, set $DISCOGS_API_TOKEN in your profile). Usage: click/play a track in iTunes, and run the program.
 * `linkdir`: symlink all files/folders from source dir to target dir. Usage: `linkdir $source` to create symlinks in cwd, `linkdir $source $target` otherwise.
 * `mdvl`: markdown renderer in Python
 * `modified_cfscrape.py`: can scrape and download CloudFlare-protected websites. Usage: `python3 modified_cfscrape.py http://url.com`
 * `mp3tagger.jar`: a Java application to tag MP3 files
 * `percerr.rb`: a very simple thing for calculating percent error. Just run the Ruby script.
-* `play`: a command line music player. Shows album art, or a visualiser if there is no album art. Set a $MUSIC_DIR in your profile, then run `play`.
-* `radio`: a command-line radio player, can play various music streams from the internet. Also has a visualiser, turn it off by passing `-n` on startup.
+* `play`: a command-line music player. Shows album art, or a visualiser if there is no album art. Set a $MUSIC_DIR in your profile, then run `play`.
+* `radio`: a command-line radio player, can play various music streams from the internet, including subreddits. Also has a visualiser, turn it on by passing `-v` on startup.
+* `rplayer`: a command-line subreddit player. Enter any subreddit that has music, and it'll play all of the links using `mpv` (except for Spotify).
 * `smack.pl`: change macos spaces by smacking the side of your screen (if you have a laptop). Yeah, like physically.
 * `ss-interceptor`: temporarily change where macOS stores your screenshots. Run with the new directory as the first argument.
 * `strip-html-tags`: remove HTML tags from a file
