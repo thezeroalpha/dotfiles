@@ -12,11 +12,11 @@ fi
 
 ## MAIN SCRIPT ##
 
-VISUALISER=true
-while getopts ":n" opt; do
+VISUALISER=false
+while getopts ":v" opt; do
   case ${opt} in
-    n )
-      VISUALISER=false      
+    v )
+      VISUALISER=true      
   esac
 done
 
