@@ -21,6 +21,7 @@
     c = commit
     cm = commit -m
     cam = commit -a -m
+    ca = commit -a
     camend = commit --amend
     camende = commit --amend --no-edit
     cp = commit -p
