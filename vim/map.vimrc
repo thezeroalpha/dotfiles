@@ -5,18 +5,21 @@ nnoremap ; :
 vnoremap ; :
 
 " NERDTree
-nnoremap <leader>f :NERDTreeToggle<cr>
+nnoremap <leader>f :NERDTreeToggle<CR>
 
 " Tagbar
-nnoremap <leader>t :TagbarToggle<cr>
+nnoremap <leader>t :TagbarToggle<CR>
 
+" Mundo undo tree (super-undo)
+nnoremap <leader>u :MundoToggle<CR>
 " Disable q: cuz I hate it
+" (also C-F does the same)
 nnoremap q: <Nop>
 
 " Normal mode shortcuts
-nnoremap <leader>dif :Diff<cr>
-nnoremap <leader>/ :noh<cr>
-nnoremap <leader>b :ls<cr>:b<Space>
+nnoremap <leader>dif :Diff<CR>
+nnoremap <leader>/ :noh<CR>
+nnoremap <leader>b :ls<CR>:b<Space>
 
 " Tab completion
 inoremap <expr> <tab> InsertTabWrapper()
@@ -27,14 +30,14 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Move visual block
-vnoremap J :m '>+1<cr>gv=gv
-vnoremap K :m '<-2<cr>gv=gv
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
 " stfu and write the file
 cnoremap w!! w !sudo tee > /dev/null %
 
 " and don't break my colours (U for 'unfuck my screen please')
-nnoremap U :syntax sync fromstart<cr>:redraw!<cr>
+nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 " Panic button rot13
 nnoremap <leader>qq mzggg?G`z
@@ -46,8 +49,8 @@ nnoremap zh mzzt10<c-u>`z
 nnoremap <leader>= mlgg=G`lzz
 
 " Tab mappings
-nnoremap <C-t> :tabnew<cr>
-nnoremap <C-c> :tabclose<cr>
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-c> :tabclose<CR>
 
 " Window resizing mappings
 nnoremap <C-k> <C-w>+
@@ -56,13 +59,13 @@ nnoremap <C-h> <C-W>>
 nnoremap <C-l> <C-W><
 
 " Delete hidden buffers
-nnoremap <leader>dh :DeleteHiddenBuffers<cr>
+nnoremap <leader>dh :DeleteHiddenBuffers<CR>
 
 " Switch to alernative buffer
-nnoremap <leader>s :b#<cr>
+nnoremap <leader>s :b#<CR>
 
 " Show hidden symbols
-nnoremap <leader>hs :set list!<cr>
+nnoremap <leader>hs :set list!<CR>
 
 " List marks
 nnoremap <leader>mm :<C-u>marks<CR>:normal! `

@@ -48,6 +48,9 @@ Plug 'vimwiki/vimwiki'
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
 
+" Undo tree visualiser
+Plug 'simnalamburt/vim-mundo'
+
 " Easy table making (unnecessary because vimwiki has this built in)
 " Plug 'dhruvasagar/vim-table-mode'
 

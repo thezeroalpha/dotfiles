@@ -14,6 +14,10 @@ set binary
 " No swp please, I save all the time
 set noswapfile
 
+" Persistent undos (useful for plugins too)
+set undofile
+set undodir=~/.vim/undo
+
 " Hide buffers instead of closing
 set hidden
 
