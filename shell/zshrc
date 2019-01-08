@@ -127,3 +127,6 @@ fi
 if [[ $PATH != *"$HOME/.rbenv/shims"* ]]; then
   eval "$(rbenv init -)"
 fi
+
+# this alias interferes with the grv app
+unalias grv
