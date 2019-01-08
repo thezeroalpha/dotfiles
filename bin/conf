@@ -79,17 +79,14 @@ conf_check() {
 	if [ -z "$CONF_DIR" ]; then
 		echo "\$CONF_DIR not set."
 	else
-		"$@"	
+		"$@"
 	fi
 }
 #}}}
 
 # Run with arguments {{{
 if [ $# -gt 0 ]; then
-	if [ "$1" = 'cd' ]; then
-		conf_check cd "$CONF_DIR"
-
-	elif [ "$1" = 'rc' ]; then
+	if [ "$1" = 'rc' ]; then
 		if [[ $SHELL = *"zsh"* ]]; then
 			vim "$HOME"/.zshrc
 		elif [[ $SHELL = *"bash"* ]]; then
@@ -115,7 +112,6 @@ if [ $# -gt 0 ]; then
 	# ...or print help text {{{
 else
 	echo "Usage:"
-	echo "conf cd                 Go to conf directory"
 	echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
 	echo "conf common             Edit common profile"
 	echo "conf get                Print path to configuration directory"
