@@ -187,8 +187,15 @@ if command -v brew &> /dev/null; then
    brew prune;
    brew doctor;
    brew missing;
+
+   echo "Homebrew cache disk usage:"
+   du -h "$(brew --cache)"
+   echo "Remove with:"
+   echo " rm -rf $(brew --cache)"
+
    echo "Backing up Brew installation..."
    brew bundle dump --force --file=~/.dotfiles/Brewfile;
+
    echo_succ "Backup complete."
    notify "Brewed." "All packages have been upgraded.";
 else
