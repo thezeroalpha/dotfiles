@@ -32,7 +32,7 @@ fi
 #}}}
 
 export CONF_DIR="$HOME/.dotfiles"
-bin/conf stow $(find . ! -iwholename '*.git*' -type d -d 1)
+bin/conf use $(find . ! -iwholename '*.git*' -type d -d 1)
 
 echo "Dotfiles installed."
 bin/conf reload

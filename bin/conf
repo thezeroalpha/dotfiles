@@ -13,8 +13,8 @@ lncommand() {
 }
 #}}}
 
-# Stow command {{{
-stow_files() {
+# Use command {{{
+use_files() {
 	if [ $# -gt 0 ]; then
 		for f in "$@"; do
 			case "${f##./}" in
@@ -105,8 +105,8 @@ if [ $# -gt 0 ]; then
 	elif [ "$1" = 'get' ]; then
 		conf_check echo "$CONF_DIR"
 
-	elif [ "$1" = 'stow' ]; then
-		stow_files "${@:2}" 
+	elif [ "$1" = 'use' ]; then
+		use_files "${@:2}" 
 
 	else
 		conf_check "$(command -v git)" --git-dir="$CONF_DIR"/.git --work-tree "$CONF_DIR" "$@"
