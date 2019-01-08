@@ -91,3 +91,5 @@ set modelines=5     "within the first/last 5 lines
 " Allow italics
 set t_ZH=[3m
 set t_ZR=[23m
+
+let tlist_vimwiki_settings = 'wiki;h:Headers'
