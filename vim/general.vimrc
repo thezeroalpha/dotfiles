@@ -15,8 +15,10 @@ set binary
 set noswapfile
 
 " Persistent undos (useful for plugins too)
-set undofile
-set undodir=~/.vim/undo
+if has('undofile')
+  set undofile
+  set undodir=~/.vim/undo
+endif
 
 " Hide buffers instead of closing
 set hidden

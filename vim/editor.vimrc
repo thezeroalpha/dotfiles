@@ -6,7 +6,9 @@ syntax on
 filetype plugin indent on
 
 " In general, don't want anything concealed
-set conceallevel=0
+if has('conceallevel')
+  set conceallevel=0
+endif
 
 " Highlight current line
 set cursorline
@@ -19,8 +21,10 @@ set linebreak
 set textwidth=500
 
 " Continue wrapped line on same indent as previous
-set breakindent
-set breakindentopt+=shift:3
+if has('breakindent')
+  set breakindent
+  set breakindentopt+=shift:3
+endif
 
 " Numbered lines
 set number
@@ -54,7 +58,7 @@ set matchtime=2
 
 " Since belloff isn't always an option
 if exists("&belloff")
-    set belloff=showmatch   " Disable beeping if no match is found
+  set belloff=showmatch   " Disable beeping if no match is found
 endif
 
 " Searching
