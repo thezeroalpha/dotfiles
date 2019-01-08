@@ -1,3 +1,4 @@
-source $HOME/.commonprofile
+#!/usr/bin/env bash
+source "$HOME/.commonprofile"
 PATH=$PATH:/opt/metasploit-framework/bin
 export PATH=$PATH:/opt/metasploit-framework/bin

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 rootdir="$MUSIC_DIR"
 mpv_options="--no-video --really-quiet --volume=50"

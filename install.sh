@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # vim: foldmethod=marker:foldlevel=0
 
 # Preliminary checks {{{

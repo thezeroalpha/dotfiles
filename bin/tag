@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 clear
 cd ~
 echo Welcome to MP3 Tagger!

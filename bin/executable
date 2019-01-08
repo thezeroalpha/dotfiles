@@ -1,8 +1,8 @@
+#!/usr/bin/env bash
 # CREATED BY ALEX BALGAVY OF INSIGHTDEV
 # COPYRIGHT (C)2013 ALEX BALGAVY
 # FREE TO USE OR SHARE
 
-#!/bin/bash
 # Sets the parameters equal to variables
 FILENAME="${1}"
 

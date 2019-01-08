@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 oldifs="$IFS"
 while :; do
     if [ $# -ne 0 ]; then

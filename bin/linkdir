@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ $# -eq 0 ]; then
    echo "Needs at least one argument (the source directory)."
    echo "Usage: linkdir source_directory [target_directory]"
