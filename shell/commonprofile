@@ -16,6 +16,13 @@ if [[ $PATH != *"/Users/alex/.bin"* ]]; then
    export PATH=$HOME/.bin:$PATH
 fi
 
+# Golang
+if command -v go &> /dev/null; then
+   if [[ $PATH != *"$(go env GOPATH)"* ]]; then
+      export PATH=$PATH:$(go env GOPATH)/bin
+   fi
+   export GOPATH=$(go env GOPATH)
+fi
 # Set a variable for my confidr
 export CONF_DIR="$HOME/.dotfiles"
 
