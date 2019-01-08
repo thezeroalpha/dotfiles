@@ -1,8 +1,15 @@
 #!/bin/bash
+# vim: foldmethod=marker:foldlevel=0
 
+# Preliminary checks {{{
 # Check if this directory was cloned properly
 if [ $(pwd) != "$HOME/.dotfiles" ]; then
     echo "Please clone this directory as $HOME/.dotfiles."
+    exit 1
+fi
+
+if ! [ -f "./install.sh" ]; then
+    echo "Please cd into $HOME/.dotfiles before running the script."
     exit 1
 fi
 
@@ -22,57 +29,15 @@ else
     exit 1
 fi
 
+#}}}
+
 export CONF_DIR="$HOME/.dotfiles"
+bin/conf stow $(find . ! -iwholename '*.git*' -type d -d 1)
 
-lncommand() { ln -snfv $(pwd)/"$1" "$2"; }
+echo "Dotfiles installed."
+bin/conf reload
+echo "Run `conf` for more help."
 
-# Back up previous files
-if [ -d "$HOME/.vim" ]; then
-    mv "$HOME/.vim" "$HOME/.vim.orig"
-fi
-if [ -f "$HOME/.vimrc" ]; then
-    mv "$HOME/.vimrc" "$HOME/.vimrc.orig"
-fi
-
-
-# Link stuff conditionally in case of a sparse checkout
-if [ -d ".bin" ]; then
-    lncommand "bin" "$HOME/.bin"
-fi
-
-if [ -d "oh-my-zsh" ]; then
-    lncommand "oh-my-zsh" "$HOME/.oh-my-zsh"
-fi
-
-
-if [ -d "shell" ]; then
-    for i in $(ls shell); do
-	lncommand shell/"$i" $HOME/."$i"
-    done
-fi
-
-if [ -d "git" ]; then
-    lncommand git/gitconfig $HOME/.gitconfig
-    git config --global init.templatedir $CONF_DIR/git/git_template
-fi
-
-if [ -f "other-scripts/gdbinit" ]; then
-    lncommand "other-scripts/gdbinit" "$HOME/.gdbinit"
-fi
-if [ -f "other-scripts/visualizer.lua" ]; then
-    mkdir -p $HOME/.config/mpv
-    lncommand "other-scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
-fi
-
-if [ -f "other-scripts/radio-config" ]; then
-    lncommand "other-scripts/radio-config" "$HOME/.radio-config"
-fi
-
-if [ -d "vim" ]; then
-    # Link vimrc (which points directly to other vim configs)
-    lncommand vim/init.vimrc $HOME/.vimrc
-
-    # Link ideavimrc, has to be separate
-    lncommand vim/idea.vimrc $HOME/.ideavimrc
-fi
-
+echo "Don't forget to create a ~/.secret_env_variables with:"
+echo '- $DISCOGS_API_TOKEN'
+echo '- $HOMEBREW_GITHUB_API_TOKEN'

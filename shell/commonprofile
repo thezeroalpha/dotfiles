@@ -57,45 +57,6 @@ fi
 
 # }}}
 
-# Set up conf command {{{
-conf() {
-   if [ $# -gt 0 ]; then
-      if [ "$1" = 'cd' ]; then
-         cd ~/.dotfiles || return;
-      elif [ "$1" = 'rc' ]; then
-         if [[ $SHELL = *"zsh"* ]]; then
-            vim ~/.zshrc
-         elif [[ $SHELL = *"bash"* ]]; then
-            vim ~/.bashrc
-         fi
-      elif [ "$1" = 'common' ]; then
-         vim ~/.commonprofile
-      elif [ "$1" = 'reload' ]; then
-         if [[ $SHELL = *"zsh"* ]]; then
-            START_TIME=$SECONDS
-            source ~/.zshrc
-            echo "Reloaded zsh config ($(( $SECONDS-$START_TIME )) sec)."
-         elif [[ $SHELL = *"bash"* ]]; then
-            START_TIME=$SECONDS
-            source ~/.bashrc
-            echo "Reloaded bash config ($(( $SECONDS-$START_TIME )) sec)."
-         fi
-      elif [ "$1" = 'get' ]; then
-         echo "$CONF_DIR"
-      else
-         $(command -v git) --git-dir="$HOME"/.dotfiles/.git --work-tree "$HOME"/.dotfiles/ "$@"
-      fi
-   else
-      echo "Usage:"
-      echo "conf cd                 Go to conf directory"
-      echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
-      echo "conf common             Edit common profile"
-      echo "conf reload             Reload configuration files"
-      echo "conf get                Print path to configuration directory"
-      echo "conf [git command]      Run git command in conf directory"
-   fi
-}
-# }}}
 
 # Aliases (simple) {{{
 alias c="clear"
