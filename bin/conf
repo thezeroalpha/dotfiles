@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # vim: foldmethod=marker:foldlevel=0
 
 # Main linking command {{{
@@ -8,7 +8,7 @@ lncommand() {
 			echo "-- Backing up original $2"
 			mv -iv "$2" "$2-orig"
 		fi
-		ln -snfv "$(pwd)/$1" "$2"; 
+		ln -snfv "$1" "$2"; 
 	fi
 }
 #}}}
@@ -19,43 +19,43 @@ use_files() {
 		for f in "$@"; do
 			case "${f##./}" in
 				"bin")
-					lncommand "bin" "$HOME/.bin"
+					lncommand "$CONF_DIR/bin" "$HOME/.bin"
 					if command -v mpv &> /dev/null; then
 						mkdir -p "$HOME/.config/mpv"
-						lncommand ".bin/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
+						lncommand "$CONF_DIR/.bin/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
 					fi
 					;;
 				"ctags")
-					lncommand "ctags/ctags" "$HOME/.ctags"
+					lncommand "$CONF_DIR/ctags/ctags" "$HOME/.ctags"
 					;;
 				"gdb")
-					lncommand "gdb/gdbinit" "$HOME/.gdbinit"
+					lncommand "$CONF_DIR/gdb/gdbinit" "$HOME/.gdbinit"
 					;;
 
 				"git")
-					lncommand "git/gitconfig" "$HOME/.gitconfig"
+					lncommand "$CONF_DIR/git/gitconfig" "$HOME/.gitconfig"
 					if [ -d git/git_template ]; then
 						conf_check git config --global init.templatedir "$CONF_DIR"/git/git_template
 					fi
 					;;
 				"iterm2")
-					lncommand "iterm2" "$HOME/.iterm2"
+					lncommand "$CONF_DIR/iterm2" "$HOME/.iterm2"
 					;;
 				"oh-my-zsh")
-					lncommand "oh-my-zsh" "$HOME/.oh-my-zsh"
+					lncommand "$CONF_DIR/oh-my-zsh" "$HOME/.oh-my-zsh"
 					;;
 				"radio")
-					lncommand "radio/radio-config" "$HOME/.radio-config"
+					lncommand "$CONF_DIR/radio/radio-config" "$HOME/.radio-config"
 					;;
 
 				"shell")
 					for i in shell/*; do
-						lncommand shell/"$i" "$HOME/.$i"
+						lncommand "$CONF_DIR/$i" "$HOME/.${i##*/}"
 					done
 					;;
 				"vim")
-					lncommand vim/init.vimrc "$HOME/.vimrc" # vimrc points directly to other vim configs
-					lncommand vim/idea.vimrc "$HOME/.ideavimrc" # ideavimrc has to be separate
+					lncommand "$CONF_DIR/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
+					lncommand "$CONF_DIR/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
 					;;
 			esac
 
@@ -103,7 +103,7 @@ if [ $# -gt 0 ]; then
 		conf_check echo "$CONF_DIR"
 
 	elif [ "$1" = 'use' ]; then
-		use_files "${@:2}" 
+		conf_check use_files "${@:2}" 
 
 	else
 		conf_check "$(command -v git)" --git-dir="$CONF_DIR"/.git --work-tree "$CONF_DIR" "$@"
