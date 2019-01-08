@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # vim:foldmethod=marker:foldlevel=0
 
 # Env variables {{{
@@ -6,41 +6,52 @@
 # Original path:
 # PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
+export \
+   PATH GOPATH \
+   CONF_DIR MUSIC_DIR \
+   EDITOR HOMEBREW_EDITOR \
+   VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV \
+   CASK_REPO \
+   SHELLCHECK_OPTS
+
 # Add API keys and stuff
-if [ -f $HOME/.secret_env_variables ]; then
-   source ~/.secret_env_variables
+if [ -f "$HOME/.secret_env_variables" ]; then
+   source "$HOME/.secret_env_variables"
 fi
 
 # Include my scripts in PATH (conditionally)
 if [[ $PATH != *"/Users/alex/.bin"* ]]; then
-   export PATH=$HOME/.bin:$PATH
+   PATH=$HOME/.bin:$PATH
 fi
 
 # Golang
 if command -v go &> /dev/null; then
    if [[ $PATH != *"$(go env GOPATH)"* ]]; then
-      export PATH=$PATH:$(go env GOPATH)/bin
+      PATH=$PATH:$(go env GOPATH)/bin
    fi
-   export GOPATH=$(go env GOPATH)
+   GOPATH=$(go env GOPATH)
 fi
 # Set a variable for my confidr
-export CONF_DIR="$HOME/.dotfiles"
+CONF_DIR="$HOME/.dotfiles"
 
 # Where my music is located
-export MUSIC_DIR="$HOME/Music/iTunes/iTunes Media/Music"
+MUSIC_DIR="$HOME/Music/iTunes/iTunes Media/Music"
 
-export EDITOR="vim"
+EDITOR="vim"
 
 if command -v brew &> /dev/null; then
-   export HOMEBREW_EDITOR="vim"
-   export CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
+   HOMEBREW_EDITOR="vim"
+   CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
 fi
 
 # Set python 3 location
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
 # pip should only run if there is a virtualenv currently activated
-export PIP_REQUIRE_VIRTUALENV=true
+PIP_REQUIRE_VIRTUALENV=true
+
+# what to exclude for shellcheck
+SHELLCHECK_OPTS='--exclude=SC1090,SC1091,SC2009'
 
 # }}}
 
@@ -56,7 +67,6 @@ if command -v fuck &> /dev/null; then
 fi
 
 # }}}
-
 
 # Aliases (simple) {{{
 alias c="clear"
@@ -107,10 +117,11 @@ mark() { mdvl "$1" | less; }
 cd() { builtin cd -P "$@" || return; ls; }                                  # List contents after cding
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                     # Make dir and cd at the same time
 procinfo() { ps aux | grep "$1"; }                                          # Get info about a process (by name)
+procinfo2() { pgrep -f "$1"; }
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # Remove empty directories
 todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Find TODO comments
 find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
-hr() { for i in {1..$COLUMNS}; do echo -n "#"; done; echo; }
+hr() { for ((i=0; i<COLUMNS; i++)); do echo -n "#"; done; echo; }
 
 # Pip3 upgrade packages
 pip3-upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
@@ -136,6 +147,19 @@ notify() {
    fi
 }
 
+# Reload configs
+reload() {
+   START_TIME=$SECONDS
+   source "$HOME"/.commonprofile
+
+   if [[ $SHELL = *"zsh"* ]]; then
+      source "$HOME"/.zshrc
+   elif [[ $SHELL = *"bash"* ]]; then
+      source "$HOME"/.bash_profile
+   fi
+   echo "Reloaded config ($(( SECONDS-START_TIME )) sec)."
+}
+
 # Gem update script
 gemmaster() {
    gem update;
@@ -146,23 +170,23 @@ gemmaster() {
 
 # Webm to mp4 video
 webm-mp4() {
-   ffmpeg -i "$1" -qscale 0 "$1".mp4
+ffmpeg -i "$1" -qscale 0 "$1".mp4
 }
 
 # Extract audio from mp4
 mp4-mp3() {
-   ffmpeg -i "$1" "$1".mp3
+ffmpeg -i "$1" "$1".mp3
 }
 
 # Anything to a gif
 gifify() {
    ffmpeg -i "$1" -r 25 -f image2pipe -vcodec ppm - | \
       convert -delay 4 -loop 0 - output.gif
-}
+   }
 
 # Gif to mp4
 gif-mp4() {
-   ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
+ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
 }
 
 # Extract any archive
@@ -243,14 +267,14 @@ if command -v osascript &> /dev/null; then
          echo 'No Finder window found' >&2
       fi
    }
-   # echo current Finder directory
-   gdf() {
-      osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
-   }
-   # echo selected Finder file
-   fsel() {
-      osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
-   };
+# echo current Finder directory
+gdf() {
+   osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+}
+# echo selected Finder file
+fsel() {
+   osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+};
 fi
 # }}}
 
