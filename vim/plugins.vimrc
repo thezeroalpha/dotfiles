@@ -17,9 +17,6 @@ Plug 'scrooloose/nerdcommenter'
 " Emmet - must-have for HTML, awesome snippet expansion
 Plug 'mattn/emmet-vim'
 
-" Syntax file etc. for Typescript
-Plug 'leafgarland/typescript-vim'
-
 " Sleuth - set tab options based on current file
 Plug 'tpope/vim-sleuth'
 
