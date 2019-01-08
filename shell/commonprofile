@@ -124,7 +124,7 @@ find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Se
 hr() { for ((i=0; i<COLUMNS; i++)); do echo -n "#"; done; echo; }
 
 # Pip3 upgrade packages
-pip3-upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
+pip3_upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
 
 # Get current battery percentage
 batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
@@ -169,12 +169,12 @@ gemmaster() {
 
 
 # Webm to mp4 video
-webm-mp4() {
+webm_mp4() {
 ffmpeg -i "$1" -qscale 0 "$1".mp4
 }
 
 # Extract audio from mp4
-mp4-mp3() {
+mp4_mp3() {
 ffmpeg -i "$1" "$1".mp3
 }
 
@@ -185,7 +185,7 @@ gifify() {
    }
 
 # Gif to mp4
-gif-mp4() {
+gif_mp4() {
 ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
 }
 
