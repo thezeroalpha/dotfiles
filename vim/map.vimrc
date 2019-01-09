@@ -101,6 +101,7 @@ nnoremap <C-E><C-G> :vsplit $CONF_DIR/vim/general.vimrc<CR>
 nnoremap <C-E><C-V> :vsplit $CONF_DIR/vim/init.vimrc<CR>
 nnoremap <C-E><C-M> :vsplit $CONF_DIR/vim/map.vimrc<CR>
 nnoremap <C-E><C-P> :vsplit $CONF_DIR/vim/plugins.vimrc<CR>
+nnoremap <C-E><C-L> :vsplit $CONF_DIR/vim/pluginconf.vimrc<CR>
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
