@@ -12,6 +12,11 @@ nnoremap <leader>t :TagbarToggle<CR>
 
 " Mundo undo tree (super-undo)
 nnoremap <leader>u :MundoToggle<CR>
+
+" Vimwiki split links
+nmap <leader><CR> <Plug>VimwikiSplitLink
+nmap <leader>v<CR> <Plug>VimwikiVSplitLink
+
 " Disable q: cuz I hate it
 " (also C-F does the same)
 nnoremap q: <Nop>
