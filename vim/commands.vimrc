@@ -1,7 +1,10 @@
 " Custom commands
-command! Todo vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
-command! Note vimgrep /NOTE\C/ **/*.* | copen
-command! Fix vimgrep /FIXME\C/ **/*.* | copen
+command! TodoP vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
+command! Todo vimgrep /TODO\C<Bslash><Bar>TO DO\c/ % | copen
+command! NoteP vimgrep /NOTE\C/ **/*.* | copen
+command! Note vimgrep /NOTE\C/ % | copen
+command! FixP vimgrep /FIXME\C/ **/*.* | copen
+command! Fix vimgrep /FIXME\C/ % | copen
 command! ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
 command! CDC cd %:p:h
 command! Maketab set noet ts=2 | %retab!
