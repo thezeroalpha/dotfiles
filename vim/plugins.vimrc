@@ -48,6 +48,9 @@ Plug 'tpope/vim-fugitive'
 " Undo tree visualiser
 Plug 'simnalamburt/vim-mundo'
 
+" Quickfix window settings/mappings
+Plug 'romainl/vim-qf'
+
 " Easy table making (unnecessary because vimwiki has this built in)
 " Plug 'dhruvasagar/vim-table-mode'
 

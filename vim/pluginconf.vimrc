@@ -1,5 +1,7 @@
 let g:NERDSpaceDelims = 1
 let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki'}]
+
+" tagbar language definitions
 let g:tagbar_type_vimwiki = {
           \   'ctagstype':'vimwiki'
           \ , 'kinds':['h:header']
@@ -46,3 +48,8 @@ let g:tagbar_type_markdown = {
     \ ],
     \ 'sort': 0
 \ }
+
+" vim-qf mappings
+nmap ]q <Plug>(qf_qf_next)
+nmap [q <Plug>(qf_qf_previous)
+nmap <leader>qf <Plug>(qf_qf_toggle)
