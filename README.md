@@ -19,9 +19,11 @@ Scripts:
 * `class-dump`: dumps classes from binary file
 * `clonedisk`: clones one disk to another
 * `Desktop Changer.app`: an Automator application that changes the desktop background to a random image on login
+* `conf`: the script to manage dotfiles. run `conf` to show available commands.
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
 * `epub-convert`: uses Calibre's ebook converter program to convert anything to an epub
 * `executable`: my first script. Makes any file executable, along with further options. Usage: `executable file.sh`
+* `ffmpeg-split.py`: split videos using ffmpeg. [Here's the README.](ffmpeg-split-README.md)
 * `gfx2gfx`: convert SWF into PDF. Usage: `gfx2gfx page.swf -o page.pdf`
 * `icalBuddy`: can extract information about events from the iCal application
 * `it-style`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key, set $DISCOGS_API_TOKEN in your profile). Usage: click/play a track in iTunes, and run the program.
@@ -42,5 +44,6 @@ Scripts:
 * `upx.out`: Fixes a fucked CORE keygen. Check Info.plist in bundle. If the version is lower than system version, and the crash log says "UPX compressed binary", just run `upx.out -d $coreKeygenBinaryPath` and you good.
 * `usbmux`, `tcprelay`: port forwarding. If you want to SSH to a jailbroken iPhone over USB, you can run `tcprelay 22:2222` to forward local port 2222 to the iPhone's SSH port (22), and then `ssh -p 2222 root@localhost`.
 * `vimwiki_md`: convert vimwiki files to markdown, using the vimwiki_md_ex expressions file for sed. Still a work-in-progress and probably very buggy.
+* `vwtags.py`: generate ctags tag files for vimwiki documents.
 * `wattpad-scrape`: downloads a Wattpad book as an EPUB file. Usage: `wattpad-scrape $wattpad_url`
 * `xld`: X lossless decoder CLI.
