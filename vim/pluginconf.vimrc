@@ -8,7 +8,7 @@ let g:tagbar_type_vimwiki = {
           \ , 'sro':'&&&'
           \ , 'kind2scope':{'h':'header'}
           \ , 'sort':0
-          \ , 'ctagsbin':'$CONF_DIR/bin/vwtags.py'
+          \ , 'ctagsbin':'$CONF_DIR/scripts/vwtags.py'
           \ , 'ctagsargs': 'default'
           \ }
 

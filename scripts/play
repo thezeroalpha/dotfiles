@@ -2,7 +2,7 @@
 
 rootdir="$MUSIC_DIR"
 mpv_options="--no-video --really-quiet --volume=50"
-mpv_options_vis="--no-video --really-quiet --volume=50 --script=/Users/alex/.config/mpv/visualizer.lua -vo caca"
+mpv_options_vis="--no-video --really-quiet --volume=50 --script=$HOME/.config/mpv/visualizer.lua -vo caca"
 mpv_options_noart="--no-video --volume=50"
 
 play_track() {
@@ -65,7 +65,7 @@ init_check() {
 }
 
 init_check
-cd /Users/alex/Music/iTunes/iTunes\ Media/Music
+cd "$rootdir"
 trap clean_up INT
 clear
 echo "Music Player v1"

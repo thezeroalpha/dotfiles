@@ -20,10 +20,6 @@ use_files() {
 			case "${f##./}" in
 				"bin")
 					lncommand "$CONF_DIR/bin" "$HOME/.bin"
-					if command -v mpv &> /dev/null; then
-						mkdir -p "$HOME/.config/mpv"
-						lncommand "$CONF_DIR/.bin/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
-					fi
 					;;
 				"ctags")
 					lncommand "$CONF_DIR/ctags/ctags" "$HOME/.ctags"
@@ -48,6 +44,13 @@ use_files() {
 					lncommand "$CONF_DIR/radio/radio-config" "$HOME/.radio-config"
 					;;
 
+				"scripts")
+					lncommand "$CONF_DIR/scripts" "$HOME/.scripts"
+					if command -v mpv &> /dev/null; then
+						mkdir -p "$HOME/.config/mpv"
+						lncommand "$CONF_DIR/.scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
+					fi
+					;;
 				"shell")
 					for i in shell/*; do
 						lncommand "$CONF_DIR/$i" "$HOME/.${i##*/}"
@@ -62,12 +65,13 @@ use_files() {
 		done
 	else
 		echo "Config files:"
-		echo "bin				various executable scripts"
+		echo "bin				various binaries"
 		echo "ctags			language definitions for ctags"
 		echo "gdb				gdb dashboard and the like"
 		echo "git				git config files and hooks"
 		echo "oh-my-zsh	the whole oh-my-zsh config directory"
 		echo "radio			radio metadata for the internet radio script"
+		echo "scripts		misc executable scripts (like this one"
 		echo "shell			various configs related to shells"
 		echo "vim				vim configuration files"
 	fi

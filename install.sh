@@ -37,13 +37,13 @@ read -n 1 -p "Install all dotfiles? [Y/n]" yn
 echo
 case $yn in
   [Yy]* ) 
-    bin/conf use $(find . ! -iwholename '*.git*' -type d -d 1)
+    scripts/conf use $(find . ! -iwholename '*.git*' -type d -d 1)
     echo "Dotfiles installed."
     echo "Run \`conf\` for more help."
     ;;
   * ) 
     echo "No dotfiles installed automatically."
-    echo "Run \`bin/conf\` for more help."
+    echo "Run \`scripts/conf\` for more help."
     ;;
 esac
 

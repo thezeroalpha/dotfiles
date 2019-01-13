@@ -20,8 +20,11 @@ if [ -f "$HOME/.secret_env_variables" ]; then
 fi
 
 # Include my scripts in PATH (conditionally)
-if [[ $PATH != *"/Users/alex/.bin"* ]]; then
+if [[ $PATH != *"$HOME/.bin"* ]]; then
    PATH=$HOME/.bin:$PATH
+fi
+if [[ $PATH != *"$HOME/.scripts"* ]]; then
+   PATH=$HOME/.scripts:$PATH
 fi
 
 # Golang
@@ -108,8 +111,8 @@ alias startpg='pg_ctl -D $(brew --prefix)/var/postgres start'
 # }}}
 
 # Aliases (Dougscripts trial resets) {{{
-alias rs_notinplaylist="rm /Users/alex/Library/iTunes/.ntnny.txt"
-alias rs_removedeadtracks="rm /Users/alex/Library/iTunes/.superremoveapp.plist"
+alias rs_notinplaylist="rm $HOME/Library/iTunes/.ntnny.txt"
+alias rs_removedeadtracks="rm $HOME/Library/iTunes/.superremoveapp.plist"
 # }}}
 
 # One-liners {{{
