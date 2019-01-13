@@ -32,11 +32,20 @@ fi
 #}}}
 
 export CONF_DIR="$HOME/.dotfiles"
-bin/conf use $(find . ! -iwholename '*.git*' -type d -d 1)
 
-echo "Dotfiles installed."
-bin/conf reload
-echo "Run `conf` for more help."
+read -n 1 -p "Install all dotfiles? [Y/n]" yn
+echo
+case $yn in
+	[Yy]* ) 
+		bin/conf use $(find . ! -iwholename '*.git*' -type d -d 1)
+		echo "Dotfiles installed."
+		echo "Run \`conf\` for more help."
+		;;
+	* ) 
+		echo "No dotfiles installed automatically."
+		echo "Run \`bin/conf\` for more help."
+		;;
+esac
 
 echo "Don't forget to create a ~/.secret_env_variables with:"
 echo '- $DISCOGS_API_TOKEN'
