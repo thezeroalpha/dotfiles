@@ -78,6 +78,7 @@ use_files() {
 conf_check() {
 	if [ -z "$CONF_DIR" ]; then
 		echo "\$CONF_DIR not set."
+		echo "Please set the CONF_DIR environment variable to your dotfiles repository."
 	else
 		"$@"
 	fi
@@ -88,17 +89,30 @@ conf_check() {
 if [ $# -gt 0 ]; then
 	if [ "$1" = 'rc' ]; then
 		if [[ $SHELL = *"zsh"* ]]; then
-			vim "$HOME"/.zshrc
+			if [ -f "$HOME"/.zshrc ]; then
+				"$EDITOR" "$HOME"/.zshrc
+			else
+				echo "File $HOME/.zshrc does not exist."
+			fi
 		elif [[ $SHELL = *"bash"* ]]; then
-			vim "$HOME"/.bashrc
+			if [ -f "$HOME"/.bashrc ]; then
+				"$EDITOR" "$HOME"/.bashrc
+			elif [ -f "$HOME"/.bash_profile ]; then
+				"$EDITOR" "$HOME"/.bash_profile
+			else
+				echo "File $HOME/.bashrc does not exist."
+			fi
 		else
 			echo "Shell profile not supported yet."
 			echo "Feel free to ask me to add support, or you can do it yourself."
 		fi
 
 	elif [ "$1" = 'common' ]; then
-		vim "$HOME"/.commonprofile
-
+		if [ -f "$HOME"/.commonprofile ]; then
+			"$EDITOR" "$HOME"/.commonprofile
+		else
+			echo "File $HOME/.commonprofile does not exist."
+		fi
 	elif [ "$1" = 'get' ]; then
 		conf_check echo "$CONF_DIR"
 
@@ -115,6 +129,7 @@ else
 	echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
 	echo "conf common             Edit common profile"
 	echo "conf get                Print path to configuration directory"
+	echo "conf use [module]				Use dotfiles for a specific module (vim, git, shell, etc.)"
 	echo "conf [git command]      Run git command in conf directory"
 fi
 #}}}
