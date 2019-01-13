@@ -68,14 +68,14 @@ set statusline+=\ %m%r%w                                " Flags (modified, reado
 if exists('g:loaded_fugitive')
     set statusline+=\ %{FugitiveStatusline()}
 endif
-set statusline+=\ \ CWD:\ %r%{getcwd()}%h               " Current working directory
-set statusline+=%=                                      " Left/right separator
-set statusline+=\ %y                                    " File type
-set statusline+=\ [%{&expandtab?'spaces':'tabs'},       " Using spaces or tabs
-set statusline+=%{strlen(&tabstop)?&tabstop:'none'}]    " Spaces in a tab
-set statusline+=\ %l/%L\                                " Cursor line/total lines
-set statusline+=\ B%n                                   " Buffer number
-set statusline+=\ \ %{strftime(\"%H:%M\")}              " Time
+set statusline+=\ \ CWD:\ %r%{getcwd()}%h                     " Current working directory
+set statusline+=%=                                            " Left/right separator
+set statusline+=\ %y                                          " File type
+set statusline+=\ [%{&expandtab?'spaces':'tabs'},             " Using spaces or tabs
+set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]    " Spaces in a tab
+set statusline+=\ %l/%L\                                      " Cursor line/total lines
+set statusline+=\ B%n                                         " Buffer number
+set statusline+=\ \ %{strftime(\"%H:%M\")}                    " Time
 
 " Set 80-char column (off by default)
 " set colorcolumn=80
