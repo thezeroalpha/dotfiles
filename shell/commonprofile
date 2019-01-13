@@ -90,6 +90,7 @@ alias g='git'                                                   # Make git easie
 alias r='ranger'                                                # Make Ranger easier to type
 alias wheredef='type -a'
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
+alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""             # Remove ANSI color codes from text
 # }}}
 
 # Aliases (Mac UI) {{{
@@ -125,7 +126,6 @@ todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Fi
 find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
 hr() { for ((i=0; i<COLUMNS; i++)); do echo -n "#"; done; echo; }           # Insert a <hr> in the terminal
 vimq() { vim -v -q <($(fc -nl -1)); }                                       # Load results of last command (often ag) in vim quickfix
-rmcolors() { sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"; }                            # Remove ANSI color codes from text
 
 # Pip3 upgrade packages
 pip3_upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
