@@ -29,10 +29,10 @@ fi
 
 # Golang
 if command -v go &> /dev/null; then
-   if [[ $PATH != *"$(go env GOPATH)"* ]]; then
-      PATH=$PATH:$(go env GOPATH)/bin
+   GOPATH="$HOME"/.go
+   if [[ $PATH != *"$GOPATH"* ]]; then
+      PATH=$PATH:"$GOPATH"/bin
    fi
-   GOPATH=$(go env GOPATH)
 fi
 # Set a variable for my confidr
 CONF_DIR="$HOME/.dotfiles"
