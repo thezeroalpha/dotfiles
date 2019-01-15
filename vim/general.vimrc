@@ -62,23 +62,22 @@ set t_Co=256
 set mousemodel=popup
 
 " Status bar
-set laststatus=2                                        " Always show status bar
-set statusline=\ %F                                     " Full path
-set statusline+=\ %m%r%w                                " Flags (modified, readonly, help, preview)
-if exists('g:loaded_fugitive')
-    set statusline+=\ %{FugitiveStatusline()}
-endif
-set statusline+=\ \ CWD:\ %r%{getcwd()}%h                     " Current working directory
-set statusline+=%=                                            " Left/right separator
-set statusline+=\ %y                                          " File type
-set statusline+=\ [%{&expandtab?'spaces':'tabs'},             " Using spaces or tabs
-set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]    " Spaces in a tab
-set statusline+=\ %l/%L\                                      " Cursor line/total lines
-set statusline+=\ B%n                                         " Buffer number
-set statusline+=\ \ %{strftime(\"%H:%M\")}                    " Time
+set laststatus=2                                                " Always show status bar
+set statusline=%<                                               " Cut at start
+set statusline=%f                                               " Path
+set statusline+=\ %m%r%w                                        " Flags (modified, readonly, help, preview)
+if exists('g:loaded_fugitive')                                  " If fugitive is in use
+    set statusline+=\ %{FugitiveStatusline()}                   "   add fugitive status to the statusline 
+endif                                                           " end
+set statusline+=\ \ CWD:\ %{substitute(getcwd(),$HOME,'~','g')} " Current working directory, replacing home with ~
+set statusline+=%=                                              " Left/right separator
+set statusline+=\ %y                                            " File type
+set statusline+=\ [%{&expandtab?'spaces':'tabs'},               " Using spaces or tabs
+set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]      " Spaces in a tab
+set statusline+=\ %l/%L\                                        " Cursor line/total lines
+set statusline+=\ B%n                                           " Buffer number
+set statusline+=\ \ %{strftime(\"%H:%M\")}                      " Time
 
-" Set 80-char column (off by default)
-" set colorcolumn=80
 highlight ColorColumn ctermbg=233
 
 " How to split new windows
