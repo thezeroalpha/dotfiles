@@ -5,10 +5,11 @@ nnoremap ; :
 vnoremap ; :
 
 " NERDTree
-nnoremap <leader>f :NERDTreeToggle<CR>
+nnoremap <leader>f :NERDTreeTabsToggle<CR>
 
 " Tagbar
-nnoremap <leader>t :TagbarToggle<CR>
+nnoremap <leader>tt :TagbarToggle<CR>
+nnoremap <leader>to :TagbarOpen fj<CR>
 
 " Mundo undo tree (super-undo)
 nnoremap <leader>u :MundoToggle<CR>

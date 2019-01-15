@@ -10,6 +10,7 @@ Plug 'guns/xterm-color-table.vim'
 
 " NERDTree - file browser
 Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
 
 " NERD Commenter - simple comment toggling
 Plug 'scrooloose/nerdcommenter'
