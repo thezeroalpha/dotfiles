@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 oldifs="$IFS"
+console=0
+print_help() {
+    echo "Options: "
+    echo "-p	Currently playing in iTunes"
+    echo "-s	Selected in iTunes"
+    echo "-c	Console mode, supply a file and use eyeD3"
+    echo "-h	Print this help text"
+}
 while :; do
     if [ $# -ne 0 ]; then
 	case $1 in
@@ -12,6 +20,24 @@ while :; do
 		artist=$(osascript -e "tell application \"iTunes\" to return artist of selection");
 		album=$(osascript -e "tell application \"iTunes\" to return album of selection");
 		name=$(osascript -e "tell application \"iTunes\" to return name of selection");
+		;;
+	    "-c")
+		if ! command -v eyed3 &> /dev/null; then echo "Please install eyeD3." && exit 1; fi
+		if [ $# -ne 2 ]; then echo "Filename required." && exit 1; fi
+		if ! [ -f "$2" ]; then echo "File $2 does not exist." && exit 1; fi
+		artist=$(eyed3 "$2" 2>/dev/null | grep artist | cut -d: -f2- | sed 's/^ *//g')
+		name=$(eyed3 "$2" 2>/dev/null | grep title | cut -d: -f2- | sed 's/^ *//g')
+		album=$(eyed3 "$2" 2>/dev/null | grep album | cut -d: -f2- | sed 's/^ *//g')
+		console=1
+		;;
+	    "-h")
+	    	print_help
+	    	exit 0
+		;;
+	    *)
+	    	echo "Unsupported argument."
+	    	exit 1
+		;;
 	esac
     else
 	echo "Which track?"
@@ -65,85 +91,96 @@ while :; do
     # If there's no url, there's no result
     if [ -z "$url" ]; then
 	echo -e "\nNot found.\n"
-	continue
-    fi
-
-    IFS="$oldifs"
-
-    # Give the user the source information
-    echo "URL: $url"
-    echo "You're changing the album \"$album\" by \"$artist\""
-    printf '\n'
-
-    # Select menu for genre
-    echo "Genre options:"
-    printf '%s\n' "${genre[@]}"
-    printf "\nWould you like to use one of these?\n"
-    select yn in "Yes" "No"; do
-	case $yn in
-	    Yes)
-		select opt in "${genre[@]}"; do
-		    case $opt in
-			*)
-			    finalg=$(sed -e 's/"//g' <<< $opt)
-			    if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi	# consistency
-			    break;;
-		    esac
-		done
-		break;;
-	    No)
-		echo "Write your own then:"
-		read finalg
-		if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi			# consistency
-		if [[ $finalg = "Post-Rock" ]]; then finalg="Post Rock"; fi		# consistency
-		break;;
-	esac
-    done
-
-    # Select menu for style
-    if [ -z "$style" ]; then
-	echo "No style from Discogs."
-	echo "Write your own:"
-	read finals
-	finals="/$finals"
+	if [ $console -eq 1 ]; then
+	    echo "Please enter the genre string (format \"Genre/Style\"):"
+	    read finalg
+	    finals=""
+	fi
     else
-	echo "Style options:"
-	printf '%s\n' "${style[@]}"
+	IFS="$oldifs"
+
+	# Give the user the source information
+	echo "URL: $url"
+	echo "You're changing the album \"$album\" by \"$artist\""
+	printf '\n'
+
+	# Select menu for genre
+	echo "Genre options:"
+	printf '%s\n' "${genre[@]}"
 	printf "\nWould you like to use one of these?\n"
-	select yn in "Yes" "No" "None needed"; do
+	select yn in "Yes" "No"; do
 	    case $yn in
 		Yes)
-		    select opt in "${style[@]}"; do
+		    select opt in "${genre[@]}"; do
 			case $opt in
 			    *)
-				# Add a forward slash at start, remove extra spaces,
-				# also remove repetitions in genre/style like "Rock/Alternative Rock"
-				finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e "s/\"//g" -e "s/ *$finalg *//")
+				finalg=$(sed -e 's/"//g' <<< $opt)
+				if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi	# consistency
 				break;;
 			esac
 		    done
 		    break;;
 		No)
 		    echo "Write your own then:"
-		    read finals
-		    finals="/$finals"
-		    break;;
-		"None needed")
-		    finals=""
+		    read finalg
+		    if [[ $finalg = "Hip Hop" ]]; then finalg="Hip-Hop"; fi			# consistency
+		    if [[ $finalg = "Post-Rock" ]]; then finalg="Post Rock"; fi		# consistency
 		    break;;
 	    esac
 	done
+
+	# Select menu for style
+	if [ -z "$style" ]; then
+	    echo "No style from Discogs."
+	    echo "Write your own:"
+	    read finals
+	    finals="/$finals"
+	else
+	    echo "Style options:"
+	    printf '%s\n' "${style[@]}"
+	    printf "\nWould you like to use one of these?\n"
+	    select yn in "Yes" "No" "None needed"; do
+		case $yn in
+		    Yes)
+			select opt in "${style[@]}"; do
+			    case $opt in
+				*)
+				    # Add a forward slash at start, remove extra spaces,
+				    # also remove repetitions in genre/style like "Rock/Alternative Rock"
+				    finals="/"$(echo $opt | cut -d ' ' -f1- | sed -e "s/\"//g" -e "s/ *$finalg *//")
+				    break;;
+			    esac
+			done
+			break;;
+		    No)
+			echo "Write your own then:"
+			read finals
+			finals="/$finals"
+			break;;
+		    "None needed")
+			finals=""
+			break;;
+		esac
+	    done
+	fi
+
     fi
 
-    # Finally, write the info to the iTunes track (AppleScript)
-    # If there's an album, change the genre of the whole album
-    if [ -z "$album" ]; then
-	osascript -e "tell application \"iTunes\" to set the genre of every track whose name is \"$name\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
-    # Otherwise, just change the genre of that one track
-    else
-	osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
+    if ! [ -z "$url" ] || [ $console -eq 1 ]; then
+	# Finally, write the info to the iTunes track (AppleScript)
+	# If there's an album, change the genre of the whole album
+	if [ $console -eq 1 ]; then
+	    eyed3 -G "$finalg$finals" "$2" &> /dev/null
+	else
+	    if [ -z "$album" ]; then
+		osascript -e "tell application \"iTunes\" to set the genre of every track whose name is \"$name\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
+		# Otherwise, just change the genre of that one track
+	    else
+		osascript -e "tell application \"iTunes\" to set the genre of every track whose album is \"$album\" and artist is \"${artist}\" to \"$finalg$finals\"" > /dev/null
+	    fi
+	fi
+	# ...and give a status message.
+	printf "\nGenre set to: $finalg$finals\n"
     fi
-
-    # ...and give a status message.
-    printf "\nGenre set to: $finalg$finals\n"
+    if [ $console -eq 1 ]; then exit 0; fi
 done
