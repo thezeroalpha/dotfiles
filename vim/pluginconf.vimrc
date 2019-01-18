@@ -1,5 +1,10 @@
 let g:NERDSpaceDelims = 1
-let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki'}]
+let g:vimwiki_list = [{'path': '$HOME/Dropbox/vimwiki', 
+	    \ 'template_path': '$HOME/Dropbox/vimwiki/templates',
+	    \ 'template_default': 'default',
+	    \ 'template_ext': '.html'}]
+
+let tlist_vimwiki_settings = 'wiki;h:Headers'
 
 " tagbar language definitions
 let g:tagbar_type_vimwiki = {
