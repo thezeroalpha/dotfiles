@@ -91,4 +91,8 @@ set modelines=5     "within the first/last 5 lines
 set t_ZH=[3m
 set t_ZR=[23m
 
-let tlist_vimwiki_settings = 'wiki;h:Headers'
+" Since belloff isn't always an option
+if exists("&belloff")
+  set belloff=showmatch,esc,shell,wildmode,backspace   " Disable beeping if no match is found
+endif
+
