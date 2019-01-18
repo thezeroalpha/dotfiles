@@ -52,7 +52,11 @@ Plug 'simnalamburt/vim-mundo'
 " Quickfix window settings/mappings
 Plug 'romainl/vim-qf'
 
+" Repeat everything with '.'
+Plug 'tpope/vim-repeat'
+
 " Easy table making (unnecessary because vimwiki has this built in)
+"   but leaving in case I need it sometime.
 " Plug 'dhruvasagar/vim-table-mode'
 
 call plug#end()
