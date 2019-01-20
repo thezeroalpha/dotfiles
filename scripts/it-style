@@ -8,6 +8,12 @@ print_help() {
     echo "-c	Console mode, supply a file and use eyeD3"
     echo "-h	Print this help text"
 }
+if [[ $(uname -s) != "Darwin" ]]; then
+    if [ $1 != "-c" ]; then
+	echo "You're not on a Mac, so this will only work with the '-c' switch (since Applescript is needed to be able to control iTunes)."
+	exit 1
+    fi
+fi
 while :; do
     if [ $# -ne 0 ]; then
 	case $1 in
@@ -45,8 +51,11 @@ while :; do
 	    case $sc in
 		Selected)
 		    artist=$(osascript -e "tell application \"iTunes\" to return artist of selection");
+		    if [ $? -ne 0 ]; then echo "No selection." && exit 1; fi
 		    album=$(osascript -e "tell application \"iTunes\" to return album of selection");
+		    if [ $? -ne 0 ]; then echo "No selection." && exit 1; fi
 		    name=$(osascript -e "tell application \"iTunes\" to return name of selection");
+		    if [ $? -ne 0 ]; then echo "No selection." && exit 1; fi
 		    break;;
 		Playing)
 		    artist=$(osascript -e "tell application \"iTunes\" to return artist of current track");
@@ -59,14 +68,14 @@ while :; do
 
     if [ -z "$album" ]; then
 	# If there's no album, query without an album
-	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "$artist $name")
+	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "${artist%%feat*} $name")
 	echo "Querying: \"$artist $name\" ($search_url)"
-	response=$(ruby $CONF_DIR/scripts/it-style-helper.rb "$artist" "$name");
+	response=$(ruby $CONF_DIR/scripts/it-style-helper.rb "${artist%%feat*}" "$name");
     else
 	# Otherwise, add the album to query for precision
-	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "$artist $album")
-	echo "Querying: \"$artist $album\" ($search_url)"
-	response=$(ruby $CONF_DIR/scripts/it-style-helper.rb "$artist" "$album");
+	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "${artist%%feat*} $album")
+	echo "Querying: \"$artist $album $name\" ($search_url)"
+	response=$(ruby $CONF_DIR/scripts/it-style-helper.rb "${artist%%feat*}" "$album");
     fi
 
     # Remove brackets from the Ruby array
