@@ -4,6 +4,10 @@ let g:vimwiki_list = [{'path': '$HOME/Dropbox/vimwiki',
 	    \ 'template_default': 'default',
 	    \ 'template_ext': '.html'}]
 
+let g:vimwiki_global_ext = 1
+let g:vimwiki_ext2syntax = {'.md': 'markdown',
+	    \ '.mkd': 'markdown',
+	    \ '.wiki': 'default'}
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 
 " tagbar language definitions
