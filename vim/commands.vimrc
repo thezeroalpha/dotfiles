@@ -22,7 +22,7 @@ command! -nargs=1 -complete=command Redir silent call Redir(<f-args>)
 " 	:Redir !ls -al ........ show the full output of command ':!ls -al' in a scratch window
 
 " Functions
-function! InsertTabWrapper()
+function! InsertTabWrapper() abort
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
         return "\<tab>"
@@ -31,7 +31,7 @@ function! InsertTabWrapper()
     endif
 endfunction
 
-function! ToggleNumber()
+function! ToggleNumber() abort
     if(&relativenumber == 1)
         set norelativenumber
         set number
@@ -40,7 +40,7 @@ function! ToggleNumber()
     endif
 endfunc
 
-function! Redir(cmd)
+function! Redir(cmd) abort
 	for win in range(1, winnr('$'))
 		if getwinvar(win, 'scratch')
 			execute win . 'windo close'
