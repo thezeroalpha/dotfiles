@@ -89,12 +89,14 @@ if ! command -v notify &> /dev/null; then
 fi
 
 ### Pre-authorise sudo ###
+trap exit INT
 echo -e "Root permissions will be needed for global pip update.\n"
 if sudo -v; then
    sudo_auth=1
 else
    sudo_auth=0
 fi
+trap - INT
 echo
 
 ### HOMEBREW ###
