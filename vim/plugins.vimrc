@@ -55,6 +55,12 @@ Plug 'romainl/vim-qf'
 " Repeat everything with '.'
 Plug 'tpope/vim-repeat'
 
+" Distraction-free editing
+Plug 'junegunn/goyo.vim'
+
+" Better CSV editing
+Plug 'chrisbra/csv.vim'
+
 " Easy table making (unnecessary because vimwiki has this built in)
 "   but leaving in case I need it sometime.
 " Plug 'dhruvasagar/vim-table-mode'
