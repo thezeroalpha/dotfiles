@@ -2,8 +2,6 @@
 " Syntax highlighting
 syntax on
 
-" Filetype-specific indenting
-filetype plugin indent on
 
 " In general, don't want anything concealed
 if has('conceallevel')
@@ -30,22 +28,21 @@ endif
 set number
 set numberwidth=3
 
-" I want spaces
-set expandtab
 
 " with a smart tab
 set smarttab
 
 " and 1 tab == 2 spaces
-set shiftwidth=2    " when >>
-set tabstop=2       " visually
-set softtabstop=2   " and when editing
+set tabstop=8       " always keep ts (visual length of \t) at 8
+set expandtab       " use spaces instead of tabs
+set shiftwidth=2    " 2 spaces when >>
+set softtabstop=2   " and when pressing TAB
 set shiftround      " always shift by multiple of shiftwidth
 set copyindent      " smart indent based on file
 
 " Auto indent when starting new line
 set autoindent 
-set smartindent
+filetype plugin indent on
 
 " Folding on indentation
 set foldmethod=indent

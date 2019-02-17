@@ -56,7 +56,7 @@ colorscheme default
 set background=dark
 
 " Enable 256 colormode
-set t_Co=256
+" set t_Co=256
 
 " Mouse tweak
 set mousemodel=popup
@@ -96,3 +96,5 @@ if exists("&belloff")
   set belloff=showmatch,esc,shell,wildmode,backspace   " Disable beeping if no match is found
 endif
 
+" Command-line autocompletion
+set wildmode=longest,list,full

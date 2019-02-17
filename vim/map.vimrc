@@ -87,7 +87,7 @@ nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 nnoremap gV `[v`]
 
 " Delete without yanking to clipboard
-noremap <leader>d "_d
+nnoremap <leader>d "_d
 
 " Change without yanking to clipboard
 nnoremap <leader>C "_c
