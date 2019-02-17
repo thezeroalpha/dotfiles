@@ -118,14 +118,14 @@ while :; do
          ;;
       "q"|"quit")
          clean_up;;
-      "help")
+      "help"|"h"|"?")
          echo "Commands:"
-         echo "cd:                                change to artist/album directory"
-         echo "pwd:                               print current directory"
-         echo "ls:                                list contents of current directory"
-         echo "play all:                          play everything in current directory"
-         echo "play [file]:                       play specific track"
-         echo "play [all|file] [something]:       disable visualiser/art"
+         echo "cd                                change to artist/album directory"
+         echo "pwd                               print current directory"
+         echo "ls                                list contents of current directory"
+         echo "play all                          play everything in current directory"
+         echo "play [file]                       play specific track"
+         echo "play [all|file] [something]       disable visualiser/art"
          ;;
       *)
          echo "Command does not exist."
