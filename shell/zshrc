@@ -128,5 +128,7 @@ if [[ $PATH != *"$HOME/.rbenv/shims"* ]]; then
   eval "$(rbenv init -)"
 fi
 
-# this alias interferes with the grv app
-unalias grv
+# jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
