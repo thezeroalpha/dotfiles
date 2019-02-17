@@ -7,3 +7,13 @@ augroup configgroup
   autocmd FileType tagbar   setlocal    nocursorline 
   autocmd FileType qf       setlocal    nocursorline
 augroup END
+
+augroup insertbinds
+  autocmd!
+  autocmd FileType markdown inoremap ;1 #
+  autocmd FileType markdown inoremap ;2 ##
+  autocmd FileType markdown inoremap ;3 ###
+  autocmd FileType markdown inoremap ;4 ####
+  autocmd FileType markdown inoremap ;5 #####
+  autocmd FileType markdown inoremap ;6 ######
+augroup END
