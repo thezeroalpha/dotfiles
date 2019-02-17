@@ -3,137 +3,144 @@
 
 # Main linking command {{{
 lncommand() { 
-	if [ -e "$1" ]; then
-		if [ -e "$2" ]; then
-			echo "-- Backing up original $2"
-			mv -iv "$2" "$2-orig"
-		fi
-		ln -snfv "$1" "$2"; 
-	fi
+  if [ -e "$1" ]; then
+    if [ -e "$2" ]; then
+      echo "-- Backing up original $2"
+      mv -iv "$2" "$2-orig"
+    fi
+    ln -snfv "$1" "$2"; 
+  fi
 }
 #}}}
 
+print_available() {
+      echo "Config files:"
+      echo "bin               various binaries"
+      echo "ctags             language definitions for ctags"
+      echo "gdb               gdb dashboard and the like"
+      echo "git               git config files and hooks"
+      echo "oh-my-zsh         the whole oh-my-zsh config directory"
+      echo "radio             radio metadata for the internet radio script"
+      echo "ranger            ranger file browser config"
+      echo "scripts           misc executable scripts (like this one"
+      echo "shell             various configs related to shells"
+      echo "vim               vim configuration files"
+}
 # Use command {{{
 use_files() {
-	if [ $# -gt 0 ]; then
-		for f in "$@"; do
-			case "${f##./}" in
-				"bin")
-					lncommand "$CONF_DIR/bin" "$HOME/.bin"
-					;;
-				"ctags")
-					lncommand "$CONF_DIR/ctags/ctags" "$HOME/.ctags"
-					;;
-				"gdb")
-					lncommand "$CONF_DIR/gdb/gdbinit" "$HOME/.gdbinit"
-					;;
+  if [ $# -gt 0 ]; then
+    for f in "$@"; do
+      case "${f##./}" in
+        "bin")
+          lncommand "$CONF_DIR/bin" "$HOME/.bin"
+          ;;
+        "ctags")
+          lncommand "$CONF_DIR/ctags/ctags" "$HOME/.ctags"
+          ;;
+        "gdb")
+          lncommand "$CONF_DIR/gdb/gdbinit" "$HOME/.gdbinit"
+          ;;
 
-				"git")
-					lncommand "$CONF_DIR/git/gitconfig" "$HOME/.gitconfig"
-					if [ -d git/git_template ]; then
-						conf_check git config --global init.templatedir "$CONF_DIR"/git/git_template
-					fi
-					;;
-				"iterm2")
-					lncommand "$CONF_DIR/iterm2" "$HOME/.iterm2"
-					;;
-				"oh-my-zsh")
-					lncommand "$CONF_DIR/oh-my-zsh" "$HOME/.oh-my-zsh"
-					;;
-				"radio")
-					lncommand "$CONF_DIR/radio/radio-config" "$HOME/.radio-config"
-					;;
+        "git")
+          lncommand "$CONF_DIR/git/gitconfig" "$HOME/.gitconfig"
+          if [ -d git/git_template ]; then
+            conf_check git config --global init.templatedir "$CONF_DIR"/git/git_template
+          fi
+          ;;
+        "iterm2")
+          lncommand "$CONF_DIR/iterm2" "$HOME/.iterm2"
+          ;;
+        "oh-my-zsh")
+          lncommand "$CONF_DIR/oh-my-zsh" "$HOME/.oh-my-zsh"
+          ;;
+        "radio")
+          lncommand "$CONF_DIR/radio/radio-config" "$HOME/.radio-config"
+          ;;
 
-				"scripts")
-					lncommand "$CONF_DIR/scripts" "$HOME/.scripts"
-					if command -v mpv &> /dev/null; then
-						mkdir -p "$HOME/.config/mpv"
-						lncommand "$CONF_DIR/.scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
-					fi
-					;;
-				"shell")
-					for i in shell/*; do
-						lncommand "$CONF_DIR/$i" "$HOME/.${i##*/}"
-					done
-					;;
-				"vim")
-					lncommand "$CONF_DIR/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
-					lncommand "$CONF_DIR/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
-					;;
-			esac
+        "ranger")
+          lncommand "$CONF_DIR/ranger" "$HOME/.config/ranger"
+          ;;
+        "scripts")
+          lncommand "$CONF_DIR/scripts" "$HOME/.scripts"
+          if command -v mpv &> /dev/null; then
+            mkdir -p "$HOME/.config/mpv"
+            lncommand "$CONF_DIR/.scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
+          fi
+          ;;
+        "shell")
+          for i in shell/*; do
+            lncommand "$CONF_DIR/$i" "$HOME/.${i##*/}"
+          done
+          ;;
+        "vim")
+          lncommand "$CONF_DIR/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
+          lncommand "$CONF_DIR/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
+          ;;
+        esac
 
-		done
-	else
-		echo "Config files:"
-		echo "bin				various binaries"
-		echo "ctags			language definitions for ctags"
-		echo "gdb				gdb dashboard and the like"
-		echo "git				git config files and hooks"
-		echo "oh-my-zsh	the whole oh-my-zsh config directory"
-		echo "radio			radio metadata for the internet radio script"
-		echo "scripts		misc executable scripts (like this one"
-		echo "shell			various configs related to shells"
-		echo "vim				vim configuration files"
-	fi
-}
+      done
+    else
+      print_available
+    fi
+  }
 #}}}
 
 # Check if $CONF_DIR is set {{{
 conf_check() {
-	if [ -z "$CONF_DIR" ]; then
-		echo "\$CONF_DIR not set."
-		echo "Please set the CONF_DIR environment variable to your dotfiles repository."
-	else
-		"$@"
-	fi
+  if [ -z "$CONF_DIR" ]; then
+    echo "\$CONF_DIR not set."
+    echo "Please set the CONF_DIR environment variable to your dotfiles repository."
+  else
+    "$@"
+  fi
 }
 #}}}
 
 # Run with arguments {{{
 if [ $# -gt 0 ]; then
-	if [ "$1" = 'rc' ]; then
-		if [[ $SHELL = *"zsh"* ]]; then
-			if [ -f "$HOME"/.zshrc ]; then
-				"$EDITOR" "$HOME"/.zshrc
-			else
-				echo "File $HOME/.zshrc does not exist."
-			fi
-		elif [[ $SHELL = *"bash"* ]]; then
-			if [ -f "$HOME"/.bashrc ]; then
-				"$EDITOR" "$HOME"/.bashrc
-			elif [ -f "$HOME"/.bash_profile ]; then
-				"$EDITOR" "$HOME"/.bash_profile
-			else
-				echo "File $HOME/.bashrc does not exist."
-			fi
-		else
-			echo "Shell profile not supported yet."
-			echo "Feel free to ask me to add support, or you can do it yourself."
-		fi
+  if [ "$1" = 'rc' ]; then
+    if [[ $SHELL = *"zsh"* ]]; then
+      if [ -f "$HOME"/.zshrc ]; then
+        "$EDITOR" "$HOME"/.zshrc
+      else
+        echo "File $HOME/.zshrc does not exist."
+      fi
+    elif [[ $SHELL = *"bash"* ]]; then
+      if [ -f "$HOME"/.bashrc ]; then
+        "$EDITOR" "$HOME"/.bashrc
+      elif [ -f "$HOME"/.bash_profile ]; then
+        "$EDITOR" "$HOME"/.bash_profile
+      else
+        echo "File $HOME/.bashrc does not exist."
+      fi
+    else
+      echo "Shell profile not supported yet."
+      echo "Feel free to ask me to add support, or you can do it yourself."
+    fi
 
-	elif [ "$1" = 'common' ]; then
-		if [ -f "$HOME"/.commonprofile ]; then
-			"$EDITOR" "$HOME"/.commonprofile
-		else
-			echo "File $HOME/.commonprofile does not exist."
-		fi
-	elif [ "$1" = 'get' ]; then
-		conf_check echo "$CONF_DIR"
+  elif [ "$1" = 'common' ]; then
+    if [ -f "$HOME"/.commonprofile ]; then
+      "$EDITOR" "$HOME"/.commonprofile
+    else
+      echo "File $HOME/.commonprofile does not exist."
+    fi
+  elif [ "$1" = 'get' ]; then
+    conf_check echo "$CONF_DIR"
 
-	elif [ "$1" = 'use' ]; then
-		conf_check use_files "${@:2}" 
+  elif [ "$1" = 'use' ]; then
+    conf_check use_files "${@:2}" 
 
-	else
-		conf_check "$(command -v git)" --git-dir="$CONF_DIR"/.git --work-tree "$CONF_DIR" "$@"
-	fi
-	#}}}
-	# ...or print help text {{{
+  else
+    conf_check "$(command -v git)" --git-dir="$CONF_DIR"/.git --work-tree "$CONF_DIR" "$@"
+  fi
+  #}}}
+  # ...or print help text {{{
 else
-	echo "Usage:"
-	echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
-	echo "conf common             Edit common profile"
-	echo "conf get                Print path to configuration directory"
-	echo "conf use [module]				Use dotfiles for a specific module (vim, git, shell, etc.)"
-	echo "conf [git command]      Run git command in conf directory"
+  echo "Usage:"
+  echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
+  echo "conf common             Edit common profile"
+  echo "conf get                Print path to configuration directory"
+  echo "conf use [module]                         Use dotfiles for a specific module (vim, git, shell, etc.)"
+  echo "conf [git command]      Run git command in conf directory"
 fi
 #}}}
