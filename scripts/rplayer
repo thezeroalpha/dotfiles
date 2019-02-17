@@ -27,7 +27,7 @@ links = []
 posts.each do |post|
   p = post["data"]
   if not p["is_self"] and p["post_hint"] != "image"
-    links.append(title: p["title"], url: p["url"], reddit: "https://reddit.com/#{p["permalink"]}")
+    links.append(title: p["title"], url: p["url"], reddit: "https://reddit.com#{p["permalink"]}")
   end
 end
 
