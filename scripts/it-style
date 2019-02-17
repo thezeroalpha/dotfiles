@@ -51,19 +51,23 @@ while :; do
 	    case $sc in
 		Selected)
 		    artist=$(osascript -e "tell application \"iTunes\" to return artist of selection");
-		    if [ $? -ne 0 ]; then echo "No selection." && exit 1; fi
+		    if [ $? -ne 0 ]; then echo "No selection." && continue; fi
 		    album=$(osascript -e "tell application \"iTunes\" to return album of selection");
-		    if [ $? -ne 0 ]; then echo "No selection." && exit 1; fi
+		    if [ $? -ne 0 ]; then echo "No selection." && continue; fi
 		    name=$(osascript -e "tell application \"iTunes\" to return name of selection");
-		    if [ $? -ne 0 ]; then echo "No selection." && exit 1; fi
+		    if [ $? -ne 0 ]; then echo "No selection." && continue; fi
 		    break;;
 		Playing)
 		    artist=$(osascript -e "tell application \"iTunes\" to return artist of current track");
+		    if [ $? -ne 0 ]; then echo "No track playing." && continue; fi
 		    album=$(osascript -e "tell application \"iTunes\" to return album of current track");
+		    if [ $? -ne 0 ]; then echo "No track playing." && continue; fi
 		    name=$(osascript -e "tell application \"iTunes\" to return name of current track");
+		    if [ $? -ne 0 ]; then echo "No track playing." && continue; fi
 		    break;;
 	    esac
 	done
+	if [ -z "$sc" ]; then continue; fi
     fi
 
     if [ -z "$album" ]; then
@@ -100,11 +104,9 @@ while :; do
     # If there's no url, there's no result
     if [ -z "$url" ]; then
 	echo -e "\nNot found.\n"
-	if [ $console -eq 1 ]; then
-	    echo "Please enter the genre string (format \"Genre/Style\"):"
-	    read finalg
-	    finals=""
-	fi
+	echo "Please enter the genre string (format \"Genre/Style\"):"
+	read finalg
+	finals=""
     else
 	IFS="$oldifs"
 
@@ -175,7 +177,7 @@ while :; do
 
     fi
 
-    if ! [ -z "$url" ] || [ $console -eq 1 ]; then
+    if ! [ -z "$finalg$finals" ]; then
 	# Finally, write the info to the iTunes track (AppleScript)
 	# If there's an album, change the genre of the whole album
 	if [ $console -eq 1 ]; then
