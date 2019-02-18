@@ -86,6 +86,7 @@ alias less='less -RXc'                                          # Preferred 'les
 alias rsync='rsync -avhW --progress'                            # Preferred 'rsync' implementation
 alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but remove source
 alias du="du -skh"                                              # Preferred 'du' implementation
+alias df="df -h"                                                # Preferred 'df' implementation
 alias htop='sudo htop'                                          # Top should launch htop with sudo
 alias g='git'                                                   # Make git easier to type
 alias r='source ranger'                                         # Make Ranger easier to type and keep directory
