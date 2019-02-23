@@ -111,4 +111,4 @@ nnoremap <C-E><C-L> :vsplit $CONF_DIR/vim/pluginconf.vimrc<CR>
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
-nnoremap <leader>>td 0f-l"aywf:l"byw0w"cywf:l"dywA (=((a*60+b)-(c*60+d))/60.0)F.r:wyw"aywcw=0.a*60F.xxih0:s/:0h/h
+nnoremap <leader>td 0f-l"aywf:l"byw0"cywf:l"dywA (=((a*60+b)-(c*60+d))/60.0)F.r:wyw"aywcw=0.a*60F.2xih0:s/:0h/h
