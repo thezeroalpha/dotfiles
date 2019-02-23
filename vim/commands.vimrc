@@ -36,7 +36,7 @@ function! Redir(cmd) abort
 	call setline(1, split(output, "\n"))
 endfunction
 
-function! DeleteHiddenBuffers() abort " Vim with the 'hidden' option
+function! DeleteHiddenBuffers() " Vim with the 'hidden' option
     let tpbl=[]
     call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
     for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
