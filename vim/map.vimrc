@@ -1,4 +1,4 @@
-let mapleader=","   " Set the mapleader to be ,
+let mapleader=" "   " Set the mapleader to be ,
 
 " So I don't have to mash shift all the time
 nnoremap ; :
