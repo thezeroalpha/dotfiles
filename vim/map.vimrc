@@ -40,7 +40,7 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " stfu and write the file
-cnoremap w!! w !sudo tee > /dev/null %
+cnoremap sudow w !sudo tee > /dev/null %
 
 " and don't break my colours (U for 'unfuck my screen please')
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
