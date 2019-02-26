@@ -126,7 +126,7 @@ procinfo() { ps aux | grep "$1"; }                                          # Ge
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # Remove empty directories
 todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Find TODO comments
 find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
-hr() { for ((i=0; i<COLUMNS; i++)); do echo -n "#"; done; echo; }           # Insert a <hr> in the terminal
+hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }           # Insert a <hr> in the terminal
 vimq() { vim -v -q <($(fc -nl -1)); }                                       # Load results of last command (often ag) in vim quickfix
 
 # Pip3 upgrade packages
