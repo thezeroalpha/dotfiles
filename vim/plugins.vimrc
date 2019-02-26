@@ -59,6 +59,9 @@ Plug 'junegunn/goyo.vim'
 " Better CSV editing
 Plug 'chrisbra/csv.vim'
 
+" Display ANSI color codes
+Plug 'vim-scripts/AnsiEsc.vim'
+ 
 " Easy table making (unnecessary because vimwiki has this built in)
 "   but leaving in case I need it sometime.
 " Plug 'dhruvasagar/vim-table-mode'
