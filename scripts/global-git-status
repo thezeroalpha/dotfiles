@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+spin() {
+    sp='/-\|'
+    printf ' '
+    while true; do
+        # Print backspace, field of width 1
+        printf '\b%.1s' "$sp"
+
+        # Move first character to end
+        sp=${sp#?}${sp%???}
+        sleep 0.05
+    done
+}
+hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }
+
+spin &
+pid=$!
+
+trap "kill $pid" INT
+echo "Looking for git repositories..."
+logfile="$(mktemp)"
+gits=$(find "$HOME" -name ".git" -not -path "*vim*plugged*")
+
+kill $pid &> /dev/null
+trap - INT
+count=0
+echo -ne '\r'
+
+IFS=$'\n'
+for i in ${gits[@]}; do 
+  ((count++))
+  # unset IFS
+  echo -ne "Processed $count\r"
+  # IFS=$'\n'
+  echo "git: $i" >> $logfile; 
+  cd "$i/../" &>/dev/null; 
+  git f &> /dev/null; 
+  git status >> $logfile; 
+  hr >> $logfile; 
+done
+echo
+vim $logfile -c "g/nothing to commit, working tree clean/norm V?git:ddd" -c "w | 1"
+unset IFS
+clear
