@@ -44,11 +44,6 @@ set showcmd
 " Command completion
 set wildmenu
 
-" Allow integration with system clipboard (only newest vim)
-if has("clipboard")
-    set clipboard+=unnamed
-endif
-
 " Colorscheme
 colorscheme default
 
