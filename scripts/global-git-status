@@ -29,12 +29,10 @@ echo -ne '\r'
 IFS=$'\n'
 for i in ${gits[@]}; do 
   ((count++))
-  # unset IFS
   echo -ne "Processed $count\r"
-  # IFS=$'\n'
   echo "git: $i" >> $logfile; 
   cd "$i/../" &>/dev/null; 
-  git f &> /dev/null; 
+  git fetch --all &> /dev/null; 
   git status >> $logfile; 
   hr >> $logfile; 
 done
