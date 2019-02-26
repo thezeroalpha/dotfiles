@@ -13,6 +13,7 @@ play_track() {
    fi
    if [[ "$1" == "all" ]]; then
       track=$(ls|sort -n|head -1)
+      echo "$track"
       ffmpeg -i "$track" art.jpg &>/dev/null
 
       if [ -e "art.jpg" ] && [ $vis -eq 1 ]; then
