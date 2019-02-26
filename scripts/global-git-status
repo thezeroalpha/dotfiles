@@ -12,11 +12,15 @@ spin() {
     done
 }
 hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }
+cleanup() {
+  kill $pid
+  exit 2
+}
 
 spin &
 pid=$!
 
-trap "kill $pid" INT
+trap cleanup INT
 echo "Looking for git repositories..."
 logfile="$(mktemp)"
 gits=$(find "$HOME" -name ".git" -not -path "*vim*plugged*")
@@ -37,6 +41,6 @@ for i in ${gits[@]}; do
   hr >> $logfile; 
 done
 echo
-vim $logfile -c "g/nothing to commit, working tree clean/norm V?git:ddd" -c "w | 1"
+vim $logfile -c "g/nothing to commit, working tree clean/norm V?git:ddd" -c "let @d=\"V/#d\"" -c "w|1"
 unset IFS
 clear
