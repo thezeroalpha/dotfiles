@@ -19,7 +19,6 @@ If you read a script and see some improvements that could be made, let me know. 
 * `epub-convert`: uses Calibre's ebook converter program to convert anything to an epub
 * `executable`: my first script. Makes any file executable, along with further options. Usage: `executable file.sh`
 * `ffmpeg-split.py`: split videos using ffmpeg. [Here's the README.](ffmpeg-split-README.md)
-* 
 * `it-style`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key, set $DISCOGS_API_TOKEN in your profile). Usage: click/play a track in iTunes, and run the program.
 * `linkdir`: symlink all files/folders from source dir to target dir. Usage: `linkdir $source` to create symlinks in cwd, `linkdir $source $target` otherwise.
 * `mdvl`: markdown renderer in Python
