@@ -6,7 +6,7 @@
 2. `cd` into repository
 3. Run `install.sh`
 
-However, I suggest that you use this more as inspiration than just installing everything for a full setup. Your configuration is *your* configuration.
+However, if you _do_ use this, I suggest that you use this more as inspiration than just installing everything for a full setup. Your configuration is *your* configuration. That's why I wrote `scripts/conf` to allow modular configuration. You choose which module you want to install, and it'll only install that specific one (and back up your old files too). Get more info by running `scripts/conf` without any arguments.
 
 ## Scripts in `dotfiles/scripts`:
 Before you use a custom script, read what it does. Some may be a bit buggy, I haven't tested them on all systems.

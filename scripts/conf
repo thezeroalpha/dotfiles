@@ -19,6 +19,8 @@ print_available() {
       echo "ctags             language definitions for ctags"
       echo "gdb               gdb dashboard and the like"
       echo "git               git config files and hooks"
+      echo "iterm2            profiles, colors, and such for iTerm2 (Mac)"
+      echo "karabiner         key config for karabiner-elements on Mac, notably caps lock as escape and control"
       echo "oh-my-zsh         the whole oh-my-zsh config directory"
       echo "radio             radio metadata for the internet radio script"
       echo "ranger            ranger file browser config"
@@ -40,7 +42,6 @@ use_files() {
         "gdb")
           lncommand "$CONF_DIR/gdb/gdbinit" "$HOME/.gdbinit"
           ;;
-
         "git")
           lncommand "$CONF_DIR/git/gitconfig" "$HOME/.gitconfig"
           if [ -d git/git_template ]; then
@@ -50,13 +51,15 @@ use_files() {
         "iterm2")
           lncommand "$CONF_DIR/iterm2" "$HOME/.iterm2"
           ;;
+        "karabiner")
+          lncommand "$CONF_DIR/karabiner" "$HOME/.config/karabiner"
+          ;;
         "oh-my-zsh")
           lncommand "$CONF_DIR/oh-my-zsh" "$HOME/.oh-my-zsh"
           ;;
         "radio")
           lncommand "$CONF_DIR/radio/radio-config" "$HOME/.radio-config"
           ;;
-
         "ranger")
           lncommand "$CONF_DIR/ranger" "$HOME/.config/ranger"
           ;;
