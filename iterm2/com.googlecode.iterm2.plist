@@ -462,11 +462,11 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>531 1206 606 469 262 1080 1440 900 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>560 481 796 486 0 0 1920 1080 </string>
+	<string>321 287 918 512 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1424 881 0 0 1440 900 </string>
+	<string>464 445 850 384 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>293 338 850 384 0 0 1440 900 </string>
+	<string>531 456 850 384 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>1034 65 376 324 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -675,7 +675,7 @@
 			<key>Columns</key>
 			<integer>120</integer>
 			<key>Command</key>
-			<string>/usr/local/bin/vim</string>
+			<string>/usr/local/bin/vim -c "let $CONF_DIR='/Users/alex/.dotfiles'"</string>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -5113,11 +5113,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-02-06T10:23:09Z</date>
+	<date>2019-02-26T15:00:48Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowPaneTitles</key>
 	<false/>
 	<key>SuppressRestartAnnouncement</key>
