@@ -15,9 +15,11 @@ set binary
 set noswapfile
 
 " Persistent undos (useful for plugins too)
-if has('undofile')
+if has('persistent_undo')
+  let myUndoDir = expand('$HOME/.vim' . '/undo')
+  silent call mkdir(myUndoDir, 'p')
+  let &undodir = myUndoDir
   set undofile
-  set undodir=~/.vim/undo
 endif
 
 " Hide buffers instead of closing
