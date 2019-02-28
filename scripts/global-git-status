@@ -41,6 +41,6 @@ for i in ${gits[@]}; do
   hr >> $logfile; 
 done
 echo
-vim $logfile -c "g/nothing to commit, working tree clean/norm V?git:ddd" -c "let @d=\"V/#d\"" -c "w|1"
+vim $logfile -c "g/nothing to commit, working tree clean/norm V?git:ddd" -c "let @d=\"?^git: V/#d\"" -c "w|1"
 unset IFS
 clear
