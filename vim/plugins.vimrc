@@ -62,6 +62,9 @@ Plug 'chrisbra/csv.vim'
 " Display ANSI color codes
 Plug 'vim-scripts/AnsiEsc.vim'
  
+" Disable hlsearch after finished searching
+Plug 'romainl/vim-cool'
+
 " Easy table making (unnecessary because vimwiki has this built in)
 "   but leaving in case I need it sometime.
 " Plug 'dhruvasagar/vim-table-mode'

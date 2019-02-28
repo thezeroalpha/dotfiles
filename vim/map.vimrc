@@ -24,8 +24,13 @@ nnoremap q: <Nop>
 
 " Normal mode shortcuts
 nnoremap <leader>dif :Diff<CR>
-nnoremap <leader>/ :noh<CR>
 nnoremap <leader>b :ls<CR>:b<Space>
+
+" If vim-cool is not installed, add a map to
+" disable search highlight
+if !exists("g:loaded_cool")
+  nnoremap <leader>/ :noh<CR>
+endif
 
 " Tab completion
 inoremap <expr> <tab> InsertTabWrapper()
