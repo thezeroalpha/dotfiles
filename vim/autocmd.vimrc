@@ -17,3 +17,9 @@ augroup insertbinds
   autocmd FileType markdown inoremap ;5 #####
   autocmd FileType markdown inoremap ;6 ######
 augroup END
+
+augroup mappings
+  autocmd!
+  autocmd FileType c nnoremap <leader>mm :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
+  autocmd FileType c nnoremap <leader>mc :silent make clean<CR>\|:redraw!<CR>
+augroup END
