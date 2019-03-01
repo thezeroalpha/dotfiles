@@ -37,7 +37,7 @@ read -n 1 -p "Install all dotfiles? [Y/n]" yn
 echo
 case $yn in
   [Yy]* ) 
-    scripts/conf use $(find . ! -iwholename '*.git*' -type d -d 1)
+    scripts/conf use $(find . -maxdepth 1 -type d ! -iwholename "*.git*")
     echo "Dotfiles installed."
     echo "Run \`conf\` for more help."
     ;;

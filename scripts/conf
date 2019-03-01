@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # vim: foldmethod=marker:foldlevel=0
 
 # Main linking command {{{
