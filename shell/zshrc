@@ -121,14 +121,18 @@ if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
 fi
 
 # Z initialization
-. /usr/local/etc/profile.d/z.sh
+if command -v z &> /dev/null; then
+  . /usr/local/etc/profile.d/z.sh
+fi
 
 # rbenv init
-if [[ $PATH != *"$HOME/.rbenv/shims"* ]]; then
+if [[ $PATH != *"$HOME/.rbenv/shims"* ]] && command -v rbenv &> /dev/null; then
   eval "$(rbenv init -)"
 fi
 
 # jenv
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+if command -v jenv &> /dev/null; then
+  export PATH="$HOME/.jenv/bin:$PATH"
+  eval "$(jenv init -)"
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+fi
