@@ -58,6 +58,23 @@ SHELLCHECK_OPTS='--exclude=SC1090,SC1091,SC2009'
 
 # }}}
 
+# Linux keyboard map {{{
+if [[ $(uname -s) == "Linux" ]]; then
+   if command -v xcape &> /dev/null; then
+      setxkbmap -option 'caps:ctrl_modifier'
+      xcape -e 'Caps_Lock=Escape'
+
+      # This method would also allow me to keep my caps lock
+      # but it's buggy with my apple bluetooth keyboard
+      # 
+      # setxkbmap -option 'caps:ctrl_modifier'
+      # xcape -e 'Caps_Lock=Escape'
+   else
+      echo "Please install xcape."
+   fi
+fi
+# }}}
+
 # Activate programs that need profile entries {{{
 # activate virtualenvwrapper
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
@@ -176,23 +193,23 @@ gemmaster() {
 
 # Webm to mp4 video
 webm_mp4() {
-ffmpeg -i "$1" -qscale 0 "$1".mp4
+   ffmpeg -i "$1" -qscale 0 "$1".mp4
 }
 
 # Extract audio from mp4
 mp4_mp3() {
-ffmpeg -i "$1" "$1".mp3
+   ffmpeg -i "$1" "$1".mp3
 }
 
 # Anything to a gif
 gifify() {
    ffmpeg -i "$1" -r 25 -f image2pipe -vcodec ppm - | \
       convert -delay 4 -loop 0 - output.gif
-   }
+}
 
 # Gif to mp4
 gif_mp4() {
-ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
+   ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
 }
 
 # Extract any archive
@@ -273,14 +290,14 @@ if command -v osascript &> /dev/null; then
          echo 'No Finder window found' >&2
       fi
    }
-# echo current Finder directory
-gdf() {
-   osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
-}
-# echo selected Finder file
-fsel() {
-   osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
-};
+   # echo current Finder directory
+   gdf() {
+      osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+   }
+   # echo selected Finder file
+   fsel() {
+      osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+   };
 fi
 # }}}
 
