@@ -24,6 +24,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `mdvl`: markdown renderer in Python
 * `modified_cfscrape.py`: can scrape and download CloudFlare-protected websites. Usage: `python3 modified_cfscrape.py http://url.com`
 * `mp3tagger.jar`: a Java application to tag MP3 files
+* `pass-import-txt`: imports passwords into `pass` from a text file that's formatted as `username:password` (newline-separated)
 * `percerr.rb`: a very simple thing for calculating percent error. Just run the Ruby script.
 * `play`: a command-line music player. Shows album art, or a visualiser if there is no album art. Set a $MUSIC_DIR in your profile, then run `play`.
 * `radio`: a command-line radio player, can play various music streams from the internet, including subreddits. Also has a visualiser, turn it on by passing `-v` on startup.
@@ -33,6 +34,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `strip-html-tags`: remove HTML tags from a file
 * `tag`: a command-line `mp3tagger.jar`. Usage: `tag filename.mp3`
 * `topdf`: converts a file to a PDF using cupsfilter. Works well on docx files. Usage: `topdf file [file2 file3 file4...]`
+* `tput-colors`: a simple script to print out a `tput` color table
 * `updatemaster`: the ultimate all-in-one update script (Brew, Cask, MAS, pip, etc.). Run with `-h` to see options.
 * `usbmux`, `tcprelay`: port forwarding. If you want to SSH to a jailbroken iPhone over USB, you can run `tcprelay 22:2222` to forward local port 2222 to the iPhone's SSH port (22), and then `ssh -p 2222 root@localhost`.
 * `vimwiki_md`: convert vimwiki files to markdown, using the vimwiki_md_ex expressions file for sed. Still a work-in-progress and probably very buggy.
