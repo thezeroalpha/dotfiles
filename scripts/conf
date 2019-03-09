@@ -13,6 +13,7 @@ lncommand() {
 }
 #}}}
 
+# List available config files {{{
 print_available() {
       echo "Config files:"
       echo "bin               various binaries"
@@ -21,6 +22,7 @@ print_available() {
       echo "git               git config files and hooks"
       echo "iterm2            profiles, colors, and such for iTerm2 (Mac)"
       echo "karabiner         key config for karabiner-elements on Mac, notably caps lock as escape and control"
+      echo "newsboat          urls and keymap for newsboat RSS reader"
       echo "oh-my-zsh         the whole oh-my-zsh config directory"
       echo "radio             radio metadata for the internet radio script"
       echo "ranger            ranger file browser config"
@@ -28,6 +30,8 @@ print_available() {
       echo "shell             various configs related to shells"
       echo "vim               vim configuration files"
 }
+# }}}
+
 # Use command {{{
 use_files() {
   if [ $# -gt 0 ]; then
@@ -53,6 +57,9 @@ use_files() {
           ;;
         "karabiner")
           lncommand "$CONF_DIR/karabiner" "$HOME/.config/karabiner"
+          ;;
+        "newsboat")
+          lncommand "$CONF_DIR/newsboat" "$HOME/.newsboat"
           ;;
         "oh-my-zsh")
           lncommand "$CONF_DIR/oh-my-zsh" "$HOME/.oh-my-zsh"
