@@ -115,13 +115,13 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir virtualenv vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history ram time battery)
 
 # Aliases
-source ~/.commonprofile
+source $HOME/.commonprofile
 if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
   source ~/.config/exercism/exercism_completion.zsh
 fi
 
 # Z initialization
-if command -v z &> /dev/null; then
+if ! command -v z &> /dev/null; then
   . /usr/local/etc/profile.d/z.sh
 fi
 
@@ -131,7 +131,7 @@ if [[ $PATH != *"$HOME/.rbenv/shims"* ]] && command -v rbenv &> /dev/null; then
 fi
 
 # jenv
-if command -v jenv &> /dev/null; then
+if ! command -v jenv &> /dev/null; then
   export PATH="$HOME/.jenv/bin:$PATH"
   eval "$(jenv init -)"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
