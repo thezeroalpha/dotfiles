@@ -388,6 +388,8 @@
 	<true/>
 	<key>HotkeyModifiers</key>
 	<integer>524288</integer>
+	<key>HotkeyWindowFloatsAboveOtherWindows</key>
+	<false/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSFontPanelAttributes</key>
@@ -462,11 +464,11 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>531 1206 606 469 262 1080 1440 900 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>321 287 918 512 0 0 1920 1080 </string>
+	<string>105 195 796 486 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>464 445 850 384 0 0 1920 1080 </string>
+	<string>0 0 1424 881 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>531 456 850 384 0 0 1920 1080 </string>
+	<string>293 338 850 384 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>1034 65 376 324 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -5113,7 +5115,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-02-26T15:00:48Z</date>
+	<date>2019-03-19T15:47:07Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
