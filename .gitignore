@@ -2,3 +2,4 @@ batteryCheck.scpt
 .DS_Store
 secret_env_variables
 oh-my-zsh/cache
+error.log
