@@ -3,3 +3,6 @@ batteryCheck.scpt
 secret_env_variables
 oh-my-zsh/cache
 error.log
+newsboat/*
+!newsboat/config
+!newsboat/urls

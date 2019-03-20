@@ -1,6 +1,9 @@
-#auto-reload yes
-reload-threads 4
+auto-reload yes
+reload-threads 8
 show-read-feeds no
+delete-read-articles-on-quit yes
+article-sort-order date
+error-log "~/.newsboat/error.log"
 
 bind-key j down
 bind-key k up
@@ -21,12 +24,17 @@ bind-key D pb-download
 bind-key U show-urls
 bind-key x pb-delete
 bind-key ^t next-unread
+bind-key \ toggle-show-read-feeds
+bind-key E edit-urls
+bind-key ^r reload-urls
+bind-key t set-tag
+bind-key ^t clear-tag
 
-color listnormal cyan default
+color listnormal blue default
+color listnormal_unread cyan default
 color listfocus black yellow standout bold
-color listnormal_unread blue default
 color listfocus_unread yellow default bold
-color info red black bold
+color info magenta black bold
 color article cyan default
 
 browser "open '%u'"
@@ -35,4 +43,6 @@ macro t set browser "youtube-dl --add-metadata -ic"; open-in-browser ; set brows
 macro a set browser "youtube-dl --add-metadata -xic -f bestaudio/best"; open-in-browser ; set browser "open '%u'"
 macro v set browser "nohup mpv"; open-in-browser ; set browser "open '%u'"
 macro w set browser "w3m"; open-in-browser ; set browser "open '%u'"
+macro l set browser "lynx"; open-in-browser ; set browser "open '%u'"
 macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open '%u'"
+macro u set browser "urlview"; open-in-browser ; set browser "open '%u'"
