@@ -49,6 +49,7 @@
     up-sub = "!git submodule foreach git pull; git submodule update --init --recursive -j8"
     open = "!open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
+    reignore = "!git rm -r --cached .; git add ."
 
     la = "!git config -l | grep alias | cut -c 7-"
 
