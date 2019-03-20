@@ -186,7 +186,7 @@ if command -v brew &> /dev/null; then
 
    # Final steps & cleanup
    brew cleanup -s;
-   brew prune;
+   brew cleanup --prune-prefix;
    brew doctor;
    brew missing;
 
