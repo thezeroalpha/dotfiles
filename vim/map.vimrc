@@ -91,16 +91,6 @@ nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 " Highlight last inserted text
 nnoremap gV `[v`]
 
-" Delete without yanking to clipboard
-nnoremap <leader>d "_d
-
-" Change without yanking to clipboard
-nnoremap <leader>C "_c
-
-" Replace without yanking to clipboard
-vnoremap <leader>p "_dP
-nnoremap <leader>p "_ddP
-
 " Save in insert mode
 inoremap <C-Z> <ESC>:w<CR>a
 
@@ -113,6 +103,11 @@ nnoremap <C-E><C-V> :vsplit $CONF_DIR/vim/init.vimrc<CR>
 nnoremap <C-E><C-M> :vsplit $CONF_DIR/vim/map.vimrc<CR>
 nnoremap <C-E><C-P> :vsplit $CONF_DIR/vim/plugins.vimrc<CR>
 nnoremap <C-E><C-L> :vsplit $CONF_DIR/vim/pluginconf.vimrc<CR>
+
+nnoremap <leader>y "*y
+nnoremap <leader>p "*p
+nnoremap <leader>P "*P
+nnoremap <leader>ny "_y
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
