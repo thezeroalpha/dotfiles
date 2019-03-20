@@ -34,6 +34,11 @@ if command -v go &> /dev/null; then
       PATH=$PATH:"$GOPATH"/bin
    fi
 fi
+
+# Homebrew
+if [[ $PATH != *"/usr/local/sbin"* ]]; then
+   PATH="/usr/local/sbin:$PATH"
+fi
 # Set a variable for my confidr
 CONF_DIR="$HOME/.dotfiles"
 
