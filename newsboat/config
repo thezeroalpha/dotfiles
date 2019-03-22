@@ -39,9 +39,10 @@ color article cyan default
 
 browser "open '%u'"
 macro , open-in-browser
-macro t set browser "youtube-dl --add-metadata -ic"; open-in-browser ; set browser "open '%u'"
+macro d set browser "youtube-dl --add-metadata -ic"; open-in-browser ; set browser "open '%u'"
+macro t set browser "t(){ clear; youtube-dl --get-title --get-duration --get-description $1 | less;};t"; open-in-browser ; set browser "open '%u'"
 macro a set browser "youtube-dl --add-metadata -xic -f bestaudio/best"; open-in-browser ; set browser "open '%u'"
-macro v set browser "nohup mpv"; open-in-browser ; set browser "open '%u'"
+macro v set browser "nohup mpv --volume=50"; open-in-browser ; set browser "open '%u'"
 macro w set browser "w3m"; open-in-browser ; set browser "open '%u'"
 macro l set browser "lynx"; open-in-browser ; set browser "open '%u'"
 macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open '%u'"
