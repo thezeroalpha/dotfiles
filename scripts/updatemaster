@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+# vim: foldmethod=marker foldlevel=0:
 
-# Set default variables
+# Function/variable definitions {{{
 OPTIND=1
 all_casks=0
 no_casks=0
@@ -27,10 +28,15 @@ echo_warn() {
 echo_progress() {
    echo -e "[\e[1;36m...\e[0m] \e[1;36m$1\e[0m"
 }
+hr() {
+   cols=$(tput cols)
+   printf '#%.0s' $(seq 1 $cols)
+}
+# }}}
 
 echo_progress "### STARTING UPDATE SCRIPT ###\n"
 
-# Get passed options/arguments
+# Parse options/arguments {{{
 while getopts "fcashFACn" opt; do
    case "$opt" in
       c)
@@ -77,8 +83,9 @@ while getopts "fcashFACn" opt; do
          ;;
    esac
 done
+# }}}
 
-### SET UP NOTIFY ###
+# Set up notification method {{{
 if ! command -v notify &> /dev/null; then
    if command -v terminal-notifier &> /dev/null; then
       notify() { terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2; }
@@ -87,8 +94,9 @@ if ! command -v notify &> /dev/null; then
       notify() { echo -e '\a'; }
    fi
 fi
+# }}}
 
-### Pre-authorise sudo ###
+# Pre-authorize sudo {{{
 trap exit INT
 echo -e "Root permissions will be needed for global pip update.\n"
 if sudo -v; then
@@ -98,8 +106,9 @@ else
 fi
 trap - INT
 echo
+# }}}
 
-### HOMEBREW ###
+# Homebrew {{{
 echo_progress "Homebrew update/upgrade."
 if command -v brew &> /dev/null; then
    brew update;
@@ -112,7 +121,7 @@ if command -v brew &> /dev/null; then
    fi
    echo
 
-   # Potentially upgrade programs
+   # Programs {{{
    if [ $no_formulas = 1 ] || [ $none = 1 ]; then
       echo_succ  "No programs will be updated." 
    elif [ ${#outdated} = 0 ]; then
@@ -137,8 +146,9 @@ if command -v brew &> /dev/null; then
          esac
       fi
    fi
+   # }}}
 
-   # Potentially upgrade casks
+   # Casks {{{
    if [ ${#outdated_c} = 0 ]; then
       echo_succ "No casks to update." 
    elif [ $no_casks = 1 ] || [ $none = 1 ]; then
@@ -183,8 +193,9 @@ if command -v brew &> /dev/null; then
          esac
       fi
    fi
+   # }}}
 
-   # Final steps & cleanup
+   # Final steps & cleanup {{{
    brew cleanup -s;
    brew cleanup --prune-prefix;
    brew doctor;
@@ -200,13 +211,16 @@ if command -v brew &> /dev/null; then
 
    echo_succ "Backup complete."
    notify "Brewed." "All packages have been upgraded.";
+   # }}}
 else
    echo_err "brew not found."
    echo_err "Cannot upgrade Homebrew packages. Please do so manually."
 fi
-echo
+# }}}
 
-### Mac App Store (MAS) ###
+hr
+
+# Mac App Store (MAS) {{{
 echo_progress "MAS update/upgrade."
 if command -v mas &> /dev/null; then
    echo -e "MAS outdated:"
@@ -234,9 +248,11 @@ else
    echo_err -e "mas not found. Install mas to update App Store apps on the command line."
    echo_err -e "Cannot update Mac App Store apps. Please do so manually."
 fi
-echo
+# }}}
 
-### GLOBAL NPM ###
+hr
+
+# Global NPM packages {{{
 echo_progress "NPM global update/upgrade."
 if command -v npm &> /dev/null; then
    outdated=$(npm outdated)
@@ -244,6 +260,7 @@ if command -v npm &> /dev/null; then
       echo_succ "Everything is up to date."
    else
       npm update -g
+      npm install -g npm
       notify "NPM Update Finished" "See Terminal for info."
    fi
    npm cache verify
@@ -252,40 +269,11 @@ else
    echo_err "npm not found."
    echo_err "Cannot update NPM packages. Please do so manually."
 fi
-echo
+# }}}
 
-echo_progress "PIP update/upgrade."
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-   source /usr/local/bin/virtualenvwrapper.sh
-   echo "Working with virtualenv"
-   names=($(workon))
-   for pip_env in ${names[@]}; do
-      workon "$pip_env"
-      pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
-      pip freeze — local | grep -v '^\-e' | cut -d = -f 1 | xargs pip install -U
-      deactivate
-   done
-else
-   if command -v pip3 list &> /dev/null; then
-      pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
-      notify "Pip3 Update Finished" "See Terminal for info."
-   else
-      echo_err "Cannot upgrade pip3 packages. Please do so manually."
-   fi
+hr
 
-   if command -v pip list &> /dev/null; then
-      if pip freeze; then
-         pip freeze — local | grep -v '^\-e' | cut -d = -f 1 | xargs pip install -U
-      else
-         echo_err "Cannot upgrade pip packages. Please do so manually."
-      fi
-      notify "Pip Update Finished" "See Terminal for info."
-   else
-      echo_err "Cannot upgrade pip packages. Please do so manually."
-   fi
-fi
-
-### SUDO PIP ###
+# Global (sudo) pip {{{
 echo_progress "Global pip."
 if [ $sudo_auth -eq 1 ]; then
    if command -v sudo -H pip list &> /dev/null; then
@@ -297,22 +285,11 @@ if [ $sudo_auth -eq 1 ]; then
 else
    echo -e "Sudo not authorised."
 fi
-echo
+# }}}
 
-### TLDR DATABASE ###
-if command -v tldr &> /dev/null; then
-   echo_progress "TLDR database update"
-   tldr --update
-   tldr_exit=$?
-   if [ $tldr_exit -eq 0 ]; then
-      echo_succ "Exit code: $tldr_exit"
-   else
-      echo_err "Exit code: $tldr_exit"
-   fi
-fi
-echo
+hr
 
-### ATOM PACKAGES ###
+# Atom editor packages {{{
 if command -v apm &> /dev/null; then
    echo_progress "Atom package upgrades"
    if apm outdated &> /dev/null; then
@@ -321,11 +298,21 @@ if command -v apm &> /dev/null; then
    else
       echo_err "Cannot upgrade Atom packages. Please do so manually."
    fi
+   notify "APM Upgrade Complete" "See Terminal for info."
 else
    echo_err "Atom not installed (or APM not functioning properly)."
 fi
-echo
+# }}}
 
-notify "APM Upgrade Complete" "See Terminal for info."
+hr
+
+# Ruby gems {{{
+if command -v gem &> /dev/null; then
+   gem cleanup
+fi
+# }}}
+#
+hr
+
 echo_succ "All systems checked."
 notify "All systems checked." "Everything you indicated should be upgraded."
