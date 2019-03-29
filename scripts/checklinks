@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+if ! command -v wget &> /dev/null; then
+  echo "Please install wget."
+  exit 1
+elif [ $# -ne 2 ]; then
+  echo "Usage:"
+  echo "checklinks [URL] [LOGFILE]"
+fi
+
+flags=(--spider --recursive --no-directories --no-verbose --page-requisites --level inf --wait 2 -e robots=off)
+
+wget "${flags[@]}" -o "$2" "$1"
+
+grep -B 1 'broken link!' "$2" | less
