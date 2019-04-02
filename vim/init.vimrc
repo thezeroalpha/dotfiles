@@ -4,4 +4,3 @@ source $HOME/.dotfiles/vim/editor.vimrc
 source $HOME/.dotfiles/vim/commands.vimrc
 source $HOME/.dotfiles/vim/map.vimrc
 source $HOME/.dotfiles/vim/autocmd.vimrc
-source $HOME/.dotfiles/vim/pluginconf.vimrc
