@@ -149,6 +149,7 @@ let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsSnippetDirectories = [$CONF_DIR.'/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
+let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
 " }}}
 
 call plug#end()
