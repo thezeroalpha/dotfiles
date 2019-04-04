@@ -134,4 +134,21 @@ Plug 'romainl/vim-cool'
 "   but leaving in case I need it sometime.
 " Plug 'dhruvasagar/vim-table-mode'
 
+" Vimtex {{{
+Plug 'lervag/vimtex'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='general'
+let g:vimtex_quickfix_mode=0
+let g:tex_conceal='abdmg'
+" }}}
+
+" Ultisnips {{{
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsSnippetDirectories = [$CONF_DIR.'/vim/ultisnips']
+let g:UltiSnipsEditSplit = "vertical"
+" }}}
+
 call plug#end()

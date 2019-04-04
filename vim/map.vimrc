@@ -32,9 +32,9 @@ if !exists("g:loaded_cool")
   nnoremap <leader>/ :noh<CR>
 endif
 
-" Tab completion
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-p>
+" Tab completion (disabled because of ultisnips)
+" inoremap <expr> <tab> InsertTabWrapper()
+" inoremap <s-tab> <c-p>
 
 " Retain visual mode after > and <
 vnoremap < <gv
