@@ -1,6 +1,7 @@
-source $HOME/.dotfiles/vim/plugins.vimrc
-source $HOME/.dotfiles/vim/general.vimrc
-source $HOME/.dotfiles/vim/editor.vimrc
-source $HOME/.dotfiles/vim/commands.vimrc
-source $HOME/.dotfiles/vim/map.vimrc
-source $HOME/.dotfiles/vim/autocmd.vimrc
+source $CONF_DIR/vim/plugins.vimrc
+source $CONF_DIR/vim/general.vimrc
+source $CONF_DIR/vim/editor.vimrc
+source $CONF_DIR/vim/commands.vimrc
+source $CONF_DIR/vim/map.vimrc
+source $CONF_DIR/vim/autocmd.vimrc
+source $CONF_DIR/vim/symbols.vimrc
