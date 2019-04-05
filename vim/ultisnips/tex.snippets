@@ -26,7 +26,7 @@ endglobal
 # }}}
 
 # Skeletons {{{
-snippet skelmath "Math skeleton" bA
+snippet skel "Math skeleton" b
 \documentclass[12pt,a4paper,oneside,fleqn]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -103,68 +103,37 @@ snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
 endsnippet
 
 context "math()"
-snippet // "Fraction" iA
-\\frac{$1}{$2}$0
-endsnippet
-
-context "math()"
-snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
-\\frac{`!p snip.rv = match.group(1)`}{$1}$0
-endsnippet
-
-context "math()"
-priority 1000
-snippet '^.*\)/' "() Fraction" wrA
-`!p
-stripped = match.string[:-1]
-depth = 0
-i = len(stripped) - 1
-while True:
-        if stripped[i] == ')': depth += 1
-        if stripped[i] == '(': depth -= 1
-        if depth == 0: break;
-        i -= 1
-snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-`{$1}$0
-endsnippet
-
-context "math()"
-snippet / "Fraction" iA
-\\frac{${VISUAL}}{$1}$0
-endsnippet
-
-context "math()"
 priority 10
-snippet "bar" "bar" riA
+snippet "bar" "bar" ri
 \overline{$1}$0
 endsnippet
 
 context "math()"
 priority 100
-snippet "([a-zA-Z])bar" "bar" riA
+snippet "([a-zA-Z])-bar" "bar" riA
 \overline{`!p snip.rv=match.group(1)`}
 endsnippet
 
 context "math()"
 priority 10
-snippet "hat" "hat" riA
+snippet "hat" "hat" ri
 \hat{$1}$0
 endsnippet
 
 context "math()"
 priority 100
-snippet "([a-zA-Z])hat" "hat" riA
+snippet "([a-zA-Z])-hat" "hat" riA
 \hat{`!p snip.rv=match.group(1)`}
 endsnippet
 
 context "math()"
 snippet _{ "underbrace"
-\underbrace{$1}_\text{$2}
+\underbrace{${1:expression}}_\text{${2:annotation}}
 endsnippet
 
 context "math()"
 snippet ^{ "overbrace"
-\overbrace{$1}^\text{$2}
+\overbrace{${1:expression}}^\text{${2:annotation}}
 endsnippet
 # }}}
 
