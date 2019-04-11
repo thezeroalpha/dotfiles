@@ -61,22 +61,8 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  brew
-  bundler
-  cp
-  gem
   gitignore
-  heroku
-  iterm2
-  osx
-  pass
-  pyenv
-  python
-  rails
-  rake
-  sublime
   sudo
-  vim-interaction
 )
 
 source $ZSH/oh-my-zsh.sh
