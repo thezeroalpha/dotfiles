@@ -39,13 +39,13 @@ color article cyan default
 
 browser "open '%u'"
 macro , open-in-browser
-macro i set browser "i(){ clear; youtube-dl --get-title --get-duration --get-description $1 | less;};i"; open-in-browser ; set browser "open '%u'"
+macro i set browser "i(){ youtube-dl --get-title --get-duration --get-description $1 | less;};i"; open-in-browser ; set browser "open '%u'"
 macro v set browser "nohup mpv --volume=50 &>/dev/null"; open-in-browser ; set browser "open '%u'"
 macro w set browser "w3m"; open-in-browser ; set browser "open '%u'"
 macro l set browser "lynx"; open-in-browser ; set browser "open '%u'"
 macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open '%u'"
 macro u set browser "urlview"; open-in-browser ; set browser "open '%u'"
-macro a set browser "youtube-dl --add-metadata -xic -f bestaudio/best"; open-in-browser ; set browser "open '%u'"
+macro a set browser "youtube-dl --add-metadata -xic -f bestaudio/best -o \'~/Downloads/songs/listen to/%(title)s-%(id)s.%(ext)s'"; open-in-browser ; set browser "open '%u'"
 macro g set browser "youtube-dl --add-metadata -ic"; open-in-browser ; set browser "open '%u'"
-macro p set browser "nohup youtube-dl -f 'bestvideo[ext=mp4]' --add-metadata -ic"; open-in-browser ; set browser "open '%u'"
+macro p set browser "nohup youtube-dl -f 22/17/18 --add-metadata -ic '%u' &"; open-in-browser ; set browser "open '%u'"
 macro s set browser "open 'pocket://add?url=%u'"; open-in-browser ; set browser "open '%u'"
