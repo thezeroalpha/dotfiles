@@ -78,6 +78,16 @@ snippet sec "section{}" b
 $0
 endsnippet
 
+snippet ssec "subsection{}" b
+\subsection{$1}
+$0
+endsnippet
+
+snippet sssec "subsection{}" b
+\subsubsection{$1}
+$0
+endsnippet
+
 snippet mk "Inline math" wA
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
@@ -179,6 +189,10 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 `{$1}$0
 endsnippet
 
+context "math()"
+snippet * "×" wA
+\times$0
+endsnippet
 # }}}
 
 # Custom commands {{{
