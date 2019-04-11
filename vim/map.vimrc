@@ -73,7 +73,7 @@ nnoremap <C-l> <C-W><
 nnoremap <leader>dh :DeleteHiddenBuffers<CR>
 
 " Switch to alernative buffer
-nnoremap <leader>s :b#<CR>
+nnoremap <leader>s<leader> :b#<CR>
 
 " Show hidden symbols
 nnoremap <leader>hs :set list!<CR>
@@ -114,3 +114,9 @@ vnoremap <leader>y "*y
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
 nnoremap <leader>td 0f-l"aywf:l"byw0"cywf:l"dywA (=((a*60+b)-(c*60+d))/60.0)F.r:wyw"aywcw=0.a*60F.2xih0:s/:0h/h
+
+" Custom session maps
+nnoremap <leader>ss :call SaveSession()<CR>
+nnoremap <leader>sl :call LoadSession()<CR>
+nnoremap <leader>sd :call DeleteSession()<CR>
+nnoremap <leader>sq :call CloseSession()<CR>

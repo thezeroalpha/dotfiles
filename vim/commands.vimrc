@@ -44,6 +44,107 @@ function! DeleteHiddenBuffers() " Vim with the 'hidden' option
     endfor
 endfunction
 
+" Custom session management (should be plugin) {{{
+function! SaveSession() abort
+    let seshdir = $HOME.'/.vim/sessions/'
+    silent call mkdir (seshdir, 'p')
+    let name = input("Save as: ")
+    if name == ""
+    	echo "\nNo name provided."
+    else
+	let nt_was_open = 0
+	if g:nerdtree_tabs_loaded == 1
+	    if g:NERDTree.IsOpen() == 1
+		execute "NERDTreeTabsClose"
+		let nt_was_open = 1
+	    endif
+	elseif g:loaded_nerd_tree == 1
+	    if g:NERDTree.IsOpen() == 1
+		execute "NERDTreeClose"
+		let nt_was_open = 1
+	    endif
+	endif
+
+	let seshfile = seshdir.name.".vim"
+	execute "mksession! " . seshfile
+	echo "\nSession saved: ".seshfile
+
+	if nt_was_open == 1
+	    if g:loaded_nerd_tree == 1
+		if g:nerdtree_tabs_loaded == 1
+		    execute "NERDTreeTabsToggle"
+		else
+		    execute "NERDTree"
+		endif
+		execute "NERDTreeFocusToggle"
+	    endif
+	endif
+    endif
+endfunction
+function! ListSessions() abort
+    let seshdir = $HOME.'/.vim/sessions/'
+    silent call mkdir (seshdir, 'p')
+    let files = globpath(seshdir, '*', 0, 1)
+    call filter(files, '!isdirectory(v:val)')
+    return files
+endfunction
+function! ChooseSession() abort
+    let files = ListSessions()
+    if len(files) > 0
+	let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
+	let response = inputlist(inputfiles)
+	if response > 0
+	    return files[response-1]
+	else
+	    return ""
+	endif
+    else
+    	echo "No sessions available."
+    	return ""
+    endif
+endfunction
+function! LoadSession() abort
+    let session = ChooseSession()
+    if session != ""
+	execute 'source '.session
+    else
+    	echo "\nNo session selected."
+    endif
+endfunction
+function! DeleteSession() abort
+    let sesh = ChooseSession()
+    if sesh == ""
+    	echo "\nNo session selected"
+    	return 1
+    endif
+    let conf = confirm("Delete ".sesh."?", "&Yes\n&No\n", 2)
+    if conf == 1
+	if delete(sesh) == 0
+	    echom "Deleted ".sesh
+	else
+	    echom "Couldn't delete ".sesh
+	endif
+    else
+    	echom "No action taken."
+    endif
+endfunction
+function! CloseSession()
+    bufdo! bwipeout
+    cd
+    if g:loaded_nerd_tree == 1
+	if g:nerdtree_tabs_loaded == 1
+	    execute "NERDTreeTabsClose"
+	else
+	    execute "NERDTreeClose"
+	endif
+    endif
+    if g:loaded_tagbar == 1
+    	execute "TagbarClose"
+    endif
+    echom "Session closed."
+endfunction
+" }}}
+
 " Custom commands
 command! TodoP vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
 command! Todo vimgrep /TODO\C<Bslash><Bar>TO DO\c/ % | copen
