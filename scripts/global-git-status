@@ -23,7 +23,7 @@ pid=$!
 trap cleanup INT
 echo "Looking for git repositories..."
 logfile="$(mktemp)"
-gits=$(find "$HOME" -name ".git" -not -path "*vim*plugged*")
+gits=$(find "$HOME" -name ".git" -not -path "*vim*plugged*" 2>/dev/null)
 
 kill $pid &> /dev/null
 trap - INT
@@ -41,6 +41,6 @@ for i in ${gits[@]}; do
   hr >> $logfile; 
 done
 echo
-vim $logfile -c "g/nothing to commit, working tree clean/norm V?git:ddd" -c "let @d=\"?^git: V/#d\"" -c "w|1"
+vim $logfile -c "let @d=\"j?^git: V/#d\"" -c "w|1" --cmd "echo 'Execute register D to remove a status report.'"
 unset IFS
 clear
