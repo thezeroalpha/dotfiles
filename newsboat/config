@@ -37,7 +37,7 @@ color listfocus_unread yellow default bold
 color info magenta black bold
 color article cyan default
 
-browser "open '%u'"
+browser "open -g '%u'"
 macro , open-in-browser
 macro i set browser "i(){ youtube-dl --get-title --get-duration --get-description $1 | less;};i"; open-in-browser ; set browser "open '%u'"
 macro v set browser "nohup mpv --volume=50 &>/dev/null"; open-in-browser ; set browser "open '%u'"
