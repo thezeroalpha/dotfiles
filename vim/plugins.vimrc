@@ -152,4 +152,5 @@ let g:UltiSnipsEditSplit = "vertical"
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
 " }}}
 
+Plug 'gastonsimone/vim-dokumentary'
 call plug#end()
