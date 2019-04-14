@@ -152,5 +152,10 @@ let g:UltiSnipsEditSplit = "vertical"
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
 " }}}
 
+" Improve what K does
 Plug 'gastonsimone/vim-dokumentary'
+let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
+
+" Work with variants of words easily
+Plug 'tpope/vim-abolish'
 call plug#end()
