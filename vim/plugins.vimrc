@@ -158,4 +158,6 @@ let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
 
 " Work with variants of words easily
 Plug 'tpope/vim-abolish'
+
+Plug 'romainl/vim-devdocs'
 call plug#end()
