@@ -160,4 +160,6 @@ let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
 Plug 'tpope/vim-abolish'
 
 Plug 'romainl/vim-devdocs'
+
+Plug 'rking/ag.vim'
 call plug#end()
