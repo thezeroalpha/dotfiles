@@ -7,3 +7,4 @@ newsboat/*
 !newsboat/config
 !newsboat/urls
 !newsboat/cache.db
+*.pyc
