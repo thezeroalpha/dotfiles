@@ -26,6 +26,7 @@ print_available() {
       echo "oh-my-zsh         the whole oh-my-zsh config directory"
       echo "radio             radio metadata for the internet radio script"
       echo "ranger            ranger file browser config"
+      echo "rtv               reddit terminal viewer config"
       echo "scripts           misc executable scripts (like this one"
       echo "shell             various configs related to shells"
       echo "vim               vim configuration files"
@@ -69,6 +70,9 @@ use_files() {
           ;;
         "ranger")
           lncommand "$CONF_DIR/ranger" "$HOME/.config/ranger"
+          ;;
+        "rtv")
+          lncommand "$CONF_DIR/rtv" "$HOME/.config/rtv"
           ;;
         "scripts")
           lncommand "$CONF_DIR/scripts" "$HOME/.scripts"
