@@ -6,9 +6,11 @@ augroup configgroup
   autocmd FileType vimwiki  setlocal    wrap shiftwidth=4 tabstop=4 softtabstop=4 breakindent breakindentopt=shift:3 | cabbrev table VimwikiTable
   autocmd FileType tagbar   setlocal    nocursorline 
   autocmd FileType qf       setlocal    nocursorline
+  autocmd InsertEnter * setlocal nocursorline
+  autocmd InsertLeave * setlocal cursorline
 augroup END
 
-augroup insertbinds
+augroup insertmaps
   autocmd!
   autocmd FileType markdown inoremap ;1 #
   autocmd FileType markdown inoremap ;2 ##
