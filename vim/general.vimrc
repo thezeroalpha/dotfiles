@@ -95,3 +95,6 @@ endif
 
 " Command-line autocompletion
 set wildmode=longest,list,full
+
+" Add everything to sessions
+set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabpages,terminal
