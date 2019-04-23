@@ -17,3 +17,5 @@ execute "digraphs vs " . 0x1D65
 execute "digraphs xs " . 0x2093
 execute "digraphs \\|- " . 0x22A2
 execute "digraphs \\|=" . 0x22A8
+execute "digraphs mm" . 0x2133
+execute "digraphs \\|!" . 0x22AD
