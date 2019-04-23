@@ -22,4 +22,6 @@ augroup mappings
   autocmd!
   autocmd FileType c nnoremap <leader>mm :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
   autocmd FileType c nnoremap <leader>mc :silent make clean<CR>\|:redraw!<CR>
+  autocmd BufEnter *.tex nnoremap <leader>tt :VimtexTocToggle<CR>
+  autocmd BufLeave *.tex nnoremap <leader>tt :TagbarToggle<CR>
 augroup END
