@@ -62,9 +62,16 @@ snippet ul "unordered list" b
 \end{itemize}
 endsnippet
 
+snippet ol "ordered list" b
+\begin{enumerate}
+  \item $1
+  $2
+\end{enumerate}
+endsnippet
+
 snippet - "item in list" b
 \item $1
-  $2
+$2
 endsnippet
 
 snippet beg "begin{} / end{}" bA
@@ -102,6 +109,19 @@ snippet dm "Displayed math" wA
 $1
 \] $0
 endsnippet
+
+snippet table "Table" w
+\vspace{1em}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{| l | c | r |}
+  \hline
+  \textbf{${1:heading}} & \textbf{${2:heading}} & \textbf{${3:heading}} \\\\ \hline
+  ${4:cell} & ${5:cell} & ${6:cell} \\\\ \hline
+  $0 \\\\ \hline
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+\vspace{1em}
+endsnippet
 # }}}
 
 # Word processing {{{
@@ -115,6 +135,10 @@ endsnippet
 
 snippet " "quote" w
 \`\`$1''$0
+endsnippet
+
+snippet ' "single quote" w
+\`$1'$0
 endsnippet
 # }}}
 
@@ -193,6 +217,11 @@ context "math()"
 snippet * "×" wA
 \times$0
 endsnippet
+
+context "math()"
+snippet \given "P(A | B)" wA
+\given{$1}{$2}$0
+endsnippet
 # }}}
 
 # Custom commands {{{
@@ -203,6 +232,11 @@ snippet cmd "\given{A}{B} - (A|B)" b
 \newcommand{\@givennostar}[3][]{#1(#2\;#1|\;#3#1)}
 \newcommand{\given}{\@ifstar\@givenstar\@givennostar}
 \makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+endsnippet
+snippet cmd "subsection a), b), c)" b
+% lettered subsections %
+\renewcommand\thesubsection{\thesection.\alph{subsection}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 endsnippet
 # }}}
