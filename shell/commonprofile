@@ -213,7 +213,7 @@ mp4_mp3() {
 gifify() {
    ffmpeg -i "$1" -r 25 -f image2pipe -vcodec ppm - | \
       convert -delay 4 -loop 0 - output.gif
-}
+   }
 
 # Gif to mp4
 gif_mp4() {
@@ -299,16 +299,16 @@ if command -v osascript &> /dev/null; then
          echo 'No Finder window found' >&2
       fi
    }
-   # echo current Finder directory
-   gdf() {
-      osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
-   }
-   # echo selected Finder file
-   fsel() {
-      osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
-   };
-fi
-# }}}
+# echo current Finder directory
+gdf() {
+   osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+}
+# echo selected Finder file
+fsel() {
+   osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+};
+   fi
+   # }}}
 
 # fzf functions {{{
 if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
@@ -316,12 +316,21 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    fh() {
       eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
    }
-   # fd - cd to selected directory
-   fd() {
-      local dir
-      dir=$(find ${1:-.} -path '*/\.*' -prune \
-         -o -type d -print 2> /dev/null | fzf +m) &&
-         cd "$dir"
+# fd - cd to selected directory
+fd() {
+   local dir
+   dir=$(find ${1:-.} -path '*/\.*' -prune \
+      -o -type d -print 2> /dev/null | fzf +m) &&
+      cd "$dir"
    }
+fo() {
+   local out file key
+   IFS=$'\n' out=($(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e))
+   key=$(head -1 <<< "$out")
+   file=$(head -2 <<< "$out" | tail -1)
+   if [ -n "$file" ]; then
+      [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+   fi
+}
 fi
 # }}}
