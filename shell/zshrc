@@ -123,3 +123,5 @@ if ! command -v jenv &> /dev/null; then
   eval "$(jenv init -)"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
