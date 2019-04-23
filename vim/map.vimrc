@@ -27,8 +27,8 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+vnoremap D :m '>+1<CR>gv=gv
+vnoremap U :m '<-2<CR>gv=gv
 
 " stfu and write the file
 cnoremap sudow w !sudo tee > /dev/null %
