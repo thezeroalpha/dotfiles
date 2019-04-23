@@ -13,6 +13,7 @@ Plug 'guns/xterm-color-table.vim'
 " NERDTree - file browser
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
+nnoremap <leader>f :NERDTreeTabsToggle<CR>
 
 " NERD Commenter - simple comment toggling {{{
 Plug 'scrooloose/nerdcommenter'
@@ -40,65 +41,71 @@ Plug 'plasticboy/vim-markdown'
 
 " Tagbar {{{
 Plug 'majutsushi/tagbar'
+" Maps
+nnoremap <leader>tt :TagbarToggle<CR>
+nnoremap <leader>to :TagbarOpen fj<CR>
+
 " tagbar language definitions
 let g:tagbar_type_vimwiki = {
-          \   'ctagstype':'vimwiki'
-          \ , 'kinds':['h:header']
-          \ , 'sro':'&&&'
-          \ , 'kind2scope':{'h':'header'}
-          \ , 'sort':0
-          \ , 'ctagsbin':'$CONF_DIR/scripts/vwtags.py'
-          \ , 'ctagsargs': 'default'
-          \ }
+      \   'ctagstype':'vimwiki'
+      \ , 'kinds':['h:header']
+      \ , 'sro':'&&&'
+      \ , 'kind2scope':{'h':'header'}
+      \ , 'sort':0
+      \ , 'ctagsbin':'$CONF_DIR/scripts/vwtags.py'
+      \ , 'ctagsargs': 'default'
+      \ }
 
 let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
+      \ 'ctagstype' : 'go',
+      \ 'kinds'     : [
+      \ 'p:package',
+      \ 'i:imports:1',
+      \ 'c:constants',
+      \ 'v:variables',
+      \ 't:types',
+      \ 'n:interfaces',
+      \ 'w:fields',
+      \ 'e:embedded',
+      \ 'm:methods',
+      \ 'r:constructor',
+      \ 'f:functions'
+      \ ],
+      \ 'sro' : '.',
+      \ 'kind2scope' : {
+      \ 't' : 'ctype',
+      \ 'n' : 'ntype'
+      \ },
+      \ 'scope2kind' : {
+      \ 'ctype' : 't',
+      \ 'ntype' : 'n'
+      \ },
+      \ 'ctagsbin'  : 'gotags',
+      \ 'ctagsargs' : '-sort -silent'
+      \ }
 let g:tagbar_type_markdown = {
-    \ 'ctagstype' : 'markdown',
-    \ 'kinds' : [
-        \ 'h:Heading_L1',
-        \ 'i:Heading_L2',
-        \ 'k:Heading_L3'
-    \ ],
-    \ 'sort': 0
-\ }
+      \ 'ctagstype' : 'markdown',
+      \ 'kinds' : [
+      \ 'h:Heading_L1',
+      \ 'i:Heading_L2',
+      \ 'k:Heading_L3'
+      \ ],
+      \ 'sort': 0
+      \ }
 " }}}
 
 " Vimwiki {{{
 Plug 'vimwiki/vimwiki'
+nmap <leader><CR> <Plug>VimwikiSplitLink
+nmap <leader>v<CR> <Plug>VimwikiVSplitLink
 let g:vimwiki_list = [{'path': '$HOME/Dropbox/vimwiki', 
-	    \ 'template_path': '$HOME/Dropbox/vimwiki/templates',
-	    \ 'template_default': 'default',
-	    \ 'template_ext': '.html'}]
+      \ 'template_path': '$HOME/Dropbox/vimwiki/templates',
+      \ 'template_default': 'default',
+      \ 'template_ext': '.html'}]
 
 let g:vimwiki_global_ext = 1
 let g:vimwiki_ext2syntax = {'.mkd': 'markdown',
-	    \ '.wiki': 'default'}
+      \ '.wiki': 'default'}
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 " }}}
 
@@ -107,11 +114,12 @@ Plug 'tpope/vim-fugitive'
 
 " Undo tree visualiser
 Plug 'simnalamburt/vim-mundo'
+nnoremap <leader>u :MundoToggle<CR>
 
 " Quickfix window settings/mappings {{{
 Plug 'romainl/vim-qf'
-nmap ]q <Plug>(qf_qf_next)
-nmap [q <Plug>(qf_qf_previous)
+nmap <leader>qn <Plug>(qf_qf_next)
+nmap <leader>qp <Plug>(qf_qf_previous)
 nmap <leader>qf <Plug>(qf_qf_toggle)
 " }}}
 
@@ -126,7 +134,7 @@ Plug 'chrisbra/csv.vim'
 
 " Display ANSI color codes
 Plug 'vim-scripts/AnsiEsc.vim'
- 
+
 " Disable hlsearch after finished searching
 Plug 'romainl/vim-cool'
 
@@ -150,6 +158,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsSnippetDirectories = [$CONF_DIR.'/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
+cabbrev USE UltiSnipsEdit
 " }}}
 
 " Improve what K does

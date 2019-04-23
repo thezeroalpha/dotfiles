@@ -1,22 +1,8 @@
-let mapleader=" "   " Set the mapleader to be ,
+let mapleader=" "   " Set the mapleader to be space
 
 " So I don't have to mash shift all the time
 nnoremap ; :
 vnoremap ; :
-
-" NERDTree
-nnoremap <leader>f :NERDTreeTabsToggle<CR>
-
-" Tagbar
-nnoremap <leader>tt :TagbarToggle<CR>
-nnoremap <leader>to :TagbarOpen fj<CR>
-
-" Mundo undo tree (super-undo)
-nnoremap <leader>u :MundoToggle<CR>
-
-" Vimwiki split links
-nmap <leader><CR> <Plug>VimwikiSplitLink
-nmap <leader>v<CR> <Plug>VimwikiVSplitLink
 
 " Disable q: cuz I hate it
 " (also C-F does the same)
@@ -49,9 +35,6 @@ cnoremap sudow w !sudo tee > /dev/null %
 
 " and don't break my colours (U for 'unfuck my screen please')
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
-
-" Panic button rot13
-nnoremap <leader>qq mzggg?G`z
 
 " 'zoom to head level'
 nnoremap zh mzzt10<c-u>`z
