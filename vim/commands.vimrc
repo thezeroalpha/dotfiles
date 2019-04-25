@@ -146,8 +146,10 @@ endfunction
 " }}}
 
 " Custom commands
-command! TodoP vimgrep /TODO\C<Bslash><Bar>TO DO\C/ **/*.* | copen
-command! Todo vimgrep /TODO\C<Bslash><Bar>TO DO\c/ % | copen
+command! Light set background=light
+command! Dark set background=dark
+command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
+command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
 command! Note vimgrep /NOTE\C/ % | copen
 command! FixP vimgrep /FIXME\C/ **/*.* | copen
