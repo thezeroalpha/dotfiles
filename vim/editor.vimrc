@@ -1,8 +1,4 @@
 "====== EDITING PREFERENCES ======"
-" Syntax highlighting
-syntax on
-
-
 " In general, don't want anything concealed
 if has('conceallevel')
   set conceallevel=0
@@ -43,6 +39,9 @@ set copyindent      " smart indent based on file
 " Auto indent when starting new line
 set autoindent 
 filetype plugin indent on
+
+" Syntax highlighting
+syntax on
 
 " Folding on indentation
 set foldmethod=indent
