@@ -31,7 +31,7 @@ fi
 
 #}}}
 
-export CONF_DIR="$HOME/.dotfiles"
+export DOTFILES="$HOME/.dotfiles"
 
 read -n 1 -p "Install all dotfiles? [Y/n]" yn
 echo

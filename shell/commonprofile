@@ -8,7 +8,7 @@
 
 export \
    PATH GOPATH \
-   CONF_DIR MUSIC_DIR \
+   DOTFILES MUSIC_DIR \
    EDITOR HOMEBREW_EDITOR \
    VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV \
    CASK_REPO \
@@ -41,7 +41,7 @@ if [[ $PATH != *"/usr/local/sbin"* ]]; then
 fi
 
 # Set a variable for my confidr
-CONF_DIR="$HOME/.dotfiles"
+DOTFILES="$HOME/.dotfiles"
 
 # Where my music is located
 MUSIC_DIR="$HOME/Music/iTunes/iTunes Media/Music"

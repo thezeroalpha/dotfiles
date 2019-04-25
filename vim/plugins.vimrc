@@ -52,7 +52,7 @@ let g:tagbar_type_vimwiki = {
       \ , 'sro':'&&&'
       \ , 'kind2scope':{'h':'header'}
       \ , 'sort':0
-      \ , 'ctagsbin':'$CONF_DIR/scripts/vwtags.py'
+      \ , 'ctagsbin':'$DOTFILES/scripts/vwtags.py'
       \ , 'ctagsargs': 'default'
       \ }
 
@@ -155,7 +155,7 @@ Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsSnippetDirectories = [$CONF_DIR.'/vim/ultisnips']
+let g:UltiSnipsSnippetDirectories = [$DOTFILES.'/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
 cabbrev USE UltiSnipsEdit

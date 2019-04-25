@@ -78,14 +78,14 @@ nnoremap gV `[v`]
 inoremap <C-Z> <ESC>:w<CR>a
 
 " Config edit mappings
-nnoremap <C-E><C-A> :vsplit $CONF_DIR/vim/autocmd.vimrc<CR>
-nnoremap <C-E><C-C> :vsplit $CONF_DIR/vim/commands.vimrc<CR>
-nnoremap <C-E><C-E> :vsplit $CONF_DIR/vim/editor.vimrc<CR>
-nnoremap <C-E><C-G> :vsplit $CONF_DIR/vim/general.vimrc<CR>
-nnoremap <C-E><C-V> :vsplit $CONF_DIR/vim/init.vimrc<CR>
-nnoremap <C-E><C-M> :vsplit $CONF_DIR/vim/map.vimrc<CR>
-nnoremap <C-E><C-P> :vsplit $CONF_DIR/vim/plugins.vimrc<CR>
-nnoremap <C-E><C-L> :vsplit $CONF_DIR/vim/pluginconf.vimrc<CR>
+nnoremap <C-E><C-A> :vsplit $DOTFILES/vim/autocmd.vimrc<CR>
+nnoremap <C-E><C-C> :vsplit $DOTFILES/vim/commands.vimrc<CR>
+nnoremap <C-E><C-E> :vsplit $DOTFILES/vim/editor.vimrc<CR>
+nnoremap <C-E><C-G> :vsplit $DOTFILES/vim/general.vimrc<CR>
+nnoremap <C-E><C-V> :vsplit $DOTFILES/vim/init.vimrc<CR>
+nnoremap <C-E><C-M> :vsplit $DOTFILES/vim/map.vimrc<CR>
+nnoremap <C-E><C-P> :vsplit $DOTFILES/vim/plugins.vimrc<CR>
+nnoremap <C-E><C-L> :vsplit $DOTFILES/vim/pluginconf.vimrc<CR>
 
 " Yank to clipboard
 nnoremap <leader>y "*y

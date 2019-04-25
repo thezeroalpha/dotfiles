@@ -39,56 +39,56 @@ use_files() {
     for f in "$@"; do
       case "${f##./}" in
         "bin")
-          lncommand "$CONF_DIR/bin" "$HOME/.bin"
+          lncommand "$DOTFILES/bin" "$HOME/.bin"
           ;;
         "ctags")
-          lncommand "$CONF_DIR/ctags/ctags" "$HOME/.ctags"
+          lncommand "$DOTFILES/ctags/ctags" "$HOME/.ctags"
           ;;
         "gdb")
-          lncommand "$CONF_DIR/gdb/gdbinit" "$HOME/.gdbinit"
+          lncommand "$DOTFILES/gdb/gdbinit" "$HOME/.gdbinit"
           ;;
         "git")
-          lncommand "$CONF_DIR/git/gitconfig" "$HOME/.gitconfig"
+          lncommand "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
           if [ -d git/git_template ]; then
-            conf_check git config --global init.templatedir "$CONF_DIR"/git/git_template
+            conf_check git config --global init.templatedir "$DOTFILES"/git/git_template
           fi
           ;;
         "iterm2")
-          lncommand "$CONF_DIR/iterm2" "$HOME/.iterm2"
+          lncommand "$DOTFILES/iterm2" "$HOME/.iterm2"
           ;;
         "karabiner")
-          lncommand "$CONF_DIR/karabiner" "$HOME/.config/karabiner"
+          lncommand "$DOTFILES/karabiner" "$HOME/.config/karabiner"
           ;;
         "newsboat")
-          lncommand "$CONF_DIR/newsboat" "$HOME/.newsboat"
+          lncommand "$DOTFILES/newsboat" "$HOME/.newsboat"
           ;;
         "oh-my-zsh")
-          lncommand "$CONF_DIR/oh-my-zsh" "$HOME/.oh-my-zsh"
+          lncommand "$DOTFILES/oh-my-zsh" "$HOME/.oh-my-zsh"
           ;;
         "radio")
-          lncommand "$CONF_DIR/radio/radio-config" "$HOME/.radio-config"
+          lncommand "$DOTFILES/radio/radio-config" "$HOME/.radio-config"
           ;;
         "ranger")
-          lncommand "$CONF_DIR/ranger" "$HOME/.config/ranger"
+          lncommand "$DOTFILES/ranger" "$HOME/.config/ranger"
           ;;
         "rtv")
-          lncommand "$CONF_DIR/rtv" "$HOME/.config/rtv"
+          lncommand "$DOTFILES/rtv" "$HOME/.config/rtv"
           ;;
         "scripts")
-          lncommand "$CONF_DIR/scripts" "$HOME/.scripts"
+          lncommand "$DOTFILES/scripts" "$HOME/.scripts"
           if command -v mpv &> /dev/null; then
             mkdir -p "$HOME/.config/mpv"
-            lncommand "$CONF_DIR/.scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
+            lncommand "$DOTFILES/.scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
           fi
           ;;
         "shell")
           for i in shell/*; do
-            lncommand "$CONF_DIR/$i" "$HOME/.${i##*/}"
+            lncommand "$DOTFILES/$i" "$HOME/.${i##*/}"
           done
           ;;
         "vim")
-          lncommand "$CONF_DIR/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
-          lncommand "$CONF_DIR/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
+          lncommand "$DOTFILES/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
+          lncommand "$DOTFILES/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
           ;;
         esac
 
@@ -99,11 +99,11 @@ use_files() {
   }
 #}}}
 
-# Check if $CONF_DIR is set {{{
+# Check if $DOTFILES is set {{{
 conf_check() {
-  if [ -z "$CONF_DIR" ]; then
-    echo "\$CONF_DIR not set."
-    echo "Please set the CONF_DIR environment variable to your dotfiles repository."
+  if [ -z "$DOTFILES" ]; then
+    echo "\$DOTFILES not set."
+    echo "Please set the DOTFILES environment variable to your dotfiles repository."
   else
     "$@"
   fi
@@ -139,13 +139,13 @@ if [ $# -gt 0 ]; then
       echo "File $HOME/.commonprofile does not exist."
     fi
   elif [ "$1" = 'get' ]; then
-    conf_check echo "$CONF_DIR"
+    conf_check echo "$DOTFILES"
 
   elif [ "$1" = 'use' ]; then
     conf_check use_files "${@:2}" 
 
   else
-    conf_check "$(command -v git)" --git-dir="$CONF_DIR"/.git --work-tree "$CONF_DIR" "$@"
+    conf_check "$(command -v git)" --git-dir="$DOTFILES"/.git --work-tree "$DOTFILES" "$@"
   fi
   #}}}
   # ...or print help text {{{

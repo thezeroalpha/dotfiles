@@ -1,7 +1,7 @@
-source $CONF_DIR/vim/general.vimrc
-source $CONF_DIR/vim/editor.vimrc
-source $CONF_DIR/vim/commands.vimrc
-source $CONF_DIR/vim/map.vimrc
-source $CONF_DIR/vim/plugins.vimrc
-source $CONF_DIR/vim/autocmd.vimrc
-source $CONF_DIR/vim/symbols.vimrc
+source $DOTFILES/vim/general.vimrc
+source $DOTFILES/vim/editor.vimrc
+source $DOTFILES/vim/commands.vimrc
+source $DOTFILES/vim/map.vimrc
+source $DOTFILES/vim/plugins.vimrc
+source $DOTFILES/vim/autocmd.vimrc
+source $DOTFILES/vim/symbols.vimrc
