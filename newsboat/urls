@@ -23,7 +23,6 @@ https://www.ceskenoviny.cz/sluzby/rss/ekonomika.php "~Ekonomika" "news"
 https://www.aktuality.sk/rss/domace/ "~Aktuality -  Domáce" "news"
 https://www.aktuality.sk/rss/zahranicne/ "~Aktuality - Zahraničné" "news"
 https://www.rferl.org/api/z$qimetkiy "news"
-https://www.economist.com/topics/computer-technology/index.xml "news"
 
 # Others
 http://www.thedistilledman.com/feed/ "others"
