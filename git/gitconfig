@@ -39,15 +39,16 @@
 
     diffs = "diff --staged"
     changes = diff --summary --stat
-    mergetest = merge --no-commit --no-f
+    mergetest = merge --no-commit
     testmerge = mergetest
-    mergeno = merge --no-ff
+    mno = merge --no-ff
+    mff = merge --ff-only
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d && git fetch --all --prune"
     p = push
     pushf = push --force-with-lease
     pff = pull --ff-only
     pnf = pull --no-ff
-    fuckitall = reset --hard HEAD
+    fuckit = reset --hard HEAD
     home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|'"
     up-sub = "!git submodule foreach git pull; git submodule update --init --recursive -j8"
     open = "!open $(git home)"
