@@ -23,6 +23,7 @@ endif
 " Numbered lines
 set number
 set numberwidth=3
+set relativenumber
 
 
 " with a smart tab
