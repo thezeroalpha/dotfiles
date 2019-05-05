@@ -152,7 +152,7 @@ todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Fi
 find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
 hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # Insert a <hr> in the terminal
 vimq() { vim -v -q <($(fc -nl -1)); }                                       # Load results of last command (often ag) in vim quickfix
-otp() { oathtool --totp --digits=6  -s '30s' -b "$1"; }                     # Generate OTP passwords (google authenticator alternative)
+otp() { oathtool --totp --base32 "$1"; }                                    # Generate OTP passwords (google authenticator alternative)
 
 # Pip3 upgrade packages
 pip3_upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
