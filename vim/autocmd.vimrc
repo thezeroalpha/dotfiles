@@ -1,4 +1,4 @@
-augroup configgroup
+augroup sets
   autocmd!
   autocmd BufRead,BufNewFile  *.md    setlocal conceallevel=2
   autocmd FileType markdown     setlocal    conceallevel=2 wrap
@@ -8,6 +8,7 @@ augroup configgroup
   autocmd FileType qf       setlocal    nocursorline
   autocmd InsertEnter * setlocal nocursorline
   autocmd InsertLeave * setlocal cursorline
+  autocmd FileType gitcommit setlocal spell spelllang=en
 augroup END
 
 augroup insertmaps
