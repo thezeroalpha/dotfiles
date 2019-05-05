@@ -32,4 +32,5 @@ augroup END
 augroup makeprgs
   autocmd!
   autocmd FileType markdown setlocal makeprg=pandoc\ %\ -o\ %<.pdf
+  autocmd FileType sh setlocal makeprg=shellcheck\ -f\ gcc\ %
 augroup END
