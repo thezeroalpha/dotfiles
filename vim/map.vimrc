@@ -88,11 +88,14 @@ nnoremap <C-E><C-P> :vsplit $DOTFILES/vim/plugins.vimrc<CR>
 nnoremap <C-E><C-L> :vsplit $DOTFILES/vim/pluginconf.vimrc<CR>
 
 " Yank to clipboard
+nnoremap <leader>d "*d
 nnoremap <leader>y "*y
 nnoremap <leader>p "*p
 nnoremap <leader>P "*P
 nnoremap <leader>ny "_y
+nnoremap <leader>nd "_d
 vnoremap <leader>y "*y
+vnoremap <leader>d "*d
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
