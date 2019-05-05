@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+echo -n "pass> "
+read -r -s pass_str
+sha1=$(echo -n "$pass_str" | tr -d '\n' | shasum -a 1)
+echo
+echo "Hash prefix: ${sha1:0:5}"
+echo "Hash suffix: ${sha1:5:35}"
+result=$(curl https://api.pwnedpasswords.com/range/"${sha1:0:5}" 2>/dev/null | grep -i "${sha1:5:35}")
+echo "Count: ${result#*:}"

@@ -27,6 +27,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `pass-import-txt`: imports passwords into `pass` from a text file that's formatted as `username:password` (newline-separated)
 * `percerr.rb`: a very simple thing for calculating percent error. Just run the Ruby script.
 * `play`: a command-line music player. Shows album art, or a visualiser if there is no album art. Set a $MUSIC_DIR in your profile, then run `play`.
+* `pwnedpass`: test a password against the pwned passwords database, uses k-anonymity
 * `radio`: a command-line radio player, can play various music streams from the internet, including subreddits. Also has a visualiser, turn it on by passing `-v` on startup.
 * `rplayer`: a command-line subreddit player. Enter any subreddit that has music, and it'll play all of the links using `mpv` (except for Spotify).
 * `smack.pl`: change macos spaces by smacking the side of your screen (if you have a laptop). Yeah, like physically.
