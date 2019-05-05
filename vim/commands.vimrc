@@ -146,8 +146,8 @@ endfunction
 " }}}
 
 " Custom commands
-command! Light set background=light
-command! Dark set background=dark
+command! Light set background=light | e
+command! Dark set background=dark | e
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
 command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
@@ -156,6 +156,7 @@ command! FixP vimgrep /FIXME\C/ **/*.* | copen
 command! Fix vimgrep /FIXME\C/ % | copen
 command! ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
 command! CDC cd %:p:h
+command! LCDC lcd %:p:h
 command! Maketab set noet ts=2 | %retab!
 command! Diff w !diff % -
 command! Diffc w !git diff % -
