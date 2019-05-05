@@ -187,3 +187,7 @@ cnoreabbrev Qall qall
 cnoreabbrev E Explore
 cnoreabbrev Colors XtermColorTable
 cnoreabbrev lset setl
+if has('terminal')
+    cnoreabbrev tt tab terminal
+    cnoreabbrev wt terminal
+endif
