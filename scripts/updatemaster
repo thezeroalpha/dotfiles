@@ -2,16 +2,9 @@
 # vim: foldmethod=marker foldlevel=0:
 
 # Function/variable definitions {{{
-OPTIND=1
-all_casks=0
-no_casks=0
-all_formulas=0
-no_formulas=0
-all=0
-none=0
+casks=0
+formulas=0
 select_casks=0
-sudo_auth=0
-greedy=1
 
 TICK="\e[1;32m\u2714\e[0m"
 CROSS="\e[1;31m\u2718\e[0m"
@@ -30,50 +23,34 @@ echo_progress() {
 }
 hr() {
    cols=$(tput cols)
-   printf '#%.0s' $(seq 1 $cols)
+   printf '#%.0s' $(seq 1 "$cols")
 }
 # }}}
 
 echo_progress "### STARTING UPDATE SCRIPT ###\n"
 
 # Parse options/arguments {{{
-while getopts "fcashFACn" opt; do
+while getopts "hfcms" opt; do
    case "$opt" in
       c)
-         all_casks=1
+         casks=1
          ;;
       f)
-         all_formulas=1
-         ;;
-      a)
-         all=1
+         formulas=1
          ;;
       s)
          select_casks=1
          ;;
-      F)
-         no_formulas=1
+      m)
+         maintenance=1
          ;;
-      C)
-         no_casks=1
-         ;;
-      A)
-         none=1
-         ;;
-      n) 
-         greedy=0;;
       h|*)
          echo "Update your Homebrew, Mac App Store, NPM, and PIP packages in one place."
          echo "Usage: updatemaster [-aAcCfFsh]"
          echo "Options:"
          echo "-c:		Upgrade all casks, without prompting."
-         echo "-C:		Don't update any casks."
          echo "-f:		Upgrade all formulas, without prompting."
-         echo "-F:		Don't upgrade any formulas."
-         echo "-a:		Upgrade all casks and formulas."
-         echo "-A:		Don't upgrade any Brew programs (maintenance only)."
          echo "-s:		Select which casks to upgrade."
-         echo "-n:              Non-greedy"
          echo "-h:		Show this help text."
          echo
          echo "Options can be combined. For example:"
@@ -102,15 +79,11 @@ if command -v brew &> /dev/null; then
    brew update;
    brew update > /dev/null;
    outdated="$(brew outdated)"
-   if [ $greedy = 1 ]; then
-      outdated_c="$(brew cask outdated --greedy)"
-   else
-      outdated_c="$(brew cask outdated)"
-   fi
+   outdated_c="$(brew cask outdated --greedy)"
    echo
 
    # Programs {{{
-   if [ $no_formulas = 1 ] || [ $none = 1 ]; then
+   if [ $casks = 0 ] && [ $formulas = 0 ] && [ $select_casks = 0 ]; then
       echo_succ  "No programs will be updated." 
    elif [ ${#outdated} = 0 ]; then
       echo -e "No programs to update." 
@@ -118,20 +91,8 @@ if command -v brew &> /dev/null; then
       echo -e "To update:\n"
       brew outdated;
       notify "Brew: Finished reading updates" "Click to view outdated packages."
-      if [ $all_formulas = 1 ] || [ $all = 1 ]; then
+      if [ $formulas = 1 ]; then
          brew upgrade
-      else
-         echo; read -sn 1 -p "Continue? [Y/n]" CONF
-
-         case $CONF in
-            [yY] )
-               echo -e "\nContinuing with brew upgrade."
-               brew upgrade;
-               ;;
-            * )
-               echo -e "\nCancelled brew upgrade."
-               ;;
-         esac
       fi
    fi
    # }}}
@@ -139,60 +100,55 @@ if command -v brew &> /dev/null; then
    # Casks {{{
    if [ ${#outdated_c} = 0 ]; then
       echo_succ "No casks to update." 
-   elif [ $no_casks = 1 ] || [ $none = 1 ]; then
+   elif [ $casks = 0 ] && [ $select_casks = 1 ]; then
       echo_succ "No casks will be updated."
    else
       echo -e "Casks to update:"
-      if [ $greedy = 1 ]; then
-         brew cask outdated --greedy;
-      else
-         brew cask outdated
-      fi
+      brew cask outdated --greedy;
+
       notify "Cask: Finished reading updates" "Click to view outdated casks."
-      if [ $all_casks = 1 ] || [ $all = 1 ]; then
-         if [ $greedy = 1 ]; then
-            brew cask upgrade --greedy
-         else
-            brew cask upgrade
-         fi
+      if [ $casks = 1 ] && [ $select_casks = 0 ]; then
+         brew cask upgrade --greedy
       elif [ $select_casks = 1 ]; then
-         read -p "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
-         for i in ${CASKS[@]}; do
-            if ! brew cask upgrade $i; then echo -e "Could not upgrade cask $i."; fi
+         read -rp "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
+         for i in "{CASKS[@]}"; do
+            if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
          done 
       else
-         read -sn 1 -p "Upgrade all? [Y(es)/n(o)/s(elect)] " CONF
+         if [ $maintenance = 0 ]; then
+            read -rsn 1 -p "Upgrade all? [Y(es)/n(o)/s(elect)] " CONF
 
-         case $CONF in
-            [Ss] | [Ss]elect )
-               echo
-               read -p "Which casks would you like to upgrade? " -a CASKS;
-               for i in ${CASKS[@]}; do
-                  if ! brew cask upgrade $i; then echo -e "Could not upgrade cask $i."; fi
-               done 
-               ;;
-            [Yy] | [Yy]es )
-               echo -e "\nContinuing with cask upgrade."
-               brew cask upgrade --greedy;
-               ;; 
-            * )
-               echo -e "\nCancelled cask upgrade."
-               ;;
-         esac
+            case $CONF in
+               [Ss] | [Ss]elect )
+                  echo
+                  read -rp "Which casks would you like to upgrade? " -a CASKS;
+                  for i in "${CASKS[@]}"; do
+                     if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
+                  done 
+                  ;;
+               [Yy] | [Yy]es )
+                  echo -e "\nContinuing with cask upgrade."
+                  brew cask upgrade --greedy;
+                  ;; 
+               * )
+                  echo -e "\nCancelled cask upgrade."
+                  ;;
+            esac
+         fi
       fi
    fi
    # }}}
 
    # Final steps & cleanup {{{
-   brew cleanup -s;
-   brew cleanup --prune-prefix;
+   brew cleanup -s --prune-prefix;
    brew doctor;
    brew missing;
 
    echo "Homebrew cache disk usage:"
    du -h "$(brew --cache)"
    echo "Remove with:"
-   echo " rm -rf $(brew --cache)"
+   # shellcheck disable=SC2016
+   echo ' rm -rf $(brew --cache)'
 
    echo "Backing up Brew installation..."
    brew bundle dump --force --file=~/.dotfiles/Brewfile;
@@ -218,7 +174,7 @@ if command -v mas &> /dev/null; then
       echo_succ "Everything is up to date."
    else
       mas outdated
-      read -sn 1 -p "Continue? [Y/n]" CONF
+      read -rsn 1 -p "Continue? [Y/n]" CONF
 
       case $CONF in
          [Yy] )
