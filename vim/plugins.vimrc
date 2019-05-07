@@ -167,6 +167,7 @@ let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
 
 " Work with variants of words easily
 Plug 'tpope/vim-abolish'
+let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
 
 Plug 'romainl/vim-devdocs'
 
