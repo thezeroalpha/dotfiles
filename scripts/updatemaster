@@ -234,13 +234,5 @@ fi
 
 hr
 
-# Ruby gems {{{
-if command -v gem &> /dev/null; then
-   gem cleanup
-fi
-# }}}
-#
-hr
-
 echo_succ "All systems checked."
 notify "All systems checked." "Everything you indicated should be upgraded."
