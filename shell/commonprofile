@@ -40,6 +40,10 @@ if [[ $PATH != *"/usr/local/sbin"* ]]; then
    PATH="/usr/local/sbin:$PATH"
 fi
 
+if [[ $PATH != *"/usr/local/opt/gnu-sed/libexec/gnubin"* ]]; then
+   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
 # Set a variable for my confidr
 DOTFILES="$HOME/.dotfiles"
 
