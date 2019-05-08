@@ -34,8 +34,12 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 set fileformats=unix,dos,mac
 
-" Hide the annoying banner in netrw explorer
+" netrw
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' " hide dotfiles
 let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 25
 
 " Send more characters at a given time
 set ttyfast

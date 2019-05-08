@@ -34,3 +34,8 @@ augroup makeprgs
   autocmd FileType markdown setlocal makeprg=pandoc\ %\ -o\ %<.pdf
   autocmd FileType sh setlocal makeprg=shellcheck\ -f\ gcc\ %
 augroup END
+
+augroup netrw
+  autocmd!
+  autocmd FileType netrw set buftype=nofile nolist
+augroup END

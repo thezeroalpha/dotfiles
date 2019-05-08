@@ -106,3 +106,5 @@ nnoremap <leader>ss :call SaveSession()<CR>
 nnoremap <leader>sl :call LoadSession()<CR>
 nnoremap <leader>sd :call DeleteSession()<CR>
 nnoremap <leader>sq :call CloseSession()<CR>
+
+nnoremap <leader>f  :call ToggleNetrw()<CR>
