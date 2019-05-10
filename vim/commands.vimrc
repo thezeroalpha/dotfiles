@@ -50,7 +50,7 @@ function! ToggleNetrw()
         let i = bufnr("$")
         while (i >= 1)
             if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i 
+                silent exe "bwipeout! " . i 
             endif
             let i-=1
         endwhile
@@ -68,33 +68,9 @@ function! SaveSession() abort
     if name == ""
     	echo "\nNo name provided."
     else
-	let nt_was_open = 0
-	if g:nerdtree_tabs_loaded == 1
-	    if g:NERDTree.IsOpen() == 1
-		execute "NERDTreeTabsClose"
-		let nt_was_open = 1
-	    endif
-	elseif g:loaded_nerd_tree == 1
-	    if g:NERDTree.IsOpen() == 1
-		execute "NERDTreeClose"
-		let nt_was_open = 1
-	    endif
-	endif
-
 	let seshfile = seshdir.name.".vim"
 	execute "mksession! " . seshfile
 	echo "\nSession saved: ".seshfile
-
-	if nt_was_open == 1
-	    if g:loaded_nerd_tree == 1
-		if g:nerdtree_tabs_loaded == 1
-		    execute "NERDTreeTabsToggle"
-		else
-		    execute "NERDTree"
-		endif
-		execute "NERDTreeFocusToggle"
-	    endif
-	endif
     endif
 endfunction
 function! ListSessions() abort
@@ -147,13 +123,6 @@ endfunction
 function! CloseSession()
     bufdo! bwipeout
     cd
-    if g:loaded_nerd_tree == 1
-	if g:nerdtree_tabs_loaded == 1
-	    execute "NERDTreeTabsClose"
-	else
-	    execute "NERDTreeClose"
-	endif
-    endif
     if g:loaded_tagbar == 1
     	execute "TagbarClose"
     endif
