@@ -155,7 +155,7 @@ rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # Re
 todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Find TODO comments
 find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
 hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # Insert a <hr> in the terminal
-vimq() { vim -v -q <($(fc -nl -1)); }                                       # Load results of last command (often ag) in vim quickfix
+vimq() { vim -q <($(fc -nl -1)); }                                          # Load results of last command (often ag) in vim quickfix
 otp() { oathtool --totp --base32 "$1"; }                                    # Generate OTP passwords (google authenticator alternative)
 
 # Pip3 upgrade packages
