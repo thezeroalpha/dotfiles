@@ -5,3 +5,4 @@ endif
 
 Abolish ie i.e.
 Abolish eg e.g.
+Abolish avg{,s} average{,s}
