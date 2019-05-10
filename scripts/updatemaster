@@ -30,7 +30,7 @@ hr() {
 echo_progress "### STARTING UPDATE SCRIPT ###\n"
 
 # Parse options/arguments {{{
-while getopts "hfcms" opt; do
+while getopts "hfcns" opt; do
    case "$opt" in
       c)
          casks=1
@@ -41,7 +41,7 @@ while getopts "hfcms" opt; do
       s)
          select_casks=1
          ;;
-      m)
+      n)
          maintenance=1
          ;;
       h|*)
@@ -51,6 +51,7 @@ while getopts "hfcms" opt; do
          echo "-c:		Upgrade all casks, without prompting."
          echo "-f:		Upgrade all formulas, without prompting."
          echo "-s:		Select which casks to upgrade."
+         echo "-n:              Don't upgrade anything"
          echo "-h:		Show this help text."
          echo
          echo "Options can be combined. For example:"
@@ -83,7 +84,8 @@ if command -v brew &> /dev/null; then
    echo
 
    # Programs {{{
-   if [ $casks = 0 ] && [ $formulas = 0 ] && [ $select_casks = 0 ]; then
+   if [ $formulas = 0 ] && [ $select_casks = 0 ] && [ ${#outdated} -ne 0 ]; then
+      brew outdated
       echo_succ  "No programs will be updated." 
    elif [ ${#outdated} = 0 ]; then
       echo -e "No programs to update." 
