@@ -30,7 +30,7 @@ set relativenumber
 set smarttab
 
 " and 1 tab == 2 spaces
-set tabstop=8       " always keep ts (visual length of \t) at 8
+set tabstop=4       " always keep ts (visual length of \t) at 4
 set expandtab       " use spaces instead of tabs
 set shiftwidth=2    " 2 spaces when >>
 set softtabstop=2   " and when pressing TAB

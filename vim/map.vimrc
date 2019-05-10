@@ -26,6 +26,10 @@ endif
 vnoremap < <gv
 vnoremap > >gv
 
+" visual j/k
+nnoremap j gj
+nnoremap k gk
+
 " Move visual block
 vnoremap D :m '>+1<CR>gv=gv
 vnoremap U :m '<-2<CR>gv=gv
@@ -75,7 +79,7 @@ nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 nnoremap gV `[v`]
 
 " Save in insert mode
-inoremap <C-Z> <ESC>:w<CR>a
+inoremap <C-Z> <C-o>:w<CR>
 
 " Config edit mappings
 nnoremap <C-E><C-A> :vsplit $DOTFILES/vim/autocmd.vimrc<CR>
