@@ -175,4 +175,6 @@ cnoreabbrev lset setl
 if has('terminal')
     cnoreabbrev tt tab terminal
     cnoreabbrev wt terminal
+    cnoreabbrev tm terminal man
+    cnoreabbrev tr terminal ranger
 endif
