@@ -468,7 +468,7 @@
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 1424 881 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>576 53 850 384 0 0 1440 900 </string>
+	<string>0 516 850 384 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>1034 65 376 324 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -5127,11 +5127,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-05-02T15:46:37Z</date>
+	<date>2019-05-10T16:03:38Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowPaneTitles</key>
 	<false/>
 	<key>SuppressRestartAnnouncement</key>
@@ -6650,7 +6650,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.2.8</string>
+	<string>3.2.9</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
