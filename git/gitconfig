@@ -1,64 +1,65 @@
 [user]
-    name = <name>
-    email = EMAIL
+	name = <name>
+	email = EMAIL
+
 [alias]
-    s = status
-    co = checkout
-    cob = checkout -b
-    f = fetch --all
-    fapr = fetch --all --prune
-    b = branch
-    br = branch --remote
-    ba = branch --all
-    bv = branch -vv
+	s = status
+	co = checkout
+	cob = checkout -b
+	f = fetch --all
+	fapr = fetch --all --prune
+	b = branch
+	br = branch --remote
+	ba = branch --all
+	bv = branch -vv
 
-    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --branches --remotes --tags --graph --oneline --decorate --author-date-order
-    lgv = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-    today = lgv --since='midnight'
-    this-week = lgv --since='last-monday'
-    past-week = lgv --since='1 weeks ago'
-    cbsr-sprint = lgv --since='last-tuesday' --until='this-tuesday'
-    adog = log --all --decorate --oneline --graph
+	lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --branches --remotes --tags --graph --oneline --decorate --author-date-order
+	lgv = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	today = lgv --since='midnight'
+	this-week = lgv --since='last-monday'
+	past-week = lgv --since='1 weeks ago'
+	cbsr-sprint = lgv --since='last-tuesday' --until='this-tuesday'
+	adog = log --all --decorate --oneline --graph
 
-    a = add
-    ap = add -p
+	a = add
+	ap = add -p
 
-    c = commit
-    cm = commit -m
-    cam = commit -a -m
-    ca = commit -a
-    camend = commit --amend
-    camende = commit --amend --no-edit
-    cp = commit -p
+	c = commit
+	cm = commit -m
+	cam = commit -a -m
+	ca = commit -a
+	camende = commit --amend
+	camend = commit --amend --no-edit
+	cp = commit -p
 
-    ss = stash push
-    sp = stash pop
-    sa = stash apply
-    sd = stash drop
-    sl = stash list
+	ss = stash push
+	sp = stash pop
+	sa = stash apply
+	sd = stash drop
+	sl = stash list
 
-    diffs = "diff --staged"
-    changes = diff --summary --stat
-    mergetest = merge --no-commit
-    testmerge = mergetest
-    mno = merge --no-ff
-    mff = merge --ff-only
-    delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d && git fetch --all --prune"
-    p = push
-    pushf = push --force-with-lease
-    pff = pull --ff-only
-    pnf = pull --no-ff
-    fuckit = reset --hard HEAD
-    home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|'"
-    up-sub = "!git submodule foreach git pull; git submodule update --init --recursive -j8"
-    open = "!open $(git home)"
-    dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
-    reignore = "!git rm -r --cached .; git add ."
+	diffs = "diff --staged"
+	changes = diff --summary --stat
+	mergetest = merge --no-commit
+	testmerge = mergetest
+	mno = merge --no-ff
+	mff = merge --ff-only
+	delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d && git fetch --all --prune"
+	p = push
+	pushf = push --force-with-lease
+	pff = pull --ff-only
+	pnf = pull --no-ff
+	fuckit = reset --hard HEAD
+	home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|'"
+	up-sub = "!git submodule foreach git pull; git submodule update --init --recursive -j8"
+	open = "!open $(git home)"
+	dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
+	reignore = "!git rm -r --cached .; git add ."
 
-    la = "!git config -l | grep alias | cut -c 7-"
+	la = "!git config -l | grep alias | cut -c 7-"
 
 [merge]
-    tool = vimdiff
+	tool = vimdiff
 [core]
 	autocrlf = input
 [init]
