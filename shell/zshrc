@@ -118,7 +118,7 @@ if [[ $PATH != *"$HOME/.rbenv/shims"* ]] && command -v rbenv &> /dev/null; then
 fi
 
 # jenv
-if ! command -v jenv &> /dev/null; then
+if command -v jenv &> /dev/null; then
   export PATH="$HOME/.jenv/bin:$PATH"
   eval "$(jenv init -)"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
