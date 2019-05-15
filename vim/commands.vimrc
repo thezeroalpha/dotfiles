@@ -1,4 +1,12 @@
 " Functions
+function! NetrwxSetTreetop() abort
+    if w:netrw_liststyle == 3
+	let netrwx_snr = strpart(mapcheck('u'), 11, 8)
+	exe 'let s:NetrwxTreeDir = function("' . netrwx_snr . 'NetrwTreeDir")'
+	let l:treetop = s:NetrwxTreeDir(1)
+	call netrw#SetTreetop(l:treetop)
+    endif
+endfunction
 function! InsertTabWrapper() abort
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'

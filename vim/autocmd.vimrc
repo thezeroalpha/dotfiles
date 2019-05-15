@@ -38,4 +38,5 @@ augroup END
 augroup netrw
   autocmd!
   autocmd FileType netrw setl bufhidden=delete
+  autocmd FileType netrw nnoremap <buffer><silent> gn :<C-u>silent! call NetrwxSetTreetop()<CR>
 augroup END
