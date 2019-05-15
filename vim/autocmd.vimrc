@@ -37,5 +37,5 @@ augroup END
 
 augroup netrw
   autocmd!
-  autocmd FileType netrw set buftype=nofile nolist
+  autocmd FileType netrw setl bufhidden=delete
 augroup END
