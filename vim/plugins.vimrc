@@ -10,12 +10,11 @@ call plug#begin('~/.vim/plugged')
 " A color table with xterm color codes
 Plug 'guns/xterm-color-table.vim'
 
+" Mappings for netrw
 Plug 'tpope/vim-vinegar'
 
-" NERD Commenter - simple comment toggling {{{
-Plug 'scrooloose/nerdcommenter'
-let g:NERDSpaceDelims = 1
-" }}}
+" Simple commenting
+ Plug 'tpope/vim-commentary'
 
 " Emmet - must-have for HTML, awesome snippet expansion
 Plug 'mattn/emmet-vim'
