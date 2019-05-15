@@ -13,12 +13,14 @@ Before you use a custom script, read what it does. Some may be a bit buggy, I ha
 If you read a script and see some improvements that could be made, let me know. I'm always down to learn more stuff.
 
 * `anythingtogif`: converts (almost) anything to a gif. Usage: `anythingtogif clip.mov clip.gif`. Backed by ffmpeg.
+* `checklinks`: recursively check any website for broken links
 * `clonedisk`: clones one disk to another
 * `conf`: the script to manage dotfiles. run `conf` to show available commands.
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
 * `epub-convert`: uses Calibre's ebook converter program to convert anything to an epub
 * `executable`: my first script. Makes any file executable, along with further options. Usage: `executable file.sh`
 * `ffmpeg-split.py`: split videos using ffmpeg. [Here's the README.](scripts/ffmpeg-split-README.md)
+* `global-git-status`: git status of all of your cloned git repositories
 * `it-style`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key, set $DISCOGS_API_TOKEN in your profile). Usage: click/play a track in iTunes, and run the program.
 * `linkdir`: symlink all files/folders from source dir to target dir. Usage: `linkdir $source` to create symlinks in cwd, `linkdir $source $target` otherwise.
 * `mdvl`: markdown renderer in Python
@@ -30,6 +32,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `pwnedpass`: test a password against the pwned passwords database, uses k-anonymity
 * `radio`: a command-line radio player, can play various music streams from the internet, including subreddits. Also has a visualiser, turn it on by passing `-v` on startup.
 * `rplayer`: a command-line subreddit player. Enter any subreddit that has music, and it'll play all of the links using `mpv` (except for Spotify).
+* `safari_history`: print safari history with timestamps, by default it prints 10 items, change this by passing a number as the argument
 * `smack.pl`: change macos spaces by smacking the side of your screen (if you have a laptop). Yeah, like physically.
 * `ss-interceptor`: temporarily change where macOS stores your screenshots. Run with the new directory as the first argument.
 * `strip-html-tags`: remove HTML tags from a file

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+n=${1:-10}
+sqlite3 $HOME/Library/Safari/History.db "select datetime(visit_time+978307200, 'unixepoch', 'localtime'),title from history_visits ORDER BY visit_time desc LIMIT $n;"
