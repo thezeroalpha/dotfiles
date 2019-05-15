@@ -70,7 +70,7 @@ nnoremap <leader>mm :<C-u>marks<CR>:normal! `
 nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
 
 " Switch between relative and absolute line num
-nnoremap <leader>n :call ToggleNumber()<CR>
+nnoremap <leader># :call ToggleNumber()<CR>
 
 " Map '0' to act as '^' on first press and '0' on second
 nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
@@ -100,6 +100,7 @@ nnoremap <leader>ny "_y
 nnoremap <leader>nd "_d
 vnoremap <leader>y "*y
 vnoremap <leader>d "*d
+vnoremap <leader>n "_
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
