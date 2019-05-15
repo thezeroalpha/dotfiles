@@ -14,6 +14,9 @@ set binary
 " No swp please, I save all the time
 set noswapfile
 
+" make regexes consistent with other programs (extended)
+set magic
+
 " Persistent undos (useful for plugins too)
 if has('persistent_undo')
   let myUndoDir = expand('$HOME/.vim' . '/undo')
