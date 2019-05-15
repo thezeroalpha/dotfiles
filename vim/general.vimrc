@@ -17,6 +17,10 @@ set noswapfile
 " make regexes consistent with other programs (extended)
 set magic
 
+" directories to search on find, gf, etc.
+set path=.,**
+set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+
 " Persistent undos (useful for plugins too)
 if has('persistent_undo')
   let myUndoDir = expand('$HOME/.vim' . '/undo')

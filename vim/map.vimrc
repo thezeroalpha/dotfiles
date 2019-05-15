@@ -112,3 +112,6 @@ nnoremap <leader>sd :call DeleteSession()<CR>
 nnoremap <leader>sq :call CloseSession()<CR>
 
 nnoremap <leader>f  :call ToggleNetrw()<CR>
+
+" native fuzzy find (:find doesn't do multiple files)
+nnoremap <leader>F :next **/*
