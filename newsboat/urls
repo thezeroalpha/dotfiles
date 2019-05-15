@@ -9,10 +9,8 @@ http://feeds.labnol.org/labnol "tech"
 https://castel.dev/rss.xml "tech"
 
 # Deep web
-http://www.deepdotweb.com/feed "deep web"
 https://pirate.london/feed "deep web"
 http://feeds.feedburner.com/Torrentfreak "deep web"
-https://darkwebnews.com/feed "deep web"
 
 # News
 http://www.esa.int/rssfeed/Our_Activities/Space_News "news"
