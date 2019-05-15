@@ -6,3 +6,5 @@ endif
 Abolish ie i.e.
 Abolish eg e.g.
 Abolish avg{,s} average{,s}
+Abolish eg e.g.
+Abolish st such that
