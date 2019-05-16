@@ -96,8 +96,10 @@ nnoremap <leader>d "*d
 nnoremap <leader>y "*y
 nnoremap <leader>p "*p
 nnoremap <leader>P "*P
-nnoremap <leader>ny "_y
-nnoremap <leader>nd "_d
+nnoremap <leader>n "_
+nnoremap <leader>n "_
+nnoremap <leader>n "_
+nnoremap <leader>n "_
 vnoremap <leader>y "*y
 vnoremap <leader>d "*d
 vnoremap <leader>n "_
