@@ -1,4 +1,4 @@
-"====== GENERAL ======"
+" vim: foldmethod=marker foldlevel=0
 " Update file when changed from the outside
 " set autoread
 
@@ -21,13 +21,14 @@ set magic
 set path=.,**
 set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
 
-" Persistent undos (useful for plugins too)
+" Persistent undos (useful for plugins too){{{
 if has('persistent_undo')
   let myUndoDir = expand('$HOME/.vim' . '/undo')
   silent call mkdir(myUndoDir, 'p')
   let &undodir = myUndoDir
   set undofile
 endif
+" }}}
 
 " Hide buffers instead of closing
 set hidden
@@ -41,13 +42,14 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 set fileformats=unix,dos,mac
 
-" netrw
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' " hide dotfiles
+" netrw {{{
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'  " hide dotfiles
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 25
-let g:netrw_hide = 1 "show not-hidden files
+let g:netrw_hide = 1                            " show not-hidden files
+" }}}
 
 " Send more characters at a given time
 set ttyfast
@@ -70,19 +72,20 @@ set background=dark
 " Mouse tweak
 set mousemodel=popup
 
-" Status bar
+" Status line {{{
 set laststatus=2                                                    " Always show status bar
 set statusline=%f                                                   " Relative path and filename
 set statusline+=\ %m%r%w                                            " Flags (modified, readonly, help, preview)
-set statusline+=%#error#
-set statusline+=%{StatuslineTabWarning()}
-set statusline+=%*
+set statusline+=%#error#                                            " Start error highlighting
+set statusline+=%{StatuslineTabWarning()}                           " Inconsistent indentation warning
+set statusline+=%{StatuslineTrailingSpaceWarning()}                 " Trailing whitespace warning
+set statusline+=%*                                                  " Clear highlighting
 set statusline+=%<                                                  " Start truncating here
 if exists('g:loaded_fugitive')                                      " If fugitive is in use
   set statusline+=\ %{FugitiveStatusline()}                          "   add fugitive status to the statusline
 endif                                                               " end
-set statusline+=\ \ CWD:\ %{substitute(getcwd(),$HOME,'~','g')}     " Current working directory, replacing home with ~
-set statusline+=%=                                                  " Left/right separator
+set statusline+=\ \ %{StatuslineBuildCwd()}                         " Current working directory, replacing home with ~
+set statusline+=%=                                                  " Move everything after this to the right
 set statusline+=\ %y                                                " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
 set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
@@ -90,12 +93,16 @@ set statusline+=\ %l/%L\                                            " Cursor lin
 set statusline+=\ B%n                                               " Buffer number
 set statusline+=\ \ %{strftime(\"%H:%M\")}                          " Time
 
-" recalculate the tab warning flag when idle and after writing
-autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+" recalculate the tab/trailing whitespace warning flags when idle and after writing
+augroup statusline
+  autocmd!
+  autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+  autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
+augroup END
 
-"return '[&et]' if &et is set wrong
-"return '[mixed-indenting]' if spaces and tabs are used to indent
-"return an empty string if everything is fine
+" return '[&et]' if &et is set wrong
+" return '[mixed-indenting]' if spaces and tabs are used to indent
+" return an empty string if everything is fine
 function! StatuslineTabWarning()
   if !exists("b:statusline_tab_warning")
     let tabs = search('^\t', 'nw') != 0
@@ -111,6 +118,26 @@ function! StatuslineTabWarning()
   endif
   return b:statusline_tab_warning
 endfunction
+
+" return '[\s]' if trailing white space is detected
+" return '' otherwise
+function! StatuslineTrailingSpaceWarning()
+  if !exists("b:statusline_trailing_space_warning")
+    if search('\s\+$', 'nw') != 0
+      let b:statusline_trailing_space_warning = '[\s]'
+    else
+      let b:statusline_trailing_space_warning = ''
+    endif
+  endif
+  return b:statusline_trailing_space_warning
+endfunction
+
+" build the current working directory string
+function! StatuslineBuildCwd()
+  let cwd = substitute(getcwd(),$HOME,'~','g')
+  return "CWD: " . cwd
+endfunction
+" }}}
 
 highlight ColorColumn ctermbg=233
 
