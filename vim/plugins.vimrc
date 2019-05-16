@@ -168,4 +168,5 @@ let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
 Plug 'romainl/vim-devdocs'
 
 Plug 'rking/ag.vim'
+nnoremap <leader>/ :Ag 
 call plug#end()
