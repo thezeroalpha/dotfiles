@@ -71,21 +71,46 @@ set background=dark
 set mousemodel=popup
 
 " Status bar
-set laststatus=2                                                " Always show status bar
-set statusline=%<                                               " Cut at start
-set statusline=%f                                               " Path
-set statusline+=\ %m%r%w                                        " Flags (modified, readonly, help, preview)
-if exists('g:loaded_fugitive')                                  " If fugitive is in use
-    set statusline+=\ %{FugitiveStatusline()}                   "   add fugitive status to the statusline 
-endif                                                           " end
-set statusline+=\ \ CWD:\ %{substitute(getcwd(),$HOME,'~','g')} " Current working directory, replacing home with ~
-set statusline+=%=                                              " Left/right separator
-set statusline+=\ %y                                            " File type
-set statusline+=\ [%{&expandtab?'spaces':'tabs'},               " Using spaces or tabs
-set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]      " Spaces in a tab
-set statusline+=\ %l/%L\                                        " Cursor line/total lines
-set statusline+=\ B%n                                           " Buffer number
-set statusline+=\ \ %{strftime(\"%H:%M\")}                      " Time
+set laststatus=2                                                    " Always show status bar
+set statusline=%f                                                   " Relative path and filename
+set statusline+=\ %m%r%w                                            " Flags (modified, readonly, help, preview)
+set statusline+=%#error#
+set statusline+=%{StatuslineTabWarning()}
+set statusline+=%*
+set statusline+=%<                                                  " Start truncating here
+if exists('g:loaded_fugitive')                                      " If fugitive is in use
+  set statusline+=\ %{FugitiveStatusline()}                          "   add fugitive status to the statusline
+endif                                                               " end
+set statusline+=\ \ CWD:\ %{substitute(getcwd(),$HOME,'~','g')}     " Current working directory, replacing home with ~
+set statusline+=%=                                                  " Left/right separator
+set statusline+=\ %y                                                " File type
+set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
+set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
+set statusline+=\ %l/%L\                                            " Cursor line/total lines
+set statusline+=\ B%n                                               " Buffer number
+set statusline+=\ \ %{strftime(\"%H:%M\")}                          " Time
+
+" recalculate the tab warning flag when idle and after writing
+autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+
+"return '[&et]' if &et is set wrong
+"return '[mixed-indenting]' if spaces and tabs are used to indent
+"return an empty string if everything is fine
+function! StatuslineTabWarning()
+  if !exists("b:statusline_tab_warning")
+    let tabs = search('^\t', 'nw') != 0
+    let spaces = search('^ ', 'nw') != 0
+
+    if tabs && spaces
+      let b:statusline_tab_warning =  '[mixed-indenting]'
+    elseif (spaces && !&et) || (tabs && &et)
+      let b:statusline_tab_warning = '[&et]'
+    else
+      let b:statusline_tab_warning = ''
+    endif
+  endif
+  return b:statusline_tab_warning
+endfunction
 
 highlight ColorColumn ctermbg=233
 
