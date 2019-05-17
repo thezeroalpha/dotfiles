@@ -5,6 +5,7 @@ if ! command -v wget &> /dev/null; then
 elif [ $# -ne 2 ]; then
   echo "Usage:"
   echo "checklinks [URL] [LOGFILE]"
+  exit 1
 fi
 
 flags=(--spider --recursive --no-directories --no-verbose --page-requisites --level inf --wait 2 -e robots=off)
