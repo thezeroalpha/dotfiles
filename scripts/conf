@@ -2,34 +2,35 @@
 # vim: foldmethod=marker:foldlevel=0
 
 # Main linking command {{{
-lncommand() { 
+lncommand() {
   if [ -e "$1" ]; then
     if [ -e "$2" ]; then
       echo "-- Backing up original $2"
       mv -iv "$2" "$2-orig"
     fi
-    ln -snfv "$1" "$2"; 
+    ln -snfv "$1" "$2";
   fi
 }
 #}}}
 
 # List available config files {{{
 print_available() {
-      echo "Config files:"
-      echo "bin               various binaries"
-      echo "ctags             language definitions for ctags"
-      echo "gdb               gdb dashboard and the like"
-      echo "git               git config files and hooks"
-      echo "iterm2            profiles, colors, and such for iTerm2 (Mac)"
-      echo "karabiner         key config for karabiner-elements on Mac, notably caps lock as escape and control"
-      echo "newsboat          urls and keymap for newsboat RSS reader"
-      echo "oh-my-zsh         the whole oh-my-zsh config directory"
-      echo "radio             radio metadata for the internet radio script"
-      echo "ranger            ranger file browser config"
-      echo "rtv               reddit terminal viewer config"
-      echo "scripts           misc executable scripts (like this one"
-      echo "shell             various configs related to shells"
-      echo "vim               vim configuration files"
+  echo "Config files:"
+  echo "bin               various binaries"
+  echo "ctags             language definitions for ctags"
+  echo "gdb               gdb dashboard and the like"
+  echo "git               git config files and hooks"
+  echo "iterm2            profiles, colors, and such for iTerm2 (Mac)"
+  echo "karabiner         key config for karabiner-elements on Mac, notably caps lock as escape and control"
+  echo "newsboat          urls and keymap for newsboat RSS reader"
+  echo "oh-my-zsh         the whole oh-my-zsh config directory"
+  echo "radio             radio metadata for the internet radio script"
+  echo "ranger            ranger file browser config"
+  echo "rtv               reddit terminal viewer config"
+  echo "screen            screenrc for GNU screen"
+  echo "scripts           misc executable scripts (like this one"
+  echo "shell             various configs related to shells"
+  echo "vim               vim configuration files"
 }
 # }}}
 
@@ -74,6 +75,9 @@ use_files() {
         "rtv")
           lncommand "$DOTFILES/rtv" "$HOME/.config/rtv"
           ;;
+        "screen")
+          lncommand "$DOTFILES/screen/screenrc" "$HOME/.screenrc"
+          ;;
         "scripts")
           lncommand "$DOTFILES/scripts" "$HOME/.scripts"
           if command -v mpv &> /dev/null; then
@@ -90,13 +94,13 @@ use_files() {
           lncommand "$DOTFILES/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
           lncommand "$DOTFILES/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
           ;;
-        esac
+      esac
 
-      done
-    else
-      print_available
-    fi
-  }
+    done
+  else
+    print_available
+  fi
+}
 #}}}
 
 # Check if $DOTFILES is set {{{
@@ -142,7 +146,7 @@ if [ $# -gt 0 ]; then
     conf_check echo "$DOTFILES"
 
   elif [ "$1" = 'use' ]; then
-    conf_check use_files "${@:2}" 
+    conf_check use_files "${@:2}"
 
   else
     conf_check "$(command -v git)" --git-dir="$DOTFILES"/.git --work-tree "$DOTFILES" "$@"
