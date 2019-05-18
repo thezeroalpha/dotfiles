@@ -20,6 +20,7 @@ set magic
 " directories to search on find, gf, etc.
 set path=.,**
 set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+set wildignorecase
 
 " Persistent undos (useful for plugins too){{{
 if has('persistent_undo')
@@ -158,7 +159,7 @@ if exists("&belloff")
 endif
 
 " Command-line autocompletion
-set wildmode=longest,list,full
+set wildmode=longest:list,full
 
 " Add everything to sessions
 set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabpages,terminal
