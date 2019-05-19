@@ -1,7 +1,6 @@
 tap "adoptopenjdk/openjdk"
 tap "beeftornado/rmtree"
 tap "browsh-org/browsh"
-tap "caskroom/versions"
 tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask"
