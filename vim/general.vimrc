@@ -105,6 +105,10 @@ augroup END
 " return '[mixed-indenting]' if spaces and tabs are used to indent
 " return an empty string if everything is fine
 function! StatuslineTabWarning()
+  if &readonly || &bt == "nofile"
+    return ""
+  endif
+
   if !exists("b:statusline_tab_warning")
     let tabs = search('^\t', 'nw') != 0
     let spaces = search('^ ', 'nw') != 0
@@ -123,6 +127,10 @@ endfunction
 " return '[\s]' if trailing white space is detected
 " return '' otherwise
 function! StatuslineTrailingSpaceWarning()
+  if &readonly || &bt == "nofile"
+    return ""
+  endif
+
   if !exists("b:statusline_trailing_space_warning")
     if search('\s\+$', 'nw') != 0
       let b:statusline_trailing_space_warning = '[\s]'
