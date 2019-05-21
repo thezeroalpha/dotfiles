@@ -94,7 +94,7 @@ let g:tagbar_type_markdown = {
 Plug 'vimwiki/vimwiki'
 nmap <leader><CR> <Plug>VimwikiSplitLink
 nmap <leader>v<CR> <Plug>VimwikiVSplitLink
-let g:vimwiki_list = [{'path': '$HOME/Dropbox/vimwiki', 
+let g:vimwiki_list = [{'path': '$HOME/Dropbox/vimwiki',
       \ 'template_path': '$HOME/Dropbox/vimwiki/templates',
       \ 'template_default': 'default',
       \ 'template_ext': '.html'}]
@@ -134,10 +134,6 @@ Plug 'vim-scripts/AnsiEsc.vim'
 " Disable hlsearch after finished searching
 Plug 'romainl/vim-cool'
 
-" Easy table making (unnecessary because vimwiki has this built in)
-"   but leaving in case I need it sometime.
-" Plug 'dhruvasagar/vim-table-mode'
-
 " Vimtex {{{
 Plug 'lervag/vimtex'
 let g:tex_flavor='latex'
@@ -157,16 +153,26 @@ let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
 cabbrev USE UltiSnipsEdit
 " }}}
 
+" Dokumentary {{{
 " Improve what K does
 Plug 'gastonsimone/vim-dokumentary'
 let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
+" }}}
 
+" Abolish {{{
 " Work with variants of words easily
 Plug 'tpope/vim-abolish'
 let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
+" }}}
 
 Plug 'romainl/vim-devdocs'
 
 Plug 'rking/ag.vim'
-nnoremap <leader>/ :Ag 
+nnoremap <leader>/ :Ag<space>
+
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+nnoremap <leader>F :Files<CR>
+nnoremap <leader>G :Lines<CR>
+
 call plug#end()

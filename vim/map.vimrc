@@ -117,5 +117,8 @@ nnoremap <leader>sq :call CloseSession()<CR>
 " native file browsing
 nnoremap <leader>f  :call ToggleNetrw()<CR>
 
-" native fuzzy find (:find doesn't do multiple files)
-nnoremap <leader>F :next **/*
+" fall back on native fuzzy find if fzf not installed
+" (using :next because :find doesn't do multiple files)
+if mapcheck("<leader>F") == ""
+  nnoremap <leader>F :next **/*
+endif
