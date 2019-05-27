@@ -25,6 +25,13 @@ hr() {
    cols=$(tput cols)
    printf '#%.0s' $(seq 1 "$cols")
 }
+
+renew_sudo() {
+   if ! sudo --non-interactive 2> /dev/null; then
+      echo "Extend sudo timeout by giving your password now."
+   fi
+   sudo --validate
+}
 # }}}
 
 echo_progress "### STARTING UPDATE SCRIPT ###\n"
@@ -114,6 +121,7 @@ if command -v brew &> /dev/null; then
       elif [ $select_casks = 1 ]; then
          read -rp "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
          for i in ${CASKS[@]}; do
+            renew_sudo
             if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
          done
       else
@@ -125,6 +133,7 @@ if command -v brew &> /dev/null; then
                   echo
                   read -rp "Which casks would you like to upgrade? " -a CASKS;
                   for i in "${CASKS[@]}"; do
+                     renew_sudo
                      if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
                   done
                   ;;
