@@ -93,15 +93,13 @@ nnoremap <C-E><C-L> :vsplit $DOTFILES/vim/pluginconf.vimrc<CR>
 
 " Yank to clipboard
 nnoremap <leader>d "*d
+vnoremap <leader>d "*d
+nnoremap <leader>D "*D
 nnoremap <leader>y "*y
+vnoremap <leader>y "*y
 nnoremap <leader>p "*p
 nnoremap <leader>P "*P
 nnoremap <leader>n "_
-nnoremap <leader>n "_
-nnoremap <leader>n "_
-nnoremap <leader>n "_
-vnoremap <leader>y "*y
-vnoremap <leader>d "*d
 vnoremap <leader>n "_
 
 " This should be a plugin but for now...
@@ -122,3 +120,6 @@ nnoremap <leader>f  :call ToggleNetrw()<CR>
 if mapcheck("<leader>F") == ""
   nnoremap <leader>F :next **/*
 endif
+
+" Strip trailing whitespace
+nnoremap <leader>$ :%s/ \+$//e<CR>
