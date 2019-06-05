@@ -3,6 +3,7 @@ let mapleader=" "   " Set the mapleader to be space
 " So I don't have to mash shift all the time
 nnoremap ; :
 vnoremap ; :
+tnoremap <C-w>; <C-w>:
 
 " Disable q: cuz I hate it
 " (also C-F does the same)
