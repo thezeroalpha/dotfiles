@@ -9,6 +9,7 @@ http://feeds.labnol.org/labnol "tech"
 https://castel.dev/rss.xml "tech"
 https://til.hashrocket.com/rss "tech" "~TIL Hashrocket"
 https://habd.as/post/index.xml "tech" "~Josh Habdas"
+https://www.portexe.com/feed "tech"
 
 # Deep web
 https://pirate.london/feed "deep web"
@@ -24,6 +25,7 @@ https://www.ceskenoviny.cz/sluzby/rss/ekonomika.php "~Ekonomika" "news"
 https://www.aktuality.sk/rss/domace/ "~Aktuality -  Domáce" "news"
 https://www.aktuality.sk/rss/zahranicne/ "~Aktuality - Zahraničné" "news"
 https://www.rferl.org/api/z$qimetkiy "news"
+https://www.dutchnews.nl/feed/?news "news" "~DutchNews"
 
 # Others
 http://www.thedistilledman.com/feed/ "others"
