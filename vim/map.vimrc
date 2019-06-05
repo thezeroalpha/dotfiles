@@ -123,4 +123,7 @@ if mapcheck("<leader>F") == ""
 endif
 
 " Strip trailing whitespace
-nnoremap <leader>$ :%s/ \+$//e<CR>
+nnoremap <leader>$ m`:%s/ \+$//e<CR>``
+
+nnoremap H :bprevious<CR>
+nnoremap L :bnext<CR>
