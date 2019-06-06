@@ -90,7 +90,6 @@ nnoremap <C-E><C-G> :vsplit $DOTFILES/vim/general.vimrc<CR>
 nnoremap <C-E><C-V> :vsplit $DOTFILES/vim/init.vimrc<CR>
 nnoremap <C-E><C-M> :vsplit $DOTFILES/vim/map.vimrc<CR>
 nnoremap <C-E><C-P> :vsplit $DOTFILES/vim/plugins.vimrc<CR>
-nnoremap <C-E><C-L> :vsplit $DOTFILES/vim/pluginconf.vimrc<CR>
 
 " Yank to clipboard
 nnoremap <leader>d "*d
