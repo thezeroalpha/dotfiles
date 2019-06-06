@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Generate OTP passwords (google authenticator alternative)
+read -sp "Key: " k && oathtool --totp --base32 "$k"
