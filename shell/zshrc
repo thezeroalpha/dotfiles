@@ -109,7 +109,7 @@ fi
 
 # Z initialization
 if ! command -v z &> /dev/null; then
-  . /usr/local/etc/profile.d/z.sh
+  . $DOTFILES/shell/z/z.sh
 fi
 
 # rbenv init
