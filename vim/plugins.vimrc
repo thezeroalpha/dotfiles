@@ -170,7 +170,8 @@ Plug 'romainl/vim-devdocs'
 Plug 'rking/ag.vim'
 nnoremap <leader>/ :Ag<space>
 
-Plug '/usr/local/opt/fzf'
+set rtp+=~/.fzf
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>G :Lines<CR>
