@@ -32,6 +32,7 @@ brew "gcc@5"
 brew "gdb"
 brew "ghostscript"
 brew "git"
+brew "git-lfs"
 brew "gnu-sed"
 brew "gnupg"
 brew "go"
@@ -144,6 +145,7 @@ cask "vlc"
 cask "xld"
 cask "zeronet"
 cask "zotero"
+mas "Keynote", id: 409183694
 mas "Pages", id: 409201541
 mas "Pocket", id: 568494494
 mas "Reeder", id: 880001334
