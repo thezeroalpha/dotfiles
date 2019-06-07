@@ -175,5 +175,9 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>G :Lines<CR>
+let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-i': 'split',
+      \ 'ctrl-v': 'vsplit' }
 
 call plug#end()
