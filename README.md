@@ -24,6 +24,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `it-style`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key, set $DISCOGS_API_TOKEN in your profile). Usage: click/play a track in iTunes, and run the program.
 * `linkdir`: symlink all files/folders from source dir to target dir. Usage: `linkdir $source` to create symlinks in cwd, `linkdir $source $target` otherwise.
 * `mdvl`: markdown renderer in Python
+* `medium_reader.rb`: create a simplified Medium article and open it in a browser. Pass the URL as argument, or run interactively.
 * `modified_cfscrape.py`: can scrape and download CloudFlare-protected websites. Usage: `python3 modified_cfscrape.py http://url.com`
 * `mp3tagger.jar`: a Java application to tag MP3 files
 * `pass-import-txt`: imports passwords into `pass` from a text file that's formatted as `username:password` (newline-separated)
