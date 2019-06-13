@@ -2,6 +2,8 @@ auto-reload yes
 reload-threads 8
 show-read-feeds no
 delete-read-articles-on-quit yes
+notify-program "~/.newsboat/notify-wrapper"
+notify-always yes
 article-sort-order date
 error-log "~/.newsboat/error.log"
 
