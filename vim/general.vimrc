@@ -8,6 +8,9 @@ set tags=./tags,tags,.git/tags
 " matchit.vim is default, why not enable it
 runtime macros/matchit.vim
 
+" same with :Man
+runtime ftplugin/man.vim
+
 " For editing binaries
 set binary
 
