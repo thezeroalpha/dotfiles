@@ -180,4 +180,6 @@ let g:fzf_action = {
       \ 'ctrl-i': 'split',
       \ 'ctrl-v': 'vsplit' }
 
+Plug 'chrisbra/colorizer'
+
 call plug#end()
