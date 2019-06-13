@@ -45,11 +45,11 @@ set fileformats=unix,dos,mac
 
 " netrw {{{
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'  " hide dotfiles
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_winsize = 25
-let g:netrw_hide = 1                            " show not-hidden files
+let g:netrw_banner = 0                          " hide the banner
+let g:netrw_liststyle = 3                       " tree view
+let g:netrw_winsize = 25                        " open at 25% size
+let g:netrw_hide = 1                            " hide hidden files
+let g:netrw_preview=1                           " preview window shown in a vertical split
 " }}}
 
 " Send more characters at a given time
