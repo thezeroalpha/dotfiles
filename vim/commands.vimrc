@@ -52,6 +52,14 @@ function! DeleteHiddenBuffers() " Vim with the 'hidden' option
   endfor
 endfunction
 
+" Show syntax highlighting groups for word under cursor
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 let g:NetrwIsOpen=0
 function! ToggleNetrw()
   if g:NetrwIsOpen

@@ -126,3 +126,5 @@ nnoremap <leader>$ m`:%s/ \+$//e<CR>``
 
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
+
+nmap <C-S-P> :call SynStack()<CR>
