@@ -21,11 +21,11 @@ search=wrapper.search("#{query}")
 # Add the genres of the first result
 search.results.each do |result|
   if result.genre? && !result.genre.empty?
-    result.genre.each do |g| 
+    result.genre.each do |g|
       if g.include? ","
-	g.split(",").each { |x| genres.push "#{x}" }
+        g.split(",").each { |x| genres.push "#{x}" }
       else
-	genres.push "#{g}"
+        genres.push "#{g}"
       end
     end
     break

@@ -38,7 +38,7 @@ set shiftround      " always shift by multiple of shiftwidth
 set copyindent      " smart indent based on file
 
 " Auto indent when starting new line
-set autoindent 
+set autoindent
 filetype plugin indent on
 
 " Syntax highlighting

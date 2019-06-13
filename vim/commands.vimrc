@@ -1,140 +1,140 @@
 " Functions
 function! NetrwxSetTreetop() abort
-    if w:netrw_liststyle == 3
-	let netrwx_snr = strpart(mapcheck('u'), 11, 8)
-	exe 'let s:NetrwxTreeDir = function("' . netrwx_snr . 'NetrwTreeDir")'
-	let l:treetop = s:NetrwxTreeDir(1)
-	call netrw#SetTreetop(l:treetop)
-    endif
+  if w:netrw_liststyle == 3
+    let netrwx_snr = strpart(mapcheck('u'), 11, 8)
+    exe 'let s:NetrwxTreeDir = function("' . netrwx_snr . 'NetrwTreeDir")'
+    let l:treetop = s:NetrwxTreeDir(1)
+    call netrw#SetTreetop(l:treetop)
+  endif
 endfunction
 function! InsertTabWrapper() abort
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-n>"
-    endif
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-n>"
+  endif
 endfunction
 
 function! ToggleNumber() abort
-    if(&relativenumber == 1)
-        set norelativenumber
-        set number
-    else
-        set relativenumber
-    endif
+  if(&relativenumber == 1)
+    set norelativenumber
+    set number
+  else
+    set relativenumber
+  endif
 endfunc
 
 function! Redir(cmd) abort
-	for win in range(1, winnr('$'))
-		if getwinvar(win, 'scratch')
-			execute win . 'windo close'
-		endif
-	endfor
-	if a:cmd =~ '^!'
-		execute "let output = system('" . substitute(a:cmd, '^!', '', '') . "')"
-	else
-		redir => output
-		execute a:cmd
-		redir END
-	endif
-	vnew
-	let w:scratch = 1
-	setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
-	call setline(1, split(output, "\n"))
+  for win in range(1, winnr('$'))
+    if getwinvar(win, 'scratch')
+      execute win . 'windo close'
+    endif
+  endfor
+  if a:cmd =~ '^!'
+    execute "let output = system('" . substitute(a:cmd, '^!', '', '') . "')"
+  else
+    redir => output
+    execute a:cmd
+    redir END
+  endif
+  vnew
+  let w:scratch = 1
+  setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
+  call setline(1, split(output, "\n"))
 endfunction
 
 function! DeleteHiddenBuffers() " Vim with the 'hidden' option
-    let tpbl=[]
-    call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-    for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
-	silent execute 'bwipeout' buf
-    endfor
+  let tpbl=[]
+  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+    silent execute 'bwipeout' buf
+  endfor
 endfunction
 
 let g:NetrwIsOpen=0
 function! ToggleNetrw()
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout! " . i 
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-        silent Lexplore
-    endif
+  if g:NetrwIsOpen
+    let i = bufnr("$")
+    while (i >= 1)
+      if (getbufvar(i, "&filetype") == "netrw")
+        silent exe "bwipeout! " . i
+      endif
+      let i-=1
+    endwhile
+    let g:NetrwIsOpen=0
+  else
+    let g:NetrwIsOpen=1
+    silent Lexplore
+  endif
 endfunction
 " Custom session management (should be plugin) {{{
 function! SaveSession() abort
-    let seshdir = $HOME.'/.vim/sessions/'
-    silent call mkdir (seshdir, 'p')
-    let name = input("Save as: ")
-    if name == ""
-    	echo "\nNo name provided."
-    else
-	let seshfile = seshdir.name.".vim"
-	execute "mksession! " . seshfile
-	echo "\nSession saved: ".seshfile
-    endif
+  let seshdir = $HOME.'/.vim/sessions/'
+  silent call mkdir (seshdir, 'p')
+  let name = input("Save as: ")
+  if name == ""
+    echo "\nNo name provided."
+  else
+    let seshfile = seshdir.name.".vim"
+    execute "mksession! " . seshfile
+    echo "\nSession saved: ".seshfile
+  endif
 endfunction
 function! ListSessions() abort
-    let seshdir = $HOME.'/.vim/sessions/'
-    silent call mkdir (seshdir, 'p')
-    let files = globpath(seshdir, '*', 0, 1)
-    call filter(files, '!isdirectory(v:val)')
-    return files
+  let seshdir = $HOME.'/.vim/sessions/'
+  silent call mkdir (seshdir, 'p')
+  let files = globpath(seshdir, '*', 0, 1)
+  call filter(files, '!isdirectory(v:val)')
+  return files
 endfunction
 function! ChooseSession() abort
-    let files = ListSessions()
-    if len(files) > 0
-        let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
-        let response = inputlist(inputfiles)
-        if response > 0
-            return files[response-1]
-        else
-            return ""
-        endif
+  let files = ListSessions()
+  if len(files) > 0
+    let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
+    let response = inputlist(inputfiles)
+    if response > 0
+      return files[response-1]
     else
-        echo "No sessions available."
-        return ""
+      return ""
     endif
+  else
+    echo "No sessions available."
+    return ""
+  endif
 endfunction
 function! LoadSession() abort
-    let session = ChooseSession()
-    if session != ""
-        execute 'source '.session
-    else
-        echo "\nNo session selected."
-    endif
+  let session = ChooseSession()
+  if session != ""
+    execute 'source '.session
+  else
+    echo "\nNo session selected."
+  endif
 endfunction
 function! DeleteSession() abort
-    let sesh = ChooseSession()
-    if sesh == ""
-        echo "\nNo session selected"
-        return 1
-    endif
-    let conf = confirm("Delete ".sesh."?", "&Yes\n&No\n", 2)
-    if conf == 1
-        if delete(sesh) == 0
-            echom "Deleted ".sesh
-        else
-            echom "Couldn't delete ".sesh
-        endif
+  let sesh = ChooseSession()
+  if sesh == ""
+    echo "\nNo session selected"
+    return 1
+  endif
+  let conf = confirm("Delete ".sesh."?", "&Yes\n&No\n", 2)
+  if conf == 1
+    if delete(sesh) == 0
+      echom "Deleted ".sesh
     else
-        echom "No action taken."
+      echom "Couldn't delete ".sesh
     endif
+  else
+    echom "No action taken."
+  endif
 endfunction
 function! CloseSession()
-    bufdo! bwipeout
-    cd
-    if g:loaded_tagbar == 1
-        execute "TagbarClose"
-    endif
-    echom "Session closed."
+  bufdo! bwipeout
+  cd
+  if g:loaded_tagbar == 1
+    execute "TagbarClose"
+  endif
+  echom "Session closed."
 endfunction
 " }}}
 
@@ -162,8 +162,8 @@ command! Dos2unix .!dos2unix "%"
 command! DeleteHiddenBuffers call DeleteHiddenBuffers()
 command! -nargs=1 -complete=command Redir silent call Redir(<f-args>)
 " Usage:
-" 	:Redir hi ............. show the full output of command ':hi' in a scratch window
-" 	:Redir !ls -al ........ show the full output of command ':!ls -al' in a scratch window
+"       :Redir hi ............. show the full output of command ':hi' in a scratch window
+"       :Redir !ls -al ........ show the full output of command ':!ls -al' in a scratch window
 
 
 " Fat finger fixes/convenience abbreviations
@@ -181,8 +181,8 @@ cnoreabbrev E Explore
 cnoreabbrev Colors XtermColorTable
 cnoreabbrev lset setl
 if has('terminal')
-    cnoreabbrev tt tab terminal
-    cnoreabbrev wt terminal
-    cnoreabbrev tm terminal man
-    cnoreabbrev tr terminal ranger
+  cnoreabbrev tt tab terminal
+  cnoreabbrev wt terminal
+  cnoreabbrev tm terminal man
+  cnoreabbrev tr terminal ranger
 endif
