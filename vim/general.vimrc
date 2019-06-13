@@ -58,6 +58,11 @@ let g:netrw_preview=1                           " preview window shown in a vert
 " Send more characters at a given time
 set ttyfast
 
+" Use true color
+if has('termguicolors')
+  set termguicolors
+endif
+
 " Show partial command on last line
 set showcmd
 
