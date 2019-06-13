@@ -91,56 +91,56 @@ endfunction
 function! ChooseSession() abort
     let files = ListSessions()
     if len(files) > 0
-	let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
-	let response = inputlist(inputfiles)
-	if response > 0
-	    return files[response-1]
-	else
-	    return ""
-	endif
+        let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
+        let response = inputlist(inputfiles)
+        if response > 0
+            return files[response-1]
+        else
+            return ""
+        endif
     else
-    	echo "No sessions available."
-    	return ""
+        echo "No sessions available."
+        return ""
     endif
 endfunction
 function! LoadSession() abort
     let session = ChooseSession()
     if session != ""
-	execute 'source '.session
+        execute 'source '.session
     else
-    	echo "\nNo session selected."
+        echo "\nNo session selected."
     endif
 endfunction
 function! DeleteSession() abort
     let sesh = ChooseSession()
     if sesh == ""
-    	echo "\nNo session selected"
-    	return 1
+        echo "\nNo session selected"
+        return 1
     endif
     let conf = confirm("Delete ".sesh."?", "&Yes\n&No\n", 2)
     if conf == 1
-	if delete(sesh) == 0
-	    echom "Deleted ".sesh
-	else
-	    echom "Couldn't delete ".sesh
-	endif
+        if delete(sesh) == 0
+            echom "Deleted ".sesh
+        else
+            echom "Couldn't delete ".sesh
+        endif
     else
-    	echom "No action taken."
+        echom "No action taken."
     endif
 endfunction
 function! CloseSession()
     bufdo! bwipeout
     cd
     if g:loaded_tagbar == 1
-    	execute "TagbarClose"
+        execute "TagbarClose"
     endif
     echom "Session closed."
 endfunction
 " }}}
 
 " Custom commands
-command! Light set background=light | e
-command! Dark set background=dark | e
+command! Light set background=light | colorscheme kuroi
+command! Dark set background=dark | colorscheme default
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
 command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
