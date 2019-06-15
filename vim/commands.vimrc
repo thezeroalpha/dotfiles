@@ -148,7 +148,7 @@ endfunction
 
 " Custom commands
 command! Light set background=light | colorscheme kuroi
-command! Dark set background=dark | colorscheme default
+command! Dark set background=dark | colorscheme junipero
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
 command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
