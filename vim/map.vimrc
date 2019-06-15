@@ -127,4 +127,4 @@ nmap <leader>$ <Plug>StripTrailingWhitespace
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
 
-nmap <C-S-P> :call <SID>SynStack()<CR>
+nmap <C-S-P> :call SynStack()<CR>
