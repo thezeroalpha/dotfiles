@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+if ! cd "$(dirname $0)" &> /dev/null; then
+  echo "Could not enter $(dirname $0)."
+  exit 1
+fi
+if [ $# -eq 0 ]; then
+  date +%s > .timetrackfile
+  echo "Tracking time."
+elif [ "$1" = "stop" ]; then
+  echo "Complete: $(expr $(date +%s) - $(cat .timetrackfile))"
+  rm .timetrackfile
+fi
