@@ -22,7 +22,7 @@ endfunction
 let g:colors_name = "junipero"
 
 let s:text_color = {"gui": "#969696", "cterm": "246"}
-" let s:bg_color = {"gui": "#060009", "cterm": "53"}
+let s:bg_color = {"gui": "#11121A", "cterm": "0"}
 call s:h("Normal", {"fg": s:text_color, "bg": s:bg_color})
 call s:h("CursorLine", {"bg": {"gui":"#222222", "cterm": "0"}})
 
