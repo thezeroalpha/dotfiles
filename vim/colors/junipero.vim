@@ -22,7 +22,7 @@ endfunction
 let g:colors_name = "junipero"
 
 let s:text_color = {"gui": "#969696", "cterm": "246"}
-let s:bg_color = {"gui": "#120012", "cterm": "53"}
+" let s:bg_color = {"gui": "#060009", "cterm": "53"}
 call s:h("Normal", {"fg": s:text_color, "bg": s:bg_color})
 call s:h("CursorLine", {"bg": {"gui":"#222222", "cterm": "0"}})
 
@@ -100,6 +100,7 @@ hi! link StatusLine LineNr
 hi! link StatusLineNC LineNR
 hi! link TabLine LineNR
 hi! link TabLineFill LineNR
+hi! link SignColumn LineNR
 
 " Diff
 hi DiffDelete guifg=#300845 guibg=#200845 guisp=#200845 gui=NONE ctermfg=53 ctermbg=17 cterm=NONE
