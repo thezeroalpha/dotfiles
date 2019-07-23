@@ -32,12 +32,12 @@ bind-key ^r reload-urls
 bind-key t set-tag
 bind-key ^t clear-tag
 
-color listnormal blue default
-color listnormal_unread cyan default
-color listfocus black yellow standout bold
-color listfocus_unread yellow default bold
-color info magenta black bold
-color article cyan default
+color background white default
+color listnormal white default
+color listfocus white blue standout
+color info blue default standout
+color listfocus_unread white blue standout
+color listnormal_unread white default
 
 browser "open -g '%u'"
 macro , open-in-browser
