@@ -1,3 +1,12 @@
 #!/usr/bin/env bash
 # Generate OTP passwords (google authenticator alternative)
-read -sp "Key: " k && oathtool --totp --base32 "$k"
+read -sp "Key: " k
+if command -v pbcopy &> /dev/null; then
+  oathtool --totp --base32 "$k" | pbcopy
+  echo "copied."
+elif command -v xclip &> /dev/null; then
+  oathtool --totp --base32 "$k" | xclip -sel clip
+  echo "copied."
+else
+  oathtool --totp --base32 "$k"
+fi
