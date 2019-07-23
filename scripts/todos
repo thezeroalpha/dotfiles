@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+grep -rnw "${1:-.}" -iEe "to\s?do";

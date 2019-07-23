@@ -44,6 +44,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `track`: time tracking script. Run `track` to start, `track stop` to stop and show time elapsed in seconds.
 * `updatemaster`: the ultimate all-in-one update script (Brew, Cask, MAS, pip, etc.). Run with `-h` to see options.
 * `usbmux`, `tcprelay`: port forwarding. If you want to SSH to a jailbroken iPhone over USB, you can run `tcprelay 22:2222` to forward local port 2222 to the iPhone's SSH port (22), and then `ssh -p 2222 root@localhost`.
+* `todos`: print out the todos in the current directory or a specific file. Prints it out in a vim-parseable format.
 * `vimwiki_md`: convert vimwiki files to markdown, using the vimwiki_md_ex expressions file for sed. Still a work-in-progress and probably very buggy.
 * `vwtags.py`: generate ctags tag files for vimwiki documents.
 * `wattpad-scrape`: downloads a Wattpad book as an EPUB file. Usage: `wattpad-scrape $wattpad_url`
