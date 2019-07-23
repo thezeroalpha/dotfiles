@@ -88,7 +88,7 @@ hi IncSearch guifg=#babeaa guibg=#3a4520 guisp=#3a4520 gui=NONE ctermfg=144 cter
 hi WildMenu guifg=#000000 guibg=#804000 guisp=#804000 gui=NONE ctermfg=NONE ctermbg=3 cterm=NONE
 hi VertSplit guifg=#223355 guibg=#22253c guisp=#22253c gui=NONE ctermfg=17 ctermbg=237 cterm=NONE
 hi TabLineSel guifg=#6079c9 guibg=#363649 guisp=#101124 gui=NONE ctermfg=24 ctermbg=59 cterm=NONE
-hi Title guifg=#e5e5ca guibg=NONE guisp=NONE gui=NONE ctermfg=187 ctermbg=NONE cterm=NONE
+hi Title guifg=#fff7fa guibg=NONE guisp=NONE gui=NONE ctermfg=15 ctermbg=NONE cterm=NONE
 hi PmenuSel guifg=#f0e0b2 guibg=#4a85ba guisp=#4a85ba gui=NONE ctermfg=223 ctermbg=67 cterm=NONE
 hi PmenuThumb guifg=NONE guibg=#000000 guisp=#000000 gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
 hi PmenuSbar guifg=NONE guibg=#0000ff guisp=#0000ff gui=NONE ctermfg=NONE ctermbg=21 cterm=NONE
@@ -122,3 +122,6 @@ hi! link SpellBad  Todo
 hi! link SpelLocal String
 hi! link SpellRare String
 hi! link SpellCap String
+
+" Vimwiki
+hi! link VimwikiLink Constant
