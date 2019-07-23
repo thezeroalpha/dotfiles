@@ -25,16 +25,26 @@ hr() {
    cols=$(tput cols)
    printf '#%.0s' $(seq 1 "$cols")
 }
+clean_up() {
+   kill $cache_sudo_pid
+   exit ${1:-0}
+}
 
-renew_sudo() {
-   if ! sudo --non-interactive 2> /dev/null; then
-      echo "Extend sudo timeout by giving your password now."
-   fi
-   sudo --validate
+cache_sudo() {
+   while :; do
+      sudo -n true
+      sleep 60
+      kill -0 "$$" || clean_up
+   done 2>/dev/null
 }
 # }}}
 
 echo_progress "### STARTING UPDATE SCRIPT ###\n"
+echo "Please enter the administrator password (required for installation/upgrading)."
+sudo -v
+cache_sudo &
+cache_sudo_pid=$!
+trap clean_up SIGINT SIGKILL SIGQUIT SIGTERM
 
 # Parse options/arguments {{{
 while getopts "hfcns" opt; do
@@ -64,7 +74,7 @@ while getopts "hfcns" opt; do
          echo "Options can be combined. For example:"
          echo "  updatemaster -fs"
          echo "Would update all formulas, and ask you to select which casks to upgrade."
-         exit 0
+         clean_up
          ;;
    esac
 done
@@ -121,7 +131,6 @@ if command -v brew &> /dev/null; then
       elif [ $select_casks = 1 ]; then
          read -rp "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
          for i in ${CASKS[@]}; do
-            renew_sudo
             if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
          done
       else
@@ -133,7 +142,6 @@ if command -v brew &> /dev/null; then
                   echo
                   read -rp "Which casks would you like to upgrade? " -a CASKS;
                   for i in "${CASKS[@]}"; do
-                     renew_sudo
                      if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
                   done
                   ;;
