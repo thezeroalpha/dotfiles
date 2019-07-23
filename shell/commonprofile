@@ -10,7 +10,7 @@ export \
    PATH GOPATH \
    DOTFILES MUSIC_DIR \
    EDITOR HOMEBREW_EDITOR \
-   VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV \
+   VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV WORKON_HOME VIRTUALENVWRAPPER_SCRIPT\
    CASK_REPO \
    SHELLCHECK_OPTS
 
@@ -63,6 +63,10 @@ VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 # pip should only run if there is a virtualenv currently activated
 PIP_REQUIRE_VIRTUALENV=true
 
+WORKON_HOME=$HOME/.virtualenvs
+VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper_lazy.sh
+
 # what to exclude for shellcheck
 SHELLCHECK_OPTS='--exclude=SC1090,SC1091,SC2009'
 
@@ -76,7 +80,7 @@ if [[ $(uname -s) == "Linux" ]]; then
 
       # This method would also allow me to keep my caps lock
       # but it's buggy with my apple bluetooth keyboard
-      # 
+      #
       # setxkbmap -option 'caps:ctrl_modifier'
       # xcape -e 'Caps_Lock=Escape'
    else
@@ -84,18 +88,6 @@ if [[ $(uname -s) == "Linux" ]]; then
    fi
 fi
 # }}}
-
-# Activate programs that need profile entries {{{
-# activate virtualenvwrapper
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-   source /usr/local/bin/virtualenvwrapper.sh
-fi
-
-# activate thefuck
-if command -v fuck &> /dev/null; then
-   eval "$(thefuck --alias)"
-fi
-
 # }}}
 
 # Aliases (simple) {{{
@@ -109,7 +101,7 @@ alias mkdir='mkdir -pv'                                         # Preferred 'mkd
 alias ls="ls -lh"                                               # Preferred 'ls' implementation
 alias l="ls -lah"                                               # Preferred 'ls -a' implementation
 alias ll="ls -FGlAhpO@"                                         # Preferred detailed 'ls' implementation
-alias less='less -RXc'                                          # Preferred 'less' implementation
+alias less='less -iRXc'                                         # Preferred 'less' implementation
 alias rsync='rsync -avhW --progress'                            # Preferred 'rsync' implementation
 alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but remove source
 alias du="du -skh"                                              # Preferred 'du' implementation
@@ -117,6 +109,11 @@ alias df="df -h"                                                # Preferred 'df'
 alias htop='sudo htop'                                          # Top should launch htop with sudo
 alias g='git'                                                   # Make git easier to type
 alias r='source ranger'                                         # Make Ranger easier to type and keep directory
+if [ $(osascript -e 'tell app "System Events" to tell appearance preferences to get dark mode') = 'true' ]; then
+   alias vim='vim -c "Dark"'
+else
+   alias vim='vim -c "Light"'
+fi
 alias wheredef='type -a'                                        # Where is a function defined?
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
 alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""             # Remove ANSI color codes from text
@@ -147,21 +144,12 @@ alias rs_removedeadtracks="rm $HOME/Library/iTunes/.superremoveapp.plist"
 # }}}
 
 # One-liners {{{
-mark() { mdvl "$1" | less; }
 cd() { builtin cd -P "$@" || return; ls; }                                  # List contents after cding
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                     # Make dir and cd at the same time
 procinfo() { ps aux | grep "$1"; }                                          # Get info about a process (by name)
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # Remove empty directories
-todos() { if [ -z "$1" ]; then 1="."; fi; grep -rnw "$1" -e "TODO"; }       # Find TODO comments
-find_in_files() { grep -rnw "$1" -e "$2"; }                                 # Search for text in files
 hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # Insert a <hr> in the terminal
 vimq() { vim -q <($(fc -nl -1)); }                                          # Load results of last command (often ag) in vim quickfix
-
-# Pip3 upgrade packages
-pip3_upgrade() { pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U; }
-
-# Get current battery percentage
-batterypct() { ioreg -l | awk '$3~/Capacity/{c[$3]=$5}END{OFMT="%.2f%%";max=c["\"MaxCapacity\""];print(max>0?100*c["\"CurrentCapacity\""]/max:"?")}' | sed 's/\..*//'; }
 
 # create commands to override pip restriction.
 # use `gpip` or `gpip3` to force installation of
@@ -337,3 +325,5 @@ fo() {
 }
 fi
 # }}}
+
+command -v wal &>/dev/null && (cat ~/.cache/wal/sequences &)
