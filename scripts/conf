@@ -91,7 +91,7 @@ use_files() {
           done
           ;;
         "vim")
-          lncommand "$DOTFILES/vim/init.vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
+          lncommand "$DOTFILES/vim/vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
           lncommand "$DOTFILES/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
           find "$DOTFILES/vim/" -mindepth 1 -maxdepth 1 -type d -exec ln -sv {} "$HOME"/.vim/ \;
           ;;

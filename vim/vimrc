@@ -1,0 +1,791 @@
+" vim: foldmethod=marker foldlevel=0
+let mapleader=" "   " Set the mapleader to be space
+
+" Plugins {{{
+" Installation {{{
+call plug#begin('~/.vim/plugged')
+
+" A color table with xterm color codes
+Plug 'guns/xterm-color-table.vim'
+
+" Simple commenting
+Plug 'tpope/vim-commentary'
+
+" Emmet - must-have for HTML, awesome snippet expansion
+Plug 'mattn/emmet-vim'
+
+" Sleuth - set tab options based on current file
+Plug 'tpope/vim-sleuth'
+
+" Endwise - smart do-end, if-fi, if-end, case-esac, etc.
+Plug 'tpope/vim-endwise'
+
+" Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
+Plug 'tpope/vim-surround'
+
+" Eunuch - shell commands but in vim
+Plug 'tpope/vim-eunuch'
+
+" Markdown in vim (better than built-in)
+Plug 'plasticboy/vim-markdown'
+
+Plug 'godlygeek/tabular'
+
+Plug 'majutsushi/tagbar'
+
+Plug 'vimwiki/vimwiki'
+
+" Git wrapper from tpope
+Plug 'tpope/vim-fugitive'
+
+" Undo tree visualiser
+Plug 'simnalamburt/vim-mundo'
+
+Plug 'romainl/vim-qf'
+
+" Repeat everything with '.'
+Plug 'tpope/vim-repeat'
+
+" Distraction-free editing
+Plug 'junegunn/goyo.vim'
+
+" Better CSV editing
+Plug 'chrisbra/csv.vim'
+
+" Display ANSI color codes
+Plug 'vim-scripts/AnsiEsc.vim'
+
+" Disable hlsearch after finished searching
+Plug 'romainl/vim-cool'
+
+Plug 'lervag/vimtex'
+
+Plug 'SirVer/ultisnips'
+
+Plug 'gastonsimone/vim-dokumentary'
+
+Plug 'romainl/vim-devdocs'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+Plug 'tpope/vim-abolish'
+
+Plug 'rking/ag.vim'
+
+Plug 'chrisbra/colorizer'
+
+Plug 'dylanaraps/wal.vim'
+
+Plug 'kkoomen/vim-doge'
+Plug 'mhinz/vim-signify'
+call plug#end()
+" }}}
+" Config {{{
+
+" Tagbar {{{
+" Maps
+nnoremap <leader>tt :TagbarToggle<CR>
+nnoremap <leader>to :TagbarOpen fj<CR>
+
+" tagbar language definitions
+let g:tagbar_type_vimwiki = {
+      \   'ctagstype':'vimwiki'
+      \ , 'kinds':['h:header']
+      \ , 'sro':'&&&'
+      \ , 'kind2scope':{'h':'header'}
+      \ , 'sort':0
+      \ , 'ctagsbin':'$DOTFILES/scripts/vwtags.py'
+      \ , 'ctagsargs': 'default'
+      \ }
+
+let g:tagbar_type_go = {
+      \ 'ctagstype' : 'go',
+      \ 'kinds'     : [
+      \ 'p:package',
+      \ 'i:imports:1',
+      \ 'c:constants',
+      \ 'v:variables',
+      \ 't:types',
+      \ 'n:interfaces',
+      \ 'w:fields',
+      \ 'e:embedded',
+      \ 'm:methods',
+      \ 'r:constructor',
+      \ 'f:functions'
+      \ ],
+      \ 'sro' : '.',
+      \ 'kind2scope' : {
+      \ 't' : 'ctype',
+      \ 'n' : 'ntype'
+      \ },
+      \ 'scope2kind' : {
+      \ 'ctype' : 't',
+      \ 'ntype' : 'n'
+      \ },
+      \ 'ctagsbin'  : 'gotags',
+      \ 'ctagsargs' : '-sort -silent'
+      \ }
+let g:tagbar_type_markdown = {
+      \ 'ctagstype' : 'markdown',
+      \ 'kinds' : [
+      \ 'h:Heading_L1',
+      \ 'i:Heading_L2',
+      \ 'k:Heading_L3'
+      \ ],
+      \ 'sort': 0
+      \ }
+" }}}
+
+let g:doge_mapping = '<leader>gd'
+
+let g:goyo_width = 120
+
+" Vimtex {{{
+let g:tex_flavor='latex'
+let g:vimtex_view_method='general'
+let g:vimtex_quickfix_mode=0
+let g:tex_conceal='abdmg'
+" }}}
+
+" Ultisnips {{{
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsSnippetDirectories = [$DOTFILES.'/vim/ultisnips']
+let g:UltiSnipsEditSplit = "vertical"
+let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict
+cabbrev USE UltiSnipsEdit
+" }}}
+
+" Dokumentary {{{
+" Improve what K does
+let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
+" }}}
+
+" Abolish {{{
+" Work with variants of words easily
+let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
+" }}}
+
+
+set rtp+=~/.fzf
+let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-i': 'split',
+      \ 'ctrl-v': 'vsplit' }
+
+" Vimwiki {{{
+nmap <leader><CR> <Plug>VimwikiSplitLink
+nmap <leader>v<CR> <Plug>VimwikiVSplitLink
+let tlist_vimwiki_settings = 'wiki;h:Headers'
+
+let wiki = {}
+let wiki.path = '/Users/alex/Dropbox/vimwiki/'
+let wiki.path_html = '/Users/alex/Dropbox/vimwiki_html'
+let wiki.syntax = 'default'
+let wiki.ext = '.txt'
+let g:vimwiki_list = [wiki]
+let g:vimwiki_global_ext = 1
+let g:vimwiki_ext2syntax = {'.wiki': 'default'}
+" }}}
+" }}}
+" }}}
+" General {{{
+" Update file when changed from the outside
+" set autoread
+
+" tags files
+set tags=./tags,tags,.git/tags
+
+" matchit.vim is default, why not enable it
+runtime macros/matchit.vim
+
+" same with :Man
+runtime ftplugin/man.vim
+
+" For editing binaries
+set binary
+
+" No swp please, I save all the time
+set noswapfile
+
+" make regexes consistent with other programs (extended)
+set magic
+
+" directories to search on find, gf, etc.
+set path=.,**,/usr/include,/usr/local/include,,
+set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+set wildignorecase
+
+" Persistent undos (useful for plugins too){{{
+if has('persistent_undo')
+  let myUndoDir = expand('$HOME/.vim' . '/undo')
+  silent call mkdir(myUndoDir, 'p')
+  let &undodir = myUndoDir
+  set undofile
+endif
+" }}}
+
+" Hide buffers instead of closing
+set hidden
+
+" Dont redraw while executing macros
+set lazyredraw
+
+" Encoding
+set encoding=utf-8 nobomb
+set fileencoding=utf-8
+set fileencodings=utf-8
+set fileformats=unix,dos,mac
+
+" netrw {{{
+let g:netrw_banner = 0                          " hide the banner
+let g:netrw_liststyle = 3                       " tree view
+let g:netrw_winsize = 25                        " open at 25% size
+let g:netrw_list_hide = &wildignore
+" }}}
+
+" Send more characters at a given time
+set ttyfast
+
+" Use true color
+if has('termguicolors')
+  set termguicolors
+endif
+
+" Colorscheme
+colorscheme wal
+set notermguicolors
+
+
+" Show partial command on last line
+set showcmd
+
+" Command completion
+set wildmenu
+
+" Enable dark background
+set background=dark
+
+" Enable 256 colormode
+" set t_Co=256
+
+" Mouse tweak
+set mousemodel=popup
+
+" Status line {{{
+set laststatus=2                                                    " Always show status bar
+set statusline=%f                                                   " Relative path and filename
+set statusline+=\ %m%r%w                                            " Flags (modified, readonly, help, preview)
+set statusline+=%#error#                                            " Start error highlighting
+set statusline+=%{StatuslineTabWarning()}                           " Inconsistent indentation warning
+set statusline+=%{StatuslineTrailingSpaceWarning()}                 " Trailing whitespace warning
+set statusline+=%*                                                  " Clear highlighting
+set statusline+=%<                                                  " Start truncating here
+if exists('g:loaded_fugitive')                                      " If fugitive is in use
+  set statusline+=\ %{FugitiveStatusline()}                          "   add fugitive status to the statusline
+endif                                                               " end
+set statusline+=\ \ %{StatuslineBuildCwd()}                         " Current working directory, replacing home with ~
+set statusline+=%=                                                  " Move everything after this to the right
+set statusline+=\ %y                                                " File type
+set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
+set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
+set statusline+=\ %l/%L\                                            " Cursor line/total lines
+set statusline+=\ B%n                                               " Buffer number
+set statusline+=\ \ %{strftime(\"%H:%M\")}                          " Time
+
+" recalculate the tab/trailing whitespace warning flags when idle and after writing
+augroup statusline
+  autocmd!
+  autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+  autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
+augroup END
+
+" return '[&et]' if &et is set wrong
+" return '[mixed-indenting]' if spaces and tabs are used to indent
+" return an empty string if everything is fine
+function! StatuslineTabWarning()
+  if &readonly || &bt == "nofile"
+    return ""
+  endif
+
+  if !exists("b:statusline_tab_warning")
+    let tabs = search('^\t', 'nw') != 0
+    let spaces = search('^ ', 'nw') != 0
+
+    if tabs && spaces
+      let b:statusline_tab_warning =  '[mixed-indenting]'
+    elseif (spaces && !&et) || (tabs && &et)
+      let b:statusline_tab_warning = '[&et]'
+    else
+      let b:statusline_tab_warning = ''
+    endif
+  endif
+  return b:statusline_tab_warning
+endfunction
+
+" return '[\s]' if trailing white space is detected
+" return '' otherwise
+function! StatuslineTrailingSpaceWarning()
+  if &readonly || &bt == "nofile"
+    return ""
+  endif
+
+  if !exists("b:statusline_trailing_space_warning")
+    if search('\s\+$', 'nw') != 0
+      let b:statusline_trailing_space_warning = '[\s]'
+    else
+      let b:statusline_trailing_space_warning = ''
+    endif
+  endif
+  return b:statusline_trailing_space_warning
+endfunction
+
+" build the current working directory string
+function! StatuslineBuildCwd()
+  let cwd = substitute(getcwd(),$HOME,'~','g')
+  return "CWD: " . cwd
+endfunction
+" }}}
+
+highlight ColorColumn ctermbg=233
+
+" How to split new windows
+set splitbelow splitright
+
+" Allow per-file settings
+set modeline
+set modelines=5     "within the first/last 5 lines
+
+" Allow italics
+set t_ZH=[3m
+set t_ZR=[23m
+
+" Since belloff isn't always an option
+if exists("&belloff")
+  set belloff=showmatch,esc,shell,wildmode,backspace   " Disable beeping if no match is found
+endif
+
+" Command-line autocompletion
+set wildmode=longest:list,full
+
+" Add everything to sessions
+set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabpages,terminal
+" }}}
+" Editor {{{
+" In general, don't want anything concealed
+if has('conceallevel')
+  set conceallevel=0
+endif
+
+" Highlight current line
+set cursorline
+
+" Text wrap sucks
+set nowrap
+
+" Linebreak when obsessive
+set linebreak
+set textwidth=500
+
+" Continue wrapped line on same indent as previous
+if has('breakindent')
+  set breakindent
+  set breakindentopt+=shift:3
+endif
+
+" Numbered lines
+set number
+set numberwidth=3
+set relativenumber
+
+
+" with a smart tab
+set smarttab
+
+" and 1 tab == 2 spaces
+set tabstop=4       " visual length of \t in spaces
+set expandtab       " use spaces instead of tabs
+set shiftwidth=2    " 2 spaces when >>
+set softtabstop=2   " and when pressing TAB
+set shiftround      " always shift by multiple of shiftwidth
+set copyindent      " smart indent based on file
+
+" Auto indent when starting new line
+set autoindent
+filetype plugin indent on
+
+" Syntax highlighting
+syntax on
+
+" Folding on indentation
+set foldmethod=indent
+set foldlevelstart=5    " start with up to 5 levels open
+set foldnestmax=10      " unless callback-hell JS
+
+" Show matching brackets
+set showmatch
+set matchtime=2
+
+" Searching
+set hlsearch    " highlight matches
+set incsearch   " search while typing
+set ignorecase  " ignore case generally
+set smartcase   " but not if searching for capital
+
+" Backspace tweaks
+set backspace=indent,eol,start
+set whichwrap+=<,>,h,l
+
+" Better completion
+set complete=.,w,b,u,t
+set completeopt=longest,menuone,preview
+
+" Keep cursor off top and bottom of screen
+set scrolloff=5
+" }}}
+" Functions {{{
+function! ToggleNumber() abort
+  if(&relativenumber == 1)
+    set norelativenumber
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+function! Redir(cmd) abort
+  for win in range(1, winnr('$'))
+    if getwinvar(win, 'scratch')
+      execute win . 'windo close'
+    endif
+  endfor
+  if a:cmd =~ '^!'
+    execute "let output = system('" . substitute(a:cmd, '^!', '', '') . "')"
+  else
+    redir => output
+    execute a:cmd
+    redir END
+  endif
+  vnew
+  let w:scratch = 1
+  setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
+  call setline(1, split(output, "\n"))
+endfunction
+
+function! DeleteHiddenBuffers() " Vim with the 'hidden' option
+  let tpbl=[]
+  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+    silent execute 'bwipeout' buf
+  endfor
+endfunction
+
+" Show syntax highlighting groups for word under cursor
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+" Custom session management (should be plugin) {{{
+function! SaveSession() abort
+  let seshdir = $HOME.'/.vim/sessions/'
+  silent call mkdir (seshdir, 'p')
+  let name = input("Save as: ")
+  if name == ""
+    echo "\nNo name provided."
+  else
+    let seshfile = seshdir.name.".vim"
+    execute "mksession! " . seshfile
+    echo "\nSession saved: ".seshfile
+  endif
+endfunction
+function! ListSessions() abort
+  let seshdir = $HOME.'/.vim/sessions/'
+  silent call mkdir (seshdir, 'p')
+  let files = globpath(seshdir, '*', 0, 1)
+  call filter(files, '!isdirectory(v:val)')
+  return files
+endfunction
+function! ChooseSession() abort
+  let files = ListSessions()
+  if len(files) > 0
+    let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
+    let response = inputlist(inputfiles)
+    if response > 0
+      return files[response-1]
+    else
+      return ""
+    endif
+  else
+    echo "No sessions available."
+    return ""
+  endif
+endfunction
+function! LoadSession() abort
+  let session = ChooseSession()
+  if session != ""
+    execute 'source '.session
+  else
+    echo "\nNo session selected."
+  endif
+endfunction
+function! DeleteSession() abort
+  let sesh = ChooseSession()
+  if sesh == ""
+    echo "\nNo session selected"
+    return 1
+  endif
+  let conf = confirm("Delete ".sesh."?", "&Yes\n&No\n", 2)
+  if conf == 1
+    if delete(sesh) == 0
+      echom "Deleted ".sesh
+    else
+      echom "Couldn't delete ".sesh
+    endif
+  else
+    echom "No action taken."
+  endif
+endfunction
+function! CloseSession()
+  bufdo! bwipeout
+  cd
+  if g:loaded_tagbar == 1
+    execute "TagbarClose"
+  endif
+  echom "Session closed."
+endfunction
+" }}}
+" }}}
+" Commands {{{
+command! Light set background=light termguicolors | colorscheme kuroi
+command! Dark set background=dark termguicolors | colorscheme junipero
+command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
+command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
+command! NoteP vimgrep /NOTE\C/ **/*.* | copen
+command! Note vimgrep /NOTE\C/ % | copen
+command! FixP vimgrep /FIXME\C/ **/*.* | copen
+command! Fix vimgrep /FIXME\C/ % | copen
+command! ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
+command! CDC cd %:p:h
+command! LCDC lcd %:p:h
+command! Maketab set noet ts=2 | %retab!
+command! Diff w !diff % -
+command! Diffc w !git diff % -
+command! Fuckwindows %s///g
+command! Hexedit %!xxd
+command! Unhex %!xxd -r
+command! JsonSimplifyObject %s/^\(\s\{10}\){\n\s\{12\}\(.*\)\n\s\{10\}}\(,\?\)/\1{ \2 }\3
+command! BeautifyJson %!python -m json.tool
+command! Dos2unix .!dos2unix "%"
+command! DeleteHiddenBuffers call DeleteHiddenBuffers()
+command! -nargs=1 -complete=command Redir silent call Redir(<f-args>)
+" Usage:
+"       :Redir hi ............. show the full output of command ':hi' in a scratch window
+"       :Redir !ls -al ........ show the full output of command ':!ls -al' in a scratch window
+
+
+" Fat finger fixes/convenience abbreviations
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
+cnoreabbrev E Explore
+cnoreabbrev Colors XtermColorTable
+cnoreabbrev lset setl
+if has('terminal')
+  cnoreabbrev tt tab terminal
+  cnoreabbrev wt terminal
+  cnoreabbrev tm terminal man
+  cnoreabbrev tr terminal ranger
+endif
+" }}}
+" Symbols {{{
+execute "digraphs ks " . 0x2096
+execute "digraphs as " . 0x2090
+execute "digraphs es " . 0x2091
+execute "digraphs hs " . 0x2095
+execute "digraphs is " . 0x1D62
+execute "digraphs ks " . 0x2096
+execute "digraphs ls " . 0x2097
+execute "digraphs ms " . 0x2098
+execute "digraphs os " . 0x2092
+execute "digraphs ps " . 0x209A
+execute "digraphs rs " . 0x1D63
+execute "digraphs ss " . 0x209B
+execute "digraphs ts " . 0x209C
+execute "digraphs us " . 0x1D64
+execute "digraphs vs " . 0x1D65
+execute "digraphs xs " . 0x2093
+execute "digraphs \\|- " . 0x22A2
+execute "digraphs \\|=" . 0x22A8
+execute "digraphs \\|!" . 0x22AD
+execute "digraphs nS " . 0x207F
+execute "digraphs ns " . 8345
+" }}}
+" Mappings {{{
+
+" Plugin mappings {{{
+nnoremap <leader>F :Files<CR>
+nnoremap <leader>/ :Ag<space>
+nnoremap <leader>u :MundoToggle<CR>
+nnoremap <leader>G :Lines<CR>
+
+" Quickfix window settings/mappings {{{
+nmap <leader>qn <Plug>(qf_qf_next)
+nmap <leader>qp <Plug>(qf_qf_previous)
+nmap <leader>qf <Plug>(qf_qf_toggle)
+" }}}
+" }}}
+"
+" So I don't have to mash shift all the time
+nnoremap ; :
+vnoremap ; :
+tnoremap <C-w>; <C-w>:
+
+" Disable q: cuz I hate it
+" (also C-F does the same)
+nnoremap q: <Nop>
+
+" Normal mode shortcuts
+nnoremap <leader>dif :Diff<CR>
+nnoremap <leader>b :ls<CR>:b<Space>
+
+" Tab completion (disabled because of ultisnips)
+" inoremap <expr> <tab> InsertTabWrapper()
+" inoremap <s-tab> <c-p>
+
+" Retain visual mode after > and <
+vnoremap < <gv
+vnoremap > >gv
+
+" visual j/k
+nnoremap j gj
+nnoremap k gk
+
+" Move visual block
+vnoremap D :m '>+1<CR>gv=gv
+vnoremap U :m '<-2<CR>gv=gv
+
+" stfu and write the file
+cnoremap sudow w !sudo tee > /dev/null %
+
+" and don't break my colours (U for 'unfuck my screen please')
+nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
+
+" 'zoom to head level'
+nnoremap zh mzzt10<c-u>`z
+
+" Reindent the file
+nnoremap <leader>= mlgg=G`lzz
+
+" Tab mappings
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-c> :tabclose<CR>
+
+" Window resizing mappings
+nnoremap <C-k> <C-w>+
+nnoremap <C-j> <C-w>-
+nnoremap <C-h> <C-W>>
+nnoremap <C-l> <C-W><
+
+" Delete hidden buffers
+nnoremap <leader>dh :DeleteHiddenBuffers<CR>
+
+" Switch to alernative buffer
+nnoremap <leader>s<leader> :b#<CR>
+
+" Show hidden symbols
+nnoremap <leader>hs :set list!<CR>
+
+" List marks
+nnoremap <leader>mm :<C-u>marks<CR>:normal! `
+nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
+
+" Switch between relative and absolute line num
+nnoremap <leader># :call ToggleNumber()<CR>
+
+" Map '0' to act as '^' on first press and '0' on second
+nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+
+" Highlight last inserted text
+nnoremap gV `[v`]
+
+" Save in insert mode
+inoremap <C-Z> <C-o>:w<CR>
+
+" Config edit mappings
+nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>/Autocommands {{<CR>:noh<CR>za
+nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>/Commands {{<CR>:noh<CR>za
+nnoremap <C-E><C-E> :vsplit $MYVIMRC<CR>/Editor {{<CR>:noh<CR>za
+nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>/General {{<CR>:noh<CR>za
+nnoremap <C-E><C-V> :vsplit $MYVIMRC<CR>
+nnoremap <C-E><C-M> :vsplit $MYVIMRC<CR>/Mappings {{<CR>:noh<CR>za
+nnoremap <C-E><C-P> :vsplit $MYVIMRC<CR>/Plugins {{<CR>:noh<CR>za
+
+" Yank to clipboard
+nnoremap <leader>d "*d
+vnoremap <leader>d "*d
+nnoremap <leader>D "*D
+nnoremap <leader>y "*y
+vnoremap <leader>y "*y
+nnoremap <leader>p "*p
+nnoremap <leader>P "*P
+nnoremap <leader>n "_
+vnoremap <leader>n "_
+
+" This should be a plugin but for now...
+" time (hh:mm-hh:mm) to duration in hours
+nnoremap <leader>td 0f-l"aywf:l"byw0"cywf:l"dywA (=((a*60+b)-(c*60+d))/60.0)F.r:wyw"aywcw=0.a*60F.2xih0:s/:0h/h
+
+" Custom session maps
+nnoremap <leader>ss :call SaveSession()<CR>
+nnoremap <leader>sl :call LoadSession()<CR>
+nnoremap <leader>sd :call DeleteSession()<CR>
+nnoremap <leader>sq :call CloseSession()<CR>
+
+" native file browsing
+nnoremap <leader>f  :Lexplore<CR>
+
+" Strip trailing whitespace
+nmap <leader>$ <Plug>StripTrailingWhitespace
+
+nnoremap H :bprevious<CR>
+nnoremap L :bnext<CR>
+
+nmap <C-S-P> :call SynStack()<CR>
+
+inoremap <C-p> <esc>m`[s1z=``a
+
+nnoremap <leader>mm :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
+" }}}
+" Autocommands {{{
+if has('autocmd')
+  augroup sets
+    autocmd!
+    autocmd BufRead,BufNewFile  *.md    setlocal conceallevel=2
+    autocmd InsertEnter * setlocal nocursorline
+    autocmd InsertLeave * setlocal cursorline
+  augroup END
+
+  augroup mappings
+    autocmd!
+    autocmd BufEnter *.tex nnoremap <leader>tt :VimtexTocToggle<CR>
+    autocmd BufLeave *.tex nnoremap <leader>tt :TagbarToggle<CR>
+  augroup END
+endif
+" Install vim-plug if needed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent execute "!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+" }}}
