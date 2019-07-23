@@ -52,7 +52,6 @@
     fuckit = reset --hard HEAD
     fuckitall = reset --hard origin/master
     home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|' | tr -d '\n'"
-    up-sub = "!git submodule foreach git pull; git submodule update --init --recursive -j8"
     open = "!open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
     reignore = "!git rm -r --cached .; git add ."
@@ -60,6 +59,11 @@
     lfs-refs = "!git fetch --all && git log -p --all -S"
 
     la = "!git config -l | grep alias | cut -c 7-"
+
+    subget = submodule update --init
+    subdate = submodule update --remote
+    substatus = submodule status
+    subactive = "!git submodule status | grep -v '^-'"
 
 [merge]
     tool = vimdiff
