@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+if ! command -v http &> /dev/null; then
+  echo "Please install httpie"
+  exit 1
+fi
+set -e
+while :; do
+  echo -n "http> "
+  read -a cmd
+  http "${cmd[0]}" "http://localhost:8000${cmd[1]}"
+done
