@@ -363,7 +363,7 @@
 	<key>Default Arrangement Name</key>
 	<string>Notes</string>
 	<key>Default Bookmark Guid</key>
-	<string>AAAFDAD8-B005-4447-BAC1-AC0DCB0D3AE9</string>
+	<string>307F07E0-8CA7-4810-8143-1323B1F43151</string>
 	<key>DimBackgroundWindows</key>
 	<true/>
 	<key>DimInactiveSplitPanes</key>
@@ -474,15 +474,15 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 94 599 501 0 0 1440 900 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>510 544 796 486 0 0 1920 1080 </string>
+	<string>510 518 918 512 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>9 1029 1907 42 0 0 1920 1080 </string>
+	<string>9 22 1907 1049 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>9 22 850 1049 0 0 1920 1080 </string>
+	<string>9 22 1907 1049 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>725 307 710 289 0 0 1440 900 </string>
+	<string>965 664 948 194 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>725 26 710 422 0 0 1440 900 </string>
+	<string>965 22 948 1049 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
 	<string>377 23 850 346 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
