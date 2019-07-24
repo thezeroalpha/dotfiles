@@ -48,6 +48,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `vimwiki_md`: convert vimwiki files to markdown, using the vimwiki_md_ex expressions file for sed. Still a work-in-progress and probably very buggy.
 * `vwtags.py`: generate ctags tag files for vimwiki documents.
 * `wattpad-scrape`: downloads a Wattpad book as an EPUB file. Usage: `wattpad-scrape $wattpad_url`
+* `weather`: show the weather for a city, pass the city as an argument. uses http://wttr.in.
 
 ## Binaries in `dotfiles/bin`:
 These are third-party binaries that I didn't write. I don't take credit for any of them. I only have them in the folder for convenience.
