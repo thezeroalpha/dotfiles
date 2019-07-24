@@ -742,6 +742,7 @@ nnoremap <leader>p "*p
 nnoremap <leader>P "*P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
+nnoremap <leader>yy yg_
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
