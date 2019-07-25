@@ -239,6 +239,10 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 set fileformats=unix,dos,mac
 
+" Number of lines to use for command line
+" (this fixes the 'press enter to continue' thing on :help)
+set cmdheight=2
+
 " netrw {{{
 let g:netrw_banner = 0                          " hide the banner
 let g:netrw_liststyle = 3                       " tree view
