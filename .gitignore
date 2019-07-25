@@ -8,3 +8,4 @@ newsboat/*
 !newsboat/urls
 !newsboat/cache.db
 *.pyc
+vim/autoload/plug.vim*
