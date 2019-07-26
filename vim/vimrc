@@ -56,7 +56,6 @@ Plug 'romainl/vim-qf'
 Plug 'tpope/vim-repeat'
 
 " Distraction-free editing
-" problem starts here
 Plug 'junegunn/goyo.vim'
 
 " Better CSV editing
@@ -202,10 +201,12 @@ let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
 let wiki = {}
 let wiki.path = '/Users/alex/Dropbox/vimwiki/'
 let wiki.path_html = '/Users/alex/Dropbox/vimwiki_html'
+let wiki.template_path = '/Users/alex/Dropbox/vimwiki/templates'
+let wiki.template_ext = '.tpl'
 let wiki.syntax = 'default'
 let wiki.ext = '.txt'
 let g:vimwiki_list = [wiki]
-let g:vimwiki_global_ext = 1
+let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {'.wiki': 'default'}
 " }}}
 " }}}
