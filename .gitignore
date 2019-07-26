@@ -9,3 +9,4 @@ newsboat/*
 !newsboat/cache.db
 *.pyc
 vim/autoload/plug.vim*
+irssi/*.log
