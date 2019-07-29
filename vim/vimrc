@@ -16,8 +16,8 @@ Plug 'guns/xterm-color-table.vim'
 " Simple commenting
 Plug 'tpope/vim-commentary'
 
-" Emmet - must-have for HTML, awesome tag expansion
-Plug 'mattn/emmet-vim'
+" Emmet but simpler
+Plug 'rstacruz/sparkup'
 
 " Sleuth - set tab options based on current file
 Plug 'tpope/vim-sleuth'
@@ -100,6 +100,12 @@ Plug 'kkoomen/vim-doge'
 
 " Show git changes in the sign column
 Plug 'airblade/vim-gitgutter'
+
+" A better omnicomplete
+Plug 'https://gitlab.com/yramagicman/auto-omnicomplete'
+
+" Substitute preview
+Plug 'markonm/traces.vim'
 call plug#end()
 " }}}
 " Config {{{
