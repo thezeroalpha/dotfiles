@@ -7,6 +7,18 @@ if [ $# -eq 0 ]; then
   date +%s > .timetrackfile
   echo "Tracking time."
 elif [ "$1" = "stop" ]; then
-  echo "Complete: $(expr $(date +%s) - $(cat .timetrackfile))"
-  rm .timetrackfile
+  start_time_s=$(cat .timetrackfile && rm .timetrackfile)
+  end_time_s=$(date +%s)
+  duration_s=$(($end_time_s - $start_time_s))
+  start_fmt=$(date -r $start_time_s +%H:%M)
+  end_fmt=$(date -r $end_time_s +%H:%M)
+  hours=$(($duration_s / 3600))
+  minutes=$((($duration_s % 3600)/60))
+  duration_fmt="$(printf "%02d" $hours):$(printf "%02d" $minutes)"
+
+  echo "Complete."
+  echo "Start: $start_fmt"
+  echo "End: $end_fmt"
+  echo "Duration: $duration_s, $duration_fmt"
+  echo "$(date +%d-%m-%Y),$start_fmt,$end_fmt,$duration_fmt"
 fi
