@@ -548,7 +548,7 @@ vnoremap D :m '>+1<CR>gv=gv
 vnoremap U :m '<-2<CR>gv=gv
 
 " stfu and write the file
-cnoremap sudow w !sudo tee > /dev/null %
+cnoreabbrev sudow w !sudo tee > /dev/null %
 
 " and don't break my colours (U for 'unfuck my screen please')
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
