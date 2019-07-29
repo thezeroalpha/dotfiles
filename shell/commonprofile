@@ -307,26 +307,38 @@ fsel() {
 
 # fzf functions {{{
 if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
-   # fuzzy history search
-   fh() {
-      eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+   export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -500'"
+   export FZF_DEFAULT_COMMAND="ag -l -g \"\""
+   # script edit
+   se() {
+      local files
+      IFS=$'\n' files=($(command ls -d ~/.scripts/**/* | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
-# fd - cd to selected directory
-fd() {
-   local dir
-   dir=$(find ${1:-.} -path '*/\.*' -prune \
-      -o -type d -print 2> /dev/null | fzf +m) &&
-      cd "$dir"
+   # config edit
+   ce() {
+      local files
+      IFS=$'\n' files=($(command ls -d ~/.dotfiles/**/* | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
-fo() {
-   local out file key
-   IFS=$'\n' out=($(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e))
-   key=$(head -1 <<< "$out")
-   file=$(head -2 <<< "$out" | tail -1)
-   if [ -n "$file" ]; then
-      [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
-   fi
-}
+   # vim setting edit
+   ve() {
+      local files
+      IFS=$'\n' files=($(command ls -d ~/.dotfiles/vim/**/* | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+   }
+   # run python
+   rp() {
+      fzf --print-query --preview-window=right:50% --preview 'python -c {q}' <<<''
+   }
+   # Run ruby
+   rr() {
+      fzf --print-query --preview-window=right:50% --preview 'ruby -e {q}' <<<''
+   }
+   # run bash
+   rb() {
+      fzf --print-query --preview-window=right:50% --preview 'bash -c {q}' <<<''
+   }
 fi
 # }}}
 
