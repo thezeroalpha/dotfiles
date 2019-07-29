@@ -8,11 +8,18 @@
 
 export \
    PATH GOPATH \
-   DOTFILES MUSIC_DIR \
+   DOTFILES MUSIC_DIR THEME \
    EDITOR HOMEBREW_EDITOR \
    VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV WORKON_HOME VIRTUALENVWRAPPER_SCRIPT\
    CASK_REPO \
    SHELLCHECK_OPTS
+
+# Set the general theme
+if [ $(osascript -e 'tell app "System Events" to tell appearance preferences to get dark mode') = 'true' ]; then
+   THEME="DARK"
+else
+   THEME="LIGHT"
+fi
 
 # Add API keys and stuff
 if [ -f "$HOME/.secret_env_variables" ]; then
@@ -50,10 +57,11 @@ DOTFILES="$HOME/.dotfiles"
 # Where my music is located
 MUSIC_DIR="$HOME/Music/iTunes/iTunes Media/Music"
 
+# My editor
 EDITOR="vim"
 
 if command -v brew &> /dev/null; then
-   HOMEBREW_EDITOR="vim"
+   HOMEBREW_EDITOR="$EDITOR"
    CASK_REPO=$(brew --repository)/Library/Taps/homebrew/homebrew-cask
 fi
 
@@ -109,11 +117,6 @@ alias df="df -h"                                                # Preferred 'df'
 alias htop='sudo htop'                                          # Top should launch htop with sudo
 alias g='git'                                                   # Make git easier to type
 alias r='source ranger'                                         # Make Ranger easier to type and keep directory
-if [ $(osascript -e 'tell app "System Events" to tell appearance preferences to get dark mode') = 'true' ]; then
-   alias vim='vim -c "Dark"'
-else
-   alias vim='vim -c "Light"'
-fi
 alias wheredef='type -a'                                        # Where is a function defined?
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
 alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""             # Remove ANSI color codes from text
@@ -172,7 +175,7 @@ notify() {
 
 # Reload configs
 reload() {
-   START_TIME=$SECONDS
+   local START_TIME=$SECONDS
    source "$HOME"/.commonprofile
 
    if [[ $SHELL = *"zsh"* ]]; then
@@ -270,7 +273,7 @@ realpath() {
 # Remove aliases & replace with original files
 unlink() {
    for i in "$@"; do
-      p=$(realpath -w "$i")
+      local p=$(realpath -w "$i")
       rm "$i"
       mv "$p" .
       unset p
@@ -284,7 +287,7 @@ if command -v osascript &> /dev/null; then
 
    # cd to current Finder directory
    cdf() {
-      target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
+      local target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
       if [ "$target" != "" ]; then
          cd "$target" || return; pwd
       else

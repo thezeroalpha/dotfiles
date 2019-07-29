@@ -209,9 +209,30 @@ let g:vimwiki_list = [wiki]
 let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {'.wiki': 'default'}
 " }}}
+
+set omnifunc=syntaxcomplete#Complete
 " }}}
 " }}}
 " General {{{
+" Set the colors
+" Use true color
+if has('termguicolors')
+  set termguicolors
+endif
+
+if has_key(environ(), 'THEME')
+  if environ()['THEME'] == 'DARK'
+    set background=dark
+    colorscheme junipero
+  else
+    set background=light
+    colorscheme kuroi
+  endif
+else
+  set background=light
+  colorscheme kuroi
+endif
+
 " where to find tags files
 set tags=./tags,tags,.git/tags
 
@@ -258,7 +279,7 @@ set fileformats=unix,dos,mac
 
 " Number of lines to use for command line
 " (this fixes the 'press enter to continue' thing on :help)
-set cmdheight=2
+set cmdheight=1
 
 " netrw {{{
 let g:netrw_banner = 0                          " hide the banner
@@ -270,23 +291,11 @@ let g:netrw_list_hide = &wildignore
 " Send more characters at a given time
 set ttyfast
 
-" Use true color
-if has('termguicolors')
-  set termguicolors
-endif
-
-" Colorscheme
-colorscheme wal
-set notermguicolors
-
 " Show partial command on last line
 set showcmd
 
 " Command completion
 set wildmenu
-
-" Use colors that work on a dark background
-set background=dark
 
 " Mouse tweak
 set mousemodel=popup
@@ -413,14 +422,12 @@ set whichwrap+=<,>,h,l
 
 " Better completion
 set complete=.,w,b,u,t
-set completeopt=longest,menuone,preview
+set completeopt=menu,menuone,noinsert,noselect
 
 " Keep cursor off top and bottom of screen
 set scrolloff=5
 " }}}
 " Commands {{{
-command! Light set background=light termguicolors | colorscheme kuroi
-command! Dark set background=dark termguicolors | colorscheme junipero
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
 command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
