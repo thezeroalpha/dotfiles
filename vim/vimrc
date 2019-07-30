@@ -212,6 +212,12 @@ let g:vimwiki_list = [wiki]
 let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {'.wiki': 'default'}
 " }}}
+" Sessions {{{
+nmap <leader>ss <Plug>SaveSession
+nmap <leader>sl <Plug>LoadSession
+nmap <leader>sd <Plug>DeleteSession
+nmap <leader>sq <Plug>CloseSession
+" }}}
 
 set omnifunc=syntaxcomplete#Complete
 " }}}

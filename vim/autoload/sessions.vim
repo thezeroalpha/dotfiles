@@ -1,25 +1,23 @@
-" Custom session management (should be plugin) {{{
+let s:seshdir = $HOME.'/.vim/sessions/'
 function! sessions#SaveSession() abort
-  let seshdir = $HOME.'/.vim/sessions/'
-  silent call mkdir (seshdir, 'p')
+  silent call mkdir (s:seshdir, 'p')
   let name = input("Save as: ")
   if name == ""
     echo "\nNo name provided."
   else
-    let seshfile = seshdir.name.".vim"
+    let seshfile = s:seshdir.name.".vim"
     execute "mksession! " . seshfile
     echo "\nSession saved: ".seshfile
   endif
 endfunction
-function! sessions#ListSessions() abort
-  let seshdir = $HOME.'/.vim/sessions/'
-  silent call mkdir (seshdir, 'p')
-  let files = globpath(seshdir, '*', 0, 1)
+function! s:ListSessions() abort
+  silent call mkdir (s:seshdir, 'p')
+  let files = globpath(s:seshdir, '*', 0, 1)
   call filter(files, '!isdirectory(v:val)')
   return files
 endfunction
-function! sessions#ChooseSession() abort
-  let files = ListSessions()
+function! s:ChooseSession() abort
+  let files = <SID>ListSessions()
   if len(files) > 0
     let inputfiles = map(copy(files), 'index(files, v:val)+1.": ".v:val')
     let response = inputlist(inputfiles)
@@ -34,7 +32,7 @@ function! sessions#ChooseSession() abort
   endif
 endfunction
 function! sessions#LoadSession() abort
-  let session = ChooseSession()
+  let session = <SID>ChooseSession()
   if session != ""
     execute 'source '.session
   else
@@ -42,7 +40,7 @@ function! sessions#LoadSession() abort
   endif
 endfunction
 function! sessions#DeleteSession() abort
-  let sesh = ChooseSession()
+  let sesh = <SID>ChooseSession()
   if sesh == ""
     echo "\nNo session selected"
     return 1
@@ -61,9 +59,8 @@ endfunction
 function! sessions#CloseSession()
   bufdo! bwipeout
   cd
-  if g:loaded_tagbar == 1
+  if exists('g:loaded_tagbar') && g:loaded_tagbar == 1
     execute "TagbarClose"
   endif
   echom "Session closed."
 endfunction
-" }}}
