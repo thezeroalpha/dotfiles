@@ -473,6 +473,9 @@ cnoreabbrev Qall qall
 cnoreabbrev E Explore
 cnoreabbrev Colors XtermColorTable
 cnoreabbrev lset setl
+cnoreabbrev sudow w !sudo tee > /dev/null %
+cnoreabbrev hg helpgrep
+
 if has('terminal')
   cnoreabbrev tt tab terminal
   cnoreabbrev wt terminal
@@ -546,9 +549,6 @@ nnoremap k gk
 " Move visual block
 vnoremap D :m '>+1<CR>gv=gv
 vnoremap U :m '<-2<CR>gv=gv
-
-" stfu and write the file
-cnoreabbrev sudow w !sudo tee > /dev/null %
 
 " and don't break my colours (U for 'unfuck my screen please')
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
