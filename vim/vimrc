@@ -101,9 +101,6 @@ Plug 'kkoomen/vim-doge'
 " Show git changes in the sign column
 Plug 'airblade/vim-gitgutter'
 
-" A better omnicomplete
-Plug 'https://gitlab.com/yramagicman/auto-omnicomplete'
-
 " Substitute preview
 Plug 'markonm/traces.vim'
 call plug#end()
@@ -426,9 +423,12 @@ set smartcase   " but not if searching for capital
 set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
 
-" Better completion
-set complete=.,w,b,u,t
-set completeopt=menu,menuone,noinsert,noselect
+" Complete from current buffer, other windows, buffers, unloaded buffers, tags,
+"   current and included files, and dictionary if spell is set
+set complete=.,w,b,u,t,i,kspell
+" Use popup menu, also when there is only one match, don't insert until the user selects
+"   a match, don't select anything automatically.
+set completeopt=menu,menuone,preview
 
 " Keep cursor off top and bottom of screen
 set scrolloff=5
