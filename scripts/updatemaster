@@ -39,13 +39,6 @@ cache_sudo() {
 }
 # }}}
 
-echo_progress "### STARTING UPDATE SCRIPT ###\n"
-echo "Please enter the administrator password (required for installation/upgrading)."
-sudo -v
-cache_sudo &
-cache_sudo_pid=$!
-trap clean_up SIGINT SIGKILL SIGQUIT SIGTERM
-
 # Parse options/arguments {{{
 while getopts "hfcns" opt; do
    case "$opt" in
@@ -91,6 +84,15 @@ if ! command -v notify &> /dev/null; then
 fi
 # }}}
 
+echo_progress "### STARTING UPDATE SCRIPT ###\n"
+if [ -z $maintenance ]; then
+   echo "Please enter the administrator password (required for installation/upgrading)."
+   sudo -v
+   cache_sudo &
+   cache_sudo_pid=$!
+   trap clean_up SIGINT SIGKILL SIGQUIT SIGTERM
+fi
+
 # Homebrew {{{
 echo_progress "Homebrew update/upgrade."
 if command -v brew &> /dev/null; then
@@ -101,7 +103,7 @@ if command -v brew &> /dev/null; then
    echo
 
    # Programs {{{
-   if [ $formulas = 0 ] && [ ${#outdated} -ne 0 ]; then
+   if [ $maintenance = 1 ] || ([ $formulas = 0 ] && [ ${#outdated} -ne 0 ]); then
       brew outdated
       echo_succ  "No programs will be updated."
    elif [ ${#outdated} = 0 ]; then
