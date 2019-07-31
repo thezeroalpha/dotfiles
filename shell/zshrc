@@ -127,3 +127,21 @@ fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+insert-arg-of-prev-cmd() {
+: ${NUMERIC:-1}
+(( NUMERIC++ ))
+words=($(fc -ln -1))
+RBUFFER+="$words[$NUMERIC] "
+zle end-of-line
+}
+
+zle -N insert-arg-of-prev-cmd
+bindkey "\e^y" insert-arg-of-prev-cmd
+
+# readline-style line commenting
+bindkey '\e#' pound-insert
+
+# readline-style searching
+bindkey '^]' vi-find-next-char
+bindkey '^\e]' vi-find-prev-char
