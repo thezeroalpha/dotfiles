@@ -88,6 +88,7 @@ echo_progress "### STARTING UPDATE SCRIPT ###\n"
 if [ -z $maintenance ]; then
    echo "Please enter the administrator password (required for installation/upgrading)."
    sudo -v
+   [ $? -eq 0 ] || exit
    cache_sudo &
    cache_sudo_pid=$!
    trap clean_up SIGINT SIGKILL SIGQUIT SIGTERM
@@ -213,6 +214,21 @@ if command -v mas &> /dev/null; then
 else
    echo_err -e "mas not found. Install mas to update App Store apps on the command line."
    echo_err -e "Cannot update Mac App Store apps. Please do so manually."
+fi
+# }}}
+
+hr
+
+# Global pip packages {{{
+echo_progress "Pip global upgrade"
+if pip &> /dev/null; then
+   val="$PIP_REQUIRE_VIRTUALENV"
+   PIP_REQUIRE_VIRTUALENV=""
+   pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+   PIP_REQUIRE_VIRTUALENV="$val"
+   echo_succ "Pip packages upgraded."
+else
+   echo_err "Pip not found."
 fi
 # }}}
 
