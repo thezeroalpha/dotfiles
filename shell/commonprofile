@@ -156,10 +156,9 @@ hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # In
 vimq() { vim -q <($(fc -nl -1)); }                                          # Load results of last command (often ag) in vim quickfix
 
 # create commands to override pip restriction.
-# use `gpip` or `gpip3` to force installation of
+# use `gpip` to force installation of
 # a package in the global python environment
 gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }
-gpip3(){ PIP_REQUIRE_VIRTUALENV="" pip3 "$@"; }
 
 # }}}
 
