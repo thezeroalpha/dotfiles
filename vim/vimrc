@@ -218,6 +218,9 @@ nmap <leader>sl <Plug>LoadSession
 nmap <leader>sd <Plug>DeleteSession
 nmap <leader>sq <Plug>CloseSession
 " }}}
+" Sparkup {{{
+let g:sparkupExecuteMapping = '<C-x><C-e>'
+" }}}
 
 set omnifunc=syntaxcomplete#Complete
 " }}}
