@@ -1,8 +1,19 @@
-snippet post "New post" b
+snippet draft "New draft" b
 ---
 layout: post
 title: "${1:Title}"
 author: zeroalpha
+---
+
+$0
+endsnippet
+
+snippet post "New draft" b
+---
+layout: post
+title: "${1:Title}"
+author: zeroalpha
+date: ${2:YYYY}-${3:MM}-${4:DD}
 ---
 
 $0
