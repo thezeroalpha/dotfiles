@@ -85,7 +85,7 @@ fi
 # }}}
 
 echo_progress "### STARTING UPDATE SCRIPT ###\n"
-if [ -z $maintenance ]; then
+if [ -z "$maintenance" ]; then
    echo "Please enter the administrator password (required for installation/upgrading)."
    sudo -v
    [ $? -eq 0 ] || exit
@@ -104,40 +104,40 @@ if command -v brew &> /dev/null; then
    echo
 
    # Programs {{{
-   if [ $maintenance = 1 ] || ([ $formulas = 0 ] && [ ${#outdated} -ne 0 ]); then
+   if [[ "$maintenance" == 1 ]] || { [[ "$formulas" == 0 ]] && [[ "${#outdated}" != 0 ]]; }; then
       brew outdated
       echo_succ  "No programs will be updated."
-   elif [ ${#outdated} = 0 ]; then
+   elif [ "${#outdated}" -eq 0 ]; then
       echo -e "No programs to update."
    else
       echo -e "To update:\n"
       brew outdated;
       notify "Brew: Finished reading updates" "Click to view outdated packages."
-      if [ $formulas = 1 ]; then
+      if [ "$formulas" -eq 1 ]; then
          brew upgrade
       fi
    fi
    # }}}
 
    # Casks {{{
-   if [ ${#outdated_c} = 0 ]; then
+   if [ "${#outdated_c}" -eq 0 ]; then
       echo_succ "No casks to update."
-   elif [ $casks = 0 ] && [ $select_casks = 0 ]; then
+   elif [ "$casks" -eq 0 ] && [ "$select_casks" -eq 0 ]; then
       echo_succ "No casks will be updated."
    else
       echo -e "Casks to update:"
       brew cask outdated --greedy;
 
       notify "Cask: Finished reading updates" "Click to view outdated casks."
-      if [ $casks = 1 ] && [ $select_casks = 0 ]; then
+      if [ "$casks" -eq 1 ] && [ "$select_casks" -eq 0 ]; then
          brew cask upgrade --greedy
-      elif [ $select_casks = 1 ]; then
+      elif [ "$select_casks" -eq 1 ]; then
          read -rp "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
          for i in ${CASKS[@]}; do
             if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
          done
       else
-         if [ $maintenance = 0 ]; then
+         if [ "$maintenance" -eq 0 ]; then
             read -rsn 1 -p "Upgrade all? [Y(es)/n(o)/s(elect)] " CONF
 
             case $CONF in
@@ -193,7 +193,7 @@ if command -v mas &> /dev/null; then
    echo -e "MAS outdated:"
    outdated=$(mas outdated)
 
-   if [ ${#outdated} = 0 ]; then
+   if [ "${#outdated}" -eq 0 ]; then
       echo_succ "Everything is up to date."
    else
       mas outdated
@@ -238,7 +238,7 @@ hr
 echo_progress "NPM global update/upgrade."
 if command -v npm &> /dev/null; then
    outdated=$(npm outdated)
-   if [ ${#outdated} = 0 ]; then
+   if [ "${#outdated}" -eq 0 ]; then
       echo_succ "Everything is up to date."
    else
       npm update -g
