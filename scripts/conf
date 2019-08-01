@@ -20,6 +20,7 @@ print_available() {
   echo "ctags             language definitions for ctags"
   echo "gdb               gdb dashboard and the like"
   echo "git               git config files and hooks"
+  echo "irssi             irssi - the IRC client"
   echo "iterm2            profiles, colors, and such for iTerm2 (Mac)"
   echo "karabiner         key config for karabiner-elements on Mac, notably caps lock as escape and control"
   echo "newsboat          urls and keymap for newsboat RSS reader"
@@ -53,6 +54,9 @@ use_files() {
           if [ -d git/git_template ]; then
             conf_check git config --global init.templatedir "$DOTFILES"/git/git_template
           fi
+          ;;
+        "irssi")
+          lncommand "$DOTFILES/irssi" "$HOME/.irssi"
           ;;
         "iterm2")
           lncommand "$DOTFILES/iterm2" "$HOME/.iterm2"
