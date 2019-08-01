@@ -8,18 +8,11 @@
 
 export \
    PATH GOPATH \
-   DOTFILES MUSIC_DIR THEME \
+   DOTFILES MUSIC_DIR \
    EDITOR HOMEBREW_EDITOR \
    VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV WORKON_HOME VIRTUALENVWRAPPER_SCRIPT\
    CASK_REPO \
    SHELLCHECK_OPTS
-
-# Set the general theme
-if [ $(osascript -e 'tell app "System Events" to tell appearance preferences to get dark mode') = 'true' ]; then
-   THEME="DARK"
-else
-   THEME="LIGHT"
-fi
 
 # Add API keys and stuff
 if [ -f "$HOME/.secret_env_variables" ]; then
