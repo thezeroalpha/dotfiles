@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 if ! command -v wget &> /dev/null; then
   echo "Please install wget."
   exit 1
