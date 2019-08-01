@@ -232,14 +232,9 @@ if has('termguicolors')
   set termguicolors
 endif
 
-if has_key(environ(), 'THEME')
-  if environ()['THEME'] == 'DARK'
-    set background=dark
-    colorscheme junipero
-  else
-    set background=light
-    colorscheme kuroi
-  endif
+if system("osascript -e 'tell application \"System Events\" to tell appearance preferences to return (get dark mode as text)'") == "true\n"
+  set background=dark
+  colorscheme junipero
 else
   set background=light
   colorscheme kuroi
