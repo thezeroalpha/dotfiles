@@ -125,3 +125,6 @@ hi! link SpellCap String
 
 " Vimwiki
 hi! link VimwikiLink Constant
+
+" Markdown
+hi! link mkdLink Type
