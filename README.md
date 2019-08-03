@@ -19,6 +19,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
 * `epub-convert`: uses Calibre's ebook converter program to convert anything to an epub
 * `executable`: my first script. Makes any file executable, along with further options. Usage: `executable file.sh`
+* `gif2mp4`: convert a gif to an mp4 video. Usage: `gif2mp4 file.gif`
 * `ffmpeg-split.py`: split videos using ffmpeg. [Here's the README.](scripts/ffmpeg-split-README.md)
 * `global-git-status`: git status of all of your cloned git repositories
 * `httpc`: an interactive http request console using httpie

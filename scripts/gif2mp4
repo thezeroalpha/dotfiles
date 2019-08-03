@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if ! command -v ffmpeg &> /dev/null; then echo "ffmpeg not found" && exit 1; fi
+if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
+if ! [[ "$1" == *.gif ]]; then echo "$1 is not a gif." && exit 1; fi
+ffmpeg -i "$1" -r 30 -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${1%%.gif}.mp4"
