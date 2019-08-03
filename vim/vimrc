@@ -623,7 +623,11 @@ nnoremap <leader>p "*p
 nnoremap <leader>P "*P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
-nnoremap <leader>yy yg_
+nnoremap <leader>yy "*yg_
+
+" Insert lines without moving cursor and going into insert mode
+nnoremap <leader>o m`o<esc>``
+nnoremap <leader>O m`O<esc>``
 
 " This should be a plugin but for now...
 " time (hh:mm-hh:mm) to duration in hours
