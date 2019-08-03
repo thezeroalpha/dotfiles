@@ -44,7 +44,7 @@ use_files() {
           lncommand "$DOTFILES/bin" "$HOME/.bin"
           ;;
         "ctags")
-          lncommand "$DOTFILES/ctags/ctags" "$HOME/.ctags"
+          lncommand "$DOTFILES/ctags.d" "$HOME/.ctags.d"
           ;;
         "gdb")
           lncommand "$DOTFILES/gdb/gdbinit" "$HOME/.gdbinit"
