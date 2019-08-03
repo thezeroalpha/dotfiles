@@ -15,7 +15,11 @@ async def main(connection):
     for p in profiles:
         if "Light" in p.name and is_dark_theme == "false":
             await p.async_make_default()
+            return
         elif "Dark" in p.name and is_dark_theme == "true":
             await p.async_make_default()
-
-iterm2.run_until_complete(main)
+            return
+try:
+    iterm2.run_until_complete(main)
+except Exception as exception:
+    print("Error: ", exception)
