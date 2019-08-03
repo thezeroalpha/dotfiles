@@ -18,3 +18,11 @@ date: ${2:YYYY}-${3:MM}-${4:DD}
 
 $0
 endsnippet
+
+snippet video "MP4 Video" b
+<video width="100%" style="margin-bottom: 1em;" autoplay controls loop playsinline muted>
+    <source type="video/mp4" src="/video/${1:filename}.mp4" />
+    <p>${2:alt text}</p>
+</video>
+$0
+endsnippet
