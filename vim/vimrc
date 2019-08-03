@@ -113,14 +113,14 @@ nnoremap <leader>to :TagbarOpen fj<CR>
 
 " tagbar language definitions
 let g:tagbar_type_vimwiki = {
-      \   'ctagstype':'vimwiki'
-      \ , 'kinds':['h:header']
-      \ , 'sro':'&&&'
-      \ , 'kind2scope':{'h':'header'}
-      \ , 'sort':0
-      \ , 'ctagsbin':'$DOTFILES/scripts/vwtags.py'
-      \ , 'ctagsargs': 'default'
-      \ }
+          \   'ctagstype':'vimwiki'
+          \ , 'kinds':['h:header']
+          \ , 'sro':'&&&'
+          \ , 'kind2scope':{'h':'header'}
+          \ , 'sort':0
+          \ , 'ctagsbin':'vwtags.py'
+          \ , 'ctagsargs': 'default'
+          \ }
 
 let g:tagbar_type_go = {
       \ 'ctagstype' : 'go',
@@ -152,9 +152,12 @@ let g:tagbar_type_go = {
 let g:tagbar_type_markdown = {
       \ 'ctagstype' : 'markdown',
       \ 'kinds' : [
-      \ 'h:Heading_L1',
-      \ 'i:Heading_L2',
-      \ 'k:Heading_L3'
+      \ 'c:Heading L1',
+      \ 's:Heading L2',
+      \ 'S:Heading L3',
+      \ 't:Heading L4',
+      \ 'T:Heading L5',
+      \ 'u:Heading L6'
       \ ],
       \ 'sort': 0
       \ }
