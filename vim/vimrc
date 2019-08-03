@@ -319,9 +319,6 @@ set statusline+=%{statusline#StatuslineTabWarning()}                " Inconsiste
 set statusline+=%{statusline#StatuslineTrailingSpaceWarning()}      " Trailing whitespace warning
 set statusline+=%*                                                  " Clear highlighting
 set statusline+=%<                                                  " Start truncating here
-if exists('g:loaded_fugitive')                                      " If fugitive is in use
-  set statusline+=\ %{FugitiveStatusline()}                          "   add fugitive status to the statusline
-endif                                                               " end
 set statusline+=\ \ %{statusline#StatuslineBuildCwd()}              " Current working directory, replacing home with ~
 set statusline+=%=                                                  " Move everything after this to the right
 set statusline+=\ %y                                                " File type
