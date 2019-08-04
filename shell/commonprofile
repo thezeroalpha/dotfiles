@@ -178,13 +178,6 @@ reload() {
    echo "Reloaded config ($(( SECONDS-START_TIME )) sec)."
 }
 
-# Gem update script
-gemmaster() {
-   gem update;
-   gem update rails;
-   gem cleanup;
-}
-
 
 # Extract any archive
 extract () {
