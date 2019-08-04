@@ -1,0 +1,21 @@
+snippet select "Select menu" bA
+select ${1:dest variable} in "${2:Option 1}" "${3:option 2}"; do
+  case "$$1" in
+    "$2")
+      break;;$0
+    "$3")
+      break;;
+    *)
+      break;;
+  esac
+done
+endsnippet
+
+snippet case "Case statement" bA
+case "$${1:variable}" in
+  "${2:Option 1}")
+    ;;
+  *)
+    ;;
+esac
+endsnippet
