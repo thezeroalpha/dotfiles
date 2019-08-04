@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+if ! command -v git &> /dev/null; then echo "git not found" && exit 1; fi
+git fetch --all
+if ! git pull --ff-only; then
+  select action in "Rebase" "Merge"; do
+    upstream="$(git branch -r | grep -v HEAD | tr -d ' ')"
+    case $action in
+      Rebase)
+        git rebase "$upstream"
+        break;;
+      Merge)
+        git merge "$upstream"
+        break;;
+    esac
+  done
+fi

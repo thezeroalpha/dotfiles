@@ -47,8 +47,7 @@
     delete-merged = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d && git fetch --all --prune"
     p = push
     pushf = push --force-with-lease
-    pff = pull --ff-only
-    pnf = pull --no-ff
+    pf = "!git-pull-menu"
     fuckit = reset --hard HEAD
     fuckitall = reset --hard origin/master
     home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|' | tr -d '\n'"
