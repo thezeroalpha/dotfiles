@@ -186,27 +186,6 @@ gemmaster() {
 }
 
 
-# Webm to mp4 video
-webm_mp4() {
-   ffmpeg -i "$1" -qscale 0 "$1".mp4
-}
-
-# Extract audio from mp4
-mp4_mp3() {
-   ffmpeg -i "$1" "$1".mp3
-}
-
-# Anything to a gif
-gifify() {
-   ffmpeg -i "$1" -r 25 -f image2pipe -vcodec ppm - | \
-      convert -delay 4 -loop 0 - output.gif
-   }
-
-# Gif to mp4
-gif_mp4() {
-   ffmpeg -i "$1" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "$(echo "$1"|cut -d. -f1).mp4"
-}
-
 # Extract any archive
 extract () {
    if [ -f "$1" ] ; then

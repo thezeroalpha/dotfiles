@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+if ! command -v ffmpeg &> /dev/null; then echo "ffmpeg not found" && exit 1; fi
+if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
+
+main() {
+  case "$1" in
+    *.gif)
+      echo "GIF: $1"
+      process_gif "$1"
+      ;;
+    *.mp4|*.mov|*.webm)
+      echo "VIDEO: $1"
+      process_video "$1"
+      ;;
+    *)
+      ;;
+  esac
+}
+process_gif() {
+    select to_fmt in "MP4"; do
+      case "$to_fmt" in
+        "MP4")
+          ffmpeg -i "$1" -r 30 -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${1%%.gif}.mp4"
+          break;;
+        *)
+          break;;
+      esac
+    done
+}
+process_video() {
+  select to_fmt in "MP4" "MP3" "GIF"; do
+    case "$to_fmt" in
+      "MP4")
+        ffmpeg -i "$1" -qscale 0 "${1%%.*}.mp4"
+        break;;
+      "MP3")
+        ffmpeg -i "$1" "${1%%.*}.mp3"
+        break;;
+      "GIF")
+        local palette="/tmp/palette.png"
+        local filters="fps=24,scale=0:-1:flags=lanczos"
+        ffmpeg -v warning -i "$1" -vf "$filters,palettegen" -y "$palette"
+        ffmpeg -v warning -i "$1" -i "$palette" -lavfi "$filters [x]; [x][1:v] paletteuse" -y "${1%%.*}.gif"
+        break;;
+      *)
+        ;;
+    esac
+  done
+}
+main "$@"
