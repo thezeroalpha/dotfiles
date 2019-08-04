@@ -12,14 +12,14 @@ However, if you _do_ use this, I suggest that you use this more as inspiration t
 Before you use a custom script, read what it does. Some may be a bit buggy, I haven't tested them on all systems.
 If you read a script and see some improvements that could be made, let me know. I'm always down to learn more stuff.
 
-* `anythingtogif`: converts (almost) anything to a gif. Usage: `anythingtogif clip.mov clip.gif`. Backed by ffmpeg.
 * `checklinks`: recursively check any website for broken links
 * `clonedisk`: clones one disk to another
 * `conf`: the script to manage dotfiles. run `conf` to show available commands.
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
+* `epr.py`: a [Python-based EPUB reader](https://github.com/wustho/epr)
 * `epub-convert`: uses Calibre's ebook converter program to convert anything to an epub
 * `executable`: my first script. Makes any file executable, along with further options. Usage: `executable file.sh`
-* `gif2mp4`: convert a gif to an mp4 video. Usage: `gif2mp4 file.gif`
+* `ffmpres`: ffmpeg presets for various files
 * `ffmpeg-split.py`: split videos using ffmpeg. [Here's the README.](scripts/ffmpeg-split-README.md)
 * `global-git-status`: git status of all of your cloned git repositories
 * `httpc`: an interactive http request console using httpie
