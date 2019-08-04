@@ -283,19 +283,19 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    # script edit
    se() {
       local files
-      IFS=$'\n' files=($(command ls -d ~/.scripts/**/* | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      IFS=$'\n' files=($(command find "$(readlink ~/.scripts)" -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
    # config edit
    ce() {
       local files
-      IFS=$'\n' files=($(command ls -d ~/.dotfiles/**/* | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      IFS=$'\n' files=($(command find ~/.dotfiles -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
    # vim setting edit
    ve() {
       local files
-      IFS=$'\n' files=($(command ls -d ~/.dotfiles/vim/**/* | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
    # run python
