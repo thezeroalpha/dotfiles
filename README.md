@@ -14,6 +14,7 @@ If you read a script and see some improvements that could be made, let me know. 
 
 * `checklinks`: recursively check any website for broken links
 * `clonedisk`: clones one disk to another
+* `colgen.rb`: a Ruby script to generate Vim colorschemes from a much simpler syntax file.
 * `conf`: the script to manage dotfiles. run `conf` to show available commands.
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
 * `epr.py`: a [Python-based EPUB reader](https://github.com/wustho/epr)

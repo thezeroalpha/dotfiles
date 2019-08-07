@@ -161,7 +161,7 @@ File.open(ARGV[0], "r").each do |line|
 end
 
 
-File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub('.vimcolor', '.vim')}", "w") do |f|
+File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub(/.*\//, '').sub('.vimcolor', '.vim')}", "w") do |f|
   f.puts <<~EOF
   if version > 580
     highlight clear
@@ -169,7 +169,7 @@ File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub('.vimcolor', '.vim')}", "w")
       syntax reset
     endif
   endif
-  let g:colors_name = "#{ARGV[0].sub('.vimcolor', '')}"
+  let g:colors_name = "#{ARGV[0].sub(/.*\//, '').sub('.vimcolor', '')}"
   set background=#{background}
   EOF
   primary.each do |item|

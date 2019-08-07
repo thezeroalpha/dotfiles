@@ -49,7 +49,7 @@ hi! link storageclass structure
 hi! link typedef structure
 hi! link character constant
 hi! link signcolumn linenr
-hi! link netrwdir linenr
+hi! link netrwdir function
 hi! link netrwexe title
 hi! link spellbad todo
 hi! link spellocal string

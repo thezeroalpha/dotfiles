@@ -33,7 +33,8 @@ link define,macro,precondit include
 link debug,special,specialchar,specialcomment,tag,cursorlinenr,number delimiter
 link label,storageclass,typedef structure
 link character constant
-link signcolumn,netrwdir linenr
+link signcolumn linenr
+link netrwdir function
 link netrwexe title
 link spellbad todo
 link spellocal,spellrare,spellcap string
