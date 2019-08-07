@@ -414,8 +414,8 @@ syntax on
 
 " Folding on indentation
 set foldmethod=indent
-set foldlevelstart=5    " start with up to 5 levels open
-set foldnestmax=10      " unless callback-hell JS
+set foldlevelstart=5      " start with up to 5 levels open
+set foldnestmax=10        " unless callback-hell JS
 
 " Show matching brackets
 set showmatch
@@ -656,15 +656,8 @@ nnoremap <leader>mm :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
 if has('autocmd')
   augroup sets
     autocmd!
-    autocmd BufRead,BufNewFile  *.md    setlocal conceallevel=2
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertLeave * setlocal cursorline
-  augroup END
-" this is a comment
-  augroup mappings
-    autocmd!
-    autocmd BufEnter *.tex nnoremap <leader>tt :VimtexTocToggle<CR>
-    autocmd BufLeave *.tex nnoremap <leader>tt :TagbarToggle<CR>
   augroup END
 endif
 " }}}
