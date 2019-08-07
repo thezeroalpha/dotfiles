@@ -236,11 +236,9 @@ if has('termguicolors')
 endif
 
 if system("osascript -e 'tell application \"System Events\" to tell appearance preferences to return (get dark mode as text)'") == "true\n"
-  set background=dark
   colorscheme junipero
 else
-  set background=light
-  colorscheme kuroi
+  colorscheme jokull
 endif
 
 " where to find tags files

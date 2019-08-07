@@ -1,0 +1,43 @@
+" This script uses the colorgen script
+" to create a colorscheme from something a bit more readable.
+" Format is 'group fg_hex, bg_hex. attrs'
+background light
+normal #2c2625, #e4e4e4
+cursorline NONE, #d0d0d0
+string #009051. italic
+identifier #112d4e
+function #0096ff. bold
+statement #73fdff.
+include #76d6ff. bold
+type #005493
+delimiter #fffb00
+comment #ecfcff. italic
+search NONE, #d7f1e0
+folded #73fdff, #d0d0d0
+tablinefill NONE, #d0d0d0
+tablinesel NONE, #e5e5e5
+wildmenu #005493, #e5e5e5. bold
+linenr NONE
+preproc NONE
+vertsplit NONE
+todo Blue, Yellow
+nontext #81A1C1
+statusline NONE, #7abecd
+statuslinenc NONE, #a8dbfd
+visual NONE, #a8caff
+
+link tabline tablinefill
+link incsearch search
+link repeat,conditional,operator statement
+link define,macro,precondit include
+link debug,special,specialchar,specialcomment,tag,cursorlinenr,number delimiter
+link label,storageclass,typedef structure
+link character constant
+link signcolumn,netrwdir linenr
+link netrwexe title
+link spellbad todo
+link spellocal,spellrare,spellcap string
+link vimwikilink constant
+link mkdlink type
+link pmenu statuslinenc
+link pmenusel statusline

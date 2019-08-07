@@ -1,5 +1,4 @@
 " Created with github.com/chrisbra/Colorizer and http://bytefluent.com/vivify/
-set background=dark
 if version > 580
   highlight clear
   if exists("syntax_on")
@@ -20,6 +19,7 @@ function! s:h(group, style)
 endfunction
 
 let g:colors_name = "junipero"
+set background=dark
 
 let s:text_color = {"gui": "#969696", "cterm": "246"}
 let s:bg_color = {"gui": "#11121A", "cterm": "0"}
