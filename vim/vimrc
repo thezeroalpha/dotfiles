@@ -603,7 +603,7 @@ nnoremap gV `[v`]
 inoremap <C-Z> <C-o>:w<CR>
 
 " Config edit mappings
-nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>/Autocommands {{<CR>:noh<CR>za
+nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>/Autocommands {{{$<CR>:noh<CR>za
 nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>/Commands {{<CR>:noh<CR>za
 nnoremap <C-E><C-E> :vsplit $MYVIMRC<CR>/Editor {{<CR>:noh<CR>za
 nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>/General {{<CR>:noh<CR>za
@@ -622,6 +622,7 @@ nnoremap <leader>P "*P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
 nnoremap <leader>yy "*yg_
+nnoremap Y y$
 
 " Insert lines without moving cursor and going into insert mode
 nnoremap <leader>o m`o<esc>``
