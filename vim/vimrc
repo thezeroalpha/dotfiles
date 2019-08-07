@@ -643,6 +643,9 @@ nnoremap <leader>f  :Lexplore<CR>
 " Strip trailing whitespace
 nmap <leader>$ <Plug>StripTrailingWhitespace
 
+" Run selected commands
+vmap <leader><CR> <Plug>VisualRunCommands
+
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
 
