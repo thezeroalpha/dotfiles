@@ -101,6 +101,9 @@ Plug 'kkoomen/vim-doge'
 " Show git changes in the sign column
 Plug 'airblade/vim-gitgutter'
 
+" Bracket bindings for filetypes
+Plug 'arp242/jumpy.vim'
+
 " Substitute preview
 Plug 'markonm/traces.vim'
 call plug#end()
