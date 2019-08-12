@@ -29,6 +29,8 @@ hi nontext guifg=#81A1C1 guibg=NONE ctermfg=109 ctermbg=NONE cterm=NONE gui=NONE
 hi statusline guifg=NONE guibg=#7abecd ctermfg=NONE ctermbg=110 cterm=NONE gui=NONE
 hi statuslinenc guifg=NONE guibg=#a8dbfd ctermfg=NONE ctermbg=153 cterm=NONE gui=NONE
 hi visual guifg=NONE guibg=#a8caff ctermfg=NONE ctermbg=153 cterm=NONE gui=NONE
+hi title guifg=#225555 guibg=NONE ctermfg=23 ctermbg=NONE cterm=bold gui=bold
+hi matchparen guifg=#d7f1e0 guibg=#a8dbfd ctermfg=194 ctermbg=153 cterm=NONE gui=NONE
 hi! link tabline tablinefill
 hi! link incsearch search
 hi! link repeat statement
@@ -55,7 +57,7 @@ hi! link spellbad todo
 hi! link spellocal string
 hi! link spellrare string
 hi! link spellcap string
-hi! link vimwikilink constant
 hi! link mkdlink type
+hi! link vimwikilink type
 hi! link pmenu statuslinenc
 hi! link pmenusel statusline

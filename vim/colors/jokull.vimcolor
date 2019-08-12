@@ -25,6 +25,8 @@ nontext #81A1C1
 statusline NONE, #7abecd
 statuslinenc NONE, #a8dbfd
 visual NONE, #a8caff
+title #225555. bold
+matchparen #d7f1e0, #a8dbfd
 
 link tabline tablinefill
 link incsearch search
@@ -38,7 +40,6 @@ link netrwdir function
 link netrwexe title
 link spellbad todo
 link spellocal,spellrare,spellcap string
-link vimwikilink constant
-link mkdlink type
+link mkdlink,vimwikilink type
 link pmenu statuslinenc
 link pmenusel statusline
