@@ -119,7 +119,9 @@ fi
 
 # jenv
 if command -v jenv &> /dev/null; then
-  export PATH="$HOME/.jenv/bin:$PATH"
+  if [[ $PATH != *"$HOME/.jenv/bin"* ]]; then
+    export PATH="$HOME/.jenv/bin:$PATH"
+  fi
   eval "$(jenv init -)"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 fi
