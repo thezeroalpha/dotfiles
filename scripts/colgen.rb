@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 # vim: foldmethod=indent foldlevel=0
+# Vim Colorscheme Generator
+
+# Colorizer functions ported from https://github.com/chrisbra/Colorizer
 module Colorizer
   BASIC16 = [
     [ 0x00, 0x00, 0x00 ],
@@ -120,12 +123,18 @@ module Colorizer
   end
 end
 
-# Where my code starts
-# Next step - make it automatically name the file & move it to ~/.vim/colors, based on file passed as arg.
+
 include Colorizer
+# Primary color definitions (hi {group})
 primary=[]
+
+# Linking groups (hi link {group})
 links={}
+
+# Background is light by default
 background="light"
+
+# Some error checking
 if ARGV[0].nil?
   abort "Colors file required as argument"
 elsif not File.file? ARGV[0]
@@ -134,34 +143,61 @@ elsif not ARGV[0].end_with? ".vimcolor"
   abort "File extension should be .vimcolor"
 end
 
+# Read and parse the definitions from file passed as argument
 File.open(ARGV[0], "r").each do |line|
+  # Remove excess whitespace
   line.strip!
+
+  # Link definitions
+  # Format: link group1[,group2..] destgroup
   if line.start_with? "link"
+    # From-group and to-group
     from, to = line.split(" ")[1..-1]
+
+    # For every from-group, create a new link to the to-group
     from.split(',').each do |from_group|
       links[from_group] = to
     end
+
+  # Ignore empty lines & vim-style comments
   elsif line.empty? || line.start_with?("\"")
-    # Ignore
+    # Do nothing
+
+  # Set the background option
+  # Format: background light/dark
   elsif line.start_with? "background"
     background = line.split.last
+
+  # Standard color definitions
+  # Format: group fg_color, bg_color. attr [, attr]
   else
+    # The full line as an array
     line_arr = line.split
+
+    # Get the color group
     group = line_arr.first
     rest = line_arr[1..-1].join ' '
 
+    # Get the colors and attributes
     colors, attrs = rest.split('.')
+
+    # Separate the foreground & background colors
     fg, bg = colors.split(',').map { |x| x.strip }
 
+    # Set background color to NONE if not defined
     bg = "NONE" if bg.nil?
 
+    # Parse the attribute, remove whitespace, join with commas (so result is e.g. 'bold,underline')
     attrs = (attrs.nil? ? "NONE" : attrs.split(',').map { |x| x.strip }.join(","))
+
+    # Add the definition to the array
     primary << [group, fg, bg, attrs]
   end
 end
 
-
+# Write the colorscheme file
 File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub(/.*\//, '').sub('.vimcolor', '.vim')}", "w") do |f|
+  # Write the preamble, along with background value
   f.puts <<~EOF
   if version > 580
     highlight clear
@@ -172,12 +208,21 @@ File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub(/.*\//, '').sub('.vimcolor',
   let g:colors_name = "#{ARGV[0].sub(/.*\//, '').sub('.vimcolor', '')}"
   set background=#{background}
   EOF
+
+  # Write color definitions first
   primary.each do |item|
-    f.puts "hi #{item[0]} guifg=#{item[1]} guibg=#{item[2]} ctermfg=#{item[1] == "NONE" ? "NONE" : rgb2term(item[1][1..-1])} ctermbg=#{item[2] == "NONE" ? "NONE" : rgb2term(item[2][1..-1])} cterm=#{item[3]} gui=#{item[3]}"
+    # This will all be on one line, but it's broken up for readability
+    f.puts "hi #{item[0]} guifg=#{item[1]} guibg=#{item[2]}"\
+           " ctermfg=#{item[1] == "NONE" ? "NONE" : rgb2term(item[1][1..-1])}"\
+           " ctermbg=#{item[2] == "NONE" ? "NONE" : rgb2term(item[2][1..-1])}"\
+           " cterm=#{item[3]} gui=#{item[3]}"
   end
+
+  # Then write link definitions
   links.each do |from,to|
     f.puts "hi! link #{from} #{to}"
   end
 end
 
+# Notify the user that the colorscheme was saved
 puts "Written to ~/.vim/colors/#{ARGV[0].sub('.vimcolor', '.vim')}"
