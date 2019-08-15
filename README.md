@@ -16,6 +16,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `clonedisk`: clones one disk to another
 * `colgen.rb`: a Ruby script to generate Vim colorschemes from a much simpler syntax file.
 * `conf`: the script to manage dotfiles. run `conf` to show available commands.
+* `create_pocketbook_logo`: take an image and convert it into a logo for my PocketBook 603. Run with the `-h` flag for usage.
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
 * `epr.py`: a [Python-based EPUB reader](https://github.com/wustho/epr)
 * `epub-convert`: uses Calibre's ebook converter program to convert anything to an epub
@@ -23,6 +24,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `ffmpres`: ffmpeg presets for various files
 * `ffmpeg-split.py`: split videos using ffmpeg. [Here's the README.](scripts/ffmpeg-split-README.md)
 * `global-git-status`: git status of all of your cloned git repositories
+* `google_hangouts_parser.rb`: parse the JSON from google hangouts into a more coherent format. Go to a directory with a "Hangouts.json" file and run the script.
 * `httpc`: an interactive http request console using httpie
 * `it-style`: can find and set the genre in a track in iTunes (along with its Ruby helper), using the Discogs database (you need an API key, set $DISCOGS_API_TOKEN in your profile). Usage: click/play a track in iTunes, and run the program.
 * `linkdir`: symlink all files/folders from source dir to target dir. Usage: `linkdir $source` to create symlinks in cwd, `linkdir $source $target` otherwise.

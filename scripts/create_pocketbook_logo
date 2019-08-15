@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+if ! command -v convert &> /dev/null; then
+  echo "imagemagick not installed." >&2
+  exit 1
+fi
+
+PARAMS=""
+
+while (( "$#" )); do
+  case "$1" in
+    -p|--palette)
+      palette="$2"
+      shift 2
+      ;;
+    -o|--output)
+      outfile="$2"
+      shift 2
+      ;;
+    -h|--help)
+      echo "Usage:"
+      echo "  create_pocketbook_logo [-p palette_file] input_file -o output_file"
+      exit 0
+      ;;
+    --) #end arg parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+[ -z "$outfile" ] && echo "No output file supplied." >&2 && exit 1
+[ -z "$1" ] && echo "No file supplied.">&2 && exit 1
+[ -z "$palette" ] && ! [ -d /Volumes/Pocket603 ] && echo "No palette present.">&2 && exit 1
+convert "$1" \
+  -background white \
+  -alpha remove \
+  -depth 8 \
+  -colors 256 \
+  -type grayscale \
+  -remap "${palette:-/Volumes/Pocket603/system/logo/1_st.603.bmp}" \
+  -dither FloydSteinberg \
+  -compress none BMP3:"$outfile"
