@@ -284,8 +284,6 @@ set lazyredraw
 
 " Encoding & formats
 set encoding=utf-8 nobomb
-set fileencoding=utf-8
-set fileencodings=utf-8
 set fileformats=unix,dos,mac
 
 " Number of lines to use for command line
