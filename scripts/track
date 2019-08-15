@@ -1,24 +1,75 @@
 #!/usr/bin/env bash
-if ! cd "$(dirname $0)" &> /dev/null; then
-  echo "Could not enter $(dirname $0)."
-  exit 1
-fi
-if [ $# -eq 0 ]; then
-  date +%s > .timetrackfile
-  echo "Tracking time."
-elif [ "$1" = "stop" ]; then
-  start_time_s=$(cat .timetrackfile && rm .timetrackfile)
-  end_time_s=$(date +%s)
-  duration_s=$(($end_time_s - $start_time_s))
-  start_fmt=$(date -r $start_time_s +%H:%M)
-  end_fmt=$(date -r $end_time_s +%H:%M)
-  hours=$(($duration_s / 3600))
-  minutes=$((($duration_s % 3600)/60))
-  duration_fmt="$(printf "%02d" $hours):$(printf "%02d" $minutes)"
+PARAMS=""
 
+calc_values() {
+  start_time_s=$(cat /tmp/timetrackfile && rm /tmp/timetrackfile)
+  end_time_s=$(date +%s)
+  duration_s=$((end_time_s - start_time_s))
+  start_fmt=$(date -r "$start_time_s" +%H:%M)
+  end_fmt=$(date -r "$end_time_s" +%H:%M)
+  hours=$((duration_s / 3600))
+  minutes=$(((duration_s % 3600)/60))
+  duration_fmt="$(printf "%02d" $hours):$(printf "%02d" $minutes)"
+}
+print_duration() {
   echo "Complete."
   echo "Start: $start_fmt"
   echo "End: $end_fmt"
-  echo "Duration: $duration_s, $duration_fmt"
+  echo "Duration: $duration_s sec, $duration_fmt"
   echo "$(date +%d-%m-%Y),$start_fmt,$end_fmt,$duration_fmt"
+}
+
+while (( "$#" )); do
+  case "$1" in
+    -a|--append)
+      append=1
+      shift
+      ;;
+    -o|--output)
+      outfile="$2"
+      shift 2
+      ;;
+    -h|--help)
+      echo "Usage:"
+      echo "track                             start tracking"
+      echo "track stop [-a] [-o outfile]      stop tracking, -o to specify an output file, -a to append"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+if [ $# -eq 0 ]; then
+  date +%s > /tmp/timetrackfile
+  echo "Tracking time."
+elif [ "$1" = "status" ] || [ "$1" = "s" ]; then
+  if [ -f /tmp/timetrackfile ]; then
+    echo "Tracking since $(date -r <(cat /tmp/timetrackfile))."
+  else
+    echo "Not tracking"
+  fi
+elif [ "$1" = "stop" ]; then
+  calc_values
+
+  if [ -z "$outfile" ]; then
+    print_duration
+  else
+    if [ "$append" = 1 ]; then
+      print_duration | tee -a "$outfile"
+    else
+      print_duration | tee "$outfile"
+    fi
+  fi
 fi
