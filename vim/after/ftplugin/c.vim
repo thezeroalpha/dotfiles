@@ -3,4 +3,8 @@ nnoremap <buffer> <leader>mc :silent make clean<CR>\|:redraw!<CR>
 if v:version >= 800
   packadd termdebug
 endif
-let b:undo_ftplugin .= ''
+if exists('b:undo_ftplugin')
+  let b:undo_ftplugin .= ''
+else
+  let b:undo_ftplugin = ''
+endif

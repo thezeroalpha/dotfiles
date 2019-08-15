@@ -1,2 +1,6 @@
 setlocal keywordprg=:help
-let b:undo_ftplugin .= '|setlocal keywordprg<'
+if exists('b:undo_ftplugin')
+  let b:undo_ftplugin .= '|setlocal keywordprg<'
+else
+  let b:undo_ftplugin = 'setlocal keywordprg<'
+endif

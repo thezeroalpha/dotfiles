@@ -1,3 +1,6 @@
-setlocal makeprg=gnatmake\ %
-setlocal errorformat=%f:%l:%c:\ %m,%f:%l:%c:\ %tarning:\ %m,%f:%l:%c:\ (%ttyle)\ %m
-let b:undo_ftplugin .= '|setlocal makeprg< errorformat<'
+compiler ada
+if exists('b:undo_ftplugin')
+  let b:undo_ftplugin .= '|setlocal makeprg< errorformat<'
+else
+  let b:undo_ftplugin = 'setlocal makeprg< errorformat<'
+endif
