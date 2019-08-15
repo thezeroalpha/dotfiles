@@ -279,6 +279,12 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
       IFS=$'\n' files=($(command find "$(readlink ~/.scripts)" -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
+   # script create
+   sc() {
+      [ -z "$1" ] && echo "Filename must be passed as an argument." && exit 1
+      vim $DOTFILES/scripts/"$1"
+   }
+
    # config edit
    ce() {
       local files
@@ -302,6 +308,10 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    # run bash
    rb() {
       fzf --print-query --preview-window=right:50% --preview 'bash -c {q}' <<<''
+   }
+   # run json
+   rj() {
+      fzf --preview "cat $1 | jq {q}"
    }
 fi
 # }}}
