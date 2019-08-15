@@ -444,7 +444,7 @@ set omnifunc=syntaxcomplete#Complete
 set scrolloff=5
 
 " Which formats to use for incrementing/decrementing
-set nrformats=alpha,hex,bin
+set nrformats=hex,bin
 " }}}
 " Commands {{{
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
