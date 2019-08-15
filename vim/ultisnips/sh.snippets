@@ -19,3 +19,48 @@ case "$${1:variable}" in
     ;;
 esac
 endsnippet
+
+snippet argparse "Parse arguments/flags" b
+PARAMS=""
+
+while (( "\$#" )); do
+  case "\$1" in
+    -${1:letter}|--${2:long name})
+      $2="\$2"
+      shift 2
+      ;;
+    $0
+    -h|--help)
+      echo "Usage:"
+      echo "${3:usage text}"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag \$1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="\$PARAMS \$1"
+      shift
+      ;;
+  esac
+done
+eval set -- "\$PARAMS"
+endsnippet
+
+snippet bash "Bash shebang" b
+#!/usr/bin/env bash
+$0
+endsnippet
+
+snippet exists "Check if command exists" w,A
+if ! command -v ${1:command} &>/dev/null; then
+  echo "$1 not installed." >&2
+  exit 1
+fi
+$0
+endsnippet
