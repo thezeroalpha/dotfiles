@@ -228,8 +228,6 @@ nmap <leader>sq <Plug>CloseSession
 let g:sparkupMaps = 0
 imap <buffer> <C-x>e <Plug>SparkupExecute
 " }}}
-
-set omnifunc=syntaxcomplete#Complete
 " }}}
 " }}}
 " General {{{
@@ -307,8 +305,8 @@ set showcmd
 " Command completion
 set wildmenu
 
-" Mouse tweak
-set mousemodel=popup
+" Allow the mouse, good for e.g. resizing splits
+set mouse=a
 
 " Status line {{{
 set laststatus=2                                                    " Always show status bar
@@ -440,8 +438,13 @@ set complete=.,w,b,u,t,i,kspell
 "   a match, don't select anything automatically.
 set completeopt=menu,menuone,preview
 
+set omnifunc=syntaxcomplete#Complete
+
 " Keep cursor off top and bottom of screen
 set scrolloff=5
+
+" Which formats to use for incrementing/decrementing
+set nrformats=alpha,hex,bin
 " }}}
 " Commands {{{
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
@@ -536,6 +539,9 @@ nnoremap ; :
 vnoremap ; :
 tnoremap <C-w>; <C-w>:
 
+" To keep the old functionality of ;
+nnoremap <leader>; ;
+
 " Disable q: cuz I hate it
 " (also C-F does the same)
 nnoremap q: <Nop>
@@ -605,13 +611,13 @@ nnoremap gV `[v`]
 inoremap <C-Z> <C-o>:w<CR>
 
 " Config edit mappings
-nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>/Autocommands {{{$<CR>:noh<CR>za
-nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>/Commands {{<CR>:noh<CR>za
-nnoremap <C-E><C-E> :vsplit $MYVIMRC<CR>/Editor {{<CR>:noh<CR>za
-nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>/General {{<CR>:noh<CR>za
-nnoremap <C-E><C-V> :vsplit $MYVIMRC<CR>
-nnoremap <C-E><C-M> :vsplit $MYVIMRC<CR>/Mappings {{<CR>:noh<CR>za
-nnoremap <C-E><C-P> :vsplit $MYVIMRC<CR>/Plugins {{<CR>:noh<CR>za
+nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>gg/Autocommands {{{$<CR>:noh<CR>za
+nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>gg/Commands {{<CR>:noh<CR>za
+nnoremap <C-E><C-E> :vsplit $MYVIMRC<CR>gg/Editor {{<CR>:noh<CR>za
+nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>gg/General {{<CR>:noh<CR>za
+nnoremap <C-E><C-V> :vsplit $MYVIMRC<CR>gg
+nnoremap <C-E><C-M> :vsplit $MYVIMRC<CR>gg/Mappings {{<CR>:noh<CR>za
+nnoremap <C-E><C-P> :vsplit $MYVIMRC<CR>gg/Plugins {{<CR>:noh<CR>za
 
 " Yank to clipboard
 nnoremap <leader>d "*d
@@ -654,7 +660,8 @@ nnoremap L :bnext<CR>
 
 nnoremap <C-P> :call synstack#SynStack()<CR>
 
-inoremap <C-p> <esc>m`[s1z=``a
+inoremap <C-x>s <c-g>u<Esc>[s1z=`]a<c-g>u
+
 
 nnoremap <leader>mm :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
 " }}}
