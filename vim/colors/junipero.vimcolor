@@ -53,12 +53,13 @@ Question #AABBCC, #130445. NONE
 MoreMsg #2e8b57, NONE. NONE
 ErrorMsg #f0e2e2, #ff4545. NONE
 WarningMsg #fa8072, NONE. NONE
+StatusLine #4079a9, #101130. bold
 
 link Label,StorageClass,Typedef Structure
 link Character,VimwikiLink Constant
 link Define,Macro,PreCondit Include
 link Debug,Special,SpecialChar,SpecialComment,Tag Delimiter
-link StatusLine,StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir LineNr
+link StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir LineNr
 link netrwExe Title
 link SpellBad Todo
 link SpelLocal,SpellRare,SpellCap String
