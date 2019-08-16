@@ -561,6 +561,8 @@ vnoremap > >gv
 " visual j/k
 nnoremap j gj
 nnoremap k gk
+nnoremap gj j
+nnoremap gk k
 
 " Move visual block
 vnoremap D :m '>+1<CR>gv=gv
