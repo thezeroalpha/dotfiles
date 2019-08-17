@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if ! command -v curl &>/dev/null; then
+  echo "curl not installed." >&2
+  exit 1
+fi
+
+! [ $# -ge 1 ] && echo "Argument required." && exit 1
+curl -Ls cheat.sh/"$1" | less

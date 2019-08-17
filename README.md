@@ -12,6 +12,7 @@ However, if you _do_ use this, I suggest that you use this more as inspiration t
 Before you use a custom script, read what it does. Some may be a bit buggy, I haven't tested them on all systems.
 If you read a script and see some improvements that could be made, let me know. I'm always down to learn more stuff.
 
+* `cheat`: query http://cheat.sh and output the result into `less`
 * `checklinks`: recursively check any website for broken links
 * `clonedisk`: clones one disk to another
 * `colgen.rb`: a Ruby script to generate Vim colorschemes from a much simpler syntax file.
