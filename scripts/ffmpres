@@ -28,7 +28,7 @@ process_gif() {
     done
 }
 process_video() {
-  select to_fmt in "MP4" "MP3" "GIF"; do
+  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO"; do
     case "$to_fmt" in
       "MP4")
         ffmpeg -i "$1" -qscale 0 "${1%%.*}.mp4"
@@ -41,6 +41,9 @@ process_video() {
         local filters="fps=24,scale=0:-1:flags=lanczos"
         ffmpeg -v warning -i "$1" -vf "$filters,palettegen" -y "$palette"
         ffmpeg -v warning -i "$1" -i "$palette" -lavfi "$filters [x]; [x][1:v] paletteuse" -y "${1%%.*}.gif"
+        break;;
+      "NO AUDIO")
+        ffmpeg -i "$1" -an "silent-$1"
         break;;
       *)
         ;;
