@@ -2,6 +2,7 @@
 PARAMS=""
 
 calc_values() {
+  [ -f /tmp/timetrackfile ] || { echo "No trackfile." && exit 1; }
   start_time_s=$(cat /tmp/timetrackfile && rm /tmp/timetrackfile)
   end_time_s=$(date +%s)
   duration_s=$((end_time_s - start_time_s))
