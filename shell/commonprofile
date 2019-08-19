@@ -103,8 +103,8 @@ alias ls="ls -lh"                                               # Preferred 'ls'
 alias l="ls -lah"                                               # Preferred 'ls -a' implementation
 alias ll="ls -FGlAhpO@"                                         # Preferred detailed 'ls' implementation
 alias less='less -iRXc'                                         # Preferred 'less' implementation
-alias rsync='rsync -avhW --progress'                            # Preferred 'rsync' implementation
-alias rrsync='rsync -avhW --progress --remove-source-files'     # Rsync, but remove source
+alias rsync='rsync -azP'                                        # archive (recursion, preserve what's possible), compress, show progress, keep partial files
+alias rrsync='rsync -azP --remove-source-files'                 # Rsync, but remove source files
 alias du="du -skh"                                              # Preferred 'du' implementation
 alias df="df -h"                                                # Preferred 'df' implementation
 alias htop='sudo htop'                                          # Top should launch htop with sudo
@@ -281,8 +281,8 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    }
    # script create
    sc() {
-      [ -z "$1" ] && echo "Filename must be passed as an argument." && exit 1
-      vim $DOTFILES/scripts/"$1"
+      [ -z "$1" ] && echo "Filename must be passed as an argument." && return 1
+      vim $DOTFILES/scripts/"$1" && chmod +x $DOTFILES/scripts/"$1"
    }
 
    # config edit
