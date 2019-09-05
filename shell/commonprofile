@@ -97,25 +97,25 @@ alias c="clear"
 alias fucking="sudo"
 alias wtf="tldr"
 alias virc="vim ~/.vimrc"
-alias cp='cp -iv'                                               # Preferred 'cp' implementation
-alias mv='mv -iv'                                               # Preferred 'mv' implementation
-alias mkdir='mkdir -pv'                                         # Preferred 'mkdir' implementation
-alias ls="ls -lh"                                               # Preferred 'ls' implementation
-alias l="ls -lah"                                               # Preferred 'ls -a' implementation
-alias ll="ls -FGlAhpO@"                                         # Preferred detailed 'ls' implementation
-alias less='less -iRXc'                                         # Preferred 'less' implementation
-alias rsync='rsync -azP'                                        # archive (recursion, preserve what's possible), compress, show progress, keep partial files
-alias rrsync='rsync -azP --remove-source-files'                 # Rsync, but remove source files
-alias du="du -skh"                                              # Preferred 'du' implementation
-alias df="df -h"                                                # Preferred 'df' implementation
-alias htop='sudo htop'                                          # Top should launch htop with sudo
-alias g='git'                                                   # Make git easier to type
-alias r='source ranger'                                         # Make Ranger easier to type and keep directory
-alias wheredef='type -a'                                        # Where is a function defined?
+alias cp='cp -iv'                                                         # Preferred 'cp' implementation
+alias mv='mv -iv'                                                         # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                                                   # Preferred 'mkdir' implementation
+alias ls="ls -lh"                                                         # Preferred 'ls' implementation
+alias l="ls -lah"                                                         # Preferred 'ls -a' implementation
+alias ll="ls -FGlAhpO@"                                                   # Preferred detailed 'ls' implementation
+alias less='less -iRXc'                                                   # Preferred 'less' implementation
+alias rsync='rsync -a --partial --info=progress2'                         # archive (recursion, preserve what's possible), show progress, keep partial files
+alias rrsync='rsync -a --partial --info=progress2 --remove-source-files'  # Rsync, but remove source files
+alias du="du -skh"                                                        # Preferred 'du' implementation
+alias df="df -h"                                                          # Preferred 'df' implementation
+alias htop='sudo htop'                                                    # Top should launch htop with sudo
+alias g='git'                                                             # Make git easier to type
+alias r='source ranger'                                                   # Make Ranger easier to type and keep directory
+alias wheredef='type -a'                                                  # Where is a function defined?
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
-alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""             # Remove ANSI color codes from text
-alias bc="bc -ql"                                               # Preferred 'bc' implementation
-alias nfiles="expr \`ls -l | wc -l | xargs echo\` - 1"          # Count the number of files in the directory
+alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""                       # Remove ANSI color codes from text
+alias bc="bc -ql"                                                         # Preferred 'bc' implementation
+alias nls="expr \`ls -l | wc -l | xargs echo\` - 1"                       # Count the number of files in the directory
 # }}}
 
 # Aliases (Mac UI) {{{
@@ -205,34 +205,6 @@ extract () {
 # Echo the current wifi password
 current_wifi_password() {
    security find-generic-password -ga "$1" | grep password
-}
-
-# Print real path to a folder (following links)
-# This is still a bit buggy
-realpath() {
-   if [ $# -eq 1 ]; then
-      if [ -e "$1" ]; then
-         if [ -L "$1" ]; then
-            readlink "$1" | rev | cut -d/ -f2- | rev
-         else
-            echo "$(pwd)"/"$(readlink "$1" | rev | cut -d/ -f2- | rev)"
-         fi
-      else
-         echo "File does not exist."
-      fi
-   elif [ "$1" = "-w" ]; then
-      if [ -e "$2" ]; then
-         if [ -L "$2" ]; then
-            readlink "$2"
-         else
-            echo "$(pwd)"/"$(readlink "$2")"
-         fi
-      else
-         echo "File does not exist."
-      fi
-   else
-      echo 'idk what you want dude'
-   fi
 }
 
 # Remove aliases & replace with original files
