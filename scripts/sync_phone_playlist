@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+[ $# -eq 2 ] || { echo "Please pass the playlist and playlist dir path as an argument." && exit 1; }
+
+if command -v gsed &>/dev/null; then
+  sedcmd="gsed"
+else
+  sedcmd="sed"
+fi
+
+cat "$1" | tr '\r' '\n' | $sedcmd 's:/Volumes.*Music/:../Music/:' > "$2"/"${1##*/}"
