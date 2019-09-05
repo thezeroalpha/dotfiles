@@ -27,6 +27,7 @@ statuslinenc NONE, #a8dbfd
 visual NONE, #a8caff
 title #225555. bold
 matchparen #d7f1e0, #a8dbfd
+qfFileName #0076ff
 
 link tabline tablinefill
 link incsearch search
