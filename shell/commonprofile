@@ -7,7 +7,7 @@
 # PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 export \
-   PATH GOPATH \
+   PATH GOPATH GO111MODULE\
    DOTFILES MUSIC_DIR \
    EDITOR HOMEBREW_EDITOR \
    VIRTUALENVWRAPPER_PYTHON PIP_REQUIRE_VIRTUALENV WORKON_HOME VIRTUALENVWRAPPER_SCRIPT\
@@ -30,6 +30,7 @@ fi
 # Golang
 if command -v go &> /dev/null; then
    GOPATH="$HOME"/.go
+   GO111MODULE=on
    if [[ $PATH != *"$GOPATH"* ]]; then
       PATH=$PATH:"$GOPATH"/bin
    fi
