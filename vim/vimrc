@@ -265,7 +265,8 @@ set magic
 
 " directories to search on find, gf, etc.
 set path=.,**,/usr/include,/usr/local/include,,
-set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+set wildignore=**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+" set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
 set wildignorecase
 
 " Persistent undos (useful for plugins too){{{
