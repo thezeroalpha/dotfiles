@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 if ! command -v ffmpeg &> /dev/null; then echo "ffmpeg not found" && exit 1; fi
 if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
-
+set -x
 main() {
   case "$1" in
     *.gif)
       echo "GIF: $1"
       process_gif "$1"
       ;;
-    *.mp4|*.mov|*.webm)
+    *.mp4|*.mov|*.webm|*.m4v|*.mkv)
       echo "VIDEO: $1"
-      process_video "$1"
+      process_video "$@"
       ;;
     *)
       ;;
@@ -28,7 +28,7 @@ process_gif() {
     done
 }
 process_video() {
-  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO"; do
+  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP"; do
     case "$to_fmt" in
       "MP4")
         ffmpeg -i "$1" -qscale 0 "${1%%.*}.mp4"
@@ -44,6 +44,18 @@ process_video() {
         break;;
       "NO AUDIO")
         ffmpeg -i "$1" -an "silent-$1"
+        break;;
+      "CONCAT")
+        if [ $# -le 1 ]; then echo "Only one file supplied, need at least two." && exit 1; fi
+        read -rp "Enter output filename: " outfile
+        for f in "$@"; do echo "file '$f'" >> /tmp/ffmpeg; done
+        ffmpeg -f concat -safe 0 -i /tmp/ffmpeg -c copy "$outfile"
+        break;;
+      "CLIP")
+        read -rp "From time: " starttime
+        read -rp "To time: " endtime
+        read -rp "Save as: " outfile
+        ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "$outfile"
         break;;
       *)
         ;;
