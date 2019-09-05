@@ -57,7 +57,7 @@ snippet !bash "Bash shebang" b
 $0
 endsnippet
 
-snippet exists "Check if command exists" w,A
+snippet exists "Check if command exists" w
 if ! command -v ${1:command} &>/dev/null; then
   echo "$1 not installed." >&2
   exit 1
@@ -71,4 +71,13 @@ die() {
   exit 1
 }
 $0
+
+snippet func "Function definition" b
+${1:function_name}() {
+  $0
+}
+endsnippet
+
+snippet trap "Exit trap" b
+trap ${1:cleanup_function} INT TERM EXIT
 endsnippet
