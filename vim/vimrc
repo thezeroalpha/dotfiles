@@ -622,16 +622,16 @@ nnoremap <C-E><C-M> :vsplit $MYVIMRC<CR>gg/Mappings {{<CR>:noh<CR>za
 nnoremap <C-E><C-P> :vsplit $MYVIMRC<CR>gg/Plugins {{<CR>:noh<CR>za
 
 " Yank to clipboard
-nnoremap <leader>d "*d
-vnoremap <leader>d "*d
-nnoremap <leader>D "*D
-nnoremap <leader>y "*y
-vnoremap <leader>y "*y
-nnoremap <leader>p "*p
-nnoremap <leader>P "*P
+nnoremap <leader>d "+d
+vnoremap <leader>d "+d
+nnoremap <leader>D "+D
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
-nnoremap <leader>yy "*yg_
+nnoremap <leader>yy "+yg_
 nnoremap Y y$
 
 " Insert lines without moving cursor and going into insert mode
