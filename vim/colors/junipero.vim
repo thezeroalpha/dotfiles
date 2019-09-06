@@ -85,3 +85,5 @@ hi! link SpelLocal String
 hi! link SpellRare String
 hi! link SpellCap String
 hi! link mkdLink Type
+hi! link adaBegin Function
+hi! link adaEnd Function

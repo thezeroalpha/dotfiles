@@ -64,3 +64,4 @@ link netrwExe Title
 link SpellBad Todo
 link SpelLocal,SpellRare,SpellCap String
 link mkdLink Type
+link adaBegin,adaEnd Function
