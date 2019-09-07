@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+die() {
+  echo "$1" >&2
+  exit 1
+}
+loop_backgrounds() {
+  for i in /home/zeroalpha/Pictures/Backgrounds/"$1"/*; do
+    gsettings set org.gnome.desktop.background picture-uri "$i";
+    echo -n "$i: ";
+    echo "press enter to continue, c to copy";
+    read -rsn 1 key;
+    if [ "$key" = "c" ]; then
+      if ! command -v xclip &>/dev/null; then
+        echo "xclip not installed." >&2
+      else
+        xclip -sel clip <<< "$i"
+        echo "copied"
+      fi
+    fi
+  done
+}
+temp_set_background() {
+  echo "Setting to $1"
+  gsettings set org.gnome.desktop.background picture-uri "file://$1";
+  echo "Press enter to continue."
+  read -rsn 1 c;
+  reset_background
+}
+[ -d /home/zeroalpha/Pictures/Backgrounds ] || die "No backgrounds folder."
+
+save_current() {
+  current=$(gsettings get org.gnome.desktop.background picture-uri)
+  trap reset_background INT TERM KILL EXIT
+}
+reset_background() {
+  gsettings set org.gnome.desktop.background picture-uri "$current";
+  trap - INT TERM KILL EXIT
+  exit 0
+}
+if [ "$1" = "audition" ]; then
+  [ $# -eq 2 ] || die "Light or dark?"
+  save_current
+  loop_backgrounds "$2"
+elif [ "$1" = "test" ]; then
+  [ $# -eq 2 ] || die "No background provided."
+  save_current
+  temp_set_background "$2"
+elif [ "$1" = "print" ]; then
+  gsettings get org.gnome.desktop.background picture-uri;
+else
+  if [ $# -eq 1 ]; then
+    echo "Setting background to $1"
+    gsettings set org.gnome.desktop.background picture-uri "file://$1";
+  fi
+fi
