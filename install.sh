@@ -8,6 +8,8 @@ if [ $(pwd) != "$HOME/.dotfiles" ]; then
   exit 1
 fi
 
+cd "$(dirname $0)"
+
 if ! [ -f "./install.sh" ]; then
   echo "Please cd into $HOME/.dotfiles before running the script."
   exit 1
@@ -37,6 +39,7 @@ read -n 1 -p "Install all dotfiles? [Y/n]" yn
 echo
 case $yn in
   [Yy]* ) 
+    sed -i -e "s:MY_HOME_DIR:$HOME:" vim/vimrc git/gitconfig
     scripts/conf use $(find . -maxdepth 1 -type d ! -iwholename "*.git*")
     echo "Dotfiles installed."
     echo "Run \`conf\` for more help."
