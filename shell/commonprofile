@@ -66,7 +66,7 @@ PIP_REQUIRE_VIRTUALENV=true
 
 WORKON_HOME=$HOME/.virtualenvs
 VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-source /usr/local/bin/virtualenvwrapper_lazy.sh
+[ -f /usr/local/bin/virtualenvwrapper_lazy.py ] && source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 # what to exclude for shellcheck
 SHELLCHECK_OPTS='--exclude=SC1090,SC1091,SC2009'
