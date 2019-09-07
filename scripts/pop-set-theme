@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 get_profile_id() {
   while read -r profid; do
     name=$(dconf read /org/gnome/terminal/legacy/profiles:/:"$profid"/visible-name | tr -d "'")
@@ -47,7 +46,8 @@ set_xcape() {
 
 [ $# -eq 1 ] || die "Need a theme."
 if [ "$1" = "dark" ]; then switch_to_dark
-else switch_to_light
+elif [ "$1" = "light" ]; then switch_to_light
+else die "Either light or dark."
 fi
 restart_gnome_shell
 sleep 3
