@@ -239,6 +239,8 @@ endif
 
 if system("osascript -e 'tell application \"System Events\" to tell appearance preferences to return (get dark mode as text)'") == "false\n"
   colorscheme jokull
+elseif system("gsettings get org.gnome.Terminal.Legacy.Settings theme-variant") == "'light'\n"
+  colorscheme jokull
 else
   colorscheme junipero
 endif
