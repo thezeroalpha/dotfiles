@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -x
+get_profile_id() {
+  while read -r profid; do
+    name=$(dconf read /org/gnome/terminal/legacy/profiles:/:"$profid"/visible-name | tr -d "'")
+    if [ "$name" = "$1" ]; then
+      echo "$profid"
+      return
+    fi
+  done < <(dconf list /org/gnome/terminal/legacy/profiles:/ | grep ^: | tr -d ':/')
+}
+change_to_profile() {
+  gsettings set org.gnome.Terminal.ProfilesList default "$(get_profile_id "$1")"
+}
+
+switch_to_dark() {
+  gsettings set org.gnome.desktop.background picture-uri "/home/zeroalpha/Pictures/Backgrounds/dark.jpg";
+  gsettings set org.gnome.desktop.screensaver picture-uri "/home/zeroalpha/Pictures/Backgrounds/dark-lock.jpg";
+  gsettings set org.gnome.Terminal.Legacy.Settings theme-variant dark
+  gsettings set org.gnome.shell.extensions.user-theme name 'Flat-Remix-Miami-Dark'
+  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+  change_to_profile "Dark"
+}
+switch_to_light() {
+  gsettings set org.gnome.desktop.background picture-uri "/home/zeroalpha/Pictures/Backgrounds/light.jpg";
+  gsettings set org.gnome.desktop.screensaver picture-uri "/home/zeroalpha/Pictures/Backgrounds/light-lock.jpg";
+  gsettings set org.gnome.Terminal.Legacy.Settings theme-variant light
+  gsettings set org.gnome.shell.extensions.user-theme name 'Flat-Remix-Miami'
+  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+  change_to_profile "Light"
+}
+restart_gnome_shell() {
+  gnome-shell -r &>/dev/null &
+  disown
+}
+set_xcape() {
+  if command -v xcape &> /dev/null; then
+    setxkbmap -option 'caps:ctrl_modifier'
+    xcape -e 'Caps_Lock=Escape'
+  fi
+}
+
+  die() {
+    echo "$1" >&2
+    exit 1
+  }
+
+[ $# -eq 1 ] || die "Need a theme."
+if [ "$1" = "dark" ]; then switch_to_dark
+else switch_to_light
+fi
+restart_gnome_shell
+sleep 3
+set_xcape
