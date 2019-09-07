@@ -52,7 +52,7 @@ done
 eval set -- "\$PARAMS"
 endsnippet
 
-snippet bash "Bash shebang" b
+snippet !bash "Bash shebang" b
 #!/usr/bin/env bash
 $0
 endsnippet
@@ -62,5 +62,13 @@ if ! command -v ${1:command} &>/dev/null; then
   echo "$1 not installed." >&2
   exit 1
 fi
+$0
+endsnippet
+
+snippet die "Die function" b
+die() {
+  echo "\$1" >&2
+  exit 1
+}
 $0
 endsnippet
