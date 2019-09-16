@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 if ! command -v ffmpeg &> /dev/null; then echo "ffmpeg not found" && exit 1; fi
 if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
-set -x
 main() {
   case "$1" in
     *.gif)
