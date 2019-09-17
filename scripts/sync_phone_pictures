@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+if ! command -v rsync &>/dev/null; then
+  echo "rsync not installed." >&2
+  exit 1
+fi
+
+do_rsync() {
+  rsync -aP --stats  "$@"
+}
+die() {
+  echo "$1" >&2
+  exit 1
+}
+set_photo_dir() {
+  if [ -d "$HOME/Pictures/Imports/" ]; then
+    PHOTO_IMPORT_DIR="$HOME/Pictures/Imports/"
+  else
+    read -rp "Import to: " PHOTO_IMPORT_DIR
+    [ -d "$PHOTO_IMPORT_DIR" ] || die "$PHOTO_IMPORT_DIR does not exist or is not a directory."
+  fi
+}
+PHONE_DIR="$HOME/phone/Phone/DCIM"
+
+[ -d "$PHONE_DIR" ] || die "Phone not present, expected at $PHONE_DIR"
+
+less -fR <(do_rsync "$PHOTO_IMPORT_DIR"/ "$PHONE_DIR" -n)
+
+read -rp "Execute? [Y/n]" -n 1 -s conf
+echo
+
+case "$conf" in
+  Y|y) do_rsync "$PHONE_DIR" "$PHOTO_IMPORT_DIR"/;;
+  *) die "User cancelled.";;
+esac
+

@@ -1,17 +1,29 @@
 #!/usr/bin/env bash
-command -v rsync &>/dev/null || { echo "rsync not found." && exit 1; }
-[ $# -ge 1 ] || { echo "The volume is required as an argument." && exit 1; }
-
-# set creation dates to date of modification
-#while read -r f; do echo "$f"; SetFile -d "$(GetFileInfo -m $f)" "$f"; done < <(find .)
-
-diffout=$(diff <(find "$1" -mindepth 1 -type f -not -name .DS_Store | sed 's:^.*Music/::' | sort | tr -d '\r') <(find "$MUSIC_DIR" -mindepth 1 -type f -not -name .DS_Store | sed 's:^.*Music/::' | sort | tr -d '\r'))
-
-echo -e "$1\tvs\t$MUSIC_DIR"
-if [ -z "$diffout" ]; then
-  echo "No difference."
-else
-  echo "$diffout"
+if ! command -v rsync &>/dev/null; then
+  echo "rsync not installed." >&2
+  exit 1
 fi
-find "$1" -name .DS_Store -delete
-dot_clean -m .
+
+do_rsync() {
+  rsync -uhamP --delete --stats  "$@"
+}
+die() {
+  echo "$1" >&2
+  exit 1
+}
+PHONE_DIR="$HOME/phone/Card/Music"
+MUSIC_DIR="${MUSIC_DIR:-$HOME/Music}"
+
+[ -d "$PHONE_DIR" ] || die "Phone not present, expected at $PHONE_DIR"
+[ -d "$MUSIC_DIR" ] || die "Music dir not present, expected at $MUSIC_DIR"
+
+less -fR <(do_rsync "$MUSIC_DIR"/ "$PHONE_DIR" -n)
+
+read -rp "Execute? [Y/n]" -n 1 -s conf
+echo
+
+case "$conf" in
+  Y|y) do_rsync "$MUSIC_DIR"/ "$PHONE_DIR";;
+  *) die "User cancelled.";;
+esac
+
