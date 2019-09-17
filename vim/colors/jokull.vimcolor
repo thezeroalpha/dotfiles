@@ -17,7 +17,7 @@ folded #73fdff, #d0d0d0
 tablinefill NONE, #d0d0d0
 tablinesel NONE, #e5e5e5
 wildmenu #005493, #e5e5e5. bold
-linenr NONE
+linenr #9b9b4c, NONE
 preproc NONE
 vertsplit NONE
 todo Blue, Yellow
