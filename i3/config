@@ -3,11 +3,12 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 exec --no-startup-id compton --config ~/.config/compton/config -b
+exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+exec --no-startup-id gnome-flashback
 exec_always --no-startup-id feh --bg-fill "/home/zeroalpha/Pictures/Backgrounds/dark.jpg"
 exec_always --no-startup-id ~/.config/polybar/polybar.sh &
-exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
-exec_always --no-startup-id gnome-power-manager
-exec --no-startup-id gnome-flashback
+exec_always --no-startup-id system76-power daemon
+exec_always --no-startup-id xrandr --output LVDS-1-1 --off
 
 set $mod Mod4
 
