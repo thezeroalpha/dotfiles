@@ -104,8 +104,6 @@ alias ls="ls -lh"                                                         # Pref
 alias l="ls -lah"                                                         # Preferred 'ls -a' implementation
 alias ll="ls -FGlAhpO@"                                                   # Preferred detailed 'ls' implementation
 alias less='less -iRXc'                                                   # Preferred 'less' implementation
-alias rsync='rsync -a --partial --info=progress2'                         # archive (recursion, preserve what's possible), show progress, keep partial files
-alias rrsync='rsync -a --partial --info=progress2 --remove-source-files'  # Rsync, but remove source files
 alias du="du -skh"                                                        # Preferred 'du' implementation
 alias df="df -h"                                                          # Preferred 'df' implementation
 alias htop='sudo htop'                                                    # Top should launch htop with sudo
