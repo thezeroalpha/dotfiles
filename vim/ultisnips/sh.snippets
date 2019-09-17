@@ -51,7 +51,6 @@ while (( "\$#" )); do
 done
 eval set -- "\$PARAMS"
 endsnippet
-
 snippet !bash "Bash shebang" b
 #!/usr/bin/env bash
 $0
@@ -71,6 +70,7 @@ die() {
   exit 1
 }
 $0
+endsnippet
 
 snippet func "Function definition" b
 ${1:function_name}() {
@@ -80,4 +80,16 @@ endsnippet
 
 snippet trap "Exit trap" b
 trap ${1:cleanup_function} INT TERM EXIT
+endsnippet
+snippet confirm "Ask for confirmation" b
+read -rp "${1:promp}" -n 1 -s conf
+case "$conf" in
+  Y|y)
+    ${2:# code if yes}
+    ;;
+  *)
+    ${3:# code otherwise}
+    ;;
+esac
+$0
 endsnippet
