@@ -1,0 +1,30 @@
+# basic configuration
+backend = "glx";
+vsync = "opengl-swc";
+
+glx-swap-method = 2;
+xrender-sync = true;
+xrender-sync-fence = true;
+
+# transparancy settings for i3
+opacity-rule =
+[
+    "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'",
+	"90:class_g = 'termite' && focused",
+	"0:class_g = 'termite' && !focused"
+];
+
+# workspace opacity transition for i3
+fading = true;
+fade-delta = 2.1;
+fade-in-step = 0.03;
+fade-out-step = 0.03;
+
+# window shadows for i3
+shadow = true;
+no-dock-shadow = true;
+no-dnd-shadow = true;
+clear-shadow = true;
+shadow-radius = 7;
+shadow-offset-x = -7;
+shadow-offset-y = -7;
