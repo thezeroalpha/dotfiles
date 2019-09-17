@@ -1,4 +1,2 @@
 #!/usr/bin/env bash
-if command -v gnome-control-center &> /dev/null; then
-  env XDG_CURRENT_DESKTOP=GNOME gnome-control-center
-fi
+XDG_CURRENT_DESKTOP=GNOME gnome-control-center
