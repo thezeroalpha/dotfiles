@@ -18,7 +18,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 
 modules-left = powermenu
-modules-right = volume backlight wireless-network wired-network battery date
+modules-right = volume wireless-network wired-network battery date
 
 [bar/bottom]
 bottom = true
@@ -45,26 +45,6 @@ font-5 = Termsynu:size=8:antialias=false;0
 
 modules-left = i3
 modules-right = temperature cpu memory
-
-[module/backlight]
-type = internal/backlight
-card = intel_backlight
-format = <ramp> <bar>
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-
-bar-width = 10
-bar-indicator = |
-bar-indicator-font = 3
-bar-indicator-foreground = #ff
-bar-fill = ─
-bar-fill-font = 3
-bar-fill-foreground = #c9665e
-bar-empty = ─
-bar-empty-font = 3
-bar-empty-foreground = #44
 
 [module/battery]
 type = internal/battery
@@ -255,10 +235,10 @@ label-connected =    %{T3}%local_ip%%{T-}
 label-disconnected-foreground = #66
 
 [module/volume]
-type = internal/alsa
-speaker-mixer = Speaker
-headphone-mixer = Headphone
-headphone-id = 9
+type = internal/pulseaudio
+sink = alsa_output.pci-0000_00_1b.0.analog-stereo
+use-ui-max = true
+interval = 5
 
 format-volume = <ramp-volume> <label-volume>
 label-muted =   muted
@@ -272,35 +252,30 @@ ramp-volume-3 = 
 [module/powermenu]
 type = custom/menu
 
-format-padding = 5
+format-foreground = ${bar/top.foreground}
+format-background = ${bar/top.background}
 
-label-open = 
-label-close = 
-label-separator = |
 
-menu-0-0 = Terminate WM
-menu-0-0-foreground = #fba922
-menu-0-0-exec = bspc quit -1
-menu-0-1 = Reboot
-menu-0-1-foreground = #fba922
-menu-0-1-exec = menu_open-1
-menu-0-2 = Power off
-menu-0-2-foreground = #fba922
-menu-0-2-exec = menu_open-2
+label-open = 
+label-open-font = 4
+label-close = ""
+label-close-foreground = ${bar/top.foreground}
+label-separator = " / "
+label-separator-foreground = ${bar/top.foreground}
 
-menu-1-0 = Cancel
-menu-1-0-foreground = #fba922
-menu-1-0-exec = menu_open-0
-menu-1-1 = Reboot
-menu-1-1-foreground = #fba922
-menu-1-1-exec = sudo reboot
+; shutdown
+menu-0-0 = "  "
+menu-0-0-exec = i3-nagbar -t warning -m 'Shut down?' -B 'Yes, shut down.' 'systemctl poweroff'
+menu-0-0-foreground = #ffaa00
+; reboot
+menu-0-1 = " "
+menu-0-1-exec = i3-nagbar -t warning -m 'Reboot?' -B 'Yes, reboot.' 'systemctl reboot'
+menu-0-1-foreground = #ffaa00
+; log out
+menu-0-2 = " "
+menu-0-2-exec = i3-nagbar -t warning -m 'Log out?' -B 'Yes, log out.' 'i3-msg exit'
+menu-0-2-foreground = #ffaa00
 
-menu-2-0 = Power off
-menu-2-0-foreground = #fba922
-menu-2-0-exec = sudo poweroff
-menu-2-1 = Cancel
-menu-2-1-foreground = #fba922
-menu-2-1-exec = menu_open-0
 
 [module/clock]
 type = internal/date
