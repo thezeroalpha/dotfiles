@@ -243,8 +243,7 @@ nmap <leader>sd <Plug>DeleteSession
 nmap <leader>sq <Plug>CloseSession
 " }}}
 " Sparkup {{{
-let g:sparkupMaps = 0
-imap <buffer> <C-x>e <Plug>SparkupExecute
+let g:sparkupExecuteMapping = '<C-x><C-e>'
 " }}}
 " }}}
 " }}}
