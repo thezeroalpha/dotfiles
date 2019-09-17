@@ -211,13 +211,13 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 # Pulse Audio controls
-# bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 +5% #increase sound volume
-# bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5% #decrease sound volume
-# bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute 0 toggle # mute sound
+bindsym XF86AudioRaiseVolume exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/pactl-volume up
+bindsym XF86AudioLowerVolume exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/pactl-volume down
+bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute 0 toggle
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec /home/zeroalpha/.dotfiles/scripts/xrandr-brightness up
-bindsym XF86MonBrightnessDown exec /home/zeroalpha/.dotfiles/scripts/xrandr-brightness down
+bindsym XF86MonBrightnessUp exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/xrandr-brightness up
+bindsym XF86MonBrightnessDown exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/xrandr-brightness down
 # Media player controls
 # bindsym XF86AudioPlay exec playerctl play
 # bindsym XF86AudioPause exec playerctl pause
