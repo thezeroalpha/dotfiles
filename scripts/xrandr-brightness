@@ -2,12 +2,12 @@
 if [ "$1" = "up" ]; then
   brightness="$(xrandr --verbose |grep Brightness |grep -o '[0-9].*')"
   if  ! [ "$brightness" = "1.0" ]; then
-    xrandr --output LVDS-0 --brightness $(echo "$brightness+0.05" | bc)
+    xrandr --output LVDS-0 --brightness $(echo "$brightness 0.05" | awk '{printf "%f", $1 + $2}')
   fi
 elif [ "$1" = "down" ]; then
   brightness="$(xrandr --verbose |grep Brightness |grep -o '[0-9].*')"
   if  ! [ "$brightness" = "0.0" ]; then
-    xrandr --output LVDS-0 --brightness $(echo "$brightness-0.05" | bc)
+    xrandr --output LVDS-0 --brightness $(echo "$brightness 0.05" | awk '{printf "%f", $1 - $2}')
   fi
 elif [ "$1" = "gamma" ]; then
   xrandr --output LVDS-0 --gamma "$2"
