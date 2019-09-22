@@ -108,7 +108,6 @@ alias du="du -skh"                                                        # Pref
 alias df="df -h"                                                          # Preferred 'df' implementation
 alias htop='sudo htop'                                                    # Top should launch htop with sudo
 alias g='git'                                                             # Make git easier to type
-alias r='source ranger'                                                   # Make Ranger easier to type and keep directory
 alias wheredef='type -a'                                                  # Where is a function defined?
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
 alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""                       # Remove ANSI color codes from text

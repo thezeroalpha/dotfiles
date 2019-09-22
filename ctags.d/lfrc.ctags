@@ -1,0 +1,4 @@
+--langdef=lfrc
+--langmap=lfrc:(lfrc)
+--regex-lfrc=/^[ \t]*cmd ([a-zA-Z0-9_]+) \$\{\{/\1/c,command/
+--regex-lfrc=/^[ \t]*map ([a-zA-Z0-9_]+) ([^$#]+)/\1: "\2"/m,map/
