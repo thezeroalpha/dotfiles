@@ -10,9 +10,10 @@ clean_up() {
   echo "Exiting..."
   if kill -0 "$mtpfs_pid" &> /dev/null; then
     kill "$mtpfs_pid"
+    wait "$mtpfs_pid"
   fi
-  [ ! -d "$mountpoint" ] || rm -r "$mountpoint";
-  [ ! -L "$mountdir" ] || rm "$mountdir";
+  [ ! -d "$mountpoint" ] || rmdir "$mountpoint";
+  [ ! -L "$mountdir" ] || unlink "$mountdir";
 }
 trap clean_up INT TERM EXIT
 

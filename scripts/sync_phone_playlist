@@ -1,10 +1,29 @@
 #!/usr/bin/env bash
-[ $# -eq 2 ] || { echo "Please pass the playlist and playlist dir path as an argument." && exit 1; }
+die() {
+  echo "$1" >&2
+  exit 1
+}
 
-if command -v gsed &>/dev/null; then
-  sedcmd="gsed"
-else
-  sedcmd="sed"
-fi
+process_file() {
+  echo "Processing $1"
+  tr '\r' '\n' < "$1" | sed 's:^/Volumes.*Music/:../Music/:' > "$PHONE_DIR"/"${1##*/}"
+}
 
-cat "$1" | tr '\r' '\n' | $sedcmd 's:/Volumes.*Music/:../Music/:' > "$2"/"${1##*/}"
+PHONE_DIR="$HOME/phone/Card/Playlists"
+
+[ -d "$PHONE_DIR" ] || die "Phone not present, expected at $PHONE_DIR"
+[ $# -ge 1 ] || die "Need something to act on."
+
+for i in "$@"; do
+  if [ -d "$i" ]; then
+    while read -r f; do
+      process_file "$f"
+    done < <(find "$i" -name "*.m3u" -type f -maxdepth 1)
+  elif [ -f "$i" ]; then
+    if [[ "$i" == *.m3u ]]; then
+      process_file "$i"
+    else
+      echo "Could not process $i"
+    fi
+  fi
+done
