@@ -205,16 +205,6 @@ current_wifi_password() {
    security find-generic-password -ga "$1" | grep password
 }
 
-# Remove aliases & replace with original files
-unlink() {
-   for i in "$@"; do
-      local p=$(realpath -w "$i")
-      rm "$i"
-      mv "$p" .
-      unset p
-   done
-}
-
 # }}}
 
 # Applescript functions {{{
