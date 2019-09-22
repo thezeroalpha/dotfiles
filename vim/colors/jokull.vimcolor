@@ -40,7 +40,7 @@ link signcolumn linenr
 link netrwdir function
 link netrwexe title
 link spellbad todo
-link spellocal,spellrare,spellcap string
+link spellocal,spellrare,spellcap,markdownUrl string
 link mkdlink,vimwikilink type
 link pmenu statuslinenc
 link pmenusel statusline

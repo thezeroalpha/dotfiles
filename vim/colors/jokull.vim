@@ -58,6 +58,7 @@ hi! link spellbad todo
 hi! link spellocal string
 hi! link spellrare string
 hi! link spellcap string
+hi! link markdownUrl string
 hi! link mkdlink type
 hi! link vimwikilink type
 hi! link pmenu statuslinenc
