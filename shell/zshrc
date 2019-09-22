@@ -3,30 +3,6 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# Aliases
-source $HOME/.commonprofile
-
-# Z initialization
-if ! command -v z &> /dev/null; then
-  . $DOTFILES/shell/z/z.sh
-fi
-
-# rbenv init
-if [[ $PATH != *"$HOME/.rbenv/shims"* ]] && command -v rbenv &> /dev/null; then
-  eval "$(rbenv init -)"
-fi
-
-# jenv
-if command -v jenv &> /dev/null; then
-  if [[ $PATH != *"$HOME/.jenv/bin"* ]]; then
-    export PATH="$HOME/.jenv/bin:$PATH"
-  fi
-  eval "$(jenv init -)"
-  export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
-fi
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # Keybinds
 insert-arg-of-prev-cmd() {
 : ${NUMERIC:-1}
@@ -84,7 +60,32 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs histor
 
 source $ZSH/oh-my-zsh.sh
 # }}}
+# Other scripts {{{
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Aliases
+source $HOME/.commonprofile
+
+# Z initialization
+if ! command -v z &> /dev/null; then
+  . $DOTFILES/shell/z/z.sh
+fi
+
+# rbenv init
+if [[ $PATH != *"$HOME/.rbenv/shims"* ]] && command -v rbenv &> /dev/null; then
+  eval "$(rbenv init -)"
+fi
+
+# jenv
+if command -v jenv &> /dev/null; then
+  if [[ $PATH != *"$HOME/.jenv/bin"* ]]; then
+    export PATH="$HOME/.jenv/bin:$PATH"
+  fi
+  eval "$(jenv init -)"
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+fi
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# }}}
 # vim: foldmethod=marker foldlevel=0
