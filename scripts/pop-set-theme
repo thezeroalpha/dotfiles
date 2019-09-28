@@ -13,16 +13,24 @@ change_to_profile() {
 }
 
 switch_to_dark() {
-  gsettings set org.gnome.desktop.background picture-uri "/home/zeroalpha/Pictures/Backgrounds/dark.jpg";
-  gsettings set org.gnome.desktop.screensaver picture-uri "/home/zeroalpha/Pictures/Backgrounds/dark-lock.jpg";
+  if [ -x ~/.local/bin/wal ] &>/dev/null; then
+    ~/.local/bin/wal -i "/home/zeroalpha/Pictures/Backgrounds/dark.jpg"
+  else
+    gsettings set org.gnome.desktop.background picture-uri "file:///home/zeroalpha/Pictures/Backgrounds/dark.jpg";
+  fi
+  gsettings set org.gnome.desktop.screensaver picture-uri "file:///home/zeroalpha/Pictures/Backgrounds/dark-lock.jpg";
   gsettings set org.gnome.Terminal.Legacy.Settings theme-variant dark
   gsettings set org.gnome.shell.extensions.user-theme name 'Flat-Remix-Miami-Dark'
   gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
   change_to_profile "Dark"
 }
 switch_to_light() {
-  gsettings set org.gnome.desktop.background picture-uri "/home/zeroalpha/Pictures/Backgrounds/light.jpg";
-  gsettings set org.gnome.desktop.screensaver picture-uri "/home/zeroalpha/Pictures/Backgrounds/light-lock.jpg";
+  if [ -x ~/.local/bin/wal ] &>/dev/null; then
+    ~/.local/bin/wal -i "/home/zeroalpha/Pictures/Backgrounds/light.jpg" -l
+  else
+    gsettings set org.gnome.desktop.background picture-uri "file:///home/zeroalpha/Pictures/Backgrounds/light.jpg";
+  fi
+  gsettings set org.gnome.desktop.screensaver picture-uri "file:///home/zeroalpha/Pictures/Backgrounds/light-lock.jpg";
   gsettings set org.gnome.Terminal.Legacy.Settings theme-variant light
   gsettings set org.gnome.shell.extensions.user-theme name 'Flat-Remix-Miami'
   gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
@@ -32,23 +40,43 @@ restart_gnome_shell() {
   gnome-shell -r &>/dev/null &
   disown
 }
+restart_i3() {
+  i3 restart
+}
 set_xcape() {
   if command -v xcape &> /dev/null; then
     setxkbmap -option 'caps:ctrl_modifier'
     xcape -e 'Caps_Lock=Escape'
   fi
 }
+switch_polybar() {
+  "$HOME"/.config/polybar/polybar.sh
+}
 
-  die() {
-    echo "$1" >&2
-    exit 1
-  }
+die() {
+  echo "$1" >&2
+  exit 1
+}
 
 [ $# -eq 1 ] || die "Need a theme."
+if ! command -v i3 &>/dev/null; then
+  echo "i3 not installed." >&2
+  exit 1
+fi
+if ! command -v gsettings &>/dev/null; then
+  echo "gsettings not installed." >&2
+  exit 1
+fi
+if ! command -v gnome-shell &>/dev/null; then
+  echo "gnome-shell not installed." >&2
+  exit 1
+fi
+
 if [ "$1" = "dark" ]; then switch_to_dark
 elif [ "$1" = "light" ]; then switch_to_light
 else die "Either light or dark."
 fi
 restart_gnome_shell
+restart_i3 &>/dev/null
 sleep 3
 set_xcape

@@ -7,5 +7,9 @@ killall -q polybar
 while pgrep -x polybar >/dev/null; do sleep 1; done
 
 # Launch polybar
-polybar top &
+if command -v gsettings &>/dev/null; then
+  polybar top_$(gsettings get org.gnome.Terminal.Legacy.Settings theme-variant | tr -d "'") &
+else
+  polybar top_light &
+fi
 polybar bottom

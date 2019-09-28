@@ -1,4 +1,4 @@
-[bar/top]
+[bar/top_dark]
 width = 100%
 height = 34
 
@@ -10,6 +10,30 @@ line-size = 16
 
 spacing = 2
 padding-right = 5
+padding-left = 5
+module-margin = 4
+
+font-0 = NotoSans-Regular:size=8;-1
+font-1 = MaterialIcons:size=10;0
+font-2 = Termsynu:size=8:antialias=false;-2
+font-3 = FontAwesome:size=10;0
+
+modules-left = powermenu
+modules-right = volume wireless-network wired-network battery date
+
+[bar/top_light]
+width = 100%
+height = 34
+
+background = #00ffffff
+foreground = #cc000000
+
+line-color = ${bar/bottom.background}
+line-size = 16
+
+spacing = 2
+padding-right = 5
+padding-left = 5
 module-margin = 4
 
 font-0 = NotoSans-Regular:size=8;-1
@@ -25,10 +49,10 @@ bottom = true
 width = 100%
 height = 27
 
-background = ${bar/top.background}
-foreground = ${bar/top.foreground}
+background = ${bar/top_dark.background}
+foreground = ${bar/top_dark.foreground}
 
-line-color = ${bar/top.background}
+line-color = ${bar/top_dark.background}
 line-size = 2
 
 spacing = 3
@@ -181,8 +205,10 @@ ramp-coreload-7-foreground = #ff5555
 
 [module/date]
 type = internal/date
-date =    %%{F#99}%a, %B %d %{F-}  %%{F#fff}%H:%M%%{F-}
-date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
+date =    %%{F#99}%a, %B %d %{F-}  %%{F}%H:%M%%{F-}
+date-alt = %%{F}%A, %d %B %Y  %%{F}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
+; date =    %%{F#99}%a, %B %d %{F-}  %%{F#fff}%H:%M%%{F-}
+; date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
 
 [module/memory]
 type = internal/memory
@@ -223,7 +249,7 @@ ramp-signal-4 = 
 animation-packetloss-0 = 
 animation-packetloss-0-foreground = #ffa64c
 animation-packetloss-1 = 
-animation-packetloss-1-foreground = ${bar/top.foreground}
+animation-packetloss-1-foreground = ${bar/top_dark.foreground}
 animation-packetloss-framerate = 500
 
 [module/wired-network]
@@ -252,29 +278,28 @@ ramp-volume-3 = 
 [module/powermenu]
 type = custom/menu
 
-format-foreground = ${bar/top.foreground}
-format-background = ${bar/top.background}
-
+;;format-foreground = ${bar/top_dark.foreground}
+;;format-background = ${bar/top_dark.background}
 
 label-open = 
 label-open-font = 4
 label-close = ""
-label-close-foreground = ${bar/top.foreground}
+;label-close-foreground = ${bar/top_dark.foreground}
 label-separator = " / "
-label-separator-foreground = ${bar/top.foreground}
+;label-separator-foreground = ${bar/top_dark.foreground}
 
 ; shutdown
 menu-0-0 = "  "
 menu-0-0-exec = i3-nagbar -t warning -m 'Shut down?' -B 'Yes, shut down.' 'systemctl poweroff'
-menu-0-0-foreground = #ffaa00
+;menu-0-0-foreground = #ffaa00
 ; reboot
 menu-0-1 = " "
 menu-0-1-exec = i3-nagbar -t warning -m 'Reboot?' -B 'Yes, reboot.' 'systemctl reboot'
-menu-0-1-foreground = #ffaa00
+;menu-0-1-foreground = #ffaa00
 ; log out
 menu-0-2 = " "
 menu-0-2-exec = i3-nagbar -t warning -m 'Log out?' -B 'Yes, log out.' 'i3-msg exit'
-menu-0-2-foreground = #ffaa00
+;menu-0-2-foreground = #ffaa00
 
 
 [module/clock]
