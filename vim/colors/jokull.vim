@@ -11,11 +11,9 @@ hi cursorline guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=N
 hi string guifg=#009051 guibg=NONE ctermfg=29 ctermbg=NONE cterm=italic gui=italic
 hi identifier guifg=#112d4e guibg=NONE ctermfg=17 ctermbg=NONE cterm=NONE gui=NONE
 hi function guifg=#0096ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=bold gui=bold
-hi statement guifg=#73fdff guibg=NONE ctermfg=87 ctermbg=NONE cterm=NONE gui=NONE
+hi statement guifg=#0050a0 guibg=NONE ctermfg=25 ctermbg=NONE cterm=NONE gui=NONE
 hi include guifg=#76d6ff guibg=NONE ctermfg=117 ctermbg=NONE cterm=bold gui=bold
 hi type guifg=#005493 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
-hi delimiter guifg=#fffb00 guibg=NONE ctermfg=11 ctermbg=NONE cterm=NONE gui=NONE
-hi comment guifg=#ecfcff guibg=NONE ctermfg=15 ctermbg=NONE cterm=italic gui=italic
 hi search guifg=NONE guibg=#d7f1e0 ctermfg=NONE ctermbg=194 cterm=NONE gui=NONE
 hi folded guifg=#73fdff guibg=#d0d0d0 ctermfg=87 ctermbg=252 cterm=NONE gui=NONE
 hi tablinefill guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=NONE
@@ -32,6 +30,8 @@ hi visual guifg=NONE guibg=#a8caff ctermfg=NONE ctermbg=153 cterm=NONE gui=NONE
 hi title guifg=#225555 guibg=NONE ctermfg=23 ctermbg=NONE cterm=bold gui=bold
 hi matchparen guifg=#d7f1e0 guibg=#a8dbfd ctermfg=194 ctermbg=153 cterm=NONE gui=NONE
 hi qfFileName guifg=#0076ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=NONE gui=NONE
+hi delimiter guifg=#5f5f00 guibg=NONE ctermfg=58 ctermbg=NONE cterm=NONE gui=NONE
+hi comment guifg=#5f5f5f guibg=NONE ctermfg=59 ctermbg=NONE cterm=italic gui=italic
 hi! link tabline tablinefill
 hi! link incsearch search
 hi! link repeat statement

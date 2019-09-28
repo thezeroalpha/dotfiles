@@ -7,11 +7,9 @@ cursorline NONE, #d0d0d0
 string #009051. italic
 identifier #112d4e
 function #0096ff. bold
-statement #73fdff.
+statement #0050a0
 include #76d6ff. bold
 type #005493
-delimiter #fffb00
-comment #ecfcff. italic
 search NONE, #d7f1e0
 folded #73fdff, #d0d0d0
 tablinefill NONE, #d0d0d0
@@ -28,6 +26,8 @@ visual NONE, #a8caff
 title #225555. bold
 matchparen #d7f1e0, #a8dbfd
 qfFileName #0076ff
+delimiter #5f5f00
+comment #5f5f5f. italic
 
 link tabline tablinefill
 link incsearch search
