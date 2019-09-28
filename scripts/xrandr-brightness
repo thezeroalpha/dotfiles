@@ -1,14 +1,19 @@
 #!/bin/sh
 if [ "$1" = "up" ]; then
   brightness="$(xrandr --verbose |grep Brightness |grep -o '[0-9].*')"
+  gamma="$(xrandr --verbose | grep Gamma | tr -d ' \t\n' |  awk -F: '{ printf "%f:%f:%f", 1/$2, 1/$3, 1/$4 }')"
   if  ! [ "$brightness" = "1.0" ]; then
-    xrandr --output LVDS-0 --brightness $(echo "$brightness 0.05" | awk '{printf "%f", $1 + $2}')
+    xrandr --output LVDS-0 --gamma "$gamma" --brightness $(echo "$brightness 0.05" | awk '{printf "%f", $1 + $2}')
   fi
 elif [ "$1" = "down" ]; then
   brightness="$(xrandr --verbose |grep Brightness |grep -o '[0-9].*')"
+  gamma="$(xrandr --verbose | grep Gamma | tr -d ' \t\n' |  awk -F: '{ printf "%f:%f:%f", 1/$2, 1/$3, 1/$4 }')"
   if  ! [ "$brightness" = "0.0" ]; then
-    xrandr --output LVDS-0 --brightness $(echo "$brightness 0.05" | awk '{printf "%f", $1 - $2}')
+    xrandr --output LVDS-0 --gamma "$gamma" --brightness $(echo "$brightness 0.05" | awk '{printf "%f", $1 - $2}')
   fi
 elif [ "$1" = "gamma" ]; then
-  xrandr --output LVDS-0 --gamma "$2"
+  brightness="$(xrandr --verbose |grep Brightness |grep -o '[0-9].*')"
+  xrandr --output LVDS-0 --gamma "$2" --brightness "$brightness"
+else
+  echo "up, down, gamma r:g:b"
 fi
