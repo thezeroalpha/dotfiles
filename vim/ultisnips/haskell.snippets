@@ -1,0 +1,11 @@
+snippet describe "Hspec Describe" b
+describe "${1:function name}" $ do
+  it "${2:what it does}" $ do
+    ${3:{call}} \`shouldBe\` ${4:{result}}
+  $0
+endsnippet
+snippet it "Hspec It" b
+it "${1:what it does}" $ do
+  ${2:{call}} \`shouldBe\` ${3:{result}}
+$0
+endsnippet

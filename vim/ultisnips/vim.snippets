@@ -1,0 +1,7 @@
+snippet undo_ftplugin "Undo an ftplugin config" b
+if exists('b:undo_ftplugin')
+  let b:undo_ftplugin .= '| ${1:{changes to make}}'
+else
+  let b:undo_ftplugin = '| $1'
+endif
+endsnippet

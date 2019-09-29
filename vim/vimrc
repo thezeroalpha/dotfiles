@@ -187,6 +187,16 @@ let g:tagbar_type_conf = {
       \ ],
       \ 'sort': 0
       \ }
+let g:tagbar_type_zsh = {
+      \ 'ctagstype' : 'zsh',
+      \ 'kinds' : [
+      \ 's:Source scripts',
+      \ 'e:Environment variables',
+      \ 'f:Functions',
+      \ 'm:Mappings'
+      \ ],
+      \ 'sort': 0
+      \ }
 " }}}
 " Doge {{{
 let g:doge_mapping = '<leader>gd'
@@ -247,6 +257,12 @@ nmap <leader>sq <Plug>CloseSession
 " }}}
 " Sparkup {{{
 let g:sparkupExecuteMapping = '<C-x><C-e>'
+" }}}
+" Haskell {{{
+let hs_highlight_delimiters = 1
+let hs_highlight_boolean = 1
+let hs_highlight_types = 1
+let hs_highlight_more_types = 1
 " }}}
 " }}}
 " }}}
@@ -522,7 +538,7 @@ if has('terminal')
   cnoreabbrev tt tab terminal
   cnoreabbrev wt terminal
   cnoreabbrev tm terminal man
-  cnoreabbrev tr terminal ranger
+  cnoreabbrev tr terminal lf
 endif
 " }}}
 " Symbols {{{
@@ -622,7 +638,7 @@ vnoremap ; :
 tnoremap <C-w>; <C-w>:
 
 " To keep the old functionality of ;
-nnoremap <leader>; ;
+nnoremap : ;
 
 " Disable q: cuz I hate it
 " (also C-F does the same)
@@ -702,6 +718,7 @@ nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>gg/General {{<CR>:noh<CR>za
 nnoremap <C-E><C-V> :vsplit $MYVIMRC<CR>gg
 nnoremap <C-E><C-M> :vsplit $MYVIMRC<CR>gg/Mappings {{<CR>:noh<CR>za
 nnoremap <C-E><C-P> :vsplit $MYVIMRC<CR>gg/Plugins {{<CR>:noh<CR>za
+nmap <C-E><C-L> <Plug>VimcolorEdit
 
 " Yank to clipboard
 nnoremap <leader>d "+d
@@ -742,7 +759,7 @@ vmap <leader><CR> <Plug>VisualRunCommands
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
 
-nnoremap <C-P> :call synstack#SynStack()<CR>
+nmap <C-P> <Plug>VimcolorSynstack
 
 inoremap <C-x>s <c-g>u<Esc>[s1z=`]a<c-g>u
 
