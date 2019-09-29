@@ -42,7 +42,7 @@ color listnormal_unread white default
 browser "open -g '%u'"
 macro , open-in-browser
 macro i set browser "i(){ youtube-dl --get-title --get-duration --get-description $1 | less;};i"; open-in-browser ; set browser "open '%u'"
-macro v set browser "nohup mpv --volume=50 &>/dev/null"; open-in-browser ; set browser "open '%u'"
+macro v set browser "nohup mpv --volume=50 %u  &>/dev/null"; open-in-browser ; set browser "open '%u'"
 macro w set browser "w3m"; open-in-browser ; set browser "open '%u'"
 macro l set browser "lynx"; open-in-browser ; set browser "open '%u'"
 macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open '%u'"
