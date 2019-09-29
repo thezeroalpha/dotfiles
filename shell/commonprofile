@@ -113,6 +113,7 @@ alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"
 alias rmcolors="sed \"s,\x1B\[[0-9;]*[a-zA-Z],,g\""                       # Remove ANSI color codes from text
 alias bc="bc -ql"                                                         # Preferred 'bc' implementation
 alias nls="expr \`ls -l | wc -l | xargs echo\` - 1"                       # Count the number of files in the directory
+alias tree="tree -CAFa -I 'CVS|*.*.package|.svn|.git|node_modules' --dirsfirst"
 # }}}
 
 # Aliases (Mac UI) {{{
@@ -236,7 +237,7 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    # script edit
    se() {
       local files
-      IFS=$'\n' files=($(command find "$(readlink ~/.scripts)" -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      IFS=$'\n' files=($(command find "$(readlink ~/.scripts)" -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
    # script create
@@ -248,7 +249,7 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    # config edit
    ce() {
       local files
-      IFS=$'\n' files=($(command find ~/.dotfiles -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      IFS=$'\n' files=($(command find ~/.dotfiles -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
    # vim setting edit
