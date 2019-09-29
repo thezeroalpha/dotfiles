@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+case "$1" in
+  files)
+    # list files which have changed since REVIEW_BASE
+    # (REVIEW_BASE defaults to 'master' in my zshrc)
+    git diff --name-only $(git merge-base HEAD "${REVIEW_BASE:-master}")
+    ;;
+
+  stat)
+    # Same as above, but with a diff stat instead of just names
+    # (better for interactive use)
+    git diff --stat $(git merge-base HEAD "${REVIEW_BASE:-master}") | sort -t \| -k 2nr | less -R
+    ;;
+
+  open)
+    # Open all files changed since REVIEW_BASE in Vim tabs
+    # Then, run fugitive's :Gdiff in each tab, and finally
+    # tell vim-gitgutter to show +/- for changes since REVIEW_BASE
+    vim -p $(git review files) +"tabdo Gdiff ${REVIEW_BASE:-master}" +"let g:gitgutter_diff_base = '${REVIEW_BASE:-master}'"
+    ;;
+
+  one)
+    # Same as the above, except specify names of files as arguments,
+    # instead of opening all files:
+    # git reviewone foo.js bar.js
+    vim -p +"tabdo Gdiff ${REVIEW_BASE:-master}" +"let g:gitgutter_diff_base = '${REVIEW_BASE:-master}'" "$@"
+    ;;
+
+  *)
+    echo "Commands:"
+    echo -e "  - files"
+    echo -e "  - stat"
+    echo -e "  - open"
+    echo -e "  - one"
+esac
