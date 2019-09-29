@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # vim:foldmethod=marker:foldlevel=0
-
 # Env variables {{{
 
 # Original path:
@@ -72,24 +71,6 @@ VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 # what to exclude for shellcheck
 SHELLCHECK_OPTS='--exclude=SC1090,SC1091,SC2009'
 
-# }}}
-
-# Linux keyboard map {{{
-if [[ $(uname -s) == "Linux" ]]; then
-   if command -v xcape &> /dev/null; then
-      setxkbmap -option 'caps:ctrl_modifier'
-      xcape -e 'Caps_Lock=Escape'
-
-      # This method would also allow me to keep my caps lock
-      # but it's buggy with my apple bluetooth keyboard
-      #
-      # setxkbmap -option 'caps:ctrl_modifier'
-      # xcape -e 'Caps_Lock=Escape'
-   else
-      echo "Please install xcape."
-   fi
-fi
-# }}}
 # }}}
 
 # Aliases (simple) {{{
@@ -255,7 +236,7 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
    # vim setting edit
    ve() {
       local files
-      IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+      IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
       [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
    }
    # run python
