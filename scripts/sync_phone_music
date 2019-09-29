@@ -1,67 +1,44 @@
 #!/usr/bin/env bash
-if ! command -v rsync &>/dev/null; then
-  echo "rsync not installed." >&2
+if ! command -v adb-sync &>/dev/null; then
+  echo "adb-sync not installed." >&2
+  exit 1
+fi
+if ! command -v adb &>/dev/null; then
+  echo "adb not installed." >&2
   exit 1
 fi
 
-do_rsync() {
-  rsync -uhamP --iconv=utf-8-mac,utf-8 --delete --stats  "$@"
-  # This guy saved me: https://askubuntu.com/a/540960
-  # "one should always use `--iconv=utf-8-mac,utf-8` when initialising the rsync
-  #   from the mac, and always use `--iconv=utf-8,utf-8-mac` when initialising the
-  #   rsync from the linux machine, no matter if I want to sync files from the mac
-  #   or linux machine."
+
+do_sync() {
+  adb-sync -d "$@"
+  # Used to use this, keeping for posterity:
+  #   rsync -uhamP --iconv=utf-8-mac,utf-8 --delete --stats  "$@"
+  #   This guy saved me: https://askubuntu.com/a/540960
+  #   "one should always use `--iconv=utf-8-mac,utf-8` when initialising the rsync
+  #     from the mac, and always use `--iconv=utf-8,utf-8-mac` when initialising the
+  #     rsync from the linux machine, no matter if I want to sync files from the mac
+  #     or linux machine."
 }
 die() {
   echo "$1" >&2
   exit 1
 }
-PHONE_DIR="$HOME/phone/Card/Music"
+
+PHONE_DIR="/storage/5D6D-E047/Music"
 MUSIC_DIR="${MUSIC_DIR:-$HOME/Music}"
 
-[ -d "$PHONE_DIR" ] || die "Phone not present, expected at $PHONE_DIR"
 [ -d "$MUSIC_DIR" ] || die "Music dir not present, expected at $MUSIC_DIR"
+[ ! -z "$(adb devices | grep device$)" ] || die "Phone not connected."
 
 PARAMS=""
 
-while (( "$#" )); do
-  case "$1" in
-    -d|--difference)
-      if ! command -v tree &>/dev/null; then
-        echo "tree not installed." >&2
-        exit 1
-      fi
-      diff <(tree "$PHONE_DIR") <(tree "$MUSIC_DIR")
-      exit 0
-      ;;
-    -h|--help)
-      echo "Usage:"
-      echo "Pass -d to only print the difference."
-      exit 0
-      ;;
-    --) # end arg parsing
-      shift
-      break
-      ;;
-    -*) # unsupported flags
-      echo "Unsupported flag $1" >&2
-      exit 1
-      ;;
-    *) # preserve positional arguments
-      PARAMS="$PARAMS $1"
-      shift
-      ;;
-  esac
-done
-eval set -- "$PARAMS"
-
-less -fR <(do_rsync "$MUSIC_DIR"/ "$PHONE_DIR" -n)
+less -fR <(do_sync "$MUSIC_DIR"/ "$PHONE_DIR" --dry-run)
 
 read -rp "Execute? [Y/n]" -n 1 -s conf
 echo
 
 case "$conf" in
-  Y|y) do_rsync "$MUSIC_DIR"/ "$PHONE_DIR";;
+  Y|y) do_sync "$MUSIC_DIR"/ "$PHONE_DIR";;
   *) die "User cancelled.";;
 esac
 
