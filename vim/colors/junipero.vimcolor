@@ -56,7 +56,7 @@ WarningMsg #fa8072, NONE. NONE
 StatusLine #4079a9, #101130. bold
 
 link Label,StorageClass,Typedef Structure
-link Character,VimwikiLink Constant
+link ConId,Character,VimwikiLink Constant
 link Define,Macro,PreCondit Include
 link Debug,Special,SpecialChar,SpecialComment,Tag Delimiter
 link StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir LineNr

@@ -64,6 +64,7 @@ hi StatusLine guifg=#4079a9 guibg=#101130 ctermfg=67 ctermbg=17 cterm=bold gui=b
 hi! link Label Structure
 hi! link StorageClass Structure
 hi! link Typedef Structure
+hi! link ConId Constant
 hi! link Character Constant
 hi! link VimwikiLink Constant
 hi! link Define Include
