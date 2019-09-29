@@ -19,7 +19,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 
 modules-left = powermenu
-modules-right = volume wireless-network wired-network battery date
+modules-right = brightness volume wireless-network wired-network battery date
 
 [bar/top_light]
 width = 100%
@@ -42,7 +42,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 
 modules-left = powermenu
-modules-right = volume wireless-network wired-network battery date
+modules-right = brightness volume wireless-network wired-network battery date
 
 [bar/bottom]
 bottom = true
@@ -360,6 +360,15 @@ label-urgent-padding = 2
 ; Separator in between workspaces
 ; label-separator = |
 
+[module/brightness]
+type = custom/script
+exec = /home/zeroalpha/.scripts/xrandr-brightness get brightness
+exec-if = command -v xrandr
+scroll-up = /home/zeroalpha/.scripts/xrandr-brightness down 0.1
+scroll-down = /home/zeroalpha/.scripts/xrandr-brightness up 0.1
+interval = 5
+format =   <label>
+format-padding = 1
 
 [settings]
 screenchange-reload = true
