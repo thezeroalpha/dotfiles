@@ -1,19 +1,39 @@
-#!/bin/sh
-#/usr/bin/pactl set-sink-volume 0 +5%
-SINK=$( pactl list short sinks | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
-NOW=$( pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
+#!/usr/bin/env bash
+SINK=$(pactl list sinks short | tail -n 1 | grep -o '^[0-9]')
 if [ "$1" = "up" ]; then
   /usr/bin/pactl set-sink-mute "$SINK" 0
+  NOW=$( pactl list sinks | grep "^Sink #$SINK" -B 0 -A 999 | grep '^[[:space:]]Volume:' | tail -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
   if [ $((NOW+5)) -le 100 ]; then
     /usr/bin/pactl set-sink-volume "$SINK" "+5%"
   else
     /usr/bin/pactl set-sink-volume "$SINK" "100%"
   fi
 elif [ "$1" = "down" ]; then
+  NOW=$( pactl list sinks | grep "^Sink #$SINK" -B 0 -A 999 | grep '^[[:space:]]Volume:' | tail -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
   if [ $((NOW-5)) -gt 0 ]; then
     /usr/bin/pactl set-sink-volume "$SINK" "-5%"
   else
     /usr/bin/pactl set-sink-volume "$SINK" "0%"
     /usr/bin/pactl set-sink-mute "$SINK" 1
   fi
+elif [ "$1" = "mute" ]; then
+  /usr/bin/pactl set-sink-mute "$SINK" toggle
+elif [ "$1" = "now" ]; then
+  SINK_INFO=$(pactl list sinks | grep "^Sink #$SINK" -B 0 -A 999)
+  muted=$(echo "$SINK_INFO" | grep Mute | cut -d':' -f2 | tr -d ' ')
+  if [ -z "$(echo "$SINK_INFO" | grep RUNNING)" ]; then
+    NOW=$( echo "$SINK_INFO" | grep '^[[:space:]]Volume:' | tail -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
+    if [ "$muted" = "no" ]; then
+      echo "NO AUDIO ($NOW%)"
+    else
+      echo "NO AUDIO (MUTE)"
+    fi
+  elif [ "$muted" = "no" ]; then
+    NOW=$( echo "$SINK_INFO" | grep '^[[:space:]]Volume:' | tail -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
+    echo "  $NOW"
+  else
+    echo "  muted"
+  fi
+elif [ "$1" = "sink" ]; then
+  echo "$SINK"
 fi

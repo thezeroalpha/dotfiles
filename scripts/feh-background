@@ -7,7 +7,7 @@ fi
 
 theme=$(gsettings get org.gnome.Terminal.Legacy.Settings theme-variant | tr -d "'")
 if [ "$theme" = "light" ]; then
-  feh --bg-fill "/home/zeroalpha/Pictures/Backgrounds/light.jpg"
+  feh --bg-scale "/home/zeroalpha/Pictures/Backgrounds/light.jpg"
 else
   feh --bg-fill "/home/zeroalpha/Pictures/Backgrounds/dark.jpg"
 fi

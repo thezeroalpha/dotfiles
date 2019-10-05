@@ -5,10 +5,13 @@
 exec --no-startup-id compton --config ~/.config/compton/config -b
 exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
 exec --no-startup-id gnome-flashback
+exec --no-startup-id dropbox start
 exec_always --no-startup-id ~/.scripts/feh-background
 exec_always --no-startup-id ~/.config/polybar/polybar.sh &
 exec_always --no-startup-id system76-power daemon
 exec_always --no-startup-id xrandr --output LVDS-1-1 --off
+exec_always --no-startup-id /usr/bin/setxkbmap -option 'caps:ctrl_modifier'
+exec_always --no-startup-id /usr/bin/xcape -e 'Caps_Lock=Escape'
 
 set $mod Mod4
 
@@ -214,7 +217,7 @@ mode "$mode_gaps_outer" {
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/pactl-volume up
 bindsym XF86AudioLowerVolume exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/pactl-volume down
-bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute 0 toggle
+bindsym XF86AudioMute exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/pactl-volume mute
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id /home/zeroalpha/.dotfiles/scripts/xrandr-brightness up
