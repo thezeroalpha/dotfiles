@@ -28,9 +28,6 @@ Plug 'tpope/vim-surround'
 " Eunuch - shell commands but in vim
 Plug 'tpope/vim-eunuch'
 
-" Aligning and filtering text
-Plug 'godlygeek/tabular'
-
 " A tag overview on the right side
 Plug 'majutsushi/tagbar'
 
@@ -109,6 +106,9 @@ Plug 'vim-scripts/pythoncomplete'
 
 " Alignment
 Plug 'junegunn/vim-easy-align'
+"
+" Peek contents of registers
+Plug 'junegunn/vim-peekaboo'
 call plug#end()
 " }}}
 " Config {{{
@@ -273,6 +273,9 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+" }}}
+" Peekaboo {{{
+let g:peekaboo_compact=1
 " }}}
 " }}}
 " }}}
