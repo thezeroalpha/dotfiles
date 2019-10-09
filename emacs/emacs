@@ -1,9 +1,3 @@
-;; SML mode
-(setq load-path (cons "/Users/alex/.emacs.d/sml-mode-5.0" load-path))
-(load "sml-mode-startup")
-(setenv "PATH" (concat "/usr/local/smlnj-110.73/bin:" (getenv "PATH")))
-(setq exec-path (cons "/usr/local/smlnj-110.73/bin"  exec-path))
-
 ;; Set the shell
 (setq-default explicit-shell-file-name "/bin/bash")
 
@@ -46,7 +40,7 @@
  '(custom-safe-themes
    (quote
     ("1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
- '(package-selected-packages (quote (haskell-mode)))
+ '(package-selected-packages (quote (sml-mode)))
  '(version-control t)
  '(xterm-mouse-mode t))
 (custom-set-faces
