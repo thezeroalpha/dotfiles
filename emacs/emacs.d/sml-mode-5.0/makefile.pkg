@@ -1,0 +1,15 @@
+PACKAGE = sml-mode
+ELFILES	= sml-mode.el sml-proc.el sml-oldindent.el
+
+default: elcfiles
+
+TESTCASE = testcases.sml
+
+test:
+	$(RM) $(TESTCASE).new
+	$(EMACS) --batch \
+	    --eval "(load \"$$(pwd)/sml-mode-startup\")" \
+	    $(TESTCASE) \
+	    --eval '(indent-region (point-min) (point-max) nil)' \
+	    --eval '(write-region (point-min) (point-max) "$(TESTCASE).new")'
+	diff -u -B $(TESTCASE) $(TESTCASE).new
