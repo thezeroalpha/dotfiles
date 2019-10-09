@@ -23,8 +23,26 @@
 
 ;; Add package repositories
 (require 'package)
-(add-to-list 'package-archives
-  '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  (when no-ssl
+    (warn "\
+Your version of Emacs does not support SSL connections,
+which is unsafe because it allows man-in-the-middle attacks.
+There are two things you can do about this warning:
+1. Install an Emacs version that does support SSL and be safe.
+2. Remove this warning from your init file so you won't see it again."))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+
+;; Have to put this to fix a known bug
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-initialize)
 
 ;; Some version control for backups
@@ -39,8 +57,10 @@
  '(blink-matching-paren t)
  '(custom-safe-themes
    (quote
-    ("1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
- '(package-selected-packages (quote (sml-mode)))
+    ("30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
+ '(inhibit-startup-screen t)
+ '(package-check-signature nil)
+ '(package-selected-packages (quote (plan9-theme sml-mode)))
  '(version-control t)
  '(xterm-mouse-mode t))
 (custom-set-faces
