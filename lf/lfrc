@@ -79,8 +79,8 @@ cmd zip ${{
     rm -rf $1
 }}
 
-cmd edit_config ${{
-    $EDITOR ~/.config/lf/lfrc
+cmd edit_config :{{
+    $$EDITOR ~/.config/lf/lfrc
     source ~/.config/lf/lfrc
 }}
 # }}}
@@ -96,6 +96,8 @@ map O $mimeopen --ask $f
 map R push :rename<space>
 map E $$EDITOR $f
 map D delete
+map <enter> shell-pipe
+map S shell
 
 map gd cd ~/Documents
 map gD cd ~/Desktop
@@ -103,5 +105,7 @@ map gl cd ~/Downloads
 map gw cd ~/Dropbox/vimwiki
 map gz cd ~/Documents/Programming/thezeroalpha.github.io/
 map g/ cd /
+map gs cd ~/Documents/School
+map g. cd ~/.dotfiles
 
-map ec edit_config
+map <a-,> edit_config
