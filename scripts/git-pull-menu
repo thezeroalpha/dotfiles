@@ -6,7 +6,7 @@ if ! git pull --ff-only; then
     upstream="$(git branch -r | grep -v HEAD | tr -d ' ')"
     case $action in
       Rebase)
-        git rebase "$upstream"
+        git pull --rebase "$upstream"
         break;;
       Merge)
         git merge "$upstream"
