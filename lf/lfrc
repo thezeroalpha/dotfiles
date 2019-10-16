@@ -83,7 +83,27 @@ cmd edit_config :{{
     $$EDITOR ~/.config/lf/lfrc
     source ~/.config/lf/lfrc
 }}
+
+cmd copy_path ${{
+  set -f
+  if command -v pbcopy > /dev/null 2> /dev/null; then
+    echo "$f" | tr -d '\n' | pbcopy
+  elif command -v xclip > /dev/null 2> /dev/null; then
+    echo "$f" | tr -d '\n' | xclip -sel clip
+  fi
+}}
+cmd paste_link %{{
+  load=$(lf -remote 'load')
+  mode=$(echo "$load" | sed -n '1p')
+  list=$(echo "$load" | sed '1d')
+
+  echo $list | while read -r fil; do
+    lf -remote "send %ln -s $fil .";
+  done
+}}
+
 # }}}
+
 # Mappings {{{
 # execute current file (must be executable)
 map x $$f
@@ -98,6 +118,11 @@ map E $$EDITOR $f
 map D delete
 map <enter> shell-pipe
 map S shell
+map Y copy_path
+
+map p
+map pp paste
+map pl paste_link
 
 map gd cd ~/Documents
 map gD cd ~/Desktop
@@ -108,4 +133,14 @@ map g/ cd /
 map gs cd ~/Documents/School
 map g. cd ~/.dotfiles
 
-map <a-,> edit_config
+map u
+map ud unselect
+map uy unselect
+map uu clear
+
+map c
+map cf push %touch<space>
+map cd push %mkdir<space>
+map e
+map ee $$EDITOR $f
+map ec edit_config
