@@ -259,7 +259,8 @@ nmap <leader>sd <Plug>DeleteSession
 nmap <leader>sq <Plug>CloseSession
 " }}}
 " Sparkup {{{
-let g:sparkupExecuteMapping = '<C-x><C-e>'
+let g:sparkupExecuteMapping = '<C-x><C-e><CR>'
+let g:sparkupNextMapping = '<C-x><C-e><tab>'
 " }}}
 " Haskell {{{
 let hs_highlight_delimiters = 1
@@ -379,6 +380,7 @@ set statusline+=%=                                                  " Move every
 set statusline+=\ %y                                                " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
 set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
+set statusline+=\ [z%{&foldlevel}]                                  " The current foldlevel
 set statusline+=\ %l/%L\                                            " Cursor line/total lines
 set statusline+=\ B%n                                               " Buffer number
 set statusline+=\ \ %{strftime(\"%H:%M\")}                          " Time
@@ -723,6 +725,8 @@ nnoremap gV `[v`]
 " Save in insert mode
 inoremap <C-Z> <C-o>:w<CR>
 
+" Set the foldlevel
+nnoremap zs :set foldlevel=
 " Config edit mappings
 nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>gg/Autocommands {{{$<CR>:noh<CR>za
 nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>gg/Commands {{<CR>:noh<CR>za
@@ -771,6 +775,8 @@ vmap <leader><CR> <Plug>VisualRunCommands
 
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
+nnoremap <leader>H :previous<CR>
+nnoremap <leader>L :next<CR>
 
 nmap <C-P> <Plug>VimcolorSynstack
 
