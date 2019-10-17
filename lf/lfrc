@@ -22,6 +22,9 @@ set ifs "\n"
 # leave some space at the top and the bottom of the screen
 set scrolloff 10
 
+set color256 on
+set previewer ~/.config/lf/preview.sh
+
 # }}}
 # Command definitions {{{
 # define a custom 'open' command
@@ -103,7 +106,6 @@ cmd paste_link %{{
 }}
 
 # }}}
-
 # Mappings {{{
 # execute current file (must be executable)
 map x $$f
@@ -114,6 +116,7 @@ map o &mimeopen $f
 map O $mimeopen --ask $f
 
 map R push :rename<space>
+map cw push :rename<space>
 map E $$EDITOR $f
 map D delete
 map <enter> shell-pipe
@@ -123,6 +126,8 @@ map Y copy_path
 map p
 map pp paste
 map pl paste_link
+
+map i $~/.config/lf/preview.sh $f | less -R
 
 map gd cd ~/Documents
 map gD cd ~/Desktop
@@ -134,9 +139,10 @@ map gs cd ~/Documents/School
 map g. cd ~/.dotfiles
 
 map u
-map ud unselect
-map uy unselect
-map uu clear
+map uu unselect
+map uy clear
+map ud clear
+map a :unselect; invert
 
 map c
 map cf push %touch<space>
