@@ -121,12 +121,12 @@ alias rs_removedeadtracks="rm $HOME/Library/iTunes/.superremoveapp.plist"
 # }}}
 
 # One-liners {{{
-cd() { builtin cd -P "$@" || return; ls; }                                  # List contents after cding
-mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                     # Make dir and cd at the same time
-procinfo() { ps aux | grep "$1"; }                                          # Get info about a process (by name)
-rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # Remove empty directories
-hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # Insert a <hr> in the terminal
-vimq() { vim -q <($(fc -nl -1)); }                                          # Load results of last command (often ag) in vim quickfix
+cd() { builtin cd -p "$@" || return; ls; }                                  # list contents after cding
+mkcd() { mkdir -p -- "$1" && cd -p -- "$1" || return; }                     # make dir and cd at the same time
+procinfo() { ps aux | grep "$1"; }                                          # get info about a process (by name)
+rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # remove empty directories
+hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # insert a <hr> in the terminal
+vimq() { vim -q <($(fc -nl -1)); }                                          # load results of last command (often ag) in vim quickfix
 
 # create commands to override pip restriction.
 # use `gpip` to force installation of

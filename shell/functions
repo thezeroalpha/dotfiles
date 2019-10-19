@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+# vim:foldmethod=indent:foldlevel=0
+cd() { builtin cd -P "$@" || return; ls; }                                  # list contents after cding
+mkcd() { mkdir -p -- "$1" && cd -p -- "$1" || return; }                     # make dir and cd at the same time
+procinfo() { ps aux | grep "$1"; }                                          # get info about a process (by name)
+rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # remove empty directories
+hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # insert a <hr> in the terminal
+vimq() { vim -q <($(fc -nl -1)); }                                          # load results of last command (often ag) in vim quickfix
+gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }
+notify() {
+  if type terminal-notifier &> /dev/null; then
+    terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
+  else
+    echo '\a'
+  fi
+}
+reload() {
+  local START_TIME=$SECONDS
+  if [[ $SHELL = *"zsh"* ]]; then
+    source "$HOME"/.zshrc
+  elif [[ $SHELL = *"bash"* ]]; then
+    source "$HOME"/.bash_profile
+  fi
+  echo "Reloaded config ($(( SECONDS-START_TIME )) sec)."
+}
+extract () {
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf "$1"     ;;
+      *.tar.gz)    tar xzf "$1"     ;;
+      *.bz2)       bunzip2 "$1"     ;;
+      *.rar)       unrar e "$1"     ;;
+      *.gz)        gunzip "$1"      ;;
+      *.tar)       tar xf "$1"      ;;
+      *.tbz2)      tar xjf "$1"     ;;
+      *.tgz)       tar xzf "$1"     ;;
+      *.zip)       unzip "$1"       ;;
+      *.Z)         uncompress "$1"  ;;
+      *.7z)        7z x "$1"        ;;
+      *)     echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+if command -v osascript &> /dev/null; then
+  # cd to current Finder directory
+  cdf() {
+    local target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
+    if [ "$target" != "" ]; then
+      cd "$target" || return; pwd
+    else
+      echo 'No Finder window found' >&2
+    fi
+  }
+  # echo current Finder directory
+  gdf() {
+    osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+  }
+  # echo selected Finder file
+  fsel() {
+    osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+  };
+fi
+
+# fzf functions {{{
+if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
+  export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -500'"
+  export FZF_DEFAULT_COMMAND="ag -l -g \"\""
+  # script edit
+  se() {
+    local files
+    IFS=$'\n' files=($(command find "$(readlink ~/.scripts)" -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  }
+  # script create
+  sc() {
+    [ -z "$1" ] && echo "Filename must be passed as an argument." && return 1
+    vim $DOTFILES/scripts/"$1" && chmod +x $DOTFILES/scripts/"$1"
+  }
+
+   # config edit
+   ce() {
+     local files
+     IFS=$'\n' files=($(command find ~/.dotfiles -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+   }
+  # vim setting edit
+  ve() {
+    local files
+    IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  }
+  # run python
+  rp() {
+    fzf --print-query --preview-window=right:50% --preview 'python -c {q}' <<<''
+  }
+  # Run ruby
+  rr() {
+    fzf --print-query --preview-window=right:50% --preview 'ruby -e {q}' <<<''
+  }
+  # run bash
+  rb() {
+    fzf --print-query --preview-window=right:50% --preview 'bash -c {q}' <<<''
+  }
+  # run json
+  rj() {
+    fzf --preview "cat $1 | jq {q}"
+  }
+fi
