@@ -43,3 +43,11 @@ function! statusline#StatuslineBuildCwd()
   let cwd = substitute(getcwd(),$HOME,'~','g')
   return "CWD: " . cwd
 endfunction
+
+function! statusline#StatuslineFoldmethod()
+  if &foldmethod == "indent"
+    return "[z".&foldlevel.",c".foldlevel(line('.'))."]"
+  else
+    return ""
+  endif
+endfunction

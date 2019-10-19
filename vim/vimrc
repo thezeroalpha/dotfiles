@@ -229,13 +229,18 @@ let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
 " Work with variants of words easily
 let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
 " }}}
+" Ag {{{
+nnoremap <leader>/ :Ag<space>
+" }}}
 " Fzf {{{
 set rtp+=~/.fzf
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-i': 'split',
       \ 'ctrl-v': 'vsplit' }
-
+nnoremap <leader>F :Files<CR>
+nnoremap <leader>B :Buffers<CR>
+nnoremap <leader>G :Lines<CR>
 " }}}
 " Vimwiki {{{
 let tlist_vimwiki_settings = 'wiki;h:Headers'
@@ -278,11 +283,23 @@ nmap ga <Plug>(EasyAlign)
 " Peekaboo {{{
 let g:peekaboo_compact=1
 " }}}
+" Mundo {{{
+nnoremap <leader>u :MundoToggle<CR>
+" }}}
+" Vim-qf {{{
+nmap <leader>qn <Plug>(qf_qf_next)
+nmap <leader>qp <Plug>(qf_qf_previous)
+nmap <leader>qf <Plug>(qf_qf_toggle)
+" }}}
 " }}}
 " }}}
 " General {{{
 " Set the colors
 " Use true color
+" Set Vim-specific sequences for RGB colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
 if has('termguicolors')
   set termguicolors
 endif
@@ -380,13 +397,14 @@ set statusline+=%=                                                  " Move every
 set statusline+=\ %y                                                " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
 set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
-set statusline+=\ [z%{&foldlevel}]                                  " The current foldlevel
+set statusline+=\ %{statusline#StatuslineFoldmethod()}              " The current foldlevel
 set statusline+=\ %l/%L\                                            " Cursor line/total lines
 set statusline+=\ B%n                                               " Buffer number
 set statusline+=\ \ %{strftime(\"%H:%M\")}                          " Time
 
-" recalculate the tab/trailing whitespace warning flags when idle and after writing
+" Conditional foldlevel display
 augroup statusline
+  " recalculate the tab/trailing whitespace warning flags when idle and after writing
   autocmd!
   autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
   autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
@@ -541,7 +559,6 @@ cnoreabbrev Wa wa
 cnoreabbrev wQ wq
 cnoreabbrev WQ wq
 cnoreabbrev W w
-cnoreabbrev Q q
 cnoreabbrev Qall qall
 cnoreabbrev E Explore
 cnoreabbrev Colors XtermColorTable
@@ -633,20 +650,6 @@ execute "digraphs y& " . 0x1D502
 execute "digraphs z& " . 0x1D503
 " }}}
 " Mappings {{{
-
-" Plugin mappings {{{
-nnoremap <leader>F :Files<CR>
-nnoremap <leader>/ :Ag<space>
-nnoremap <leader>u :MundoToggle<CR>
-nnoremap <leader>G :Lines<CR>
-
-" Quickfix window settings/mappings {{{
-nmap <leader>qn <Plug>(qf_qf_next)
-nmap <leader>qp <Plug>(qf_qf_previous)
-nmap <leader>qf <Plug>(qf_qf_toggle)
-" }}}
-" }}}
-"
 " So I don't have to mash shift all the time
 nnoremap ; :
 vnoremap ; :
@@ -726,9 +729,10 @@ nnoremap gV `[v`]
 inoremap <C-Z> <C-o>:w<CR>
 
 " Set the foldlevel
-nnoremap zs :set foldlevel=
+nnoremap zn :set foldlevel=
+nnoremap zs :exe "set foldlevel=".foldlevel(line('.'))<CR>
 " Config edit mappings
-nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>gg/Autocommands {{{$<CR>:noh<CR>za
+nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>gg/Autocommands {{$<CR>:noh<CR>za
 nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>gg/Commands {{<CR>:noh<CR>za
 nnoremap <C-E><C-E> :vsplit $MYVIMRC<CR>gg/Editor {{<CR>:noh<CR>za
 nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>gg/General {{<CR>:noh<CR>za
