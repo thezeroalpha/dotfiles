@@ -10,3 +10,4 @@ newsboat/*
 *.pyc
 vim/autoload/plug.vim*
 irssi/*.log
+bin/z
