@@ -1,6 +1,6 @@
 [user]
     name = <name>
-    email = EMAIL
+    email = <email>
 
 [alias]
     s = status
@@ -54,7 +54,7 @@
     fuckit = reset --hard HEAD
     fuckitall = reset --hard origin/master
     home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|' | tr -d '\n'"
-    open = "!open $(git home)"
+    open = "!xdg-open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
     reignore = "!git rm -r --cached .; git add ."
     rb = "rebase --committer-date-is-author-date"
@@ -83,7 +83,7 @@
     autocrlf = input
 
 [init]
-    templatedir = /Users/alex/.dotfiles/git/git_template
+    templatedir = /home/zeroalpha/.dotfiles/git/git_template
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f

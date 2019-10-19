@@ -1,0 +1,51 @@
+export ZSH="/home/zeroalpha/.oh-my-zsh"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Import colorscheme from 'wal' asynchronously
+# &   # Run the process in the background.
+# # ( ) # Hide shell job control messages.
+(cat ~/.cache/wal/sequences &)
+
+# # To add support for TTYs this line can be optionally added.
+source ~/.cache/wal/colors-tty.sh
+
+. $HOME/.dotfiles/bin/z/z.sh
+
+plugins=(git gitignore zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.functions ]] && source ~/.functions
+POWERLEVEL9K_COLOR_SCHEME='light'
+
+
+insert-arg-of-prev-cmd() {
+: ${NUMERIC:-1}
+(( NUMERIC++ ))
+words=($(fc -ln -1))
+RBUFFER+="$words[$NUMERIC] "
+zle end-of-line
+}
+zle -N insert-arg-of-prev-cmd
+bindkey "\e^y" insert-arg-of-prev-cmd
+
+bindkey '\e#' pound-insert
+bindkey '^]' vi-find-next-char
+bindkey '^\e]' vi-find-prev-char
+
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+  if ! command -v lf &>/dev/null; then echo "lf not installed." && return; fi
+  tmp="$(mktemp)"
+  lf -last-dir-path="$tmp" "$@"
+  if [ -f "$tmp" ]; then
+    dir="$(cat "$tmp")"
+    rm -f "$tmp"
+    [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+  fi
+}
+bindkey -s '^o' 'lfcd\n'
+
