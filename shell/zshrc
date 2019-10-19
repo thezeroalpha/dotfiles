@@ -1,4 +1,4 @@
-export ZSH="/home/zeroalpha/.oh-my-zsh"
+export ZSH="$HOME/.dotfiles/oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Import colorscheme from 'wal' asynchronously
@@ -9,7 +9,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # # To add support for TTYs this line can be optionally added.
 source ~/.cache/wal/colors-tty.sh
 
-. $HOME/.dotfiles/bin/z/z.sh
+. $HOME/.dotfiles/shell/z/z.sh
 
 plugins=(git gitignore zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh

@@ -29,7 +29,7 @@ fi
 # Golang
 if command -v go &> /dev/null; then
    GOPATH="$HOME"/.go
-   GO111MODULE=on
+   GO111MODULE=off
    if [[ $PATH != *"$GOPATH"* ]]; then
       PATH=$PATH:"$GOPATH"/bin
    fi
@@ -42,6 +42,11 @@ fi
 
 if [[ $PATH != *"/usr/local/opt/gnu-sed/libexec/gnubin"* ]]; then
    PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
+# Haskell
+if [[ $PATH != *"$HOME/.ghcup/bin"* ]]; then
+   PATH="$HOME/.ghcup/bin:$PATH"
 fi
 
 # Set a variable for my confidr

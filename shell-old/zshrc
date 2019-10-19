@@ -1,4 +1,30 @@
 #!/usr/bin/env zsh
+# oh-my-zsh {{{
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME"/.oh-my-zsh
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  sudo
+  zsh-syntax-highlighting
+  gitignore
+)
+
+#POWERLEVEL9K
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir virtualenv vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history ram time battery)
+
+source $ZSH/oh-my-zsh.sh
+# }}}
 # ZSH config {{{
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -34,31 +60,10 @@ lfcd () {
   fi
 }
 bindkey -s '^o' 'lfcd\n'
-# }}}
-# oh-my-zsh {{{
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME"/.oh-my-zsh
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  sudo
-  zsh-syntax-highlighting
-)
-
-#POWERLEVEL9K
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir virtualenv vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history ram time battery)
-
-source $ZSH/oh-my-zsh.sh
+fpath=($HOME/.dotfiles/shell/zsh-completions $fpath)
+autoload -U compinit
+compinit
 # }}}
 # Other scripts {{{
 # FZF
