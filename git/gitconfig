@@ -69,6 +69,13 @@
 
     root = rev-parse --show-toplevel
 
+    commit-at = "!f(){\
+    if [ $# -eq 0 ]; then\
+    echo \"Date format: YYYY-MM-DD HH:MM:SS\";\
+    else\
+    GIT_COMMITTER_DATE=\"$1\" GIT_AUTHOR_DATE=\"$1\" git commit;\
+    fi; }; f"
+
 [merge]
     tool = vimdiff
 
