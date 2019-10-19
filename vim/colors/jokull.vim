@@ -32,6 +32,10 @@ hi matchparen guifg=#d7f1e0 guibg=#a8dbfd ctermfg=194 ctermbg=153 cterm=NONE gui
 hi qfFileName guifg=#0076ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=NONE gui=NONE
 hi delimiter guifg=#5f5f00 guibg=NONE ctermfg=58 ctermbg=NONE cterm=NONE gui=NONE
 hi comment guifg=#5f5f5f guibg=NONE ctermfg=59 ctermbg=NONE cterm=italic gui=italic
+hi diffadd guifg=NONE guibg=#a5ffa5 ctermfg=NONE ctermbg=157 cterm=NONE gui=NONE
+hi diffdelete guifg=NONE guibg=#ffa5a5 ctermfg=NONE ctermbg=217 cterm=NONE gui=NONE
+hi diffchange guifg=#a9dbff guibg=#c0beff ctermfg=153 ctermbg=147 cterm=NONE gui=NONE
+hi difftext guifg=NONE guibg=#a0aeff ctermfg=NONE ctermbg=147 cterm=NONE gui=NONE
 hi! link tabline tablinefill
 hi! link incsearch search
 hi! link repeat statement

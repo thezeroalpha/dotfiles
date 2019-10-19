@@ -28,7 +28,6 @@ matchparen #d7f1e0, #a8dbfd
 qfFileName #0076ff
 delimiter #5f5f00
 comment #5f5f5f. italic
-
 link tabline tablinefill
 link incsearch search
 link repeat,conditional,operator statement
@@ -44,3 +43,8 @@ link spellocal,spellrare,spellcap,markdownUrl string
 link mkdlink,vimwikilink type
 link pmenu statuslinenc
 link pmenusel statusline
+
+diffadd NONE, #a5ffa5
+diffdelete NONE, #ffa5a5
+diffchange #a9dbff, #c0beff
+difftext NONE, #a0aeff
