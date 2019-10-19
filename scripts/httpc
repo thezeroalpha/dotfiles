@@ -4,8 +4,10 @@ if ! command -v http &> /dev/null; then
   exit 1
 fi
 set -e
+host="${1:-localhost:8000}"
+echo "HTTPie console on $host"
 while :; do
   echo -n "http> "
   read -a cmd
-  http "${cmd[0]}" "http://localhost:8000${cmd[1]}"
+  http "${cmd[0]}" "http://$host${cmd[1]}" "${cmd[@]:2}"
 done
