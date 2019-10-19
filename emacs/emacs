@@ -16,10 +16,41 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+(delete-selection-mode 1)
+
 ;; Keep all backup files in ~/.emacs.d/backup
-(setq backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backup/")))
-      tramp-backup-directory-alist backup-directory-alist)
+(defun my-backup-file-name (fpath)
+  "Return a new file path of a given file path.
+If the new path's directories does not exist, create them."
+  (let* (
+         (backupRootDir "~/.emacs.d/backup/")
+         (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path, for example, “C:”
+         (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~") ))
+         )
+    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
+    backupFilePath
+    )
+  )
+
+(setq make-backup-file-name-function 'my-backup-file-name)
+
+(defun kill-other-buffers ()
+      "Kill all other buffers."
+      (interactive)
+      (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
+;; Custom commands
+(defun light ()
+  "Switch to light mode."
+  (interactive)
+  (load-theme 'spacemacs-light)
+  )
+
+(defun dark ()
+  "Switch to dark mode."
+  (interactive)
+  (load-theme 'cyberpunk)
+  )
 
 ;; Add package repositories
 (require 'package)
@@ -35,7 +66,6 @@ There are two things you can do about this warning:
 2. Remove this warning from your init file so you won't see it again."))
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
@@ -44,6 +74,12 @@ There are two things you can do about this warning:
 ;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-initialize)
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; Some version control for backups
 (custom-set-variables
@@ -57,11 +93,60 @@ There are two things you can do about this warning:
  '(blink-matching-paren t)
  '(custom-safe-themes
    (quote
-    ("30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
  '(inhibit-startup-screen t)
+ '(org-babel-load-languages
+   (quote
+    ((awk . t)
+     (shell . t)
+     (emacs-lisp . t)
+     (haskell . t)
+     (python . t)
+     (ruby . t))))
+ '(org-confirm-babel-evaluate nil)
+ '(org-structure-template-alist
+   (quote
+    (("n" "#+NAME: ")
+     ("s" "#+BEGIN_SRC ?
+
+#+END_SRC")
+     ("e" "#+BEGIN_EXAMPLE
+?
+#+END_EXAMPLE")
+     ("q" "#+BEGIN_QUOTE
+?
+#+END_QUOTE")
+     ("v" "#+BEGIN_VERSE
+?
+#+END_VERSE")
+     ("V" "#+BEGIN_VERBATIM
+?
+#+END_VERBATIM")
+     ("c" "#+BEGIN_CENTER
+?
+#+END_CENTER")
+     ("C" "#+BEGIN_COMMENT
+?
+#+END_COMMENT")
+     ("l" "#+BEGIN_EXPORT latex
+?
+#+END_EXPORT")
+     ("L" "#+LaTeX: ")
+     ("h" "#+BEGIN_EXPORT html
+?
+#+END_EXPORT")
+     ("H" "#+HTML: ")
+     ("a" "#+BEGIN_EXPORT ascii
+?
+#+END_EXPORT")
+     ("A" "#+ASCII: ")
+     ("i" "#+INDEX: ?")
+     ("I" "#+INCLUDE: %file ?"))))
  '(package-check-signature nil)
  '(package-selected-packages (quote (plan9-theme sml-mode)))
+ '(tooltip-mode nil)
  '(version-control t)
+ '(word-wrap nil)
  '(xterm-mouse-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
