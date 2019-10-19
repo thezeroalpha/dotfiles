@@ -1,6 +1,6 @@
 [submodule "shell/z"]
 	path = shell/z
 	url = https://github.com/rupa/z.git
-[submodule "oh-my-zsh/custom/themes/powerlevel10k"]
-	path = oh-my-zsh/custom/themes/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = ./oh-my-zsh
