@@ -143,6 +143,8 @@ map uu unselect
 map uy clear
 map ud clear
 map a :unselect; invert
+map U redraw
+map U redraw
 
 map c
 map cf push %touch<space>
