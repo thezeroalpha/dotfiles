@@ -143,8 +143,10 @@ There are two things you can do about this warning:
      ("i" "#+INDEX: ?")
      ("I" "#+INCLUDE: %file ?"))))
  '(package-check-signature nil)
+ '(package-selected-packages
+   (quote
+    (2048-game spacemacs-theme magit plan9-theme sml-mode)))
  '(tooltip-mode nil)
- '(package-selected-packages (quote (magit plan9-theme sml-mode)))
  '(version-control t)
  '(word-wrap nil)
  '(xterm-mouse-mode t))
