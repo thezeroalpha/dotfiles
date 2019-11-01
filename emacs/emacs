@@ -93,7 +93,8 @@ There are two things you can do about this warning:
  '(blink-matching-paren t)
  '(custom-safe-themes
    (quote
-    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
+    ("eb5c69951164b0768bc281a5dfca5fc02b02f65e1ca92c0636ae5e773e9d7704" "729f738270eaf44363409cf5870a822eafcb9bc4ac4d2c4c9e088b7a68cf4e7a" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
+ '(fci-rule-color "#383838")
  '(inhibit-startup-screen t)
  '(org-babel-load-languages
    (quote
@@ -143,9 +144,7 @@ There are two things you can do about this warning:
      ("i" "#+INDEX: ?")
      ("I" "#+INCLUDE: %file ?"))))
  '(package-check-signature nil)
- '(package-selected-packages
-   (quote
-    (2048-game spacemacs-theme magit plan9-theme sml-mode)))
+ '(package-selected-packages (quote (rainbow-mode magit plan9-theme sml-mode)))
  '(tooltip-mode nil)
  '(version-control t)
  '(word-wrap nil)
