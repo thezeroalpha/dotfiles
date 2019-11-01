@@ -82,11 +82,6 @@ cmd zip ${{
     rm -rf $1
 }}
 
-cmd edit_config :{{
-    $$EDITOR ~/.config/lf/lfrc
-    source ~/.config/lf/lfrc
-}}
-
 cmd copy_path ${{
   set -f
   if command -v pbcopy > /dev/null 2> /dev/null; then
@@ -137,6 +132,7 @@ map gz cd ~/Documents/Programming/thezeroalpha.github.io/
 map g/ cd /
 map gs cd ~/Documents/School
 map g. cd ~/.dotfiles
+map gp cd ~/Documents/Programming
 
 map u
 map uu unselect
