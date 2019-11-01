@@ -15,6 +15,7 @@ hi statement guifg=#0050a0 guibg=NONE ctermfg=25 ctermbg=NONE cterm=NONE gui=NON
 hi include guifg=#2696bf guibg=NONE ctermfg=31 ctermbg=NONE cterm=bold gui=bold
 hi type guifg=#005493 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
 hi search guifg=NONE guibg=#d7f1e0 ctermfg=NONE ctermbg=194 cterm=NONE gui=NONE
+hi incsearch guifg=NONE guibg=#b7d1b0 ctermfg=NONE ctermbg=151 cterm=bold gui=bold
 hi folded guifg=#236dff guibg=#d0d0d0 ctermfg=27 ctermbg=252 cterm=NONE gui=NONE
 hi tablinefill guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=NONE
 hi tablinesel guifg=NONE guibg=#e5e5e5 ctermfg=NONE ctermbg=7 cterm=NONE gui=NONE
@@ -37,7 +38,6 @@ hi diffdelete guifg=NONE guibg=#ffa5a5 ctermfg=NONE ctermbg=217 cterm=NONE gui=N
 hi diffchange guifg=#a9dbff guibg=#c0beff ctermfg=153 ctermbg=147 cterm=NONE gui=NONE
 hi difftext guifg=NONE guibg=#a0aeff ctermfg=NONE ctermbg=147 cterm=NONE gui=NONE
 hi! link tabline tablinefill
-hi! link incsearch search
 hi! link repeat statement
 hi! link conditional statement
 hi! link operator statement
@@ -58,6 +58,7 @@ hi! link character constant
 hi! link signcolumn linenr
 hi! link netrwdir function
 hi! link netrwexe title
+hi! link netrwMarkFile incsearch
 hi! link spellbad todo
 hi! link spellocal string
 hi! link spellrare string

@@ -11,6 +11,7 @@ statement #0050a0
 include #2696bf. bold
 type #005493
 search NONE, #d7f1e0
+incsearch NONE, #b7d1b0. bold
 folded #236dff, #d0d0d0
 tablinefill NONE, #d0d0d0
 tablinesel NONE, #e5e5e5
@@ -29,7 +30,6 @@ qfFileName #0076ff
 delimiter #5f5f00
 comment #5f5f5f. italic
 link tabline tablinefill
-link incsearch search
 link repeat,conditional,operator statement
 link define,macro,precondit include
 link debug,special,specialchar,specialcomment,tag,cursorlinenr,number delimiter
@@ -38,6 +38,7 @@ link character constant
 link signcolumn linenr
 link netrwdir function
 link netrwexe title
+link netrwMarkFile incsearch
 link spellbad todo
 link spellocal,spellrare,spellcap,markdownUrl string
 link mkdlink,vimwikilink type
