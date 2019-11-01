@@ -12,11 +12,16 @@ case "$1" in
     git diff --stat $(git merge-base HEAD "${REVIEW_BASE:-master}") | sort -t \| -k 2nr | less -R
     ;;
 
-  open)
+  diff)
     # Open all files changed since REVIEW_BASE in Vim tabs
     # Then, run fugitive's :Gdiff in each tab, and finally
     # tell vim-gitgutter to show +/- for changes since REVIEW_BASE
     vim -p $(git review files) +"tabdo Gdiff ${REVIEW_BASE:-master}" +"let g:gitgutter_diff_base = '${REVIEW_BASE:-master}'"
+    ;;
+
+  edit)
+    # Open all files changed since REVIEW_BASE in Vim
+    vim $(git review files)
     ;;
 
   one)
@@ -30,6 +35,7 @@ case "$1" in
     echo "Commands:"
     echo -e "  - files"
     echo -e "  - stat"
-    echo -e "  - open"
+    echo -e "  - diff"
+    echo -e "  - edit"
     echo -e "  - one"
 esac
