@@ -1,3 +1,13 @@
+;; Have to put this to fix a known bug
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(package-initialize)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+(add-to-list 'load-path "~/.emacs.d/orgmode-mediawiki")
+(require 'ox-mediawiki)
+
 ;; Set the shell
 (setq-default explicit-shell-file-name "/bin/bash")
 
@@ -18,21 +28,52 @@
 
 (delete-selection-mode 1)
 
-;; Keep all backup files in ~/.emacs.d/backup
-(defun my-backup-file-name (fpath)
-  "Return a new file path of a given file path.
-If the new path's directories does not exist, create them."
-  (let* (
-         (backupRootDir "~/.emacs.d/backup/")
-         (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path, for example, “C:”
-         (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~") ))
-         )
-    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
-    backupFilePath
+(when (require 'org)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (setq org-agenda-files (quote ("~/.emacs.d/todo.org")))
+  (define-key global-map (kbd "C-c c") 'org-capture)
+  (when (require 'org-bullets)
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
     )
   )
+(when (require 'undo-tree)
+  (global-undo-tree-mode)
+  )
+(when (require 'expand-region)
+  (global-set-key (kbd "C-=") 'er/expand-region)
+  )
+(when (require 'helm)
+  ;; change default prefix key
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
 
-(setq make-backup-file-name-function 'my-backup-file-name)
+  ;; helm-M-x
+  (setq helm-M-x-fuzzy-match t)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+
+  ;; helm-kill-ring
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+  ;; helm-mini
+  (global-set-key (kbd "C-x b") 'helm-mini)
+  (setq helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t)
+
+  ;; helm-apropos
+  (global-set-key (kbd "C-h a") 'helm-apropos)
+
+  ;; helm-find-files
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  )
+
+;; Haskell stuff
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(setq backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+    (setq auto-save-file-name-transforms
+          `((".*" ,temporary-file-directory t)))
 
 (defun kill-other-buffers ()
       "Kill all other buffers."
@@ -52,6 +93,13 @@ If the new path's directories does not exist, create them."
   (load-theme 'cyberpunk)
   )
 
+(add-hook 'artist-mode-hook (lambda () (setq indent-tabs-mode nil)))
+
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+
 ;; Add package repositories
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -70,10 +118,6 @@ There are two things you can do about this warning:
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 
-;; Have to put this to fix a known bug
-;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(package-initialize)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -81,7 +125,6 @@ There are two things you can do about this warning:
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-;; Some version control for backups
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -91,10 +134,30 @@ There are two things you can do about this warning:
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(blink-cursor-mode t)
  '(blink-matching-paren t)
+ '(custom-enabled-themes (quote (cyberpunk)))
  '(custom-safe-themes
    (quote
     ("eb5c69951164b0768bc281a5dfca5fc02b02f65e1ca92c0636ae5e773e9d7704" "729f738270eaf44363409cf5870a822eafcb9bc4ac4d2c4c9e088b7a68cf4e7a" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
  '(fci-rule-color "#383838")
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
+ '(hl-todo-keyword-faces
+   (quote
+    (("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#3a81c3")
+     ("OKAY" . "#3a81c3")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#42ae2c")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f"))))
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(org-babel-load-languages
    (quote
@@ -105,6 +168,13 @@ There are two things you can do about this warning:
      (python . t)
      (ruby . t))))
  '(org-confirm-babel-evaluate nil)
+ '(org-entities-user
+   (quote
+    (("sqcup" "\\sqcup" nil "" "" "" "⊔")
+     ("sqcap" "\\sqcap" nil "" "" "" "⊓"))))
+ '(org-export-backends (quote (ascii html icalendar latex md odt)))
+ '(org-md-headline-style (quote setext))
+ '(org-pretty-entities t)
  '(org-structure-template-alist
    (quote
     (("n" "#+NAME: ")
@@ -144,7 +214,10 @@ There are two things you can do about this warning:
      ("i" "#+INDEX: ?")
      ("I" "#+INCLUDE: %file ?"))))
  '(package-check-signature nil)
- '(package-selected-packages (quote (rainbow-mode magit plan9-theme sml-mode)))
+ '(package-selected-packages
+   (quote
+    (htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
+ '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
  '(tooltip-mode nil)
  '(version-control t)
  '(word-wrap nil)
@@ -155,6 +228,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(menu ((t (:background "red" :inverse-video nil :slant italic))))
+ '(org-code ((t (:foreground "#21b8c7" :height 1.2 :family "Courier"))))
  '(tty-menu-disabled-face ((t (:background "color-238" :foreground "color-16"))))
  '(tty-menu-enabled-face ((t (:background "red" :foreground "white" :weight bold))))
  '(tty-menu-selected-face ((t (:background "magenta" :foreground "white")))))
