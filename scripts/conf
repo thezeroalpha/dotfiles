@@ -1,170 +1,38 @@
-#!/usr/bin/env bash
-# vim: foldmethod=marker:foldlevel=0
-
-# Main linking command {{{
-lncommand() {
-  if [ -e "$1" ]; then
-    if [ -e "$2" ]; then
-      echo "-- Backing up original $2"
-      mv -iv "$2" "$2-orig"
-    fi
-    ln -snfv "$1" "$2";
-  fi
+#!/bin/bash
+die() {
+  echo "$1" >&2
+  exit 1
 }
-#}}}
+[ -z "$DOTFILES" ] && die '$DOTFILES variable not set.'
+cd "$DOTFILES"
 
-# List available config files {{{
-print_available() {
-  echo "Config files:"
-  echo "bin               various binaries"
-  echo "ctags             language definitions for ctags"
-  echo "gdb               gdb dashboard and the like"
-  echo "git               git config files and hooks"
-  echo "irssi             irssi - the IRC client"
-  echo "iterm2            profiles, colors, and such for iTerm2 (Mac)"
-  echo "karabiner         key config for karabiner-elements on Mac, notably caps lock as escape and control"
-  echo "newsboat          urls and keymap for newsboat RSS reader"
-  echo "oh-my-zsh         the whole oh-my-zsh config directory"
-  echo "radio             radio metadata for the internet radio script"
-  echo "ranger            ranger file browser config"
-  echo "rtv               reddit terminal viewer config"
-  echo "screen            screenrc for GNU screen"
-  echo "scripts           misc executable scripts (like this one"
-  echo "shell             various configs related to shells"
-  echo "vim               vim configuration files"
+[ -f "./map.conf" ] || die "map.conf file not present in $DOTFILES"
+
+nested_dir=""
+
+link() {
+  echo "$1 => $2"
 }
-# }}}
 
-# Use command {{{
-use_files() {
-  if [ $# -gt 0 ]; then
-    for f in "$@"; do
-      case "${f##./}" in
-        "bin")
-          lncommand "$DOTFILES/bin" "$HOME/.bin"
-          ;;
-        "ctags")
-          lncommand "$DOTFILES/ctags.d" "$HOME/.ctags.d"
-          ;;
-        "gdb")
-          lncommand "$DOTFILES/gdb/gdbinit" "$HOME/.gdbinit"
-          ;;
-        "git")
-          lncommand "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
-          if [ -d git/git_template ]; then
-            conf_check git config --global init.templatedir "$DOTFILES"/git/git_template
-          fi
-          ;;
-        "irssi")
-          lncommand "$DOTFILES/irssi" "$HOME/.irssi"
-          ;;
-        "iterm2")
-          lncommand "$DOTFILES/iterm2" "$HOME/.iterm2"
-          ;;
-        "karabiner")
-          lncommand "$DOTFILES/karabiner" "$HOME/.config/karabiner"
-          ;;
-        "newsboat")
-          lncommand "$DOTFILES/newsboat" "$HOME/.newsboat"
-          ;;
-        "oh-my-zsh")
-          lncommand "$DOTFILES/oh-my-zsh" "$HOME/.oh-my-zsh"
-          ;;
-        "radio")
-          lncommand "$DOTFILES/radio/radio-config" "$HOME/.radio-config"
-          ;;
-        "ranger")
-          lncommand "$DOTFILES/ranger" "$HOME/.config/ranger"
-          ;;
-        "rtv")
-          lncommand "$DOTFILES/rtv" "$HOME/.config/rtv"
-          ;;
-        "screen")
-          lncommand "$DOTFILES/screen/screenrc" "$HOME/.screenrc"
-          ;;
-        "scripts")
-          lncommand "$DOTFILES/scripts" "$HOME/.scripts"
-          if command -v mpv &> /dev/null; then
-            mkdir -p "$HOME/.config/mpv"
-            lncommand "$DOTFILES/.scripts/visualizer.lua" "$HOME/.config/mpv/visualizer.lua"
-          fi
-          ;;
-        "shell")
-          for i in shell/*; do
-            lncommand "$DOTFILES/$i" "$HOME/.${i##*/}"
-          done
-          ;;
-        "vim")
-          mkdir -p "~/.vim"
-          lncommand "$DOTFILES/vim/vimrc" "$HOME/.vimrc" # vimrc points directly to other vim configs
-          lncommand "$DOTFILES/vim/idea.vimrc" "$HOME/.ideavimrc" # ideavimrc has to be separate
-          find "$DOTFILES/vim/" -mindepth 1 -maxdepth 1 -type d -exec ln -sv {} "$HOME"/.vim/ \;
-          ;;
-      esac
+# TODO: handle linking a specific thing, check if stuff exists, handle multiple nesting levels
+while read -r map; do
+  if [ ! -z "$map" ] && [[ ! "$map" == "#"* ]]; then
+    mapping=($(echo "$map" | sed 's/^ *- /-/' | awk -F ': ' '{ print $1 " " $2 }'))
 
-    done
-  else
-    print_available
-  fi
-}
-#}}}
-
-# Check if $DOTFILES is set {{{
-conf_check() {
-  if [ -z "$DOTFILES" ]; then
-    echo "\$DOTFILES not set."
-    echo "Please set the DOTFILES environment variable to your dotfiles repository."
-  else
-    "$@"
-  fi
-}
-#}}}
-
-# Run with arguments {{{
-if [ $# -gt 0 ]; then
-  if [ "$1" = 'rc' ]; then
-    if [[ $SHELL = *"zsh"* ]]; then
-      if [ -f "$HOME"/.zshrc ]; then
-        "$EDITOR" "$HOME"/.zshrc
+    # Top level items
+    if [[ ! "${mapping[0]}" == "-"* ]]; then
+      if [ -z "${mapping[1]}" ]; then
+        nested_dir="${mapping[0]/:/}"
       else
-        echo "File $HOME/.zshrc does not exist."
+        nested_dir=""
+        link "${mapping[0]}" "${mapping[1]}"
       fi
-    elif [[ $SHELL = *"bash"* ]]; then
-      if [ -f "$HOME"/.bashrc ]; then
-        "$EDITOR" "$HOME"/.bashrc
-      elif [ -f "$HOME"/.bash_profile ]; then
-        "$EDITOR" "$HOME"/.bash_profile
-      else
-        echo "File $HOME/.bashrc does not exist."
-      fi
+    # Nested items
     else
-      echo "Shell profile not supported yet."
-      echo "Feel free to ask me to add support, or you can do it yourself."
+      link "$nested_dir/${mapping[0]/-/}" "${mapping[1]}"
     fi
-
-  elif [ "$1" = 'common' ]; then
-    if [ -f "$HOME"/.commonprofile ]; then
-      "$EDITOR" "$HOME"/.commonprofile
-    else
-      echo "File $HOME/.commonprofile does not exist."
-    fi
-  elif [ "$1" = 'get' ]; then
-    conf_check echo "$DOTFILES"
-
-  elif [ "$1" = 'use' ]; then
-    conf_check use_files "${@:2}"
-
-  else
-    conf_check "$(command -v git)" --git-dir="$DOTFILES"/.git --work-tree "$DOTFILES" "$@"
   fi
-  #}}}
-  # ...or print help text {{{
-else
-  echo "Usage:"
-  echo "conf rc                 Edit shell-specific profile (zshrc, bashrc, etc.)"
-  echo "conf common             Edit common profile"
-  echo "conf get                Print path to configuration directory"
-  echo "conf use [module]                         Use dotfiles for a specific module (vim, git, shell, etc.)"
-  echo "conf [git command]      Run git command in conf directory"
-fi
-#}}}
+done < <(cat "./map.conf")
+
+
+
