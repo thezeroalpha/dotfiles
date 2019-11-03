@@ -4,6 +4,9 @@
 # Set the dir for your dotfiles, mine comes from the environment
 DOTFILES="${DOTFILES}"
 
+# Set the name of the mapfile, located in the root folder of your dotfiles
+mapfile="dot.map"
+
 die() {
   echo "$1" >&2
   exit 1
@@ -114,7 +117,6 @@ list_mappings() {
 }
 
 declare -A mappings
-parse_mapfile "./dot.map"
 
 PARAMS=""
 link_mode=0
@@ -122,6 +124,7 @@ unlink_mode=0
 while (( "$#" )); do
   case "$1" in
     -l|--list)
+      parse_mapfile "./${mapfile}"
       list_mappings
       exit 0
       ;;
@@ -131,7 +134,8 @@ while (( "$#" )); do
       echo "conf [options] (link|unlink) [entry1 [entry2...]]"
       echo
       echo "Options:"
-      echo "   -l, --list    only list maps"
+      echo "    -l, --list    only list maps"
+      echo "    -e, --edit    edit map file"
       echo
       echo "link [entry1 [entry2...]]       Link entries according to the map file."
       echo "                                With no arguments, links all entries."
@@ -140,12 +144,23 @@ while (( "$#" )); do
       echo "                                With no arguments, unlinks all entries."
       exit 0
       ;;
+
+    -e|--edit)
+      # $EDITOR is an environment variable
+      # shellcheck disable=SC2154
+      "${EDITOR}" "${DOTFILES}/${mapfile}"
+      exit 0
+      ;;
+
     --) # end arg parsing
       shift
       break
       ;;
     -*) # unsupported flags
       echo "Unsupported flag $1" >&2
+
+      # Don't want the command to expand so
+      # shellcheck disable=SC2016
       echo 'Run `conf -h` to show usage.'
       exit 1
       ;;
@@ -170,8 +185,11 @@ case "$1" in
     ;;
 esac
 
+# Don't want the command to expand so
+# shellcheck disable=SC2016
 [ "${link_mode}" -eq 0 ] && [ "${unlink_mode}" -eq 0 ] && die 'Arguments required, run `conf -h` to show usage.'
 
+parse_mapfile "./${mapfile}"
 if [ "${link_mode}" -eq 1 ]; then
   if [ $# -eq 0 ]; then
     read -srp "Link all dotfiles?" -n 1 -s conf
