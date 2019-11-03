@@ -1,0 +1,56 @@
+# Custom stuff I write
+bin: ~/.bin
+scripts: ~/.scripts
+
+# Utilities
+compton: ~/.config/compton
+ctags.d: ~/.ctags.d
+gdb:
+- gdbinit: ~/.gdbinit
+git:
+- gitconfig: ~/.gitconfig
+i3: ~/.config/i3
+irssi: ~/.config/irssi
+karabiner: ~/.config/karabiner
+lf: ~/.config/lf
+newsboat: ~/.newsboat
+oh-my-zsh: ~/.oh-my-zsh
+polybar: ~/.config/polybar
+radio:
+- radio-config: ~/.radio-config
+ranger: ~/.config/ranger
+rtv: ~/.config/rtv
+screen:
+- screenrc: ~/.screenrc
+tmux:
+- tmux.conf: ~/.tmux.conf
+ghci: ~/.ghci
+
+# X server
+xinitrc: ~/.xinitrc
+xprofile: ~/.xprofile
+Xresources: ~/.Xresources
+
+# Emacs config
+emacs:
+- emacs.d: ~/.emacs.d
+- emacs: ~/emacs
+
+# All shell config
+shell:
+- aliases: ~/.aliases
+- functions: ~/.functions
+- secret_env_variables: ~/.secret_env_variables
+- zprofile: ~/.zprfile
+- zshrc: ~/.zshrc
+
+# Vim config
+vim:
+- after: ~/.vim/after
+- autoload: ~/.vim/autoload
+- colors: ~/.vim/colors
+- compiler: ~/.vim/compiler
+- ftdetect: ~/.vim/ftdetect
+- plugin: ~/.vim/plugin
+- ultisnips: ~/.vim/ultisnips
+- vimrc: ~/.vimrc

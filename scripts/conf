@@ -1,32 +1,45 @@
 #!/usr/bin/env bash
+# TODO:  handle multiple nesting levels, convert to posix shell
+
+# Set the dir for your dotfiles, mine comes from the environment
+DOTFILES="${DOTFILES}"
+
 die() {
   echo "$1" >&2
   exit 1
 }
-[ -z "$DOTFILES" ] && die '$DOTFILES variable not set.'
-cd "$DOTFILES" || die "Can't read $DOTFILES"
 
-link() {
+# Don't want $DOTFILES expansion in the message
+# shellcheck disable=SC2016
+[ -z "${DOTFILES}" ] && die '$DOTFILES variable not set.'
+cd "${DOTFILES}" || die "Can't read ${DOTFILES}"
+
+do_link() {
   if [ -e "$2" ]; then
-    echo "$2 already exists, renaming to $2.bak"
-    mv "$2" "$2.bak"
+    if [ -L "$2" ] && [ "$(realpath "$2")" == "$(pwd)/$1" ]; then
+      echo "$2 is already linked to $1."
+      return
+    else
+      echo "$2 already exists, renaming to $2.bak"
+      mv "$2" "$2.bak"
+    fi
   fi
   ln -svf "$(pwd)/$1" "$2"
 }
 
-# TODO:  handle multiple nesting levels, support unlinking
-
-declare -A mappings
 parse_mapfile() {
   if [ ! -f "$1" ]; then
     die "Mapfile $1 does not exist."
   fi
+
   local nestdir=""
   local lineno=1
-  homedir="$(echo -n "$HOME" | tr -d '\n\r')"
+  homedir="$(echo -n "${HOME}" | tr -d '\n\r')"
+
   while read -r map; do
-    if [ ! -z "$map" ] && [[ ! "$map" == "#"* ]]; then
-      mapping=($(echo -n "$map" | sed -e 's/^ *- /-/' -e "s:~:$homedir:" | awk -F ': ' '{ print $1 " " $2 }'))
+    if [ -n "${map}" ] && [[ ! "${map}" == "#"* ]]; then
+
+      IFS=" " read -r -a mapping <<< "$(echo -n "${map}" | sed -e 's/^ *- /-/' -e "s:~:${homedir}:" | awk -F ': ' '{ print $1 " " $2 }')"
 
       # Top level items
       if [[ ! "${mapping[0]}" == "-"* ]]; then
@@ -36,37 +49,95 @@ parse_mapfile() {
           nestdir="${mapping[0]/://}"
         else
           # one-off mapping
-          if [ ! -e "$nestdir${mapping[0]}" ]; then
-            die "error in mapfile: $nestdir${mapping[0]} does not exist (line $lineno)"
+          if [ ! -e "${nestdir}${mapping[0]}" ]; then
+            die "error in mapfile: ${nestdir}${mapping[0]} does not exist (line ${lineno})"
           fi
-          mappings["$nestdir${mapping[0]}"]="${mapping[1]}"
+          mappings["${nestdir}${mapping[0]}"]="${mapping[1]}"
         fi
       else
-        if [ ! -e "$nestdir${mapping[0]/-/}" ]; then
-          die "error in mapfile: $nestdir${mapping[0]/-/} does not exist (line $lineno)"
+        if [ ! -e "${nestdir}${mapping[0]/-/}" ]; then
+          die "error in mapfile: ${nestdir}${mapping[0]/-/} does not exist (line ${lineno})"
         fi
-        mappings["$nestdir${mapping[0]/-/}"]="${mapping[1]}"
+        mappings["${nestdir}${mapping[0]/-/}"]="${mapping[1]}"
       fi
     fi
     ((lineno++))
   done < <(cat "$1")
 }
 
-parse_mapfile "./dotmap.conf"
+link_all() {
+  for f in "${!mappings[@]}"; do
+    do_link "${f}" "${mappings[${f}]}";
+  done
+}
+unlink_all() {
+  for f in "${!mappings[@]}"; do
+    do_unlink "${mappings[${f}]}"
+  done
+}
+link_specific() {
+  if  ( IFS=$'\n'; echo "${mappings[*]}" ) | grep -vqFx "${i}*"; then
+    for f in "${!mappings[@]}"; do
+      if [[ "${f}" == "${i}"* ]]; then
+        do_link "${f}" "${mappings[${f}]}"
+      fi
+    done
+  else
+    die "Error: ${i} not present in mapfile, don't know how to link."
+  fi
+}
+do_unlink() {
+  if [ ! -e "$1" ]; then
+    echo "$1 does not exist."
+  elif [ ! -L "$1" ]; then
+    echo "$1 is not a link, not removing."
+  else
+    echo -n "Removing link "
+    rm -v "$1"
+  fi
+}
+unlink_specific(){
+  if  ( IFS=$'\n'; echo "${mappings[*]}" ) | grep -vqFx "${i}*"; then
+    for f in "${!mappings[@]}"; do
+      if [[ "${f}" == "${i}"* ]]; then
+        do_unlink "${mappings[${f}]}"
+      fi
+    done
+  else
+    die "Error: ${i} not present in mapfile, can't unlink."
+  fi
+}
+list_mappings() {
+  for f in "${!mappings[@]}"; do
+    echo "${f} =>  ${mappings[${f}]}";
+  done
+}
+
+declare -A mappings
+parse_mapfile "./dot.map"
 
 PARAMS=""
-
-list_only=0
+link_mode=0
+unlink_mode=0
 while (( "$#" )); do
   case "$1" in
     -l|--list)
-      list_only=1
-      shift
+      list_mappings
+      exit 0
       ;;
 
     -h|--help)
       echo "Usage:"
-      echo "-l, --list    only list maps"
+      echo "conf [options] (link|unlink) [entry1 [entry2...]]"
+      echo
+      echo "Options:"
+      echo "   -l, --list    only list maps"
+      echo
+      echo "link [entry1 [entry2...]]       Link entries according to the map file."
+      echo "                                With no arguments, links all entries."
+      echo
+      echo "unlink [entry1 [entry2...]]     Unlink entries according to the map file."
+      echo "                                With no arguments, unlinks all entries."
       exit 0
       ;;
     --) # end arg parsing
@@ -75,37 +146,65 @@ while (( "$#" )); do
       ;;
     -*) # unsupported flags
       echo "Unsupported flag $1" >&2
+      echo 'Run `conf -h` to show usage.'
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="$PARAMS $1"
+      PARAMS="${PARAMS} $1"
       shift
       ;;
   esac
 done
-eval set -- "$PARAMS"
-if [ $# -eq 0 ] && [ $list_only -eq 0 ]; then
-  read -srp "Link all dotfiles?" -n 1 -s conf
-  case "$conf" in
-    Y|y)
-      echo
-      for f in "${!mappings[@]}"; do link "$f" "${mappings[$f]}"; done
-      ;;
-  esac
-elif [ $list_only -eq 1 ]; then
-  for f in "${!mappings[@]}"; do echo "$f =>  ${mappings[$f]}"; done
-else
-  for i in $@; do
-    if  ( IFS=$'\n'; echo "${mappings[*]}" ) | grep -vqFx "$i"*; then
-      for f in "${!mappings[@]}"; do
-        if [[ "$f" == "$i"* ]]; then
-          link "$f" "${mappings[$f]}"
-        fi
-      done
-    else
-      die "Error: $i not present in mapfile, don't know how to link."
-    fi
-  done
-fi
+eval set -- "${PARAMS}"
 
+case "$1" in
+  "link")
+    link_mode=1
+    shift
+    ;;
+  "unlink")
+    unlink_mode=1
+    shift
+    ;;
+  *)
+    ;;
+esac
+
+[ "${link_mode}" -eq 0 ] && [ "${unlink_mode}" -eq 0 ] && die 'Arguments required, run `conf -h` to show usage.'
+
+if [ "${link_mode}" -eq 1 ]; then
+  if [ $# -eq 0 ]; then
+    read -srp "Link all dotfiles?" -n 1 -s conf
+    case "${conf}" in
+      Y|y)
+        echo
+        link_all
+        ;;
+      *)
+        ;;
+    esac
+  else
+    for i in "$@"; do
+      link_specific "${i}"
+    done
+  fi
+elif [ "${unlink_mode}" -eq 1 ]; then
+  if [ $# -eq 0 ]; then
+    read -srp "Unlink all dotfiles?" -n 1 -s conf
+    case "${conf}" in
+      Y|y)
+        echo
+        unlink_all
+        ;;
+      *)
+        ;;
+    esac
+  else
+    for i in "$@"; do
+      unlink_specific "${i}"
+    done
+  fi
+else
+  die "Neither link nor unlink mode specified."
+fi
 
