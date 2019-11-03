@@ -1,3 +1,30 @@
+# The format of this file is:
+#   - lines starting with '#' are comments
+#   - whitespace is ignored, except inside a mapping definition
+#   - a mapping definition is: "source: destination"
+#   - source paths are relative to the root of $DOTFILES (set in conf, or from an environment variable)
+#   - lines that don't start with a '-' are top-level directories or files
+#   - lines starting with n number of '-' are files/directories n levels deep
+#       (i.e. '- bin' is one level deep, '-- bin' is two levels deep, etc.)
+
+# For example, the map definitions:
+#   vim:
+#     - vimrc: ~/.vimrc
+#     - autoload:
+#       -- script1.vim: ~/.vim/autoload/script1.vim
+#       -- script2.vim: ~/.vim/autoload/script2.vim
+#   tmux/tmux.conf: ~/.tmux.conf
+#
+# Get parsed as:
+#   vim/vimrc => ~/.vimrc
+#   vim/autoload/script1.vim => ~/.vim/autoload/script1.vim
+#   vim/autoload/script2.vim => ~/.vim/autoload/script2.vim
+#   tmux/tmux.conf => ~/.tmux.conf
+
+# When linking/unlinking, names don't have to be complete.
+# You can also just provide the name of the top directory, conf will figure out the rest.
+
+
 # Custom stuff I write
 bin: ~/.bin
 scripts: ~/.scripts
@@ -26,7 +53,7 @@ tmux:
 - tmux.conf: ~/.tmux.conf
 ghci: ~/.ghci
 
-# X server
+# X server (Linux)
 xinitrc: ~/.xinitrc
 xprofile: ~/.xprofile
 Xresources: ~/.Xresources
