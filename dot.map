@@ -40,7 +40,7 @@ gdb:
 - gdbinit: ~/.gdbinit
 git:
 - gitconfig: ~/.gitconfig
-i3: ~/.config/i3
+i3: ~/.config/regolith/i3
 irssi: ~/.config/irssi
 karabiner: ~/.config/karabiner
 lf: ~/.config/lf

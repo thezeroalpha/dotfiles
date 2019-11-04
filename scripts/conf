@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# TODO: convert to posix shell
+# TODO: check if linked, fix linking e.g. "emacs/emacs" vs "emacs/emacs.d" vs "emacs",
+#   convert to posix shell
 # Set the dir for your dotfiles, mine comes from the environment
 DOTFILES="${DOTFILES}"
 
