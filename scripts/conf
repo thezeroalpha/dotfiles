@@ -158,7 +158,7 @@ while (( "$#" )); do
     -l|--list)
       parse_mapfile "./${mapfile}"
       echo "Mappings (from $(realpath ${mapfile})):"
-      echo "(format: source => destination)"
+      echo "(format: source => name_of_symlink)"
       list_mappings
       exit 0
       ;;

@@ -1,13 +1,21 @@
 # Mappings for your dotfiles
-
 # The format of this file is:
-#   - lines starting with '#' are comments
-#   - whitespace is ignored, except inside a mapping definition
-#   - a mapping definition is: "source: destination"
-#   - source paths are relative to the root of $DOTFILES (set in conf, or from an environment variable)
-#   - lines that don't start with a '-' are top-level directories or files
-#   - lines starting with n number of '-' are files/directories n levels deep
-#       (i.e. '- bin' is one level deep, '-- bin' is two levels deep, etc.)
+#   - comments:
+#     - lines starting with '#' are comments
+#     - a comment must be on its own line
+#     - there are no multi-line comments
+#   - whitespace:
+#     - whitespace is ignored, except inside a mapping definition
+#        (i.e. you can indent lines however you like, and insert blank lines)
+#   - mappings:
+#     - a mapping definition is: "source: destination"
+#     - source paths are relative to $DOTFILES (set in scripts/conf, or from an environment variable)
+#     - lines that don't start with a '-' are top-level directories or files
+#     - lines starting with n number of '-' are files/directories n levels deep
+#         (i.e. '- bin' is one level deep, '-- bin' is two levels deep, etc.)
+#     - every file/directory that is not at the root level must be under some top directory
+#         (i.e. you can't have a line starting with '-' as the first line of the mapfile)
+#     - every mapping source must exist (scripts/conf will complain if it doesn't)
 
 # For example, the map definitions:
 #   vim:
@@ -25,12 +33,24 @@
 #   tmux/tmux.conf => ~/.tmux.conf
 #   ghci => ~/.ghci
 #
-# (the arrows "x => y" mean "the symbolic link to x is y" or "y points to x",
-#   this order is different from that in "ln" but I find this more intuitive)
-
-# When linking/unlinking, names don't have to be complete.
-# You can also just provide the name of the top directory, conf will figure out the rest.
-
+# And executed as the commands:
+#   ln -svf "$DOTFILES/vim/vimrc" "~/.vimrc"
+#   ln -svf "$DOTFILES/vim/autoload/script1.vim" "~/.vim/autoload/script1.vim"
+#   ln -svf "$DOTFILES/vim/autoload/script2.vim" "~/.vim/autoload/script2.vim"
+#   ln -svf "$DOTFILES/tmux/tmux.conf" "~/.tmux.conf"
+#   ln -svf "$DOTFILES/ghci" "~/.ghci"
+#
+# Every existing file will be backed up.
+# If a directory in the destination path doesn't exist, it is created.
+# `scripts/conf` doesn't take care of removing empty directories after unlinking.
+#
+# The arrows "x => y" mean:
+#   - "source => name_of_symlink"
+#   - "the symbolic link to x is y"
+#   - "y points to x"
+#
+# When linking/unlinking you either provide the name of the top directory,
+#  or the full name of the mapped path.
 
 # Custom stuff I write
 bin: ~/.bin
@@ -70,7 +90,7 @@ emacs:
 - emacs.d: ~/.emacs.d
 - emacs: ~/emacs
 
-# All shell config
+# All shell configs
 shell:
 - aliases: ~/.aliases
 - functions: ~/.functions
