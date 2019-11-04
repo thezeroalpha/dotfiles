@@ -1,3 +1,5 @@
+# Mappings for your dotfiles
+
 # The format of this file is:
 #   - lines starting with '#' are comments
 #   - whitespace is ignored, except inside a mapping definition
@@ -20,6 +22,8 @@
 #   vim/autoload/script1.vim => ~/.vim/autoload/script1.vim
 #   vim/autoload/script2.vim => ~/.vim/autoload/script2.vim
 #   tmux/tmux.conf => ~/.tmux.conf
+#
+# (the arrows show the symbolic links)
 
 # When linking/unlinking, names don't have to be complete.
 # You can also just provide the name of the top directory, conf will figure out the rest.
