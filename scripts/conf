@@ -103,14 +103,15 @@ unlink_all() {
   done
 }
 link_specific() {
-  if  ( IFS=$'\n'; echo "${mappings[*]}" ) | grep -vqFx "${i}*"; then
+  grep_result="$( ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "$1")"
+  if  [ -n "$grep_result" ]; then
     for f in "${!mappings[@]}"; do
-      if [[ "${f}" == "${i}"* ]]; then
+      if [[ "${f%%/*}" == "$1" ]] || [ "${f}" = "$1" ]; then
         do_link "${f}" "${mappings[${f}]}"
       fi
     done
   else
-    die "Error: ${i} not present in mapfile, don't know how to link."
+    die "Error: $1 not present in mapfile, don't know how to link."
   fi
 }
 do_unlink() {
@@ -119,12 +120,13 @@ do_unlink() {
   elif [ ! -L "$1" ]; then
     echo "$1 is not a link, not removing."
   else
-    echo -n "Removing link "
+    echo -n "Removing link: "
     rm -v "$1"
   fi
 }
 unlink_specific(){
-  if  ( IFS=$'\n'; echo "${mappings[*]}" ) | grep -vqFx "${i}*"; then
+  grep_result="$( ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "$1")"
+  if  [ -n "$grep_result" ]; then
     for f in "${!mappings[@]}"; do
       if [[ "${f}" == "${i}"* ]]; then
         do_unlink "${mappings[${f}]}"
