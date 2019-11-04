@@ -6,7 +6,13 @@
 2. `cd` into repository
 3. Run `install.sh`
 
-However, if you _do_ use this, I suggest that you use this more as inspiration than just installing everything for a full setup. Your configuration is *your* configuration. That's why I wrote `scripts/conf` to allow modular configuration. You choose which module you want to install, and it'll only install that specific one (and back up your old files too). Get more info by running `scripts/conf` without any arguments.
+
+Remember: your configuration is *your* configuration (and this is mine).
+
+However, if you _do_ decide to use this, I suggest that you do so more as inspiration, rather than installing everything for a full setup.
+That's why I wrote `scripts/conf` -- to allow modular configuration.
+You choose which configs you want to install, and it'll only install those (and back up your old files too).
+Get more info by running `scripts/conf -h`, and investigate the dotfile mappings in `./dot.map`.
 
 ## Scripts in `dotfiles/scripts`:
 Before you use a custom script, read what it does. Some may be a bit buggy, I haven't tested them on all systems.
@@ -16,7 +22,7 @@ If you read a script and see some improvements that could be made, let me know. 
 * `checklinks`: recursively check any website for broken links
 * `clonedisk`: clones one disk to another
 * `colgen.rb`: a Ruby script to generate Vim colorschemes from a much simpler syntax file.
-* `conf`: the script to manage dotfiles. run `conf` to show available commands.
+* `conf`: the script to manage dotfiles. run `conf -h` to show available commands.
 * `create_pocketbook_logo`: take an image and convert it into a logo for my PocketBook 603. Run with the `-h` flag for usage.
 * `dashedit.rb`: script to allow Dash submissions from the commandline. Largely useless to anyone except me.
 * `epr.py`: a [Python-based EPUB reader](https://github.com/wustho/epr)

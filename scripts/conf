@@ -157,12 +157,14 @@ while (( "$#" )); do
   case "$1" in
     -l|--list)
       parse_mapfile "./${mapfile}"
-      echo "Mappings:"
+      echo "Mappings (from $(realpath ${mapfile})):"
       list_mappings
       exit 0
       ;;
 
     -h|--help)
+      echo "Loading configuration from: $(realpath ${mapfile})"
+      echo
       echo "Usage:"
       echo "conf [options] (link|unlink) [entry1 [entry2...]]"
       echo
