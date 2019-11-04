@@ -104,7 +104,7 @@ unlink_all() {
 }
 link_specific() {
   grep_result="$( ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "^$1")"
-  if  [ -n "$grep_result" ]; then
+  if  [ -n "${grep_result}" ]; then
     for f in "${!mappings[@]}"; do
       if [[ "${f%%/*}" == "$1" ]] || [ "${f}" = "$1" ]; then
         do_link "${f}" "${mappings[${f}]}"
@@ -126,7 +126,7 @@ do_unlink() {
 }
 unlink_specific(){
   grep_result="$( ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "^$1")"
-  if  [ -n "$grep_result" ]; then
+  if  [ -n "${grep_result}" ]; then
     for f in "${!mappings[@]}"; do
       if [[ "${f}" == "${i}"* ]]; then
         do_unlink "${mappings[${f}]}"
