@@ -16,14 +16,17 @@
 #       -- script1.vim: ~/.vim/autoload/script1.vim
 #       -- script2.vim: ~/.vim/autoload/script2.vim
 #   tmux/tmux.conf: ~/.tmux.conf
+#   ghci: ~/.ghci
 #
 # Get parsed as:
 #   vim/vimrc => ~/.vimrc
 #   vim/autoload/script1.vim => ~/.vim/autoload/script1.vim
 #   vim/autoload/script2.vim => ~/.vim/autoload/script2.vim
 #   tmux/tmux.conf => ~/.tmux.conf
+#   ghci => ~/.ghci
 #
-# (the arrows show the symbolic links)
+# (the arrows "x => y" mean "the symbolic link to x is y" or "y points to x",
+#   this order is different from that in "ln" but I find this more intuitive)
 
 # When linking/unlinking, names don't have to be complete.
 # You can also just provide the name of the top directory, conf will figure out the rest.
