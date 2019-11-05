@@ -39,14 +39,13 @@ read -n 1 -p "Install all dotfiles? [Y/n]" yn
 echo
 case $yn in
   [Yy]* ) 
-    sed -i -e "s:MY_HOME_DIR:$HOME:" vim/vimrc git/gitconfig
-    scripts/conf use $(find . -maxdepth 1 -type d ! -iwholename "*.git*")
+    yes | scripts/conf link
     echo "Dotfiles installed."
-    echo "Run \`conf\` for more help."
+    echo "Run \`conf -h\` for more help."
     ;;
   * ) 
     echo "No dotfiles installed automatically."
-    echo "Run \`scripts/conf\` for more help."
+    echo "Run \`scripts/conf -h\` for more help."
     ;;
 esac
 
