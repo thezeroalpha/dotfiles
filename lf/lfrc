@@ -64,24 +64,6 @@ cmd extract ${{
     esac
 }}
 
-# compress current file or selected files with tar and gunzip
-cmd tar ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    tar czf $1.tar.gz $1
-    rm -rf $1
-}}
-
-# compress current file or selected files with zip
-cmd zip ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -r $1.zip $1
-    rm -rf $1
-}}
-
 cmd copy_path ${{
   set -f
   if command -v pbcopy > /dev/null 2> /dev/null; then
@@ -89,6 +71,13 @@ cmd copy_path ${{
   elif command -v xclip > /dev/null 2> /dev/null; then
     echo "$f" | tr -d '\n' | xclip -sel clip
   fi
+}}
+cmd zip ${{
+  set -f
+  mkdir $f-zip
+  cp -r $fx $f-zip
+  (cd $f-zip/ && zip -r $f.zip .)
+  rm -rf $f-zip/
 }}
 cmd paste_link %{{
   load=$(lf -remote 'load')
@@ -148,3 +137,5 @@ map cd push %mkdir<space>
 map e
 map ee $$EDITOR $f
 map ec edit_config
+
+map tz zip
