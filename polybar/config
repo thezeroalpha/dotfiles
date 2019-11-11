@@ -341,7 +341,7 @@ label-mode-background = #11ffffff
 
 ; focused = Active workspace on focused monitor
 label-focused = %index%
-label-focused-background = #11ffffff
+label-focused-background = #1effffff
 label-focused-underline= #00000000
 label-focused-padding = 2
 
