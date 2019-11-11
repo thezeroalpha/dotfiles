@@ -69,6 +69,7 @@
 
     root = rev-parse --show-toplevel
 
+    edit-changed = "!$EDITOR `git status --porcelain | sed -ne 's/^ M //p'`"
     commit-at = "!f(){\
     if [ $# -eq 0 ]; then\
     echo \"Date format: YYYY-MM-DD HH:MM:SS\";\
