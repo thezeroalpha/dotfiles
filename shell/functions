@@ -53,6 +53,7 @@ if command -v osascript &> /dev/null; then
       echo 'No Finder window found' >&2
     fi
   }
+
   # echo current Finder directory
   gdf() {
     osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
@@ -60,10 +61,9 @@ if command -v osascript &> /dev/null; then
   # echo selected Finder file
   fsel() {
     osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
-  };
+  }
 fi
 
-# fzf functions {{{
 if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
   export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -500'"
   export FZF_DEFAULT_COMMAND="ag -l -g \"\""
@@ -79,16 +79,23 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
     vim $DOTFILES/scripts/"$1" && chmod +x $DOTFILES/scripts/"$1"
   }
 
-   # config edit
-   ce() {
-     local files
-     IFS=$'\n' files=($(command find ~/.dotfiles -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
-     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-   }
+  # script find
+  sf() {
+    local f
+    IFS=$'\n' f=($(command find "$(readlink ~/.scripts)" -type f -not -ipath "*/.git/*" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
+    [[ -n "$f" ]] && printf "$f"
+  }
+
+  # config edit
+  ce() {
+    local files
+    IFS=$'\n' files=($(command find ~/.dotfiles -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  }
   # vim setting edit
   ve() {
     local files
-    IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit (vim)> " --height=40 --reverse))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   }
   # run python
