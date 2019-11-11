@@ -44,10 +44,10 @@ floating_modifier $mod
 hide_edge_borders smart
 
 # start a terminal
-bindsym $mod+Return exec $terminal_path
+bindsym $mod+Return exec --no-startup-id $terminal_path
 
 # start a web browser
-bindsym $mod+Shift+Return exec /usr/bin/sensible-browser
+bindsym $mod+Shift+Return exec --no-startup-id /usr/bin/sensible-browser
 
 # kill focused window
 bindsym $alt+q kill
@@ -55,9 +55,9 @@ bindsym $alt+q kill
 set_from_resource $rofiTheme rofi.theme "regolith-theme"
 
 # rofi app and window launchers
-bindsym $mod+a exec rofi -show drun -theme $rofiTheme
-bindsym $mod+r exec rofi -show run -theme $rofiTheme
-bindsym $mod+shift+w exec rofi -show window -theme $rofiTheme
+bindsym $mod+a exec --no-startup-id rofi -show drun -theme $rofiTheme
+bindsym $mod+r exec --no-startup-id rofi -show run -theme $rofiTheme
+bindsym $mod+shift+w exec --no-startup-id rofi -show window -theme $rofiTheme
 
 # change focus
 bindsym $alt+h focus left
@@ -179,11 +179,11 @@ bindsym $mod+Shift+p exec /usr/bin/gnome-session-quit --power-off
 bindsym $mod+Escape exec gnome-screensaver-command --lock
 
 # shortcuts for common system configuration tasks
-bindsym $mod+c exec gnome-control-center
-bindsym $mod+b exec gnome-control-center bluetooth
-bindsym $mod+d exec gnome-control-center display
-bindsym $mod+n exec gnome-control-center network
-bindsym $mod+p exec gnome-control-center power
+bindsym $mod+c exec --no-startup-id gnome-control-center
+bindsym $mod+b exec --no-startup-id gnome-control-center bluetooth
+bindsym $mod+d exec --no-startup-id gnome-control-center display
+bindsym $mod+n exec --no-startup-id gnome-control-center network
+bindsym $mod+p exec --no-startup-id gnome-control-center power
 
 # resize window (you can also use the mouse for that)
 mode "Resize Mode" {
