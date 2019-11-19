@@ -159,6 +159,7 @@ There are two things you can do about this warning:
      ("\\?\\?\\?+" . "#dc752f"))))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(menu-bar-mode nil)
  '(org-babel-load-languages
    (quote
     ((awk . t)
@@ -218,6 +219,7 @@ There are two things you can do about this warning:
    (quote
     (htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
  '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
+ '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(version-control t)
  '(word-wrap nil)
