@@ -47,5 +47,5 @@ link pmenusel statusline
 
 diffadd NONE, #a5ffa5
 diffdelete NONE, #ffa5a5
-diffchange #a9dbff, #c0beff
-difftext NONE, #a0aeff
+diffchange #2c2625, #c0beff
+difftext NONE, #a0aeff. bold

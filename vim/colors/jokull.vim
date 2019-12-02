@@ -35,8 +35,8 @@ hi delimiter guifg=#5f5f00 guibg=NONE ctermfg=58 ctermbg=NONE cterm=NONE gui=NON
 hi comment guifg=#5f5f5f guibg=NONE ctermfg=59 ctermbg=NONE cterm=italic gui=italic
 hi diffadd guifg=NONE guibg=#a5ffa5 ctermfg=NONE ctermbg=157 cterm=NONE gui=NONE
 hi diffdelete guifg=NONE guibg=#ffa5a5 ctermfg=NONE ctermbg=217 cterm=NONE gui=NONE
-hi diffchange guifg=#a9dbff guibg=#c0beff ctermfg=153 ctermbg=147 cterm=NONE gui=NONE
-hi difftext guifg=NONE guibg=#a0aeff ctermfg=NONE ctermbg=147 cterm=NONE gui=NONE
+hi diffchange guifg=#2c2625 guibg=#c0beff ctermfg=0 ctermbg=147 cterm=NONE gui=NONE
+hi difftext guifg=NONE guibg=#a0aeff ctermfg=NONE ctermbg=147 cterm=bold gui=bold
 hi! link tabline tablinefill
 hi! link repeat statement
 hi! link conditional statement
