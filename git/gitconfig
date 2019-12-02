@@ -59,6 +59,8 @@
     reignore = "!git rm -r --cached .; git add ."
     rb = "rebase --committer-date-is-author-date"
     lfs-refs = "!git fetch --all && git log -p --all -S"
+    chp = cherry-pick
+    chpn = cherry-pick --no-commit
 
     la = "!git config -l | grep alias | cut -c 7-"
 
