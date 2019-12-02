@@ -690,8 +690,8 @@ nnoremap gj j
 nnoremap gk k
 
 " Move visual block
-vnoremap D :m '>+1<CR>gv=gv
-vnoremap U :m '<-2<CR>gv=gv
+xnoremap D :m '>+1<CR>gv=gv
+xnoremap U :m '<-2<CR>gv=gv
 
 " and don't break my colours (U for 'unfuck my screen please')
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
