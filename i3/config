@@ -43,6 +43,23 @@ floating_modifier $mod
 
 hide_edge_borders smart
 
+
+mode "Control Center" {
+      # shortcuts for common system configuration tasks
+      bindsym w exec gnome-control-center wifi
+      bindsym b exec gnome-control-center bluetooth
+      bindsym d exec gnome-control-center display
+      bindsym n exec gnome-control-center network
+      bindsym p exec gnome-control-center power
+      bindsym s exec gnome-control-center sound
+
+      bindsym Escape mode "default"
+      bindsym $mod+comma mode "default", [class=Gnome-control-center] move to scratchpad
+      bindsym q mode "default", [class=Gnome-control-center] kill
+}
+
+bindsym $mod+comma mode "Control Center",exec --no-startup-id gnome-control-center, [class=Gnome-control-center] move to scratchpad, scratchpad show, resize set width 96 ppt height 95 ppt, move position center
+
 # start a terminal
 bindsym $mod+Return exec --no-startup-id $terminal_path
 
@@ -50,7 +67,11 @@ bindsym $mod+Return exec --no-startup-id $terminal_path
 bindsym $mod+Shift+Return exec --no-startup-id /usr/bin/sensible-browser
 
 # kill focused window
-bindsym $alt+q kill
+bindsym ctrl+q kill
+
+
+bindsym $mod+minus move to scratchpad
+bindsym $mod+Shift+minus scratchpad show
 
 set_from_resource $rofiTheme rofi.theme "regolith-theme"
 
@@ -179,11 +200,6 @@ bindsym $mod+Shift+p exec /usr/bin/gnome-session-quit --power-off
 bindsym $mod+Escape exec gnome-screensaver-command --lock
 
 # shortcuts for common system configuration tasks
-bindsym $mod+c exec --no-startup-id gnome-control-center
-bindsym $mod+b exec --no-startup-id gnome-control-center bluetooth
-bindsym $mod+d exec --no-startup-id gnome-control-center display
-bindsym $mod+n exec --no-startup-id gnome-control-center network
-bindsym $mod+p exec --no-startup-id gnome-control-center power
 
 # resize window (you can also use the mouse for that)
 mode "Resize Mode" {
