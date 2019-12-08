@@ -73,12 +73,13 @@ polybar: ~/.config/polybar
 radio:
 - radio-config: ~/.radio-config
 ranger: ~/.config/ranger
-rtv: ~/.config/rtv
+tuir: ~/.config/tuir
 screen:
 - screenrc: ~/.screenrc
 tmux:
 - tmux.conf: ~/.tmux.conf
 ghci: ~/.ghci
+mpv: ~/.config/mpv
 
 # X server (Linux)
 xinitrc: ~/.xinitrc
