@@ -110,9 +110,14 @@ Plug 'junegunn/vim-easy-align'
 " Peek contents of registers
 Plug 'junegunn/vim-peekaboo'
 
+" Latex symbol to unicode
 Plug 'joom/latex-unicoder.vim'
 
+" Smooth ^U/^D scrolling
 Plug 'psliwka/vim-smoothie'
+
+" Markdown support
+Plug 'plasticboy/vim-markdown'
 call plug#end()
 " }}}
 " Config {{{
