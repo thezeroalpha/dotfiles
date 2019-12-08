@@ -130,16 +130,12 @@ There are two things you can do about this warning:
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(blink-cursor-mode t)
  '(blink-matching-paren t)
- '(custom-enabled-themes (quote (cyberpunk)))
+ '(custom-enabled-themes (quote (cyberpunk spacemacs-light)))
  '(custom-safe-themes
    (quote
-    ("eb5c69951164b0768bc281a5dfca5fc02b02f65e1ca92c0636ae5e773e9d7704" "729f738270eaf44363409cf5870a822eafcb9bc4ac4d2c4c9e088b7a68cf4e7a" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
- '(fci-rule-color "#383838")
-    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "30289fa8d502f71a392f40a0941a83842152a68c54ad69e0638ef52f04777a4c" "1a232652b04b68380b1cff7ceeb62787b4eb43df826a97c67831c50b0c0d1451" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" default)))
+    ("7238a72b7ad187001482aa5d803a83df542b9f90aa544b48fdd939672c483680" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" "eb5c69951164b0768bc281a5dfca5fc02b02f65e1ca92c0636ae5e773e9d7704" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
  '(hl-todo-keyword-faces
    (quote
     (("TODO" . "#dc752f")
@@ -217,7 +213,7 @@ There are two things you can do about this warning:
  '(package-check-signature nil)
  '(package-selected-packages
    (quote
-    (htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
+    (chess htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
  '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
@@ -229,7 +225,6 @@ There are two things you can do about this warning:
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(menu ((t (:background "red" :inverse-video nil :slant italic))))
  '(org-code ((t (:foreground "#21b8c7" :height 1.2 :family "Courier"))))
  '(tty-menu-disabled-face ((t (:background "color-238" :foreground "color-16"))))
  '(tty-menu-enabled-face ((t (:background "red" :foreground "white" :weight bold))))
