@@ -203,26 +203,27 @@ bindsym $mod+Escape exec gnome-screensaver-command --lock
 
 # resize window (you can also use the mouse for that)
 mode "Resize Mode" {
-        # These bindings trigger as soon as you enter the resize mode
-        bindsym Left resize shrink width 6 px or 6 ppt
-        bindsym Down resize grow height 6 px or 6 ppt
-        bindsym Up resize shrink height 6 px or 6 ppt
-        bindsym Right resize grow width 6 px or 6 ppt
+        # Resize small
+        bindsym $alt+h resize shrink width 1 px or 1 ppt
+        bindsym $alt+k resize grow height 1 px or 1 ppt
+        bindsym $alt+j resize shrink height 1 px or 1 ppt
+        bindsym $alt+l resize grow width 1 px or 1 ppt
 
-        bindsym Shift+Left resize shrink width 12 px or 12 ppt
-        bindsym Shift+Down resize grow height 12 px or 12 ppt
-        bindsym Shift+Up resize shrink height 12 px or 12 ppt
-        bindsym Shift+Right resize grow width 12 px or 12 ppt
-
+        # Resize medium
         bindsym h resize shrink width 6 px or 6 ppt
         bindsym k resize grow height 6 px or 6 ppt
         bindsym j resize shrink height 6 px or 6 ppt
         bindsym l resize grow width 6 px or 6 ppt
 
-        bindsym Shift+h resize shrink width 100 px or 100 ppt
-        bindsym Shift+k resize grow height 100 px or 100 ppt
-        bindsym Shift+j resize shrink height 100 px or 100 ppt
-        bindsym Shift+l resize grow width 100 px or 100 ppt
+        # Resize large
+        bindsym Shift+h resize shrink width 12 px or 12 ppt
+        bindsym Shift+k resize grow height 12 px or 12 ppt
+        bindsym Shift+j resize shrink height 12 px or 12 ppt
+        bindsym Shift+l resize grow width 12 px or 12 ppt
+
+        # Resize to 50%
+        bindsym Shift+minus resize set width 50 ppt
+        bindsym Shift+backslash resize set height 50 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -238,9 +239,6 @@ new_float pixel 1
 # Gaps (i3-gaps)
 gaps inner 15
 gaps outer 0
-
-# Only enable gaps on a workspace when there is at least one container
-#smart_gaps on
 
 # Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
 set $mode_gaps Gaps: (o) outer, (i) inner
