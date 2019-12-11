@@ -32,7 +32,13 @@ MUSIC_DIR="${MUSIC_DIR:-$HOME/Music}"
 
 PARAMS=""
 
-less -fR <(do_sync "$MUSIC_DIR"/ "$PHONE_DIR" --dry-run)
+# Piping directly didn't work for some reason, less wouldn't page it
+outfile=$(mktemp)
+trap "rm $outfile" INT TERM EXIT
+echo "Calculating differences..."
+{ do_sync "$MUSIC_DIR"/ "$PHONE_DIR" --dry-run; } &> "$outfile"
+less -fR "$outfile" && rm "$outfile"
+trap - INT TERM EXIT
 
 read -rp "Execute? [Y/n]" -n 1 -s conf
 echo
