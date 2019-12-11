@@ -1,95 +1,93 @@
 #!/usr/bin/env bash
-# TODO: check if linked, fix linking e.g. "emacs/emacs" vs "emacs/emacs.d" vs "emacs",
+# TODO: fix linking e.g. "emacs/emacs" vs "emacs/emacs.d" vs "emacs",
 #   convert to posix shell
 # Set the dir for your dotfiles, mine comes from the environment
-DOTFILES="${DOTFILES}"
+DOTFILES="${DOTFILES}";
 
 # Set the name of the mapfile, located in the root folder of your dotfiles
-mapfile="dot.map"
+mapfile="dot.map";
+
+# Begin script
+declare -A mappings;
+
+pp_mappings() {
+  echo "{"
+  for f in "${!mappings[@]}"; do
+    echo "  ${f} => ${mappings[${f}]}";
+  done
+  echo "}"
+}
 
 die() {
-  echo "$1" >&2
-  exit 1
+  echo "$1" >&2;
+  exit 1;
 }
+
 get_bash_version() {
-  echo "${BASH_VERSION}" | cut -d'.' -f1
+  echo "${BASH_VERSION}" | cut -d'.' -f1;
 }
 
-[ "$(get_bash_version)" -ge 4 ] || die "Requires Bash >= 4"
+preliminary_checks() {
+  [ "$(get_bash_version)" -ge 4 ] || die "Requires Bash >= 4";
 
-# Don't want $DOTFILES expansion in the message
-# shellcheck disable=SC2016
-[ -z "${DOTFILES}" ] && die '$DOTFILES variable not set.'
-cd "${DOTFILES}" || die "Can't read ${DOTFILES}"
-[ -f "${mapfile}" ] || die "Mapfile ${mapfile} does not exist in $(pwd)"
-
-
-
-do_link() {
-  if [ -e "$2" ]; then
-    if [ -L "$2" ] && [ "$(realpath "$2")" == "$(pwd)/$1" ]; then
-      echo "$2 is already linked to $1."
-      return
-    else
-      echo "$2 already exists, renaming to $2.bak"
-      mv "$2" "$2.bak"
-    fi
-  fi
-  mkdir -vp "${2%/*}"
-  ln -svf "$(pwd)/$1" "$2"
+  # Don't want $DOTFILES expansion in the message
+  # shellcheck disable=SC2016
+  [ -z "${DOTFILES}" ] && die '$DOTFILES variable not set.';
+  cd "${DOTFILES}" || die "Can't read ${DOTFILES}";
+  [ -f "${mapfile}" ] || die "Mapfile ${mapfile} does not exist in $(pwd)";
 }
 
 parse_mapfile() {
-  local nestdir=""
-  local lineno=1
-  local nestlevel=0
-  homedir="$(echo -n "${HOME}" | tr -d '\n\r')"
+  local nestdir="";
+  local lineno=1;
+  local nestlevel=0;
+  homedir="$(echo -n "${HOME}" | tr -d '\n\r')";
 
   while read -r map; do
     if [ -n "${map}" ] && [[ ! "${map}" == "#"* ]]; then
 
-      IFS=" " read -r -a mapping <<< "$(echo -n "${map}" | sed -e 's/^ *-* /-/' -e "s:~:${homedir}:" | awk -F ': ' '{ print $1 " " $2 }')"
+      IFS=" " read -r -a mapping <<< "$(echo -n "${map}" | sed -e 's/^ *-* /-/' -e "s:~:${homedir}:" | awk -F ': ' '{ print $1 " " $2 }')";
 
       # Top level items
       if [[ ! "${mapping[0]}" == "-"* ]]; then
-        nestdir=""
-        nestlevel=0
+        nestdir="";
+        nestlevel=0;
         if [ -z "${mapping[1]}" ]; then
           # nestdir
-          nestdir="${mapping[0]/://}"
+          nestdir="${mapping[0]/://}";
         else
           # one-off mapping
           if [ ! -e "${nestdir}${mapping[0]}" ]; then
-            die "error in mapfile: ${nestdir}${mapping[0]} does not exist (line ${lineno})"
+            die "error in mapfile: ${nestdir}${mapping[0]} does not exist (line ${lineno})";
           fi
-          mappings["${nestdir}${mapping[0]}"]="${mapping[1]}"
+          mappings["${nestdir}${mapping[0]}"]="${mapping[1]}";
         fi
       else
-        levels="$(count_nestlevels "${mapping[0]}")"
-        pth="$(echo "${mapping[0]}" | sed -e 's/^-*//g' -e 's/://')"
+        levels="$(count_nestlevels "${mapping[0]}")";
+        pth="$(echo "${mapping[0]}" | sed -e 's/^-*//g' -e 's/://')";
         if [ "${levels}" -lt "${nestlevel}" ]; then
           while [ "${levels}" -lt "${nestlevel}" ]; do
-            nestdir="${nestdir%/*/}/"
-            ((nestlevel--))
+            nestdir="${nestdir%/*/}/";
+            ((nestlevel--));
           done
-          [ "${nestdir}" = "/" ] && nestdir=""
+          [ "${nestdir}" = "/" ] && nestdir="";
         elif [ "${levels}" -gt "${nestlevel}" ]; then
           while [ "${levels}" -gt "${nestlevel}" ]; do
-            ((nestlevel++))
+            ((nestlevel++));
           done
         fi
         if [ -z "${mapping[1]}" ]; then
-          nestdir="${nestdir}${pth}/"
+          nestdir="${nestdir}${pth}/";
         else
           if [ ! -e "${nestdir}${mapping[0]/-/}" ]; then
-            die "error in mapfile: ${nestdir}${pth} does not exist (line ${lineno})"
+            die "error in mapfile: ${nestdir}${pth} does not exist (line ${lineno})";
           fi
-          mappings["${nestdir}${pth}"]="${mapping[1]}"
+          mappings["${nestdir}${pth}"]="${mapping[1]}";
         fi
       fi
     fi
-    ((lineno++))
-  done < <(cat "$1")
+    ((lineno++));
+  done < <(cat "$1");
 }
 
 link_all() {
@@ -97,125 +95,180 @@ link_all() {
     do_link "${f}" "${mappings[${f}]}";
   done
 }
+
 unlink_all() {
   for f in "${!mappings[@]}"; do
-    do_unlink "${mappings[${f}]}"
+    do_unlink "${mappings[${f}]}";
   done
 }
+
+find_mapping() {
+  ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "^$1";
+}
+
 link_specific() {
-  grep_result="$( ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "^$1")"
-  if  [ -n "${grep_result}" ]; then
+  if  [ -n "$(find_mapping "$1")" ]; then
     for f in "${!mappings[@]}"; do
       if [[ "${f%%/*}" == "$1" ]] || [ "${f}" = "$1" ]; then
-        do_link "${f}" "${mappings[${f}]}"
+        do_link "${f}" "${mappings[${f}]}";
       fi
     done
   else
-    die "Error: $1 not present in mapfile, don't know how to link."
+    die "Error: $1 not present in mapfile, don't know how to link.";
   fi
 }
-do_unlink() {
-  if [ ! -e "$1" ]; then
-    echo "$1 does not exist."
-  elif [ ! -L "$1" ]; then
-    echo "$1 is not a link, not removing."
-  else
-    echo -n "Removing link: "
-    rm -v "$1"
-  fi
-}
+
 unlink_specific(){
-  grep_result="$( ( IFS=$'\n'; echo "${!mappings[*]}" ) | grep "^$1")"
-  if  [ -n "${grep_result}" ]; then
+  if  [ -n "$(find_mapping "$1")" ]; then
     for f in "${!mappings[@]}"; do
       if [[ "${f}" == "${i}"* ]]; then
-        do_unlink "${mappings[${f}]}"
+        do_unlink "${mappings[${f}]}";
       fi
     done
   else
-    die "Error: ${i} not present in mapfile, can't unlink."
+    die "Error: $1 not present in mapfile, can't unlink.";
   fi
 }
+
+do_link() {
+  if [ -e "$2" ]; then
+    if [ -L "$2" ] && [ "$(realpath "$2")" == "$(pwd)/$1" ]; then
+      echo "$2 is already linked to $1.";
+      return
+    else
+      echo "$2 already exists, renaming to $2.bak";
+      mv "$2" "$2.bak";
+    fi
+  fi
+  mkdir -vp "${2%/*}";
+  ln -svf "$(pwd)/$1" "$2";
+}
+
+do_unlink() {
+  if [ ! -e "$1" ]; then
+    echo "$1 does not exist.";
+  elif [ ! -L "$1" ]; then
+    echo "$1 is not a link, not removing.";
+  else
+    echo -n "Removing link: ";
+    rm -v "$1";
+  fi
+}
+
 list_mappings() {
-  mapstr=""
+  mapstr="";
   for f in "${!mappings[@]}"; do
     mapstr="${mapstr}${f} =>  ${mappings[${f}]}\n";
   done
 
-  echo -e "${mapstr}" | sort
+  echo -e "${mapstr}" | sort;
 }
+
 count_nestlevels() {
-  echo -n "$1" | sed 's/^\([-]*\).*/\1/' | tr -d '\n' | wc -m | tr -d ' '
+  echo -n "$1" | sed 's/^\([-]*\).*/\1/' | tr -d '\n' | wc -m | tr -d ' ';
 }
 
-declare -A mappings
+check_link() {
+  if  [ -n "$(find_mapping "$1")" ]; then
+    for f in "${!mappings[@]}"; do
+      if [[ "${f%%/*}" == "$1" ]] || [ "${f}" = "$1" ]; then
+        src="$f";
+        tgt="${mappings[${f}]}";
+        if [ -e "$tgt" ]; then
+          if [ -L "$tgt" ] && [ "$(realpath "$tgt")" == "$(pwd)/$src" ]; then
+            echo -e "[ OK ] $src is linked at $tgt.";
+          elif [ -L "$tgt" ]; then
+            echo -e "[ XX ] $tgt is a link but does not point to $src.";
+          else
+            echo -e "[ XX ] $tgt exists but does not point to $src.";
+          fi
+        else
+          echo -e "[ XX ] $src is not linked.";
+        fi
+      fi
+    done
+  else
+    die "$1 does not map to anything.";
+  fi
+}
 
-PARAMS=""
-link_mode=0
-unlink_mode=0
+check_all() {
+  for f in "$@"; do
+    check_link "$f"
+  done
+}
+
+preliminary_checks;
+
+PARAMS="";
+mode="";
 while (( "$#" )); do
   case "$1" in
     -l|--list)
-      parse_mapfile "./${mapfile}"
-      echo "Mappings (from $(realpath ${mapfile})):"
-      echo "(format: source => name_of_symlink)"
-      list_mappings
+      parse_mapfile "./${mapfile}";
+      echo "Mappings (from $(realpath ${mapfile})):";
+      echo "(format: source => name_of_symlink)";
+      list_mappings;
       exit 0
       ;;
 
     -h|--help)
-      echo "Loading configuration from: $(realpath ${mapfile})"
-      echo
-      echo "Usage:"
-      echo "conf [options] (link|unlink) [entry1 [entry2...]]"
-      echo
-      echo "Options:"
-      echo "    -l, --list    only list maps"
-      echo "    -e, --edit    edit map file"
-      echo
-      echo "link [entry1 [entry2...]]       Link entries according to the map file."
-      echo "                                With no arguments, links all entries."
-      echo
-      echo "unlink [entry1 [entry2...]]     Unlink entries according to the map file."
-      echo "                                With no arguments, unlinks all entries."
+      echo "Loading configuration from: $(realpath ${mapfile})";
+      echo;
+      echo "Usage:";
+      echo "conf [options] (link|unlink) [entry1 [entry2...]]";
+      echo;
+      echo "Options:";
+      echo "    -l, --list    only list maps";
+      echo "    -e, --edit    edit map file";
+      echo;
+      echo "link [entry1 [entry2...]]       Link entries according to the map file.";
+      echo "                                With no arguments, links all entries.";
+      echo;
+      echo "unlink [entry1 [entry2...]]     Unlink entries according to the map file.";
+      echo "                                With no arguments, unlinks all entries.";
       exit 0
       ;;
 
     -e|--edit)
       # $EDITOR is an environment variable
       # shellcheck disable=SC2154
-      echo "Opening ${mapfile} with ${EDITOR}"
-      "${EDITOR}" "${DOTFILES}/${mapfile}"
+      echo "Opening ${mapfile} with ${EDITOR}";
+      "${EDITOR}" "${DOTFILES}/${mapfile}";
       exit 0
       ;;
 
     --) # end arg parsing
-      shift
+      shift;
       break
       ;;
     -*) # unsupported flags
-      echo "Unsupported flag $1" >&2
+      echo "Unsupported flag $1" >&2;
 
       # Don't want the command to expand so
       # shellcheck disable=SC2016
-      echo 'Run `conf -h` to show usage.'
+      echo 'Run `conf -h` to show usage.';
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="${PARAMS} $1"
+      PARAMS="${PARAMS} $1";
       shift
       ;;
   esac
 done
-eval set -- "${PARAMS}"
+eval set -- "${PARAMS}";
 
 case "$1" in
   "link")
-    link_mode=1
+    mode="link";
     shift
     ;;
   "unlink")
-    unlink_mode=1
+    mode="unlink";
+    shift
+    ;;
+  "check")
+    mode="check";
     shift
     ;;
   *)
@@ -224,15 +277,15 @@ esac
 
 # Don't want the command to expand so
 # shellcheck disable=SC2016
-[ "${link_mode}" -eq 0 ] && [ "${unlink_mode}" -eq 0 ] && die 'Arguments required, run `conf -h` to show usage.'
+[ -z "$mode" ] && die 'Arguments required, run `conf -h` to show usage.';
 
-parse_mapfile "./${mapfile}"
-if [ "${link_mode}" -eq 1 ]; then
+parse_mapfile "./${mapfile}";
+if [ "$mode" = "link" ]; then
   if [ $# -eq 0 ]; then
-    read -srp "Link all dotfiles? [Y/n]" -n 1 -s conf
+    read -srp "Link all dotfiles? [Y/n]" -n 1 -s conf;
     case "${conf}" in
       Y|y)
-        echo
+        echo;
         link_all
         ;;
       *)
@@ -240,26 +293,33 @@ if [ "${link_mode}" -eq 1 ]; then
     esac
   else
     for i in "$@"; do
-      link_specific "${i}"
+      link_specific "${i}";
     done
   fi
-elif [ "${unlink_mode}" -eq 1 ]; then
+elif [ "$mode" = "unlink" ]; then
   if [ $# -eq 0 ]; then
-    read -srp "Unlink all dotfiles? [Y/n]" -n 1 -s conf
+    read -srp "Unlink all dotfiles? [Y/n]" -n 1 -s conf;
     case "${conf}" in
       Y|y)
         echo
-        unlink_all
+        unlink_all;
         ;;
       *)
         ;;
     esac
   else
     for i in "$@"; do
-      unlink_specific "${i}"
+      unlink_specific "${i}";
+    done
+  fi
+elif [ "$mode" = "check" ]; then
+  if [ $# -eq 0 ]; then
+    check_all "${!mappings[@]}";
+  else
+    for i in "$@"; do
+      check_link "${i}";
     done
   fi
 else
-  die "Neither link nor unlink mode specified."
+  die "Neither mode not specified.";
 fi
-

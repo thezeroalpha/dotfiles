@@ -88,8 +88,8 @@ Xresources: ~/.Xresources
 
 # Emacs config
 emacs:
-- emacs.d: ~/.emacs.d
-- emacs: ~/emacs
+- emacs.d/themes: ~/.emacs.d/themes
+- emacs: ~/.emacs
 
 # All shell configs
 shell:
