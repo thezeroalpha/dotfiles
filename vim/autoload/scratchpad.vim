@@ -1,5 +1,4 @@
 function scratchpad#MarkScratch()
   exe "setlocal textwidth=".(winwidth(0)-7)
-  setlocal buftype=nofile
-  setlocal filetype=scratch
+  setlocal bufhidden=wipe buftype=nofile nobuflisted noswapfile
 endfunction
