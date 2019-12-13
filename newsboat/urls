@@ -14,6 +14,7 @@ https://blog.horejsek.com/posts.atom "tech" "~Michal Hořejšek"
 https://thezeroalpha.github.io/feed.xml "tech" "~ZeroAlpha"
 https://brave.com/feed/?cc=1 "tech" "~Brave Browser"
 https://www.freelists.org/feed/regolith-linux "tech" "~Regolith Mailing List"
+
 # Deep web
 https://pirate.london/feed "deep web"
 http://feeds.feedburner.com/Torrentfreak "deep web"
@@ -29,6 +30,7 @@ https://www.aktuality.sk/rss/domace/ "~Aktuality -  Domáce" "news"
 https://www.aktuality.sk/rss/zahranicne/ "~Aktuality - Zahraničné" "news"
 https://www.rferl.org/api/z$qimetkiy "news"
 https://www.dutchnews.nl/feed/?news "news" "~DutchNews"
+https://huntnewsnu.com/feed/ "news" "~Huntington News"
 
 # Others
 http://www.thedistilledman.com/feed/ "others"
