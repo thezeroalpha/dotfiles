@@ -3,12 +3,12 @@
 
 # Preliminary checks {{{
 # Check if this directory was cloned properly
-if [ $(pwd) != "$HOME/.dotfiles" ]; then
+if [ "$(pwd)" != "$HOME/.dotfiles" ]; then
   echo "Please clone this directory as $HOME/.dotfiles."
   exit 1
 fi
 
-cd "$(dirname $0)"
+cd "$(dirname "$0")" || { echo "Could not cd into $(dirname "$0")"; exit 1; }
 
 if ! [ -f "./install.sh" ]; then
   echo "Please cd into $HOME/.dotfiles before running the script."
@@ -35,20 +35,24 @@ fi
 
 export DOTFILES="$HOME/.dotfiles"
 
-read -n 1 -p "Install all dotfiles? [Y/n]" yn
+read -rn 1 -p "Install all dotfiles? [Y/n]" yn
 echo
 case $yn in
-  [Yy]* ) 
+  [Yy]* )
     yes | scripts/conf link
     echo "Dotfiles installed."
     echo "Run \`conf -h\` for more help."
     ;;
-  * ) 
+  * )
     echo "No dotfiles installed automatically."
     echo "Run \`scripts/conf -h\` for more help."
+    echo "You can also add conf to your path: export PATH=$DOTFILES/scripts:$PATH"
     ;;
 esac
 
 echo "Don't forget to create a ~/.secret_env_variables with:"
+# Don't want these variables to expand
+# shellcheck disable=SC2016
 echo '- $DISCOGS_API_TOKEN'
+# shellcheck disable=SC2016
 echo '- $HOMEBREW_GITHUB_API_TOKEN'

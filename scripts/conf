@@ -8,8 +8,11 @@ DOTFILES="${DOTFILES}";
 mapfile="dot.map";
 
 # Begin script
+
+# Create the mappings assoc. array
 declare -A mappings;
 
+# Utility function to pretty-print mappings assoc array
 pp_mappings() {
   echo "{"
   for f in "${!mappings[@]}"; do
