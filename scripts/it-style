@@ -74,12 +74,12 @@ while :; do
 	# If there's no album, query without an album
 	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "${artist%%feat*} $name")
 	echo "Querying: \"$artist $name\" ($search_url)"
-	response=$(ruby $DOTFILES/scripts/it-style-helper.rb "${artist%%feat*}" "$name");
+	response=$(ruby $DOTFILES/scripts/discogs "${artist%%feat*}" "$name");
     else
 	# Otherwise, add the album to query for precision
 	search_url="https://www.discogs.com/search/?q="$(sed -e 's/ /%20/g' -e 's/&/%26/g' <<< "${artist%%feat*} $album")
 	echo "Querying: \"$artist $album $name\" ($search_url)"
-	response=$(ruby $DOTFILES/scripts/it-style-helper.rb "${artist%%feat*}" "$album");
+	response=$(ruby $DOTFILES/scripts/discogs "${artist%%feat*}" "$album");
     fi
 
     # Remove brackets from the Ruby array
