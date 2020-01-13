@@ -99,6 +99,7 @@ shell:
 - zshrc: ~/.zshrc
 - bash_profile: ~/.bash_profile
 - bashrc: ~/.bashrc
+- profile: ~/.profile
 
 # Vim config
 vim:
