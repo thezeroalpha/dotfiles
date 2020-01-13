@@ -39,13 +39,13 @@ eval set -- "$PARAMS"
 
 [ -z "$outfile" ] && echo "No output file supplied." >&2 && exit 1
 [ -z "$1" ] && echo "No file supplied.">&2 && exit 1
-[ -z "$palette" ] && ! [ -d /Volumes/Pocket603 ] && echo "No palette present.">&2 && exit 1
+[ -z "$palette" ] && ! [ -d /Volumes/PB627 ] && echo "No palette present.">&2 && exit 1
 convert "$1" \
   -background white \
   -alpha remove \
   -depth 8 \
   -colors 256 \
   -type grayscale \
-  -remap "${palette:-/Volumes/Pocket603/system/logo/1_st.603.bmp}" \
+  -remap "${palette:-/Volumes/PB627/system/logo/1_st.603.bmp}" \
   -dither FloydSteinberg \
   -compress none BMP3:"$outfile"
