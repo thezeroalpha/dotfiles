@@ -1,2 +1,4 @@
 " get rid of this ANSIEscape mapping
-unmap <leader>swp
+if exists("g:loaded_AnsiEscPlugin")
+  unmap <leader>swp
+endif

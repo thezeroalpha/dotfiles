@@ -354,7 +354,7 @@ set wildignorecase
 " Persistent undos (useful for plugins too){{{
 if has('persistent_undo')
   let myUndoDir = expand('$HOME/.vim' . '/undo')
-  silent call mkdir(myUndoDir, 'p')
+  silent! call mkdir(myUndoDir, 'p')
   let &undodir = myUndoDir
   set undofile
 endif
@@ -667,7 +667,10 @@ execute "digraphs z& " . 0x1D503
 " So I don't have to mash shift all the time
 nnoremap ; :
 vnoremap ; :
-tnoremap <C-w>; <C-w>:
+
+if has('terminal')
+  tnoremap <C-w>; <C-w>:
+endif
 
 " To keep the old functionality of ;
 nnoremap : ;
