@@ -96,7 +96,7 @@ shell:
 - aliases: ~/.aliases
 - functions: ~/.functions
 - secret_env_variables: ~/.secret_env_variables
-- zprofile: ~/.zprfile
+- zprofile: ~/.zprofile
 - zshrc: ~/.zshrc
 
 # Vim config
