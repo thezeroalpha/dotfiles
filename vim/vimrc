@@ -420,13 +420,13 @@ set statusline+=%*                                                  " Clear high
 set statusline+=%<                                                  " Start truncating here
 set statusline+=\ \ %{statusline#StatuslineBuildCwd()}              " Current working directory, replacing home with ~
 set statusline+=%=                                                  " Move everything after this to the right
-set statusline+=\ %y                                                " File type
+set statusline+=%y                                                  " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
 set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
-set statusline+=\ %{statusline#StatuslineFoldmethod()}              " The current foldlevel
+set statusline+=\ [%{statusline#StatuslineFoldmethod()}]            " The current foldlevel
+set statusline+=\ {%{statusline#StatuslineWrapCol()}}               " Textwidth/wrapmargin info
 set statusline+=\ %l/%L\                                            " Cursor line/total lines
-set statusline+=\ B%n                                               " Buffer number
-set statusline+=\ \ %{strftime(\"%H:%M\")}                          " Time
+set statusline+=\ %{strftime(\"%H:%M\")}\                           " Time
 
 " Conditional foldlevel display
 augroup statusline

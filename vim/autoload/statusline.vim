@@ -44,10 +44,20 @@ function! statusline#StatuslineBuildCwd()
   return "CWD: " . cwd
 endfunction
 
+" get the current fold info
 function! statusline#StatuslineFoldmethod()
   if &foldmethod == "indent"
-    return "[z".&foldlevel.",c".foldlevel(line('.'))."]"
+    return "z".&foldlevel.",c".foldlevel(line('.'))
   else
-    return ""
+    return "f:".strpart(&foldmethod, 0, 4)
+  endif
+endfunction
+
+" print the textwrap information (textwidth or wrapmargin)
+function! statusline#StatuslineWrapCol()
+  if &textwidth == 0
+    return "TW ".(winwidth(0)-&wrapmargin)."(M".&wrapmargin.")"
+  else
+    return "TW ".&textwidth
   endif
 endfunction
