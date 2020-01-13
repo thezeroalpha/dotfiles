@@ -597,9 +597,11 @@ cnoreabbrev hg helpgrep
 
 if has('terminal')
   cnoreabbrev tt tab terminal
-  cnoreabbrev wt terminal
-  cnoreabbrev tm terminal man
-  cnoreabbrev tr terminal lf
+  " ++close means close when process ends
+  "   (so that I don't get a hanging term buffer)
+  cnoreabbrev wt terminal ++close
+  cnoreabbrev tm terminal ++close man
+  cnoreabbrev tf terminal ++close lf
   command! Tuir tab terminal tuir
 endif
 " }}}
@@ -764,14 +766,17 @@ inoremap <C-Z> <C-o>:w<CR>
 " Set the foldlevel
 nnoremap zn :set foldlevel=
 nnoremap zs :exe "set foldlevel=".foldlevel(line('.'))<CR>
+
 " Config edit mappings
-nnoremap <C-E><C-A> :vsplit $MYVIMRC<CR>gg/Autocommands {{$<CR>:noh<CR>za
-nnoremap <C-E><C-C> :vsplit $MYVIMRC<CR>gg/Commands {{<CR>:noh<CR>za
-nnoremap <C-E><C-E> :vsplit $MYVIMRC<CR>gg/Editor {{<CR>:noh<CR>za
-nnoremap <C-E><C-G> :vsplit $MYVIMRC<CR>gg/General {{<CR>:noh<CR>za
-nnoremap <C-E><C-V> :vsplit $MYVIMRC<CR>gg
-nnoremap <C-E><C-M> :vsplit $MYVIMRC<CR>gg/Mappings {{<CR>:noh<CR>za
-nnoremap <C-E><C-P> :vsplit $MYVIMRC<CR>gg/Plugins {{<CR>:noh<CR>za
+" Why :drop? It uses the file if it's already open.
+nnoremap <C-E><C-V> :drop $MYVIMRC<CR>zXgg
+nnoremap <C-E><C-A> :drop $MYVIMRC<CR>zXgg/Autocommands {{<CR>:noh<CR>za
+nnoremap <C-E><C-C> :drop $MYVIMRC<CR>zXgg/Commands {{<CR>:noh<CR>za
+nnoremap <C-E><C-E> :drop $MYVIMRC<CR>zXgg/Editor {{<CR>:noh<CR>za
+nnoremap <C-E><C-G> :drop $MYVIMRC<CR>zXgg/General {{<CR>:noh<CR>za
+nnoremap <C-E><C-M> :drop $MYVIMRC<CR>zXgg/Mappings {{<CR>:noh<CR>za
+nnoremap <C-E><C-P><C-I> :drop $MYVIMRC<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
+nnoremap <C-E><C-P><C-C> :drop $MYVIMRC<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
 nmap <C-E><C-L> <Plug>VimcolorEdit
 
 " Yank to clipboard
@@ -804,23 +809,30 @@ nnoremap <leader>sq :call sessions#CloseSession()<CR>
 " native file browsing
 nnoremap <leader>f  :Lexplore<CR>
 
-" Strip trailing whitespace
-nmap <leader>$ <Plug>StripTrailingWhitespace
+" Strip trailing whitespace (silent makes it so nothing is echoed)
+nmap <silent> <leader>$ <Plug>StripTrailingWhitespace
 
-" Run selected commands
-vmap <leader><CR> <Plug>VisualRunCommands
+" Run selected commands (again, silent)
+vmap <silent> <leader><CR> <Plug>VisualRunCommands
 
+" Buffer switching
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
+
+" Arg switching
 nnoremap <leader>H :previous<CR>
 nnoremap <leader>L :next<CR>
 
+" List color group
 nmap <C-P> <Plug>VimcolorSynstack
 
-inoremap <C-x>s <c-g>u<Esc>[s1z=`]a<c-g>u
+" Correct the last spelling error
+inoremap <expr> <C-x>s &spell ? "<c-g>u<Esc>[s0z=`]a<c-g>u" : ""
 
-
-nnoremap <leader>mm :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
+" Make-ing (use Dispatch if enabled)
+nnoremap <leader>m? :set makeprg<CR>
+nnoremap <expr> <leader>mm g:loaded_dispatch ? ":Make<CR>" : ":silent make<CR>\|:redraw!<CR>\|:cwindow<CR>"
+nnoremap <expr> <leader>mc g:loaded_dispatch ? ":Make clean<CR>" : ":silent make clean<CR>\|:redraw!<CR>"
 " }}}
 " Autocommands {{{
 if has('autocmd')
