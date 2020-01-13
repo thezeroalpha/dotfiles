@@ -96,8 +96,8 @@ map x $$f
 map X !$f
 
 # dedicated keys for file opener actions
-map o &mimeopen $f
-map O $mimeopen --ask $f
+map o &open $f
+map r source ~/.config/lf/lfrc
 
 map R push :rename<space>
 map cw push :rename<space>
