@@ -97,6 +97,8 @@ shell:
 - functions: ~/.functions
 - zprofile: ~/.zprofile
 - zshrc: ~/.zshrc
+- bash_profile: ~/.bash_profile
+- bashrc: ~/.bashrc
 
 # Vim config
 vim:
