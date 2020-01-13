@@ -95,7 +95,6 @@ emacs:
 shell:
 - aliases: ~/.aliases
 - functions: ~/.functions
-- secret_env_variables: ~/.secret_env_variables
 - zprofile: ~/.zprofile
 - zshrc: ~/.zshrc
 
