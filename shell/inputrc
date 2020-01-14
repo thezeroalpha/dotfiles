@@ -1,0 +1,4 @@
+$include /etc/inputrc
+"\C-x\C-r": re-read-init-file
+"\C-x\C-p": '\C-e \| $PAGER'
+"\C-x\C-n": '\C-e &>/dev/null'
