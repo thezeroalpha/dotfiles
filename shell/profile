@@ -47,7 +47,5 @@ fi
 
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="/usr/local/bin/vim"
-export LC_ALL="en_US"
-export LANG="en_US"
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
 export PAGER="bat"
