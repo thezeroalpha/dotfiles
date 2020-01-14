@@ -46,6 +46,10 @@ if [ -d "/usr/local/sbin" ]; then
 fi
 
 export DOTFILES="$HOME/.dotfiles"
-export EDITOR="/usr/local/bin/vim"
+export EDITOR="`which vim`"
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
-export PAGER="bat"
+if command -v bat &> /dev/null; then
+  export PAGER="bat"
+else
+  export PAGER="less -R"
+fi
