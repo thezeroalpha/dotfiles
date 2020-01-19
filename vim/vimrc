@@ -257,6 +257,7 @@ let g:fzf_action = {
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
+nnoremap <leader>T :Helptags<CR>
 " }}}
 " Vimwiki {{{
 let tlist_vimwiki_settings = 'wiki;h:Headers'
@@ -482,7 +483,7 @@ set nowrap
 
 " Linebreak when obsessive
 set linebreak
-set textwidth=500
+set textwidth=150
 
 " Reduce waiting on keys (like esc)
 set timeoutlen=1000 ttimeoutlen=0
