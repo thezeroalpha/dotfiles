@@ -564,7 +564,7 @@ command! CDC cd %:p:h
 command! LCDC lcd %:p:h
 command! Maketab set noet ts=2 | %retab!
 command! Diff w !diff % -
-command! Diffc w !git diff % -
+command! Diffg w !git diff % -
 command! Fuckwindows %s///g
 command! Hexedit %!xxd
 command! Unhex %!xxd -r
