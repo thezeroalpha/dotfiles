@@ -201,56 +201,45 @@ check_all() {
   done
 }
 
+show_usage() {
+  echo "Loading configuration from map file: $(realpath ${mapfile})";
+  echo;
+  echo "Usage:";
+  echo "conf [options] [command] [entry1 [entry2...]]";
+  echo;
+  echo "Options:";
+  echo "    -h, --help                      Show help & usage";
+  echo;
+  echo "Commands:";
+  echo "    link [entry1 [entry2...]]       Link entries according to the map file.";
+  echo "                                    With no arguments, links all entries.";
+  echo;
+  echo "    unlink [entry1 [entry2...]]     Unlink entries according to the map file.";
+  echo "                                    With no arguments, unlinks all entries.";
+  echo;
+  echo "    edit                            Edit the map file with ${EDITOR:-whatever you set as \$EDITOR}";
+  echo;
+  echo "    list                            List the current mappings.";
+  echo;
+}
+
 preliminary_checks;
 
 PARAMS="";
 mode="";
 while (( "$#" )); do
   case "$1" in
-    -l|--list)
-      parse_mapfile "./${mapfile}";
-      echo "Mappings (from $(realpath ${mapfile})):";
-      echo "(format: source => name_of_symlink)";
-      list_mappings;
-      exit 0
-      ;;
-
     -h|--help)
-      echo "Loading configuration from: $(realpath ${mapfile})";
-      echo;
-      echo "Usage:";
-      echo "conf [options] (link|unlink) [entry1 [entry2...]]";
-      echo;
-      echo "Options:";
-      echo "    -l, --list    only list maps";
-      echo "    -e, --edit    edit map file";
-      echo;
-      echo "link [entry1 [entry2...]]       Link entries according to the map file.";
-      echo "                                With no arguments, links all entries.";
-      echo;
-      echo "unlink [entry1 [entry2...]]     Unlink entries according to the map file.";
-      echo "                                With no arguments, unlinks all entries.";
+      show_usage
       exit 0
       ;;
-
-    -e|--edit)
-      # $EDITOR is an environment variable
-      # shellcheck disable=SC2154
-      echo "Opening ${mapfile} with ${EDITOR}";
-      "${EDITOR}" "${DOTFILES}/${mapfile}";
-      exit 0
-      ;;
-
     --) # end arg parsing
       shift;
       break
       ;;
     -*) # unsupported flags
       echo "Unsupported flag $1" >&2;
-
-      # Don't want the command to expand so
-      # shellcheck disable=SC2016
-      echo 'Run `conf -h` to show usage.';
+      show_usage
       exit 1
       ;;
     *) # preserve positional arguments
@@ -274,13 +263,27 @@ case "$1" in
     mode="check";
     shift
     ;;
+  "list")
+    parse_mapfile "./${mapfile}";
+    echo "Mappings (from $(realpath ${mapfile})):";
+    echo "(format: source => name_of_symlink)";
+    list_mappings;
+    exit 0
+    ;;
+  "edit")
+    # $EDITOR is an environment variable
+    # shellcheck disable=SC2154
+    echo "Opening ${mapfile} with ${EDITOR}";
+    "${EDITOR}" "${DOTFILES}/${mapfile}";
+    exit 0
+    ;;
   *)
     ;;
 esac
 
 # Don't want the command to expand so
 # shellcheck disable=SC2016
-[ -z "$mode" ] && die 'Arguments required, run `conf -h` to show usage.';
+[ -z "$mode" ] && echo 'Arguments required.' && show_usage && die;
 
 parse_mapfile "./${mapfile}";
 if [ "$mode" = "link" ]; then
