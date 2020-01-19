@@ -6,7 +6,9 @@ procinfo() { ps aux | grep "$1"; }                                          # ge
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # remove empty directories
 hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # insert a <hr> in the terminal
 vimq() { vim -q <($(fc -nl -1)); }                                          # load results of last command (often ag) in vim quickfix
-gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }
+gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                               # Access global pip while using virtualenvs
+nls() { expr `ls -l | wc -l | xargs echo` - 1; }                            # Count the number of files in the directory
+
 notify() {
   if type terminal-notifier &> /dev/null; then
     terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
@@ -43,6 +45,13 @@ extract () {
     echo "'$1' is not a valid file"
   fi
 }
+
+if command -v docker &>/dev/null; then
+  eslint_here() {
+    docker run -it --rm -v $(pwd):/data cytopia/eslint . -f unix;
+  }
+fi
+
 if command -v osascript &> /dev/null; then
   # cd to current Finder directory
   cdf() {
