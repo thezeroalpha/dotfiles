@@ -1,33 +1,90 @@
 #!/usr/bin/env bash
 if ! command -v ffmpeg &> /dev/null; then echo "ffmpeg not found" && exit 1; fi
-if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
 main() {
   case "$1" in
     *.gif)
+      if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
       echo "GIF: $1"
       process_gif "$1"
       ;;
     *.mp4|*.mov|*.webm|*.m4v|*.mkv)
+      if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
       echo "VIDEO: $1"
       process_video "$@"
       ;;
+    *.mp3|*.wav|*.ogg|*.flac)
+      if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
+      echo "AUDIO: $1"
+      process_audio "$@"
+      ;;
+    "")
+      process_misc
+      ;;
     *)
+      echo "File type not supported."
       ;;
   esac
 }
-process_gif() {
-    select to_fmt in "MP4"; do
-      case "$to_fmt" in
-        "MP4")
-          ffmpeg -i "$1" -r 30 -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${1%%.gif}.mp4"
-          break;;
-        *)
-          break;;
-      esac
-    done
+process_misc() {
+  echo "For other functionality, please add the filename as the first argument."
+  select operation in "Record audio" "List devices"; do
+    case "$operation" in
+      "Record audio")
+        echo -n "Devices to record (format n:n): ";
+        read -r record_src;
+        echo -n "Output filename: ";
+        read -r out_name;
+        ffmpeg -f avfoundation -i "$record_src" "${out_name:-output.mkv}"
+        break;;
+      "List devices")
+        ffmpeg -f avfoundation -list_devices true -i "";
+        break;;
+      *)
+        break;;
+    esac
+  done
 }
+
+process_gif() {
+  select to_fmt in "MP4"; do
+    case "$to_fmt" in
+      "MP4")
+        ffmpeg -i "$1" -r 30 -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${1%%.gif}.mp4"
+        break;;
+      *)
+        break;;
+    esac
+  done
+}
+
+process_audio() {
+  select operation in "VOLUME" "CLIP"; do
+    case "$operation" in
+      "VOLUME")
+        read -rp "Amount or percent: " vol;
+        read -rp "Enter output filename: " outfile
+        ffmpeg -i "$1" -filter:a "volume=$vol" "${outfile:-out-$1}"
+        break;;
+      "CLIP")
+        read -rp "From time (blank if from start): " starttime
+        read -rp "To time (blank if till end): " endtime
+        read -rp "Save as: " outfile
+        if [ -z "$endtime" ]; then
+          ffmpeg -i "$1" -ss "$starttime" "$outfile"
+        elif [ -z "$starttime" ]; then
+          ffmpeg -i "$1" -to "$endtime" "$outfile"
+        else
+          ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "$outfile"
+        fi
+        break;;
+      *)
+        break;;
+    esac
+  done
+}
+
 process_video() {
-  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP"; do
+  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP" "VOLUME"; do
     case "$to_fmt" in
       "MP4")
         ffmpeg -i "$1" -qscale 0 "${1%%.*}.mp4"
@@ -49,12 +106,24 @@ process_video() {
         read -rp "Enter output filename: " outfile
         for f in "$@"; do echo "file '$f'" >> /tmp/ffmpeg; done
         ffmpeg -f concat -safe 0 -i /tmp/ffmpeg -c copy "$outfile"
+        rm /tmp/ffmpeg
         break;;
       "CLIP")
         read -rp "From time: " starttime
         read -rp "To time: " endtime
         read -rp "Save as: " outfile
-        ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "$outfile"
+        if [ -z "$endtime" ]; then
+          ffmpeg -i "$1" -ss "$starttime" "$outfile"
+        elif [ -z "$starttime" ]; then
+          ffmpeg -i "$1" -to "$endtime" "$outfile"
+        else
+          ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "$outfile"
+        fi
+        break;;
+      "VOLUME")
+        read -rp "Amount or percent: " vol;
+        read -rp "Enter output filename: " outfile
+        ffmpeg -i "$1" -filter:a "volume=$vol" "${outfile:-out-$1}"
         break;;
       *)
         ;;
