@@ -44,6 +44,9 @@ fi
 if [ -d "/usr/local/sbin" ]; then
   PATH="/usr/local/sbin:$PATH"
 fi
+if command -v rbenv &>/dev/null; then
+  eval "$(rbenv init -)"
+fi
 
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="`which vim`"
@@ -53,3 +56,8 @@ if command -v bat &> /dev/null; then
 else
   export PAGER="less -R"
 fi
+export LC_NUMERIC=en_US.UTF-8
+export LC_TIME=en_US.UTF-8
+export LC_COLLATE=en_US.UTF-8
+export LC_MONETARY=en_US.UTF-8
+export LC_MESSAGES=en_US.UTF-8
