@@ -48,7 +48,7 @@ hi PmenuSel guifg=#f0e0b2 guibg=#4a85ba ctermfg=223 ctermbg=67 cterm=NONE gui=NO
 hi PmenuThumb guifg=NONE guibg=#000000 ctermfg=NONE ctermbg=0 cterm=NONE gui=NONE
 hi PmenuSbar guifg=NONE guibg=#0000ff ctermfg=NONE ctermbg=21 cterm=NONE gui=NONE
 hi Pmenu guifg=#bdbdbd guibg=#915623 ctermfg=250 ctermbg=94 cterm=NONE gui=NONE
-hi Folded guifg=#bebebe guibg=#232235 ctermfg=250 ctermbg=17 cterm=NONE gui=NONE
+hi Folded guifg=#bebebe guibg=#171235 ctermfg=250 ctermbg=17 cterm=NONE gui=NONE
 hi FoldColumn guifg=#dbcaa5 guibg=#0a0a18 ctermfg=187 ctermbg=0 cterm=NONE gui=NONE
 hi Directory guifg=#bbd0df guibg=NONE ctermfg=152 ctermbg=NONE cterm=NONE gui=NONE
 hi DiffDelete guifg=#300845 guibg=#200845 ctermfg=53 ctermbg=17 cterm=NONE gui=NONE

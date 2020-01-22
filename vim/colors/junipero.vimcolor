@@ -41,7 +41,7 @@ PmenuSel #f0e0b2, #4a85ba. NONE
 PmenuThumb NONE, #000000. NONE
 PmenuSbar NONE, #0000ff. NONE
 Pmenu #bdbdbd, #915623. NONE
-Folded #bebebe, #232235. NONE
+Folded #bebebe, #171235. NONE
 FoldColumn #dbcaa5, #0a0a18. NONE
 Directory #bbd0df, NONE. NONE
 DiffDelete #300845, #200845. NONE
