@@ -1,4 +1,4 @@
-function! togglenumber#ToggleNumber() abort
+function! toggle_number#ToggleNumber() abort
   if(&relativenumber == 1)
     set norelativenumber
     set number

@@ -124,6 +124,9 @@ Plug 'tpope/vim-dispatch'
 
 " &path for filetypes
 Plug 'tpope/vim-apathy'
+
+" easier markdown-style tables
+Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 " }}}
 " Config {{{
@@ -410,35 +413,6 @@ set wildmenu
 " Allow the mouse, good for e.g. resizing splits
 set mouse=a
 
-" Status line {{{
-set laststatus=2                                                    " Always show status bar
-set statusline=%f                                                   " Relative path and filename
-set statusline+=\ %m%r%w                                            " Flags (modified, readonly, help, preview)
-set statusline+=%#error#                                            " Start error highlighting
-set statusline+=%{statusline#StatuslineTabWarning()}                " Inconsistent indentation warning
-set statusline+=%{statusline#StatuslineTrailingSpaceWarning()}      " Trailing whitespace warning
-set statusline+=%*                                                  " Clear highlighting
-set statusline+=%<                                                  " Start truncating here
-set statusline+=\ \ %{statusline#StatuslineBuildCwd()}              " Current working directory, replacing home with ~
-set statusline+=%=                                                  " Move everything after this to the right
-set statusline+=%y                                                  " File type
-set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
-set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
-set statusline+=\ [%{statusline#StatuslineFoldmethod()}]            " The current foldlevel
-set statusline+=\ {%{statusline#StatuslineWrapCol()}}               " Textwidth/wrapmargin info
-set statusline+=\ %l/%L\                                            " Cursor line/total lines
-set statusline+=\ %{strftime(\"%H:%M\")}\                           " Time
-
-" Conditional foldlevel display
-augroup statusline
-  " recalculate the tab/trailing whitespace warning flags when idle and after writing
-  autocmd!
-  autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
-  autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
-augroup END
-" }}}
-
-
 highlight ColorColumn ctermbg=233
 
 " How to split new windows
@@ -545,6 +519,8 @@ set complete=.,w,b,u,t,i,kspell
 "   a match, don't select anything automatically.
 set completeopt=menu,menuone,preview
 
+nmap <leader># <Plug>ToggleNumber
+
 set omnifunc=syntaxcomplete#Complete
 
 " Keep cursor off top and bottom of screen
@@ -572,13 +548,7 @@ command! Unhex %!xxd -r
 command! JsonSimplifyObject %s/^\(\s\{10}\){\n\s\{12\}\(.*\)\n\s\{10\}}\(,\?\)/\1{ \2 }\3
 command! BeautifyJson %!python -m json.tool
 command! Dos2unix .!dos2unix "%"
-command! DeleteHiddenBuffers call deletehiddenbuffers#DeleteHiddenBuffers()
-command! -nargs=1 -complete=command Redir silent call redir#Redir(<f-args>)
 command! -nargs=1 Cheat terminal curl cheat.sh/<args>
-" Usage:
-"       :Redir hi ............. show the full output of command ':hi' in a scratch window
-"       :Redir !ls -al ........ show the full output of command ':!ls -al' in a scratch window
-
 
 " Fat finger fixes/convenience abbreviations
 cnoreabbrev W! w!
@@ -740,7 +710,7 @@ nnoremap <C-h> <C-W>>
 nnoremap <C-l> <C-W><
 
 " Delete hidden buffers
-nnoremap <leader>dh :DeleteHiddenBuffers<CR>
+nmap <leader>dh <Plug>DeleteHiddenBuffers
 
 " Switch to alernative buffer
 nnoremap <leader>s<leader> :b#<CR>
@@ -752,8 +722,6 @@ nnoremap <leader>hs :set list!<CR>
 nnoremap <leader>mm :<C-u>marks<CR>:normal! `
 nnoremap <leader>ml :<C-u>marks a-z<CR>:normal! `
 
-" Switch between relative and absolute line num
-nnoremap <leader># :call togglenumber#ToggleNumber()<CR>
 
 " Map '0' to act as '^' on first press and '0' on second
 nnoremap <expr> <silent> 0 col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
