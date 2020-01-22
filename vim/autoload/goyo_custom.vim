@@ -1,8 +1,20 @@
+" Unfortunately I had to do this in a super convoluted way, because of the way statusline is refreshed
+function! goyo_custom#set_wordcount()
+  let g:goyo_wordcount = wordcount().words
+endfunction
+function! goyo_custom#update_ruler()
+  call goyo_custom#set_wordcount()
+  " Adding the call to wordcount() here didn't work, so had to use a helper variable
+  setlocal rulerformat=%20(%{g:goyo_wordcount}\ words%=\ %{strftime(\"%H:%M\")}%)
+endfunction
 function! goyo_custom#goyo_enter()
+  call goyo_custom#update_ruler()
   setlocal textwidth=0 wrapmargin=5 wrap
-  setlocal rulerformat=%=%y\ \ %{strftime(\"%H:%M\")}
   setlocal ruler
+  autocmd BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI * call goyo_custom#update_ruler()
 endfunction
 function! goyo_custom#goyo_leave()
   setlocal textwidth< wrapmargin< wrap< rulerformat< ruler<
+  autocmd! BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI
+  unlet g:goyo_wordcount
 endfunction
