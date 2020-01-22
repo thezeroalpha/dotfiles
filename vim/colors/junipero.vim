@@ -6,11 +6,11 @@ if version > 580
 endif
 let g:colors_name = "junipero"
 set background=dark
-hi normal guifg=#969696 guibg=#11121A ctermfg=246 ctermbg=0 cterm=NONE gui=NONE
-hi cursorline guifg=NONE guibg=#222222 ctermfg=NONE ctermbg=234 cterm=NONE gui=NONE
+hi Normal guifg=#969696 guibg=#11121A ctermfg=246 ctermbg=0 cterm=NONE gui=NONE
+hi Cursorline guifg=NONE guibg=#222222 ctermfg=NONE ctermbg=234 cterm=NONE gui=NONE
 hi Structure guifg=#0490e8 guibg=NONE ctermfg=32 ctermbg=NONE cterm=bold gui=bold
 hi Constant guifg=#5c78f0 guibg=NONE ctermfg=69 ctermbg=NONE cterm=NONE gui=NONE
-hi String guifg=#2de3e6 guibg=NONE ctermfg=6 ctermbg=NONE cterm=NONE gui=NONE
+hi String guifg=#2de3e6 guibg=NONE ctermfg=6 ctermbg=NONE cterm=italic gui=italic
 hi Float guifg=#4580b4 guibg=NONE ctermfg=67 ctermbg=NONE cterm=NONE gui=NONE
 hi Boolean guifg=#fca8ad guibg=NONE ctermfg=217 ctermbg=NONE cterm=NONE gui=NONE
 hi Identifier guifg=#5094c4 guibg=NONE ctermfg=68 ctermbg=NONE cterm=NONE gui=NONE
@@ -26,7 +26,7 @@ hi PreProc guifg=#ae15eb guibg=NONE ctermfg=5 ctermbg=NONE cterm=NONE gui=NONE
 hi Include guifg=#ba75cf guibg=NONE ctermfg=140 ctermbg=NONE cterm=NONE gui=NONE
 hi Type guifg=#ff3863 guibg=NONE ctermfg=203 ctermbg=NONE cterm=bold gui=bold
 hi Delimiter guifg=#aaaaca guibg=NONE ctermfg=146 ctermbg=NONE cterm=NONE gui=NONE
-hi Comment guifg=#349d58 guibg=#11121a ctermfg=71 ctermbg=0 cterm=NONE gui=NONE
+hi Comment guifg=#349d58 guibg=#11121a ctermfg=71 ctermbg=0 cterm=italic gui=italic
 hi NonText guifg=#382920 guibg=#11121a ctermfg=1 ctermbg=0 cterm=NONE gui=NONE
 hi Ignore guifg=#666666 guibg=NONE ctermfg=241 ctermbg=NONE cterm=NONE gui=NONE
 hi SpecialKey guifg=#90dcb0 guibg=NONE ctermfg=115 ctermbg=NONE cterm=NONE gui=NONE
@@ -80,11 +80,11 @@ hi! link TabLine LineNr
 hi! link TabLineFill LineNr
 hi! link SignColumn LineNr
 hi! link netrwDir LineNr
-hi! link netrwExe Title
+hi! link NetrwExe Title
 hi! link SpellBad Todo
 hi! link SpelLocal String
 hi! link SpellRare String
 hi! link SpellCap String
-hi! link mkdLink Type
+hi! link MkdLink Type
 hi! link adaBegin Function
 hi! link adaEnd Function

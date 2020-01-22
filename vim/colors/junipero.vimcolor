@@ -1,9 +1,9 @@
 background dark
-normal #969696, #11121A
-cursorline NONE, #222222
+Normal #969696, #11121A
+Cursorline NONE, #222222
 Structure #0490e8, NONE. bold
 Constant #5c78f0, NONE. NONE
-String #2de3e6, NONE. NONE
+String #2de3e6, NONE. italic
 Float #4580b4, NONE. NONE
 Boolean #fca8ad, NONE. NONE
 Identifier #5094c4, NONE. NONE
@@ -19,7 +19,7 @@ PreProc #ae15eb, NONE. NONE
 Include #ba75cf, NONE. NONE
 Type #ff3863, NONE. bold
 Delimiter #aaaaca, NONE. NONE
-Comment #349d58, #11121a. NONE
+Comment #349d58, #11121a. italic
 NonText #382920, #11121a. NONE
 Ignore #666666, NONE. NONE
 SpecialKey #90dcb0, NONE. NONE
@@ -60,8 +60,8 @@ link ConId,Character,VimwikiLink Constant
 link Define,Macro,PreCondit Include
 link Debug,Special,SpecialChar,SpecialComment,Tag Delimiter
 link StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir LineNr
-link netrwExe Title
+link NetrwExe Title
 link SpellBad Todo
 link SpelLocal,SpellRare,SpellCap String
-link mkdLink Type
+link MkdLink Type
 link adaBegin,adaEnd Function

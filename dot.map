@@ -110,5 +110,6 @@ vim:
 - compiler: ~/.vim/compiler
 - ftdetect: ~/.vim/ftdetect
 - plugin: ~/.vim/plugin
+- syntax: ~/.vim/syntax
 - ultisnips: ~/.vim/ultisnips
 - vimrc: ~/.vimrc

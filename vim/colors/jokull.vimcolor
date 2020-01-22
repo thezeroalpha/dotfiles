@@ -2,33 +2,33 @@
 " to create a colorscheme from something a bit more readable.
 " Format is 'group fg_hex, bg_hex. attrs'
 background light
-normal #2c2625, #e4e4e4
-cursorline NONE, #d0d0d0
-string #009051. italic
-identifier #112d4e
-function #0096ff. bold
-statement #0050a0
-include #2696bf. bold
-type #005493
-search NONE, #d7f1e0
-incsearch NONE, #b7d1b0. bold
-folded #236dff, #d0d0d0
-tablinefill NONE, #d0d0d0
-tablinesel NONE, #e5e5e5
-wildmenu #005493, #e5e5e5. bold
-linenr #9b9b4c, NONE
-preproc NONE
-vertsplit NONE
-todo Blue, Yellow
-nontext #81A1C1
-statusline NONE, #7abecd
-statuslinenc NONE, #a8dbfd
-visual NONE, #a8caff
-title #225555. bold
-matchparen #d7f1e0, #a8dbfd
-qfFileName #0076ff
-delimiter #5f5f00
-comment #5f5f5f. italic
+Normal #2c2625, #e4e4e4
+Cursorline NONE, #d0d0d0
+String #009051. italic
+Identifier #112d4e
+Function #0096ff. bold
+Statement #0050a0
+Include #2696bf. bold
+Type #005493
+Search NONE, #d7f1e0
+Incsearch NONE, #b7d1b0. bold
+Folded #236dff, #d0d0d0
+Tablinefill NONE, #d0d0d0
+Tablinesel NONE, #e5e5e5
+Wildmenu #005493, #e5e5e5. bold
+Linenr #9b9b4c, NONE
+Preproc NONE
+Vertsplit NONE
+Todo Blue, Yellow
+Nontext #81A1C1
+Statusline NONE, #7abecd
+Statuslinenc NONE, #a8dbfd
+Visual NONE, #a8caff
+Title #225555. bold
+Matchparen #d7f1e0, #a8dbfd
+QfFileName #0076ff
+Delimiter #5f5f00
+Comment #5f5f5f. italic
 link tabline tablinefill
 link repeat,conditional,operator statement
 link define,macro,precondit include
@@ -45,7 +45,7 @@ link mkdlink,vimwikilink type
 link pmenu statuslinenc
 link pmenusel statusline
 
-diffadd NONE, #a5ffa5
-diffdelete NONE, #ffa5a5
-diffchange #2c2625, #c0beff
-difftext NONE, #a0aeff. bold
+Diffadd NONE, #a5ffa5
+Diffdelete NONE, #ffa5a5
+Diffchange #2c2625, #c0beff
+Difftext NONE, #a0aeff. bold
