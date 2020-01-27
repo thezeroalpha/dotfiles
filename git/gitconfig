@@ -26,6 +26,8 @@
 
     a = add
     ap = add -p
+    af = "!git ls-files -m -o --exclude-standard | fzf --print0 -m --reverse --height=20% | xargs -0 -t -o git add"
+    fzf = "!git ls-files -mo --exclude-standard | fzf -m --reverse --height=20%"
 
     c = commit
     cm = commit -m
