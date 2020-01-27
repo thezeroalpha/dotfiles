@@ -15,23 +15,23 @@ inoremap <buffer> , ,<c-g>u
 nnoremap <buffer> <leader><CR> :silent !open "%<.pdf"<CR>:redraw!<CR>
 
 " Autocommands
-if g:loaded_dispatch
-  augroup markdown_autocmds
-    au! * <buffer>
-    au BufWrite <buffer> Dispatch proselint %
-  augroup END
-else
-  function! s:proselint_buffer()
-    compiler proselint
-    make
-    copen
-    compiler markdown
-  endfunction
-  augroup markdown_autocmds
-    au! * <buffer>
-    au BufWrite <buffer> call s:proselint_buffer()
-  augroup END
-endif
+" if g:loaded_dispatch
+"   augroup markdown_autocmds
+"     au! * <buffer>
+"     au BufWrite <buffer> Dispatch proselint %
+"   augroup END
+" else
+"   function! s:proselint_buffer()
+"     compiler proselint
+"     make
+"     copen
+"     compiler markdown
+"   endfunction
+"   augroup markdown_autocmds
+"     au! * <buffer>
+"     au BufWrite <buffer> call s:proselint_buffer()
+"   augroup END
+" endif
 
 " Settings
 compiler markdown
@@ -44,5 +44,5 @@ if !exists('b:undo_ftplugin')
 endif
 let b:undo_ftplugin .= '| imapc <buffer>'
 let b:undo_ftplugin .= '| nmapc <buffer>'
-let b:undo_ftplugin .= '| execute "au! markdown_autocmds * <buffer>"'
+" let b:undo_ftplugin .= '| execute "au! markdown_autocmds * <buffer>"'
 let b:undo_ftplugin .= '| setlocal makeprg< conceallevel< wrap<'
