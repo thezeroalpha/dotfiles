@@ -80,6 +80,7 @@ tmux:
 - tmux.conf: ~/.tmux.conf
 ghci: ~/.ghci
 mpv: ~/.config/mpv
+joplin/keymap.json: ~/.config/joplin/keymap.json
 
 # X server (Linux)
 xinitrc: ~/.xinitrc

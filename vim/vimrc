@@ -576,6 +576,7 @@ if has('terminal')
   cnoreabbrev wt terminal ++close
   cnoreabbrev tm terminal ++close man
   cnoreabbrev tf terminal ++close lf
+  cnoreabbrev tn terminal ++close joplin
   command! Tuir tab terminal tuir
 endif
 " }}}
