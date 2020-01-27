@@ -7,14 +7,20 @@ function! goyo_custom#update_ruler()
   " Adding the call to wordcount() here didn't work, so had to use a helper variable
   setlocal rulerformat=%20(%{g:goyo_wordcount}\ words%=\ %{strftime(\"%H:%M\")}%)
 endfunction
+function! goyo_custom#modify_hlgroups()
+  hi! spellbad gui=underline cterm=underline
+  hi! spellcap gui=underline cterm=underline
+endfunction
 function! goyo_custom#goyo_enter()
   call goyo_custom#update_ruler()
   setlocal textwidth=0 wrapmargin=5 wrap
+  call goyo_custom#modify_hlgroups()
   setlocal ruler
   autocmd BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI * call goyo_custom#update_ruler()
 endfunction
 function! goyo_custom#goyo_leave()
   setlocal textwidth< wrapmargin< wrap< rulerformat< ruler<
   autocmd! BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI
+  execute "colorscheme ".g:colors_name
   unlet g:goyo_wordcount
 endfunction
