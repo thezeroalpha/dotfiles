@@ -324,6 +324,9 @@ let g:dispatch_no_maps = 1
 nnoremap `<CR> :Dispatch<CR>
 nnoremap '<CR> :Start<CR>
 " }}}
+" Table-mode {{{
+let g:table_mode_map_prefix = "<leader><bar>"
+" }}}
 " }}}
 " }}}
 " General {{{
@@ -800,7 +803,7 @@ nnoremap <leader>L :next<CR>
 nmap <C-P> <Plug>VimcolorSynstack
 
 " Correct the last spelling error
-inoremap <expr> <C-x>s &spell ? "<c-g>u<Esc>[s0z=`]a<c-g>u" : ""
+inoremap <expr> <C-x>s &spell ? "<c-g>u<Esc>[s1z=`]a<c-g>u" : ""
 
 " Make-ing (use Dispatch if enabled)
 nnoremap <leader>m? :set makeprg<CR>
