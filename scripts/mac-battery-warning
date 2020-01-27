@@ -1,0 +1,7 @@
+#!/usr/local/bin/bash
+battery_pct=$(pmset -g batt | tail -1 | awk '{ print $3 }' | cut -d% -f1)
+if [ -n "$(pmset -g batt | grep "from 'Battery Power'")" ] && [ "$battery_pct" -le 15 ]; then
+  say "Charge your computer";
+elif [ -n "$(pmset -g batt | grep "from 'AC Power'")" ] && [ "$battery_pct" -ge 95 ]; then
+  say "Battery charged"
+fi
