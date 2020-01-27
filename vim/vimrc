@@ -312,6 +312,9 @@ nnoremap <leader>u :MundoToggle<CR>
 nmap <leader>qn <Plug>(qf_qf_next)
 nmap <leader>qp <Plug>(qf_qf_previous)
 nmap <leader>qf <Plug>(qf_qf_toggle)
+" Disable auto-open because it interferes with Dispatch reverting makeprg
+" See here https://github.com/tpope/vim-dispatch/issues/254
+let g:qf_auto_open_quickfix = 0
 " }}}
 " Dispatch {{{
 " Disable default maps
