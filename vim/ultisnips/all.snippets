@@ -1,0 +1,19 @@
+snippet launchd "A launchd job template" b
+<!-- Documentation here: https://www.launchd.info/ -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>${1:com.example.app}</string>
+    <key>Program</key>
+    <string>${2:/path/to/script}</string>
+    <key>RunAtLoad</key>
+    <${3:true if run on boot/login}/>
+    <key>StartInterval</key>
+    <integer>${4:interval in which to run in seconds}</integer>
+    <key>KeepAlive</key>
+    <${5:true if the job should always be running, or e.g. dict with SuccessfulExit}/>
+  </dict>
+</plist>
+endsnippet
