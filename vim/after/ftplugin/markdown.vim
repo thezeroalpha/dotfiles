@@ -5,6 +5,13 @@ inoremap <buffer> ;3 ###
 inoremap <buffer> ;4 ####
 inoremap <buffer> ;5 #####
 inoremap <buffer> ;6 ######
+
+" Add an undo point at punctuation
+inoremap <buffer> . .<c-g>u
+inoremap <buffer> ? ?<c-g>u
+inoremap <buffer> ! !<c-g>u
+inoremap <buffer> , ,<c-g>u
+
 nnoremap <buffer> <leader><CR> :silent !open "%<.pdf"<CR>:redraw!<CR>
 
 " Autocommands
