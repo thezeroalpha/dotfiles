@@ -11,7 +11,7 @@ syntax clear
 
 " Define highlighting groups
 syntax region mapComment start="^#" end="$"
-syntax match mapDash "\(^ *\)\@<=-"
+syntax match mapDash "\(^ *\)\@<=-\+"
 syntax match mapSource "[a-zA-Z0-9_\-./]\+:"
 syntax match mapDest "\(: \)\@<=.\+" "have to use lookbehind here, \zs breaks it
 
