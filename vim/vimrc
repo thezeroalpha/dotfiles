@@ -22,8 +22,8 @@ Plug 'rstacruz/sparkup'
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
 
-" Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
-Plug 'tpope/vim-surround'
+" Sandwich - super useful plugin for surrounding stuff with quotes/brackets/tags
+Plug 'machakann/vim-sandwich'
 
 " Eunuch - shell commands but in vim
 Plug 'tpope/vim-eunuch'
@@ -323,6 +323,23 @@ nnoremap '<CR> :Start<CR>
 " }}}
 " Table-mode {{{
 let g:table_mode_map_prefix = "<leader><bar>"
+" }}}
+" Sandwich {{{
+" Use mappings from surround.vim
+runtime macros/sandwich/keymap/surround.vim
+
+" Copy the default recipes
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+
+" And add bracket-with-space from surround.vim
+let g:sandwich#recipes += [
+      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+      \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+      \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+      \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
+      \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['[']},
+      \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
+      \ ]
 " }}}
 " }}}
 " }}}
