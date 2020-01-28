@@ -37,6 +37,7 @@ nnoremap <buffer> <leader><CR> :silent !open "%<.pdf"<CR>:redraw!<CR>
 compiler markdown
 setlocal wrap
 setlocal conceallevel=2
+setlocal spell
 
 " Undo_ftplugin
 if !exists('b:undo_ftplugin')
@@ -45,4 +46,4 @@ endif
 let b:undo_ftplugin .= '| imapc <buffer>'
 let b:undo_ftplugin .= '| nmapc <buffer>'
 " let b:undo_ftplugin .= '| execute "au! markdown_autocmds * <buffer>"'
-let b:undo_ftplugin .= '| setlocal makeprg< conceallevel< wrap<'
+let b:undo_ftplugin .= '| setlocal makeprg< conceallevel< wrap< spell<'
