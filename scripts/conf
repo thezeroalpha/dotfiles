@@ -164,7 +164,7 @@ sub ParseMapfile {
 
 # Dump a hash, for debugging purposes
 sub PrettyPrint {
-  puts "hash length: ".keys($_[0]);
+  puts "hash length: ".keys(%{$_[0]});
   use Data::Dumper;
   print Dumper $_[0];
 }
@@ -248,7 +248,7 @@ sub ExecLinkOp {
   # If operation should be on all tracked files
   if (not @ARGV) {
     keys %$maps; # reset `each` iterator
-    foreach my $src (keys $maps) {
+    foreach my $src (keys %$maps) {
       $opref->($src, $maps->{$src});
     }
   }
@@ -262,7 +262,7 @@ sub ExecLinkOp {
         $opref->($src_part, $maps->{$src_part});
       }
       # otherwise, operate on everything starting with whatever's passed
-      elsif ( my @matching = grep(/^$src_part/, keys $maps) ) {
+      elsif ( my @matching = grep(/^$src_part/, keys %$maps) ) {
         foreach my $src(@matching) {
           $opref->($src, $maps->{$src});
         }
@@ -314,7 +314,7 @@ sub ListCmd {
 
   my $hash = $_[0];
   my @output = ();
-  foreach my $k (keys $hash) {
+  foreach my $k (keys %$hash) {
     push @output, "$k => $hash->{$k}";
   }
   foreach my $l (sort @output) {
