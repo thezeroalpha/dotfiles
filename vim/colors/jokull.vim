@@ -64,6 +64,7 @@ hi! link spellocal string
 hi! link spellrare string
 hi! link spellcap string
 hi! link markdownUrl string
+hi! link markdowncode type
 hi! link mkdlink type
 hi! link vimwikilink type
 hi! link pmenu statuslinenc
