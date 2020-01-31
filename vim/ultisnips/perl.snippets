@@ -1,0 +1,131 @@
+snippet readfile "Read from a file" b
+open(${1:handle}, "<${2:filename}") or die "Couldn't open the file $2, \$!";
+
+while($1) {
+  $0
+}
+endsnippet
+
+snippet functable "Function dispatch table" b
+my %${1:table name} = (
+  ${2:str} => \&${3:function name},
+  ${4:str} => \&${5:function name}
+);
+
+$1{${6:variable to check}} or ${7:fail function};
+$1{$6}->();
+$0
+endsnippet
+
+snippet parseargs "Parse commandline arguments with GetOptions" b
+use Getopt::Long 'GetOptions';
+use Pod::Usage 'pod2usage';
+
+# Documentation: https://perldoc.perl.org/Getopt/Long.html#Simple-options
+my ($help, $manual);
+my %optctl = (help => \$help, manual => \$manual, '<>' => \&${1:callback function});
+GetOptions(\%optctl, 'help|h', 'manual|man', '<>') or pod2usage(2);
+pod2usage(2) if $help;
+pod2usage({ -verbose => 2, -exitval => 1}) if $manual;
+endsnippet
+
+snippet helpdoc "Pod help document structure" b
+=head1 NAME
+
+name of program - short tagline.
+
+=head1 SYNOPSIS
+
+  program [options] [argument] [arg_2 [arg_3 ...]]
+
+  Help Options:
+    --help, -h        Show this script's help information.
+    --manual, -man    Read this script's manual.
+
+=cut
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--help>
+Show the brief help information.
+
+=item B<--manual>
+Read the manual, with examples.
+
+=back
+
+=cut
+
+=head1 ARGUMENTS
+
+It can include lists:
+
+=over 4
+
+=item * B<bold thing>
+
+Here's some bold text.
+
+=item * C<code>
+
+Some code.
+
+=item * I<italic stuff>
+
+It does italics.
+
+=item * And even links
+
+Like the link L<to Google|http://google.com>!
+
+=back
+
+Of course, lists don't have to be bulletted:
+
+=over 8
+
+=item cut
+
+With this keyword, you can stop parsing for pod until the next directive.
+So documentation can be intermingled with code.
+
+=item item
+
+This just delimits a single item in a list.
+
+=item over
+
+Begins indentation for a list.
+
+=item back
+
+Finishes off a list.
+
+=back
+=cut
+
+=head1 EXAMPLES
+
+The following is an example of this script:
+
+  program --help
+
+=cut
+
+
+=head1 DESCRIPTION
+
+This is a simple demonstration program for Pod::Usage, this text will be displayed if the script is invoked with '--manual'.
+
+=cut
+
+
+=head1 AUTHOR
+
+
+Should have some info about the author here.
+
+=cut
+endsnippet
