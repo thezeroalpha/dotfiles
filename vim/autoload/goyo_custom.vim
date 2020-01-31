@@ -13,13 +13,13 @@ function! goyo_custom#modify_hlgroups()
 endfunction
 function! goyo_custom#goyo_enter()
   call goyo_custom#update_ruler()
-  setlocal textwidth=0 wrapmargin=5 wrap spell
+  setlocal textwidth=0 wrapmargin=0 wrap linebreak spell
   call goyo_custom#modify_hlgroups()
   setlocal ruler
   autocmd BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI * call goyo_custom#update_ruler()
 endfunction
 function! goyo_custom#goyo_leave()
-  setlocal textwidth< wrapmargin< wrap< rulerformat< ruler< spell<
+  setlocal textwidth< wrapmargin< linebreak< wrap< rulerformat< ruler< spell<
   autocmd! BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI
   execute "colorscheme ".g:colors_name
   unlet g:goyo_wordcount
