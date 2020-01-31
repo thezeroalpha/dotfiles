@@ -18,6 +18,14 @@ source ~/.cache/wal/colors-tty.sh
 
 . $HOME/.dotfiles/shell/z/z.sh
 
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  export WORKON_HOME=$HOME/.config/virtualenvs
+  export VIRTUALENVWRAPPER_PYTHON=`which python3`
+  export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+  mkdir -p $WORKON_HOME
+  source /usr/local/bin/virtualenvwrapper_lazy.sh
+fi
+
 plugins=(git gitignore zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
