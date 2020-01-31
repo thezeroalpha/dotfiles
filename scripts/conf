@@ -368,6 +368,12 @@ pod2usage(2) if $help;
 # If manual set, show full documentation
 pod2usage({ -verbose => 2, -exitval => 1}) if $manual;
 
+=head1 DESCRIPTION
+
+This is a script to manage filesystem-wide symbolic links to your dotfiles (configuration), based on definitions in the map file.
+The location of the map file is set in the script itself, using the $MAPFILE variable.
+The location of your dotfiles is set either using the $DOTFILES environment variable, or inside the script itself.
+
 =head1 ARGUMENTS
 
 =over 4
@@ -382,6 +388,11 @@ With no arguments, links all entries.
 Unlink entries according to the map file.
 With no arguments, unlinks all entries.
 
+=item * B<check [entry1 [entry2...]]>
+
+Check that entries are linked accordint to the map file.
+With no arguments, checks all entries.
+
 =item * B<edit>
 
 Edit the map file with whatever you set as $EDITOR
@@ -390,31 +401,45 @@ Edit the map file with whatever you set as $EDITOR
 
 List the current mappings.
 
-=back
 
-=cut
+=back
 
 =head1 EXAMPLES
 
-  The following is an example of this script:
+Link everything in the mapfile:
 
- pod-usage.pl --help
+  conf link
 
-=cut
+Link all files in the "vim" directory:
 
+  conf link vim
 
-=head1 DESCRIPTION
+Link specifically the shell/bashrc file:
 
+  conf link shell/bashrc
 
-  This is a simple demonstration program for Pod::Usage, this text
- will be displayed if the script is invoked with '--manual'.
+Link the shell/zprofile file and the vim/autoload directory:
 
-=cut
+  conf link shell/zprofile vim/autoload
 
+Check if everything is linked:
+
+  conf check
+
+Check if everything in the "vim" directory is linked:
+
+  conf check vim
+
+Remove the link to the "lf" directory:
+
+  conf unlink lf
+
+Remove all links defined in the mapfile:
+
+  conf unlink
 
 =head1 AUTHOR
 
-
- This should be here.
+Alexander Balgavy (thezeroalpha), L<https://github.com/thezeroalpha>.
 
 =cut
