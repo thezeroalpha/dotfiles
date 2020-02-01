@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+aspect_ratio="16:10"
+if ! command -v convert &>/dev/null; then
+  echo "convert not installed." >&2
+  exit 1
+fi
+die() {
+  echo "$1" >&2
+  exit 1
+}
+
+[ $# -eq 1 ] || die "Filename argument needed."
+[ -e "$1" ] || die "$1 does not exist."
+[ -f "$1" ] || die "$1 is not a file."
+convert "$1" -resize "$aspect_ratio" "${1/#/siz-}"
