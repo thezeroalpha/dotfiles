@@ -344,6 +344,17 @@ let g:sandwich#recipes += [
       \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [')']},
       \ ]
 " }}}
+" netrw {{{
+let g:netrw_banner = 0                              " hide the banner
+let g:netrw_fastbrowse = 2                          " only get dir list if not seen, or manually refreshed
+let g:netrw_liststyle = 0                           " thin listing
+let g:netrw_winsize = 25                            " open at 25% size
+let g:netrw_keepdir = 0                             " keep the current directory the same as the browsing directory.
+let g:netrw_retmap = 1                              " double-click to return to browsing
+let g:netrw_list_hide = &wildignore                 " hide everything in &wildignore
+let g:netrw_list_hide .= ',\(^\|\s\s\)\zs\.\S\+'    " as well as dotfiles
+let g:netrw_special_syntax = 1                      " use special syntax groups for certain files in browser
+" }}}
 " }}}
 " }}}
 " General {{{
@@ -416,17 +427,6 @@ set fileformats=unix,dos,mac
 " Number of lines to use for command line
 " (this fixes the 'press enter to continue' thing on :help)
 set cmdheight=1
-
-" netrw {{{
-let g:netrw_banner = 0                 " hide the banner
-let g:netrw_fastbrowse = 2             " only get dir list if not seen, or manually refreshed
-let g:netrw_liststyle = 3              " tree view
-let g:netrw_winsize = 25               " open at 25% size
-let g:netrw_keepdir = 0                " keep the current directory the same as the browsing directory.
-let g:netrw_retmap = 1                 " double-click to return to browsing
-let g:netrw_list_hide = &wildignore    " hide everything in &wildignore
-let g:netrw_special_syntax = 1         " use special syntax groups for certain files in browser
-" }}}
 
 " Send more characters at a given time
 set ttyfast
