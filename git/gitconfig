@@ -37,6 +37,8 @@
     camend = commit --amend --no-edit
     cp = commit -p
 
+    rp = reset -p
+
     ss = stash push
     sp = stash pop
     sa = stash apply
