@@ -47,6 +47,9 @@ fi
 if command -v rbenv &>/dev/null; then
   eval "$(rbenv init -)"
 fi
+if [ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]; then
+  PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
 
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="`which vim`"
