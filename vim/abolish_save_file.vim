@@ -9,3 +9,4 @@ Abolish avg{,s} average{,s}
 Abolish eg e.g.
 Abolish st such that
 Abolish etc etc.
+Abolish distr{,s} distribution{,s}
