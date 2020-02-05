@@ -97,6 +97,7 @@ map X !$f
 
 # dedicated keys for file opener actions
 map o &open $f
+map O push hol
 map r source ~/.config/lf/lfrc
 
 map R push :rename<space>
