@@ -18,6 +18,7 @@
   { "keys": ["mb"],         "type": "prompt",      "command": "mv $n \"\"", "cursorPosition": -2 },
   { "keys": ["cw","R"],     "type": "prompt",      "command": "ren $c \"\"", "cursorPosition": -2 },
   { "keys": ["/","?"],      "type": "prompt",      "command": "search \"\"", "cursorPosition": -2 },
+  { "keys": ["a"],          "type": "prompt",      "command": "attach $n /Users/alex/\"\"", "cursorPosition": -2 },
   { "keys": ["U", "gg"],    "type": "function",    "command": "page_up" },
   { "keys": ["D", "G"],     "type": "function",    "command": "page_down" }
 ]
