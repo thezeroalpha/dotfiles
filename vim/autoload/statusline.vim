@@ -55,6 +55,9 @@ endfunction
 
 " print the textwrap information (textwidth or wrapmargin)
 function! statusline#StatuslineWrapCol()
+  if &textwidth == 0 && &wrapmargin == 0 && &wrap
+    return "softwrap"
+  endif
   if &textwidth == 0
     return "TW ".(winwidth(0)-&wrapmargin)."(M".&wrapmargin.")"
   else

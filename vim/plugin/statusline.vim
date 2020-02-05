@@ -14,6 +14,7 @@ set statusline+=%*                                                  " Clear high
 set statusline+=%<                                                  " Start truncating here
 set statusline+=\ \ %{statusline#StatuslineBuildCwd()}              " Current working directory, replacing home with ~
 set statusline+=%=                                                  " Move everything after this to the right
+set statusline+=%{&spell?'[spell]\ ':''}                            " Show spellcheck status
 set statusline+=%y                                                  " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
 set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
