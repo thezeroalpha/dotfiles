@@ -5,9 +5,6 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
-(add-to-list 'load-path "~/.emacs.d/orgmode-mediawiki")
-(require 'ox-mediawiki)
-
 ;; Set the shell
 (setq-default explicit-shell-file-name "/bin/bash")
 
@@ -94,6 +91,74 @@
   )
 
 (add-hook 'artist-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(with-eval-after-load 'ox
+  (require 'ox-pandoc))
+
+(setq org-pandoc-menu-entry (quote (
+                                        ;; ----------------------------------------------------------------------
+                                        ;; Docs
+                                        ;; ----------------------------------------------------------------------
+                                        (?m "to markdown and open." org-pandoc-export-to-markdown-and-open)
+                                        (?M "as markdown." org-pandoc-export-as-markdown)
+                                        (?k "to markdown_mmd." org-pandoc-export-to-markdown_mmd)
+                                        (?K "to markdown_mmd and open." org-pandoc-export-to-markdown_mmd-and-open)
+                                        (?p "to plain and open." org-pandoc-export-to-plain-and-open)
+                                        (?P "as plain." org-pandoc-export-as-plain)
+                                        (?a "to asciidoc and open." org-pandoc-export-to-asciidoc-and-open)
+                                        (?A "as asciidoc." org-pandoc-export-as-asciidoc)
+                                        (?n "to man and open." org-pandoc-export-to-man-and-open)
+                                        (?N "as man." org-pandoc-export-as-man)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; WIKIs
+                                        ;; ----------------------------------------------------------------------
+                                        (?u "to dokuwiki and open." org-pandoc-export-to-dokuwiki-and-open)
+                                        (?U "as dokuwiki." org-pandoc-export-as-dokuwiki)
+                                        (?w "to mediawiki and open." org-pandoc-export-to-mediawiki-and-open)
+                                        (?W "as mediawiki." org-pandoc-export-as-mediawiki)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; Slides
+                                        ;; ----------------------------------------------------------------------
+                                        (?r "to revealjs and open." org-pandoc-export-to-revealjs-and-open)
+                                        (?R "as revealjs." org-pandoc-export-as-revealjs)
+                                        (?s "to slidy and open." org-pandoc-export-to-slidy-and-open)
+                                        (?S "as slidy." org-pandoc-export-as-slidy)
+                                        (?z "to dzslides and open." org-pandoc-export-to-dzslides-and-open)
+                                        (?Z "as dzslides." org-pandoc-export-as-dzslides)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; DOC
+                                        ;; ----------------------------------------------------------------------
+                                        (?o "to odt and open." org-pandoc-export-to-odt-and-open)
+                                        (?O "to odt." org-pandoc-export-to-odt)
+                                        (?x "to docx and open." org-pandoc-export-to-docx-and-open)
+                                        (?X "to docx." org-pandoc-export-to-docx)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; HTML
+                                        ;; ----------------------------------------------------------------------
+                                        (?h "to html5 and open." org-pandoc-export-to-html5-and-open)
+                                        (?H "as html5." org-pandoc-export-as-html5)
+                                        (?5 "to html5-pdf and open." org-pandoc-export-to-html5-pdf-and-open)
+                                        (?% "to html5-pdf." org-pandoc-export-to-html5-pdf)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; PDF
+                                        ;; ----------------------------------------------------------------------
+                                        (?l "to latex-pdf and open." org-pandoc-export-to-latex-pdf-and-open)
+                                        (?L "to latex-pdf." org-pandoc-export-to-latex-pdf)
+                                        (?= "to ms-pdf and open." org-pandoc-export-to-ms-pdf-and-open)
+                                        (?- "to ms-pdf." org-pandoc-export-to-ms-pdf)
+                                        (?b "to beamer-pdf and open." org-pandoc-export-to-beamer-pdf-and-open)
+                                        (?B "to beamer-pdf." org-pandoc-export-to-beamer-pdf)
+                                        (?c "to context-pdf and open." org-pandoc-export-to-context-pdf-and-open)
+                                        (?C "to context-pdf." org-pandoc-export-to-context-pdf)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; E-books
+                                        ;; ----------------------------------------------------------------------
+                                        (?e "to epub3 and open." org-pandoc-export-to-epub3-and-open)
+                                        (?E "to epub3." org-pandoc-export-to-epub3)
+                                        ;; ----------------------------------------------------------------------
+                                        ;; Dev
+                                        ;; ----------------------------------------------------------------------
+                                        (?j "to json and open." org-pandoc-export-to-json-and-open)
+                                        (?J "as json." org-pandoc-export-as-json))))
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -170,50 +235,14 @@ There are two things you can do about this warning:
     (("sqcup" "\\sqcup" nil "" "" "" "⊔")
      ("sqcap" "\\sqcap" nil "" "" "" "⊓"))))
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
- '(org-md-headline-style (quote setext))
+ '(org-export-with-author nil)
+ '(org-export-with-title nil)
+ '(org-pandoc-options-for-markdown (quote ((katex . t) (atx-headers . t))))
  '(org-pretty-entities t)
- '(org-structure-template-alist
-   (quote
-    (("n" "#+NAME: ")
-     ("s" "#+BEGIN_SRC ?
-
-#+END_SRC")
-     ("e" "#+BEGIN_EXAMPLE
-?
-#+END_EXAMPLE")
-     ("q" "#+BEGIN_QUOTE
-?
-#+END_QUOTE")
-     ("v" "#+BEGIN_VERSE
-?
-#+END_VERSE")
-     ("V" "#+BEGIN_VERBATIM
-?
-#+END_VERBATIM")
-     ("c" "#+BEGIN_CENTER
-?
-#+END_CENTER")
-     ("C" "#+BEGIN_COMMENT
-?
-#+END_COMMENT")
-     ("l" "#+BEGIN_EXPORT latex
-?
-#+END_EXPORT")
-     ("L" "#+LaTeX: ")
-     ("h" "#+BEGIN_EXPORT html
-?
-#+END_EXPORT")
-     ("H" "#+HTML: ")
-     ("a" "#+BEGIN_EXPORT ascii
-?
-#+END_EXPORT")
-     ("A" "#+ASCII: ")
-     ("i" "#+INDEX: ?")
-     ("I" "#+INCLUDE: %file ?"))))
  '(package-check-signature nil)
  '(package-selected-packages
    (quote
-    (chess htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
+    (ox-pandoc chess htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
  '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
