@@ -1,1 +1,2 @@
-command Scratch call scratchpad#MarkScratch()
+command! Scratch call scratchpad#Create()
+command! ScratchMark call scratchpad#MarkScratch()
