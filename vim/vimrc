@@ -254,10 +254,13 @@ let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-i': 'split',
       \ 'ctrl-v': 'vsplit' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
 nnoremap <leader>T :Helptags<CR>
+nnoremap <leader>Q :Tags<CR>
 " }}}
 " Vimwiki {{{
 let tlist_vimwiki_settings = 'wiki;h:Headers'
