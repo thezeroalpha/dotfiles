@@ -584,8 +584,11 @@ command! Hexedit %!xxd
 command! Unhex %!xxd -r
 command! JsonSimplifyObject %s/^\(\s\{10}\){\n\s\{12\}\(.*\)\n\s\{10\}}\(,\?\)/\1{ \2 }\3
 command! BeautifyJson %!python -m json.tool
-command! Dos2unix .!dos2unix "%"
+command! Dos2unix %!dos2unix
 command! -nargs=1 Cheat terminal curl cheat.sh/<args>
+command! Reveal exe "silent !open ".shellescape(expand("%:p:h")) | redraw!
+command! Softwrap setlocal textwidth=0 wrapmargin=0 wrap
+command! Hardwrap setlocal textwidth< wrapmargin< nowrap
 
 " Fat finger fixes/convenience abbreviations
 cnoreabbrev W! w!
