@@ -766,14 +766,14 @@ nnoremap zs :exe "set foldlevel=".foldlevel(line('.'))<CR>
 
 " Config edit mappings
 " Why :drop? It uses the file if it's already open.
-nnoremap <C-E><C-V> :drop $MYVIMRC<CR>zXgg
-nnoremap <C-E><C-A> :drop $MYVIMRC<CR>zXgg/Autocommands {{<CR>:noh<CR>za
-nnoremap <C-E><C-C> :drop $MYVIMRC<CR>zXgg/Commands {{<CR>:noh<CR>za
-nnoremap <C-E><C-E> :drop $MYVIMRC<CR>zXgg/Editor {{<CR>:noh<CR>za
-nnoremap <C-E><C-G> :drop $MYVIMRC<CR>zXgg/General {{<CR>:noh<CR>za
-nnoremap <C-E><C-M> :drop $MYVIMRC<CR>zXgg/Mappings {{<CR>:noh<CR>za
-nnoremap <C-E><C-P><C-I> :drop $MYVIMRC<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
-nnoremap <C-E><C-P><C-C> :drop $MYVIMRC<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
+nnoremap <C-E><C-V> :DropToFoldedVimrc<CR>zXgg
+nnoremap <C-E><C-A> :DropToFoldedVimrc<CR>zXgg/^" Autocommands {{<CR>:noh<CR>za
+nnoremap <C-E><C-C> :DropToFoldedVimrc<CR>zXgg/Commands {{<CR>:noh<CR>za
+nnoremap <C-E><C-E> :DropToFoldedVimrc<CR>zXgg/Editor {{<CR>:noh<CR>za
+nnoremap <C-E><C-G> :DropToFoldedVimrc<CR>zXgg/General {{<CR>:noh<CR>za
+nnoremap <C-E><C-M> :DropToFoldedVimrc<CR>zXgg/Mappings {{<CR>:noh<CR>za
+nnoremap <C-E><C-P><C-I> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
+nnoremap <C-E><C-P><C-C> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
 nmap <C-E><C-L> <Plug>VimcolorEdit
 
 " Yank to clipboard
