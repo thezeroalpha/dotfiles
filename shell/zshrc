@@ -34,8 +34,6 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [[ -f ~/.aliases ]] && source ~/.aliases
 [[ -f ~/.functions ]] && source ~/.functions
-POWERLEVEL9K_COLOR_SCHEME='light'
-
 
 insert-arg-of-prev-cmd() {
 : ${NUMERIC:-1}
