@@ -26,7 +26,7 @@ if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper_lazy.sh
 fi
 
-plugins=(git gitignore zsh-syntax-highlighting)
+plugins=(git gitignore zsh-syntax-highlighting httpie)
 source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
