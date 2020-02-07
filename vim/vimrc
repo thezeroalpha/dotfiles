@@ -591,15 +591,6 @@ command! Softwrap setlocal textwidth=0 wrapmargin=0 wrap
 command! Hardwrap setlocal textwidth< wrapmargin< nowrap
 
 " Fat finger fixes/convenience abbreviations
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
-cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Qall qall
 cnoreabbrev E Explore
 cnoreabbrev Colors XtermColorTable
 cnoreabbrev lset setl
@@ -616,82 +607,6 @@ if has('terminal')
   cnoreabbrev tn terminal ++close joplin
   command! Tuir tab terminal tuir
 endif
-" }}}
-" Symbols {{{
-execute "digraphs ks " . 0x2096
-execute "digraphs as " . 0x2090
-execute "digraphs es " . 0x2091
-execute "digraphs hs " . 0x2095
-execute "digraphs is " . 0x1D62
-execute "digraphs ks " . 0x2096
-execute "digraphs ls " . 0x2097
-execute "digraphs ms " . 0x2098
-execute "digraphs os " . 0x2092
-execute "digraphs ps " . 0x209A
-execute "digraphs rs " . 0x1D63
-execute "digraphs ss " . 0x209B
-execute "digraphs ts " . 0x209C
-execute "digraphs us " . 0x1D64
-execute "digraphs vs " . 0x1D65
-execute "digraphs xs " . 0x2093
-execute "digraphs \\|- " . 0x22A2
-execute "digraphs \\|=" . 0x22A8
-execute "digraphs \\|!" . 0x22AD
-execute "digraphs nS " . 0x207F
-execute "digraphs ns " . 8345
-
-execute "digraphs A& " . 0x1D4D0
-execute "digraphs B& " . 0x1D4D1
-execute "digraphs C& " . 0x1D4D2
-execute "digraphs D& " . 0x1D4D3
-execute "digraphs E& " . 0x1D4D4
-execute "digraphs F& " . 0x1D4D5
-execute "digraphs G& " . 0x1D4D6
-execute "digraphs H& " . 0x1D4D7
-execute "digraphs I& " . 0x1D4D8
-execute "digraphs J& " . 0x1D4D9
-execute "digraphs K& " . 0x1D4DA
-execute "digraphs L& " . 0x1D4DB
-execute "digraphs M& " . 0x1D4DC
-execute "digraphs N& " . 0x1D4DD
-execute "digraphs O& " . 0x1D4DE
-execute "digraphs P& " . 0x1D4DF
-execute "digraphs Q& " . 0x1D4E0
-execute "digraphs R& " . 0x1D4E1
-execute "digraphs S& " . 0x1D4E2
-execute "digraphs T& " . 0x1D4E3
-execute "digraphs U& " . 0x1D4E4
-execute "digraphs V& " . 0x1D4E5
-execute "digraphs W& " . 0x1D4E6
-execute "digraphs X& " . 0x1D4E7
-execute "digraphs Y& " . 0x1D4E8
-execute "digraphs Z& " . 0x1D4E9
-execute "digraphs a& " . 0x1D4EA
-execute "digraphs b& " . 0x1D4EB
-execute "digraphs c& " . 0x1D4EC
-execute "digraphs d& " . 0x1D4ED
-execute "digraphs e& " . 0x1D4EE
-execute "digraphs f& " . 0x1D4EF
-execute "digraphs g& " . 0x1D4F0
-execute "digraphs h& " . 0x1D4F1
-execute "digraphs i& " . 0x1D4F2
-execute "digraphs j& " . 0x1D4F3
-execute "digraphs k& " . 0x1D4F4
-execute "digraphs l& " . 0x1D4F5
-execute "digraphs m& " . 0x1D4F6
-execute "digraphs n& " . 0x1D4F7
-execute "digraphs o& " . 0x1D4F8
-execute "digraphs p& " . 0x1D4F9
-execute "digraphs q& " . 0x1D4FA
-execute "digraphs r& " . 0x1D4FB
-execute "digraphs s& " . 0x1D4FC
-execute "digraphs t& " . 0x1D4FD
-execute "digraphs u& " . 0x1D4FE
-execute "digraphs v& " . 0x1D4FF
-execute "digraphs w& " . 0x1D500
-execute "digraphs x& " . 0x1D501
-execute "digraphs y& " . 0x1D502
-execute "digraphs z& " . 0x1D503
 " }}}
 " Mappings {{{
 " So I don't have to mash shift all the time
@@ -710,12 +625,7 @@ nnoremap : ;
 nnoremap q: <Nop>
 
 " Normal mode shortcuts
-nnoremap <leader>dif :Diff<CR>
 nnoremap <leader>b :ls<CR>:b<Space>
-
-" Tab completion (disabled because of ultisnips)
-" inoremap <expr> <tab> InsertTabWrapper()
-" inoremap <s-tab> <c-p>
 
 " Retain visual mode after > and <
 vnoremap < <gv
