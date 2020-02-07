@@ -14,7 +14,6 @@ irssi: ~/.config/irssi
 karabiner: ~/.config/karabiner
 lf: ~/.config/lf
 newsboat: ~/.newsboat
-oh-my-zsh: ~/.oh-my-zsh
 polybar: ~/.config/polybar
 radio:
 - radio-config: ~/.radio-config
