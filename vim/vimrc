@@ -395,7 +395,17 @@ else
 endif
 
 " where to find tags files
-set tags=./tags,tags,.git/tags
+set tags=./tags;~,tags,~/.tags
+if has("path_extra")
+  " If compiled with path_extra, search for .git/tags upwards in the tree
+  "   and stop searching at $HOME
+  let &tags = &tags.',.git/tags;~'
+else
+  let &tags = &tags.',.git/tags'
+endif
+
+" follow the 'ignorecase' option when looking for tags
+set tagcase=followic
 
 " dictionary file
 set dictionary=/usr/share/dict/words
