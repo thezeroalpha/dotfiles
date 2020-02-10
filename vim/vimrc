@@ -719,6 +719,7 @@ nnoremap <C-E><C-M> :DropToFoldedVimrc<CR>zXgg/Mappings {{<CR>:noh<CR>za
 nnoremap <C-E><C-P><C-I> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
 nnoremap <C-E><C-P><C-C> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
 nmap <C-E><C-L> <Plug>VimcolorEdit
+nnoremap <C-E><C-U> :UltiSnipsEdit<CR>
 
 " Yank to clipboard
 nnoremap <leader>d "+d
