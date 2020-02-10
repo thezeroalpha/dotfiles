@@ -20,6 +20,10 @@ autoload -Uz compinit
 compinit
 source $DOTFILES/shell/oh-my-zsh-defaults/completion.zsh
 source $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
+source $DOTFILES/shell/oh-my-zsh-defaults/clipboard.zsh
+source $DOTFILES/shell/oh-my-zsh-defaults/history.zsh
+source $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
+
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
 if [[ "$ENABLE_CORRECTION" == "true" ]]; then
