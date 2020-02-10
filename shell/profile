@@ -50,6 +50,9 @@ fi
 if [ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
+if [ -d "$HOME/.local/GNAT/2019/bin" ]; then
+  PATH="$PATH:$HOME/.local/GNAT/2019/bin"
+fi
 
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="`which vim`"
