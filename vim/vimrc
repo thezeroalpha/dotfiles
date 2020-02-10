@@ -124,6 +124,9 @@ Plug 'tpope/vim-apathy'
 
 " easier markdown-style tables
 Plug 'dhruvasagar/vim-table-mode'
+
+" Ada syntax, indent, completion
+Plug 'thindil/Ada-Bundle'
 call plug#end()
 " }}}
 " Config {{{
@@ -343,6 +346,14 @@ let g:sandwich#recipes += [
       \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [']']},
       \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [')']},
       \ ]
+" }}}
+" Ada {{{
+let g:ada_standard_types = 1
+let g:ada_begin_preproc = 1
+let g:ada_extended_completion = 1
+let g:ada_gnat_extensions = 1
+let g:ada_with_gnat_project_files = 1
+
 " }}}
 " netrw {{{
 let g:netrw_banner = 0                              " hide the banner
