@@ -5,3 +5,13 @@ else
   let b:undo_ftplugin = '| $1'
 endif
 endsnippet
+snippet compiler "Compiler boilerplate" b
+if exists("current_compiler")
+  finish
+endif
+let current_compiler = "${1:compiler name}"
+if exists(":CompilerSet") != 2		" older Vim always used :setlocal
+  command -nargs=* CompilerSet setlocal <args>
+endif
+CompilerSet makeprg=$0
+endsnippet
