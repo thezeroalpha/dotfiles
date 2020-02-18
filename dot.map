@@ -44,7 +44,7 @@ emacs:
 shell:
 - aliases: ~/.aliases
 - functions: ~/.functions
-- zprofile: ~/.zprofile
+- zshenv: ~/.zshenv
 - zshrc: ~/.zshrc
 - bash_profile: ~/.bash_profile
 - bashrc: ~/.bashrc
