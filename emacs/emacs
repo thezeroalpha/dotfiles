@@ -25,7 +25,13 @@
 
 (delete-selection-mode 1)
 
+(setq org-pandoc-menu-entry (quote ((?m "to markdown and open." org-pandoc-export-to-markdown-and-open)
+                                    (?M "as markdown." org-pandoc-export-as-markdown))))
+
 (when (require 'org)
+  (require 'ox-md)
+  (with-eval-after-load 'ox
+    (require 'ox-pandoc))
   (global-set-key (kbd "C-c a") 'org-agenda)
   (setq org-agenda-files (quote ("~/.emacs.d/todo.org")))
   (define-key global-map (kbd "C-c c") 'org-capture)
@@ -39,6 +45,8 @@
 (when (require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region)
   )
+(when (require 'which-key)
+  (which-key-mode))
 (when (require 'helm)
   ;; change default prefix key
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
@@ -91,74 +99,6 @@
   )
 
 (add-hook 'artist-mode-hook (lambda () (setq indent-tabs-mode nil)))
-(with-eval-after-load 'ox
-  (require 'ox-pandoc))
-
-(setq org-pandoc-menu-entry (quote (
-                                        ;; ----------------------------------------------------------------------
-                                        ;; Docs
-                                        ;; ----------------------------------------------------------------------
-                                        (?m "to markdown and open." org-pandoc-export-to-markdown-and-open)
-                                        (?M "as markdown." org-pandoc-export-as-markdown)
-                                        (?k "to markdown_mmd." org-pandoc-export-to-markdown_mmd)
-                                        (?K "to markdown_mmd and open." org-pandoc-export-to-markdown_mmd-and-open)
-                                        (?p "to plain and open." org-pandoc-export-to-plain-and-open)
-                                        (?P "as plain." org-pandoc-export-as-plain)
-                                        (?a "to asciidoc and open." org-pandoc-export-to-asciidoc-and-open)
-                                        (?A "as asciidoc." org-pandoc-export-as-asciidoc)
-                                        (?n "to man and open." org-pandoc-export-to-man-and-open)
-                                        (?N "as man." org-pandoc-export-as-man)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; WIKIs
-                                        ;; ----------------------------------------------------------------------
-                                        (?u "to dokuwiki and open." org-pandoc-export-to-dokuwiki-and-open)
-                                        (?U "as dokuwiki." org-pandoc-export-as-dokuwiki)
-                                        (?w "to mediawiki and open." org-pandoc-export-to-mediawiki-and-open)
-                                        (?W "as mediawiki." org-pandoc-export-as-mediawiki)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; Slides
-                                        ;; ----------------------------------------------------------------------
-                                        (?r "to revealjs and open." org-pandoc-export-to-revealjs-and-open)
-                                        (?R "as revealjs." org-pandoc-export-as-revealjs)
-                                        (?s "to slidy and open." org-pandoc-export-to-slidy-and-open)
-                                        (?S "as slidy." org-pandoc-export-as-slidy)
-                                        (?z "to dzslides and open." org-pandoc-export-to-dzslides-and-open)
-                                        (?Z "as dzslides." org-pandoc-export-as-dzslides)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; DOC
-                                        ;; ----------------------------------------------------------------------
-                                        (?o "to odt and open." org-pandoc-export-to-odt-and-open)
-                                        (?O "to odt." org-pandoc-export-to-odt)
-                                        (?x "to docx and open." org-pandoc-export-to-docx-and-open)
-                                        (?X "to docx." org-pandoc-export-to-docx)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; HTML
-                                        ;; ----------------------------------------------------------------------
-                                        (?h "to html5 and open." org-pandoc-export-to-html5-and-open)
-                                        (?H "as html5." org-pandoc-export-as-html5)
-                                        (?5 "to html5-pdf and open." org-pandoc-export-to-html5-pdf-and-open)
-                                        (?% "to html5-pdf." org-pandoc-export-to-html5-pdf)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; PDF
-                                        ;; ----------------------------------------------------------------------
-                                        (?l "to latex-pdf and open." org-pandoc-export-to-latex-pdf-and-open)
-                                        (?L "to latex-pdf." org-pandoc-export-to-latex-pdf)
-                                        (?= "to ms-pdf and open." org-pandoc-export-to-ms-pdf-and-open)
-                                        (?- "to ms-pdf." org-pandoc-export-to-ms-pdf)
-                                        (?b "to beamer-pdf and open." org-pandoc-export-to-beamer-pdf-and-open)
-                                        (?B "to beamer-pdf." org-pandoc-export-to-beamer-pdf)
-                                        (?c "to context-pdf and open." org-pandoc-export-to-context-pdf-and-open)
-                                        (?C "to context-pdf." org-pandoc-export-to-context-pdf)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; E-books
-                                        ;; ----------------------------------------------------------------------
-                                        (?e "to epub3 and open." org-pandoc-export-to-epub3-and-open)
-                                        (?E "to epub3." org-pandoc-export-to-epub3)
-                                        ;; ----------------------------------------------------------------------
-                                        ;; Dev
-                                        ;; ----------------------------------------------------------------------
-                                        (?j "to json and open." org-pandoc-export-to-json-and-open)
-                                        (?J "as json." org-pandoc-export-as-json))))
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -197,7 +137,7 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode t)
  '(blink-matching-paren t)
- '(custom-enabled-themes (quote (cyberpunk spacemacs-light)))
+ '(custom-enabled-themes (quote (cyberpunk)))
  '(custom-safe-themes
    (quote
     ("7238a72b7ad187001482aa5d803a83df542b9f90aa544b48fdd939672c483680" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "3fd57a3dc99eb0e2ec438555cf801572f649c79513d3a8da7980ab54cf66121b" "eb5c69951164b0768bc281a5dfca5fc02b02f65e1ca92c0636ae5e773e9d7704" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
@@ -234,15 +174,18 @@ There are two things you can do about this warning:
    (quote
     (("sqcup" "\\sqcup" nil "" "" "" "⊔")
      ("sqcap" "\\sqcap" nil "" "" "" "⊓"))))
- '(org-export-backends (quote (ascii html icalendar latex md odt)))
+ '(org-export-headline-levels 6)
  '(org-export-with-author nil)
+ '(org-export-with-latex t)
  '(org-export-with-title nil)
- '(org-pandoc-options-for-markdown (quote ((katex . t) (atx-headers . t))))
+ '(org-export-with-toc nil)
+ '(org-pandoc-format-extensions (quote (\(markdown_strict+tex_math_dollars\))))
+ '(org-pandoc-options (quote ((standalone . t) (atx-headers . t) (katex . t))))
  '(org-pretty-entities t)
  '(package-check-signature nil)
  '(package-selected-packages
    (quote
-    (ox-pandoc chess htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
+    (which-key ox-pandoc chess htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
  '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
