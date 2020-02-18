@@ -74,13 +74,11 @@ done
 # }}}
 
 # Set up notification method {{{
-if ! command -v notify &> /dev/null; then
-   if command -v terminal-notifier &> /dev/null; then
-      notify() { terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2; }
-   else
-      echo_warn "terminal-notifier not found, defaulting to bell. Install terminal-notifier to get the most out of this script."
-      notify() { echo -e '\a'; }
-   fi
+if command -v terminal-notifier &> /dev/null; then
+  notify() { terminal-notifier -group updatemaster -sender updatemaster -title "$1" -message "$2" -activate com.googlecode.iterm2; }
+else
+  echo_warn "terminal-notifier not found, defaulting to bell. Install terminal-notifier to get the most out of this script."
+  notify() { echo -e '\a'; }
 fi
 # }}}
 
