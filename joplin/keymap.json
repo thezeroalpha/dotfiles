@@ -8,6 +8,8 @@
   { "keys": ["dd"],         "type": "function",    "command": "delete" },
   { "keys": ["`"],          "type": "function",    "command": "toggle_console" },
   { "keys": ["\\"],         "type": "function",    "command": "toggle_metadata" },
+  { "keys": ["U", "gg"],    "type": "function",    "command": "page_up" },
+  { "keys": ["D", "G"],     "type": "function",    "command": "page_down" },
   { "keys": [" "],          "type": "exec",        "command": "todo toggle $n" },
   { "keys": ["q"],          "type": "exec",        "command": "exit" },
   { "keys": ["@"],          "type": "exec",        "command": "sync" },
@@ -19,6 +21,7 @@
   { "keys": ["cw","R"],     "type": "prompt",      "command": "ren $c \"\"", "cursorPosition": -2 },
   { "keys": ["/","?"],      "type": "prompt",      "command": "search \"\"", "cursorPosition": -2 },
   { "keys": ["a"],          "type": "prompt",      "command": "attach $n /Users/alex/\"\"", "cursorPosition": -2 },
-  { "keys": ["U", "gg"],    "type": "function",    "command": "page_up" },
-  { "keys": ["D", "G"],     "type": "function",    "command": "page_down" }
+  { "keys": ["ta"],         "type": "prompt",      "command": "tag add  $n", "cursorPosition": -3 },
+  { "keys": ["tl"],         "type": "exec",        "command": "tag list" },
+  { "keys": ["td"],         "type": "prompt",       "command": "tag remove  $n", "cursorPosition": -3 }
 ]
