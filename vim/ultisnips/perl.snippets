@@ -1,7 +1,7 @@
 snippet readfile "Read from a file" b
 open(${1:handle}, "<${2:filename}") or die "Couldn't open the file $2, \$!";
 
-while($1) {
+while(<$1>) {
   $0
 }
 endsnippet
