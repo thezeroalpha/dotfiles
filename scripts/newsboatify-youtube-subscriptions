@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'nokogiri'
+doc = Nokogiri::HTML File.read("source.html")
+hrefs = doc.css("a.channel-link").inject([]) { |arr,c| arr << c.attr("href") unless c.attr("href").nil? }.uniq!
+names = doc.css("yt-formatted-string.style-scope.ytd-channel-name").reduce([]) { |arr, x| arr << x.content unless x.content.nil? }
+h = names.zip(hrefs).to_h
+h.transform_values! { |v| v.gsub("/channel/", "") unless v.nil? }
+File.open("output.txt", "w") do |f|
+  h.each { |name,id| f.puts "https://youtube.com/feeds/videos.xml?channel_id=#{id}\t\"~#{name}\"\t\"yt-videos\"" }
+end
+puts "Output saved in output.txt"
