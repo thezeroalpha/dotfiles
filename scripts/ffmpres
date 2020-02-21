@@ -104,9 +104,11 @@ process_video() {
       "CONCAT")
         if [ $# -le 1 ]; then echo "Only one file supplied, need at least two." && exit 1; fi
         read -rp "Enter output filename: " outfile
-        for f in "$@"; do echo "file '$f'" >> /tmp/ffmpeg; done
-        ffmpeg -f concat -safe 0 -i /tmp/ffmpeg -c copy "$outfile"
-        rm /tmp/ffmpeg
+        set -x
+        tempfile="./ffmpeg-list-$RANDOM"
+        for f in "$@"; do echo "file '$f'" >> "$tempfile"; done
+        ffmpeg -f concat -safe 0 -i "$tempfile" -c copy "$outfile"
+        rm "$tempfile"
         break;;
       "CLIP")
         read -rp "From time: " starttime
