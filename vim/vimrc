@@ -779,10 +779,14 @@ nnoremap <expr> <leader>mc g:loaded_dispatch ? ":Make clean<CR>" : ":silent make
 " }}}
 " Autocommands {{{
 if has('autocmd')
-  augroup sets
+  augroup vimrc_sets
     autocmd!
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertLeave * setlocal cursorline
+  augroup END
+  augroup vimrc_commands
+    autocmd!
+    autocmd BufWritePre * silent StripTrailingWhitespace
   augroup END
 endif
 " }}}
