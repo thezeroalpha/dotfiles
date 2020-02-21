@@ -5,5 +5,6 @@ function s:StripTrailingWhitespace()
     normal ``
   endif
 endfunction
+command StripTrailingWhitespace call <SID>StripTrailingWhitespace()
 nnoremap <Plug>StripTrailingWhitespace
       \ :call <SID>StripTrailingWhitespace()<CR>
