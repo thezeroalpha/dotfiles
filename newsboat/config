@@ -15,16 +15,14 @@ bind-key J next-feed articlelist
 bind-key K prev-feed articlelist
 bind-key G end
 bind-key g home
-bind-key d pagedown
-bind-key u pageup
+bind-key ^D pagedown
+bind-key ^U pageup
 bind-key l open
 bind-key h quit
 bind-key a toggle-article-read
 bind-key n next-unread
 bind-key N prev-unread
-bind-key D pb-download
 bind-key U show-urls
-bind-key x pb-delete
 bind-key ^t next-unread
 bind-key \ toggle-show-read-feeds
 bind-key E edit-urls
@@ -48,6 +46,5 @@ macro l set browser "lynx"; open-in-browser ; set browser "open '%u'"
 macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open '%u'"
 macro u set browser "urlview"; open-in-browser ; set browser "open '%u'"
 macro a set browser "youtube-dl --add-metadata -xic -f bestaudio/best -o \'~/Downloads/songs/listen to/%(title)s-%(id)s.%(ext)s'"; open-in-browser ; set browser "open '%u'"
-macro g set browser "youtube-dl --add-metadata -ic"; open-in-browser ; set browser "open '%u'"
-macro p set browser "nohup youtube-dl -f 22/17/18 --add-metadata -ic '%u' &"; open-in-browser ; set browser "open '%u'"
+macro d set browser "nohup youtube-dl --add-metadata -ic %u 2>&1 >>newsboat-download.log &"; open-in-browser ; set browser "open '%u'"
 macro s set browser "open -g 'pocket://add?url=%u' && sleep 3 && killall Pocket"; open-in-browser ; set browser "open '%u'"
