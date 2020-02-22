@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+if ! command -v mpv &>/dev/null; then
+  echo "mpv not installed." >&2
+  exit 1
+fi
+if ! command -v terminal-notifier &>/dev/null; then
+  echo "terminal-notifier not installed." >&2
+  exit 1
+fi
+[ $# -gt 0 ] || { echo "Arguments required." && exit 1; }
+
+trap "exit 0" INT TERM EXIT
+
+for i in "$@"; do
+  terminal-notifier -group mpv -title "$i" -message "Now playing $i";
+  mpv --no-video --volume=50 "$i"
+done
