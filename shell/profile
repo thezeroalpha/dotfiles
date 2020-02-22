@@ -54,8 +54,8 @@ fi
 if [ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
-if [ -d "$HOME/.local/GNAT/2019/bin" ]; then
-  PATH="$PATH:$HOME/.local/GNAT/2019/bin"
+if [ -d "$HOME/.local/gnat/bin" ]; then
+  PATH="$PATH:$HOME/.local/gnat/bin"
 fi
 
 export DOTFILES="$HOME/.dotfiles"
