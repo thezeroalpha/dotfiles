@@ -67,7 +67,7 @@ bindsym $mod+Return exec --no-startup-id $terminal_path
 bindsym $mod+Shift+Return exec --no-startup-id /usr/bin/sensible-browser
 
 # kill focused window
-bindsym ctrl+q kill
+bindsym $alt+q kill
 
 
 bindsym $mod+minus move to scratchpad
@@ -216,10 +216,10 @@ mode "Resize Mode" {
         bindsym l resize grow width 6 px or 6 ppt
 
         # Resize large
-        bindsym Shift+h resize shrink width 12 px or 12 ppt
-        bindsym Shift+k resize grow height 12 px or 12 ppt
-        bindsym Shift+j resize shrink height 12 px or 12 ppt
-        bindsym Shift+l resize grow width 12 px or 12 ppt
+        bindsym Shift+h resize shrink width 100 px or 12 ppt
+        bindsym Shift+k resize grow height 100 px or 12 ppt
+        bindsym Shift+j resize shrink height 100 px or 12 ppt
+        bindsym Shift+l resize grow width 100 px or 12 ppt
 
         # Resize to 50%
         bindsym Shift+minus resize set width 50 ppt
