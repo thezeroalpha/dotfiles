@@ -187,6 +187,13 @@ There are two things you can do about this warning:
    (quote
     (which-key ox-pandoc chess htmlize expand-region org-bullets undo-tree helm exec-path-from-shell haskell-mode 2048-game spacemacs-theme magit plan9-theme sml-mode rainbow-mode)))
  '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
+ '(sml-compile-commands-alist
+   (quote
+    (("CMB.make()" . "all-files.cm")
+     ("CMB.make()" . "pathconfig")
+     ("CM.make(\"sources.cm\")" . "sources.cm")
+     ("use \"load-all\"" . "load-all")
+     ("CM.make(\"sources.cm\")" . "main.sml"))))
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(version-control t)
