@@ -13,6 +13,7 @@ alias jobs="jobs -l"                                                            
 alias htop='sudo htop'                                                          # Run htop as root by default
 alias g='git'                                                                   # Make git easier to type
 alias wheredef='type -a'                                                        # Where is a function defined?
+alias rsync="rsync -avhP"                                                       # Recurse and preserve almost everything, verbose, human-readable sizes, partial & progress
 alias j='joplin'
 alias tree="tree -CAFa -I 'CVS|*.*.package|.svn|.git|node_modules' --dirsfirst" # Colorize, ANSI graphics hack, indicate ft with appendices, print all files, ignore certain patterns, list dirs first
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"   # The columns I want to see in lsblk
