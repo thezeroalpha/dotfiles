@@ -1,0 +1,70 @@
+#EXTM3U
+
+#EXTINF:3294,Write your own Operating System in 1 hour
+https://www.youtube.com/watch?v=1rnA6wpF0o4
+#EXTINF:523,Write your own Operating System 1-B: Addendum
+https://www.youtube.com/watch?v=udTsXG79pWY
+#EXTINF:1080,Write your own Operating System 2: Install your OS in a Virtual Machine
+https://www.youtube.com/watch?v=ZiHtuBnVrx4
+#EXTINF:2873,Write your own Operating System 3: Memory Segments, Global Descriptor Table
+https://www.youtube.com/watch?v=pfWjteMpcxE
+#EXTINF:1685,Write your own Operating System 4: Hardware-Communication / Ports
+https://www.youtube.com/watch?v=XGSOl1QZVKI
+#EXTINF:3872,Write your own Operating System 5: Interrupts
+https://www.youtube.com/watch?v=AgeX-U4dKSs
+#EXTINF:3392,Write your own Operating System 6: Keyboard
+https://www.youtube.com/watch?v=RTKj4jdo_2s
+#EXTINF:1993,Write your own Operating System 7: Mouse
+https://www.youtube.com/watch?v=PgA05QaIu6Y
+#EXTINF:2944,Write your own Operating System 8: Abstractions for Drivers
+https://www.youtube.com/watch?v=SQBBetLJA9w
+#EXTINF:1878,Write your own Operating System 9: Tidying up
+https://www.youtube.com/watch?v=BZoRplKZEuk
+#EXTINF:3965,Write your own Operating System 10: Peripheral Component Interconnect (PCI)
+https://www.youtube.com/watch?v=GE7iO2vlLD4
+#EXTINF:3168,Write your own Operating System 11: Base Address Registers
+https://www.youtube.com/watch?v=yqjDYF4NCXg
+#EXTINF:3686,Write your own Operating System 12: Graphics Mode (VGA)
+https://www.youtube.com/watch?v=N68cYNWZgy8
+#EXTINF:3479,Write your own Operating System 13: GUI Framework Basics
+https://www.youtube.com/watch?v=3fTVUqILuYw
+#EXTINF:4163,Write your own Operating System 14: Desktop and Windows
+https://www.youtube.com/watch?v=HS1Kp1WJWBU
+#EXTINF:3133,Write your own Operating System 15: Multitasking
+https://www.youtube.com/watch?v=VxZnBkMQ258
+#EXTINF:4247,Write your own Operating System 16: Dynamic Memory Management / Heap
+https://www.youtube.com/watch?v=BeSpPd3C3J8
+#EXTINF:4025,Write your own Operating System 17: Networking
+https://www.youtube.com/watch?v=9xpKXEZ9Sxo
+#EXTINF:2659,Write your own Operating System 18: Network continued
+https://www.youtube.com/watch?v=DrZIkxqtdYc
+#EXTINF:4132,Write your own Operating System 19: Hard Drives
+https://www.youtube.com/watch?v=uS02rOvLgak
+#EXTINF:1909,Write your own Operating System 20: System calls, POSIX compliance
+https://www.youtube.com/watch?v=g5Ej3RxIZJI
+#EXTINF:3230,Write your own Operating System A01: Ethernet Frames
+https://www.youtube.com/watch?v=fU0tMBxEXoA
+#EXTINF:4511,Write your own Operating System A02: Address Resolution Protocol (ARP)
+https://www.youtube.com/watch?v=5Fw77uSewWI
+#EXTINF:5522,Write your own Operating System A03: Internet Protocol (IPv4)
+https://www.youtube.com/watch?v=swHIUtgdo5U
+#EXTINF:1851,Write your own Operating System A04: Internet Control Message Protocol (ICMP)
+https://www.youtube.com/watch?v=HDhG5Vzzxjk
+#EXTINF:5336,Write your own Operating System A05: User Datagram Protocol (UDP)
+https://www.youtube.com/watch?v=5gllcRuq8Mw
+#EXTINF:3029,Write your own Operating System A06: Transmission Control Protocol (TCP)
+https://www.youtube.com/watch?v=zrM-Ql7zTqo
+#EXTINF:2388,Write your own Operating System A07: Transmission Control Protocol (TCP)
+https://www.youtube.com/watch?v=j5HumEwHXUw
+#EXTINF:3463,Write your own Operating System A08: Transmission Control Protocol (TCP)
+https://www.youtube.com/watch?v=-eyH-BEriNE
+#EXTINF:2870,Write your own Operating System A09: TCP + a little HTTP
+https://www.youtube.com/watch?v=EuNJ2q0mqtw
+#EXTINF:2443,Write your own Operating System B01: Partition Table
+https://www.youtube.com/watch?v=IGpUdIX-Z5A
+#EXTINF:3917,Write your own Operating System B02: File Allocation Table (FAT32)
+https://www.youtube.com/watch?v=tEYgVwN1nRk
+#EXTINF:2890,Write your own Operating System B03: File Allocation Table (FAT32)
+https://www.youtube.com/watch?v=G8Jqs_UZ1oU
+#EXTINF:191,A Website for the operating system programming tutorial
+https://www.youtube.com/watch?v=gb9gS8R7_dg
