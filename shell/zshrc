@@ -69,6 +69,10 @@ source_if_exists $DOTFILES/shell/z/z.sh
 # FZF for fuzzy finding
 source_if_exists ~/.fzf.zsh
 
+# Ruby bundler plugin, automatically runs binstub in .bin or `bundle exec`s
+source_if_exists $DOTFILES/shell/zsh-plugins/bundler.plugin.zsh
+source_if_exists $DOTFILES/shell/zsh-plugins/gitignore.plugin.zsh
+
 # Enable custom aliases and functions
 source_if_exists ~/.aliases
 source_if_exists ~/.functions
