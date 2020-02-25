@@ -143,14 +143,40 @@ elsif not ARGV[0].end_with? ".vimcolor"
   abort "File extension should be .vimcolor"
 end
 
+# Read the file
+lines = File.readlines(ARGV[0])
+nlines = lines.length
+
+# This will hold custom user-defined color names
+colornames = {}
+
 # Read and parse the definitions from file passed as argument
-File.open(ARGV[0], "r").each do |line|
+cursor = 0
+while cursor < nlines
+  line = lines[cursor]
+
   # Remove excess whitespace
   line.strip!
 
+  if line.start_with? "palette:"
+    loop do
+      cursor += 1
+      line = lines[cursor]
+      next if line.empty? || line.start_with?("\"")
+
+      entry = line.strip.split
+      if not entry[1].end_with? "."
+        entry[1] = entry[1].gsub ",", ""
+        colornames[entry[0]] = entry[1]
+      else
+        entry[1] = entry[1].gsub ".", ""
+        colornames[entry[0]] = entry[1]
+        break
+      end
+    end
   # Link definitions
   # Format: link group1[,group2..] destgroup
-  if line.start_with? "link"
+  elsif line.start_with? "link"
     # From-group and to-group
     from, to = line.split(" ")[1..-1]
 
@@ -185,7 +211,11 @@ File.open(ARGV[0], "r").each do |line|
     fg, bg = colors.split(',').map { |x| x.strip }
 
     # Set background color to NONE if not defined
-    bg = "NONE" if bg.nil?
+    bg = "NONE" if (bg.nil? or bg.empty?)
+
+    # Resolve variables to the hex value of the color
+    fg = colornames[fg] if (not fg.start_with? "#" and not fg == "NONE")
+    bg = colornames[bg] if (not bg.start_with? "#" and not bg == "NONE")
 
     # Parse the attribute, remove whitespace, join with commas (so result is e.g. 'bold,underline')
     attrs = (attrs.nil? ? "NONE" : attrs.split(',').map { |x| x.strip }.join(","))
@@ -193,12 +223,15 @@ File.open(ARGV[0], "r").each do |line|
     # Add the definition to the array
     primary << [group, fg, bg, attrs]
   end
+
+  cursor += 1
 end
 
 # Write the colorscheme file
 File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub(/.*\//, '').sub('.vimcolor', '.vim')}", "w") do |f|
   # Write the preamble, along with background value
   f.puts <<~EOF
+  set background=#{background}
   if version > 580
     highlight clear
     if exists("syntax_on")
@@ -206,7 +239,6 @@ File.open("#{ENV['HOME']}/.vim/colors/#{ARGV[0].sub(/.*\//, '').sub('.vimcolor',
     endif
   endif
   let g:colors_name = "#{ARGV[0].sub(/.*\//, '').sub('.vimcolor', '')}"
-  set background=#{background}
   EOF
 
   # Write color definitions first

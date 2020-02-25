@@ -373,6 +373,9 @@ let g:unicoder_cancel_visual = 1
 nnoremap <C-l> :call unicoder#start(0)<CR>
 inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
 " }}}
+" colorizer {{{
+let g:colorizer_colornames = 0
+" }}}
 " }}}
 " }}}
 " General {{{
@@ -491,6 +494,8 @@ set wildmode=longest:list,full
 
 " Add everything to sessions
 set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabpages
+
+set updatetime=100
 " }}}
 " Editor {{{
 " In general, don't want anything concealed
