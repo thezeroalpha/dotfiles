@@ -1,4 +1,4 @@
-auto-reload yes
+auto-reload no
 reload-threads 8
 show-read-feeds no
 delete-read-articles-on-quit yes
