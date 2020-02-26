@@ -8,7 +8,7 @@ hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # in
 vimq() { vim -q <($(fc -nl -1)); }                                          # load results of last command (often ag) in vim quickfix
 gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                               # Access global pip while using virtualenvs
 nls() { expr `ls -l | wc -l | xargs echo` - 1; }                            # Count the number of files in the directory
-
+zsh_recomp() { rm ~/.zcompdump && compinit; }
 notify() {
   if type terminal-notifier &> /dev/null; then
     terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2
