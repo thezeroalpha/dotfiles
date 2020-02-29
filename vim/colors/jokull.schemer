@@ -1,5 +1,7 @@
-" Format is 'group fg_hex, bg_hex. attrs'
+" This will be a light colorscheme
+background light
 
+" Defining often-used colors
 palette:
   text #2c2625,
   bg #e4e4e4,
@@ -11,49 +13,52 @@ palette:
   justblue #0000FF,
   justyellow #FFFF00.
 
-background light
-Normal text, bg
-Cursorline NONE, gray
-String #009051. italic
-Identifier #112d4e
-Function #0096ff. bold
-Statement #0050a0
-Include #2696bf. bold
-Type darkblue
-Search NONE, lightgreen
-Incsearch NONE, #b7d1b0. bold
-Folded #236dff, gray
-Tablinefill NONE, gray
-Tablinesel NONE, offwhite
-Wildmenu darkblue, offwhite. bold
-Linenr #9b9b4c, NONE
-Preproc NONE
-Vertsplit NONE
-Todo justblue, justyellow
-Nontext #81A1C1
-Statusline NONE, #7abecd
-Statuslinenc NONE, lightblue
-Visual NONE, #a8caff
-Title #225555. bold
-Matchparen lightgreen, lightblue
-QfFileName #0076ff
-Delimiter #5f5f00
-Comment #5f5f5f. italic
-link tabline tablinefill
-link repeat,conditional,operator statement
-link define,macro,precondit include
-link debug,special,specialchar,specialcomment,tag,cursorlinenr,number delimiter
-link label,storageclass,typedef structure
-link character constant
-link signcolumn linenr
-link netrwdir function
-link netrwexe title
-link netrwMarkFile incsearch
-link spellbad todo
-link spellocal,spellrare,spellcap,markdownUrl string
-link markdowncode,mkdlink,vimwikilink type
-link pmenu statuslinenc
-link pmenusel statusline
+" group       fg_color, bg_color         attribute
+Normal         text, bg
+Cursorline     NONE, gray
+String         #009051.                  italic
+Identifier     #112d4e
+Function       #0096ff.                  bold
+Statement      #0050a0
+Include        #2696bf.                  bold
+Type           darkblue
+Search         NONE, lightgreen
+Incsearch      NONE, #b7d1b0.            bold
+Folded         #236dff, gray
+Tablinefill    NONE, gray
+Tablinesel     NONE, offwhite
+Wildmenu       darkblue, offwhite.       bold
+Linenr         #9b9b4c, NONE
+Preproc        NONE
+Vertsplit      NONE
+Todo           justblue, justyellow
+Nontext        #81A1C1
+Statusline     NONE, #7abecd
+Statuslinenc   NONE, lightblue
+Visual         NONE, #a8caff
+Title          #225555.                  bold
+Matchparen     lightgreen, lightblue
+QfFileName     #0076ff
+Delimiter      #5f5f00
+Comment        #5f5f5f.                  italic
+
+
+" link    group1,group2,...                                                 target group
+link     tabline                                                            tablinefill
+link     repeat,conditional,operator                                        statement
+link     define,macro,precondit                                             include
+link     debug,special,specialchar,specialcomment,tag,cursorlinenr,number   delimiter
+link     label,storageclass,typedef                                         structure
+link     character                                                          constant
+link     signcolumn                                                         linenr
+link     netrwdir                                                           function
+link     netrwexe                                                           title
+link     netrwMarkFile                                                      incsearch
+link     spellbad                                                           todo
+link     spellocal,spellrare,spellcap,markdownUrl                           string
+link     markdowncode,mkdlink,vimwikilink                                   type
+link     pmenu                                                              statuslinenc
+link     pmenusel                                                           statusline
 
 Diffadd NONE, #a5ffa5
 Diffdelete NONE, #ffa5a5
