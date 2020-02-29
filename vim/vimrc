@@ -80,6 +80,7 @@ Plug 'tpope/vim-abolish'
 " An improved grep
 Plug 'rking/ag.vim'
 
+
 " Highlight hex colors
 Plug 'chrisbra/colorizer'
 
@@ -127,6 +128,15 @@ Plug 'dhruvasagar/vim-table-mode'
 
 " Ada syntax, indent, completion
 Plug 'thindil/Ada-Bundle'
+
+" Vimscript testing
+Plug 'tpope/vim-scriptease'
+
+" Schemer - colorscheme creator
+Plug 'thezeroalpha/vim-schemer'
+
+" Relative file complete
+Plug 'thezeroalpha/vim-relatively-complete'
 call plug#end()
 " }}}
 " Config {{{
@@ -376,6 +386,15 @@ inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
 " colorizer {{{
 let g:colorizer_colornames = 0
 " }}}
+" Schemer {{{
+" List color group
+nmap <C-P> <Plug>SchemerSynstack
+nmap <C-E><C-L> <Plug>SchemerEdit
+" }}}
+" Relatively complete {{{
+" Replace default file completion with 'smart' relative complete
+imap <C-x><C-f> <Plug>CompleteRelative
+" }}}
 " }}}
 " }}}
 " General {{{
@@ -555,6 +574,9 @@ syntax on
 
 " Enable fenced code highlighting in markdown (tpope's plugin, ships with vim)
 let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map']
+" Enable markdown folding
+let g:markdown_folding = 1
+
 
 " Folding on indentation
 set foldmethod=indent
@@ -723,7 +745,6 @@ nnoremap <C-E><C-G> :DropToFoldedVimrc<CR>zXgg/General {{<CR>:noh<CR>za
 nnoremap <C-E><C-M> :DropToFoldedVimrc<CR>zXgg/Mappings {{<CR>:noh<CR>za
 nnoremap <C-E><C-P><C-I> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
 nnoremap <C-E><C-P><C-C> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
-nmap <C-E><C-L> <Plug>VimcolorEdit
 nnoremap <C-E><C-U> :UltiSnipsEdit<CR>
 
 " Yank to clipboard
@@ -770,13 +791,10 @@ nnoremap L :bnext<CR>
 nnoremap <leader>H :previous<CR>
 nnoremap <leader>L :next<CR>
 
-" List color group
-nmap <C-P> <Plug>VimcolorSynstack
 
 " Correct the last spelling error
 inoremap <expr> <C-x>s &spell ? "<c-g>u<Esc>[s1z=`]a<c-g>u" : ""
 
-inoremap <C-x><C-f> <c-o>:CompleteRelative<CR><C-x><C-f>
 " Make-ing (use Dispatch if enabled)
 nnoremap <leader>m? :set makeprg<CR>
 nnoremap <expr> <leader>mm g:loaded_dispatch ? ":Make<CR>" : ":silent make<CR>\|:redraw!<CR>\|:cwindow<CR>"

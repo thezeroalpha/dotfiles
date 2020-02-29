@@ -1,3 +1,4 @@
+set background=dark
 if version > 580
   highlight clear
   if exists("syntax_on")
@@ -5,7 +6,6 @@ if version > 580
   endif
 endif
 let g:colors_name = "junipero"
-set background=dark
 hi Normal guifg=#969696 guibg=#11121A ctermfg=246 ctermbg=0 cterm=NONE gui=NONE
 hi Cursorline guifg=NONE guibg=#222222 ctermfg=NONE ctermbg=234 cterm=NONE gui=NONE
 hi Structure guifg=#0490e8 guibg=NONE ctermfg=32 ctermbg=NONE cterm=bold gui=bold
@@ -14,20 +14,20 @@ hi String guifg=#2de3e6 guibg=NONE ctermfg=6 ctermbg=NONE cterm=italic gui=itali
 hi Float guifg=#4580b4 guibg=NONE ctermfg=67 ctermbg=NONE cterm=NONE gui=NONE
 hi Boolean guifg=#fca8ad guibg=NONE ctermfg=217 ctermbg=NONE cterm=NONE gui=NONE
 hi Identifier guifg=#5094c4 guibg=NONE ctermfg=68 ctermbg=NONE cterm=NONE gui=NONE
-hi Function guifg=#f9c60e guibg=#11121a ctermfg=220 ctermbg=0 cterm=bold gui=bold
-hi Number guifg=#136aed guibg=NONE ctermfg=27 ctermbg=NONE cterm=NONE gui=NONE
-hi Conditional guifg=#d0688d guibg=#11121a ctermfg=168 ctermbg=0 cterm=NONE gui=NONE
-hi Operator guifg=#e8cdc0 guibg=#11121a ctermfg=187 ctermbg=0 cterm=NONE gui=NONE
-hi Exception guifg=#d0a8ad guibg=#11121a ctermfg=181 ctermbg=0 cterm=bold gui=bold
+hi Function guifg=#f9c60e guibg=#11121A ctermfg=220 ctermbg=0 cterm=bold gui=bold
+hi Number guifg=#339aff guibg=NONE ctermfg=12 ctermbg=NONE cterm=NONE gui=NONE
+hi Conditional guifg=#d0688d guibg=#11121A ctermfg=168 ctermbg=0 cterm=NONE gui=NONE
+hi Operator guifg=#e8cdc0 guibg=#11121A ctermfg=187 ctermbg=0 cterm=NONE gui=NONE
+hi Exception guifg=#d0a8ad guibg=#11121A ctermfg=181 ctermbg=0 cterm=bold gui=bold
 hi Statement guifg=#ff6c11 guibg=NONE ctermfg=202 ctermbg=NONE cterm=NONE gui=NONE
-hi Repeat guifg=#e06070 guibg=#11121a ctermfg=167 ctermbg=0 cterm=NONE gui=NONE
-hi Keyword guifg=#bebebe guibg=#11121a ctermfg=250 ctermbg=0 cterm=bold gui=bold
+hi Repeat guifg=#e06070 guibg=#11121A ctermfg=167 ctermbg=0 cterm=NONE gui=NONE
+hi Keyword guifg=#bebebe guibg=#11121A ctermfg=250 ctermbg=0 cterm=bold gui=bold
 hi PreProc guifg=#ae15eb guibg=NONE ctermfg=5 ctermbg=NONE cterm=NONE gui=NONE
 hi Include guifg=#ba75cf guibg=NONE ctermfg=140 ctermbg=NONE cterm=NONE gui=NONE
 hi Type guifg=#ff3863 guibg=NONE ctermfg=203 ctermbg=NONE cterm=bold gui=bold
 hi Delimiter guifg=#aaaaca guibg=NONE ctermfg=146 ctermbg=NONE cterm=NONE gui=NONE
-hi Comment guifg=#349d58 guibg=#11121a ctermfg=71 ctermbg=0 cterm=italic gui=italic
-hi NonText guifg=#382920 guibg=#11121a ctermfg=1 ctermbg=0 cterm=NONE gui=NONE
+hi Comment guifg=#349d58 guibg=#11121A ctermfg=71 ctermbg=0 cterm=italic gui=italic
+hi NonText guifg=#382920 guibg=#11121A ctermfg=1 ctermbg=0 cterm=NONE gui=NONE
 hi Ignore guifg=#666666 guibg=NONE ctermfg=241 ctermbg=NONE cterm=NONE gui=NONE
 hi SpecialKey guifg=#90dcb0 guibg=NONE ctermfg=115 ctermbg=NONE cterm=NONE gui=NONE
 hi Underlined guifg=#bac5ba guibg=NONE ctermfg=151 ctermbg=NONE cterm=NONE gui=NONE
@@ -61,30 +61,30 @@ hi MoreMsg guifg=#2e8b57 guibg=NONE ctermfg=29 ctermbg=NONE cterm=NONE gui=NONE
 hi ErrorMsg guifg=#f0e2e2 guibg=#ff4545 ctermfg=224 ctermbg=203 cterm=NONE gui=NONE
 hi WarningMsg guifg=#fa8072 guibg=NONE ctermfg=209 ctermbg=NONE cterm=NONE gui=NONE
 hi StatusLine guifg=#4079a9 guibg=#101130 ctermfg=67 ctermbg=17 cterm=bold gui=bold
-hi! link Label Structure
-hi! link StorageClass Structure
-hi! link Typedef Structure
-hi! link ConId Constant
-hi! link Character Constant
-hi! link VimwikiLink Constant
-hi! link Define Include
-hi! link Macro Include
 hi! link PreCondit Include
-hi! link Debug Delimiter
-hi! link Special Delimiter
-hi! link SpecialChar Delimiter
-hi! link SpecialComment Delimiter
 hi! link Tag Delimiter
-hi! link StatusLineNC LineNr
-hi! link TabLine LineNr
-hi! link TabLineFill LineNr
-hi! link SignColumn LineNr
-hi! link netrwDir LineNr
-hi! link NetrwExe Title
-hi! link SpellBad Todo
-hi! link SpelLocal String
-hi! link SpellRare String
-hi! link SpellCap String
+hi! link Define Include
 hi! link MkdLink Type
+hi! link Typedef Structure
+hi! link SpelLocal String
+hi! link VimwikiLink Constant
+hi! link SignColumn LineNr
+hi! link Macro Include
+hi! link TabLine LineNr
+hi! link Character Constant
+hi! link Debug Delimiter
+hi! link SpellCap String
+hi! link Special Delimiter
+hi! link TabLineFill LineNr
+hi! link SpellRare String
+hi! link Label Structure
+hi! link StatusLineNC LineNr
 hi! link adaBegin Function
+hi! link StorageClass Structure
+hi! link SpecialComment Delimiter
+hi! link NetrwExe Title
 hi! link adaEnd Function
+hi! link ConId Constant
+hi! link SpellBad Todo
+hi! link netrwDir LineNr
+hi! link SpecialChar Delimiter

@@ -1,5 +1,3 @@
-" This script uses the colorgen script
-" to create a colorscheme from something a bit more readable.
 " Format is 'group fg_hex, bg_hex. attrs'
 
 palette:
