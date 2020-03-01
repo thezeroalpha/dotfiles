@@ -137,6 +137,12 @@ Plug 'thezeroalpha/vim-schemer'
 
 " Relative file complete
 Plug 'thezeroalpha/vim-relatively-complete'
+
+" Unicode black magic
+Plug 'segeljakt/vim-isotope'
+
+" Lightweight REPL
+Plug 'axvr/zepl.vim'
 call plug#end()
 " }}}
 " Config {{{
@@ -394,6 +400,17 @@ nmap <C-E><C-L> <Plug>SchemerEdit
 " Relatively complete {{{
 " Replace default file completion with 'smart' relative complete
 imap <C-x><C-f> <Plug>CompleteRelative
+" }}}
+" Isotope {{{
+let g:isotope_use_default_mappings = 0
+" }}}
+" Zepl {{{
+augroup zepl
+  autocmd!
+  autocmd FileType python     let b:repl_config = { 'cmd': 'python3' }
+  autocmd FileType javascript let b:repl_config = { 'cmd': 'node' }
+  autocmd FileType haskell      let b:repl_config = { 'cmd': 'ghci' }
+augroup END
 " }}}
 " }}}
 " }}}
