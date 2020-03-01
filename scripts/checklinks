@@ -10,6 +10,7 @@ elif [ $# -ne 2 ]; then
 fi
 
 flags=(--spider --recursive --no-directories --no-verbose --page-requisites --level inf --wait 2 -e robots=off)
+# flags=(--spider --recursive --no-directories --no-verbose --page-requisites --level inf -e robots=off)
 
 wget "${flags[@]}" -o "$2" "$1"
 
