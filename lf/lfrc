@@ -88,7 +88,9 @@ cmd paste_link %{{
     lf -remote "send %ln -s $fil .";
   done
 }}
-
+cmd ql_preview &{{
+  qlmanage -p "$fx" &> /dev/null;
+}}
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
@@ -98,6 +100,7 @@ map X !$f
 # dedicated keys for file opener actions
 map o &open $fx
 map O push hol
+map v ql_preview
 map r source ~/.config/lf/lfrc
 
 map R push :rename<space>
