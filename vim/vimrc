@@ -143,6 +143,9 @@ Plug 'segeljakt/vim-isotope'
 
 " Lightweight REPL
 Plug 'axvr/zepl.vim'
+
+" Evaluate markdown code blocks
+Plug 'gpanders/vim-medieval'
 call plug#end()
 " }}}
 " Config {{{
@@ -412,6 +415,9 @@ augroup zepl
   autocmd FileType haskell      let b:repl_config = { 'cmd': 'ghci' }
 augroup END
 nnoremap gzr :Repl<CR>
+" }}}
+" Medieval {{{
+let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'bash', 'haskell=ghci', 'javascript=node']
 " }}}
 " }}}
 " }}}
