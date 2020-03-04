@@ -819,9 +819,12 @@ nnoremap <expr> <leader>mm g:loaded_dispatch ? ":Make<CR>" : ":silent make<CR>\|
 nnoremap <expr> <leader>mc g:loaded_dispatch ? ":Make clean<CR>" : ":silent make clean<CR>\|:redraw!<CR>"
 
 " Buffer text object
-vnoremap % :<C-U>silent! normal! ggVG<CR>
-omap % :normal V%<CR>
+vnoremap & :<C-U>silent! normal! ggVG<CR>
+omap & :normal V&<CR>
 
+" 'Up to current line' text object
+vnoremap u :<C-u>silent! normal! ggV``<CR>
+omap u :normal Vu<CR>``
 " }}}
 " Autocommands {{{
 if has('autocmd')
