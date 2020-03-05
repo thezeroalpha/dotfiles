@@ -413,6 +413,7 @@ augroup zepl
   autocmd FileType python     let b:repl_config = { 'cmd': 'python3' }
   autocmd FileType javascript let b:repl_config = { 'cmd': 'node' }
   autocmd FileType haskell      let b:repl_config = { 'cmd': 'ghci' }
+  autocmd FileType ruby      let b:repl_config = { 'cmd': 'irb' }
 augroup END
 nnoremap gzr :Repl<CR>
 " }}}
@@ -453,11 +454,16 @@ endif
 " follow the 'ignorecase' option when looking for tags
 set tagcase=followic
 
-" dictionary file
-set dictionary=/usr/share/dict/words
+" dictionary files, in order (custom words should appear at the top)
+" remember, to generate a wordlist from spellcheck, do :spelldump
+set dictionary=~/.vim/words/dict/global/custom.txt
+set dictionary+=~/.vim/words/dict/global/3of6all.txt
+set dictionary+=~/.vim/words/dict/global/6phrase.txt
+set dictionary+=/usr/share/dict/words
 
 " thesaurus file
-set thesaurus=~/.vim/thesaurus.txt
+set thesaurus=~/.vim/words/thesaurus/mthesaur.txt
+
 " matchit.vim is default, why not enable it
 runtime macros/matchit.vim
 
@@ -831,6 +837,12 @@ omap & :normal V&<CR>
 " 'Up to current line' text object
 vnoremap u :<C-u>silent! normal! ggV``<CR>
 omap u :normal Vu<CR>``
+
+" Allow scrolling popup menus with the mouse
+if has('mouse')
+  inoremap <expr> <ScrollWheelUp> pumvisible() ? "<C-p>" : "<Esc><ScrollWheelUp>"
+  inoremap <expr> <ScrollWheelDown> pumvisible() ? "<C-n>" : "<Esc><ScrollWheelDown>"
+endif
 " }}}
 " Autocommands {{{
 if has('autocmd')

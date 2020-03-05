@@ -61,6 +61,8 @@ vim:
 - plugin: ~/.vim/plugin
 - syntax: ~/.vim/syntax
 - ultisnips: ~/.vim/ultisnips
+- words: ~/.vim/words
+- spell: ~/.vim/spell
 - vimrc: ~/.vimrc
 
 # Mappings for your dotfiles
