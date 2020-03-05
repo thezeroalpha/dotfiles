@@ -27,6 +27,7 @@ Gaussians
 grayscale
 hardcoded
 hyperparam
+hyperparameter
 hyperparameters
 IB
 imo
@@ -48,11 +49,15 @@ ok
 overfitting
 Pos
 regexes
+resample
 Resample
+resampled
+reweighted
 RHS
 spellcapcheck
 steganography
 subgraph
+subsample
 subword
 timestamp
 undersample
@@ -69,6 +74,7 @@ DFAs
 GANs
 MOOCs
 MySQL
+NNs
 NoSQL
 RESTful
 StyleGAN

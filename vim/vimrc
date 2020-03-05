@@ -458,7 +458,6 @@ set tagcase=followic
 " remember, to generate a wordlist from spellcheck, do :spelldump
 set dictionary=~/.vim/words/dict/global/custom.txt
 set dictionary+=~/.vim/words/dict/global/3of6all.txt
-set dictionary+=~/.vim/words/dict/global/6phrase.txt
 set dictionary+=/usr/share/dict/words
 
 " thesaurus file

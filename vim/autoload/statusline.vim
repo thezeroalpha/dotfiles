@@ -48,6 +48,8 @@ endfunction
 function! statusline#StatuslineFoldmethod()
   if &foldmethod == "indent"
     return "z".&foldlevel.",c".foldlevel(line('.'))
+  elseif &foldmethod == "expr"
+    return "f:exp,l".&foldlevel
   else
     return "f:".strpart(&foldmethod, 0, 4)
   endif
