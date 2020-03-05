@@ -91,6 +91,10 @@ cmd paste_link %{{
 cmd ql_preview &{{
   qlmanage -p "$fx" &> /dev/null;
 }}
+cmd edit_config :{{
+  $$EDITOR ~/.config/lf/lfrc
+  source ~/.config/lf/lfrc
+}}
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
