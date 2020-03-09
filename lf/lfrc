@@ -98,6 +98,7 @@ cmd edit_config :{{
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
+map ; push :
 map x $$f
 map X !$f
 
@@ -105,13 +106,13 @@ map X !$f
 map o &open $fx
 map O push hol
 map v ql_preview
-map r source ~/.config/lf/lfrc
+map r reload
 
 map R push :rename<space>
 map cw push :rename<space>
 map E $$EDITOR $f
 map D delete
-map <enter> shell-pipe
+map <enter> &open $fx
 map S shell
 map Y copy_path
 
