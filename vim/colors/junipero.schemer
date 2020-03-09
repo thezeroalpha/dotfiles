@@ -1,3 +1,6 @@
+" This scheme will have a dark background
+background dark
+
 " Set the palette
 palette:
   text #969696,
@@ -6,75 +9,78 @@ palette:
   lightblue #2de3e6,
   whitepink #bebebe,
   whiteyellow #f0e0b2,
-  offwhite #f0e2e2.
+  offwhite #f0e2e2,
+  darkblue #101124.
 
-" This scheme will have a dark background
-background dark
+" Group               fg_color, bg_color      attribute(s)
+Boolean               #fca8ad, NONE.            NONE
+Comment               #349d58, bg.              italic
+Conditional           #d0688d, bg.              NONE
+Constant              #5c78f0, NONE.            NONE
+Cursor                #0000aa, #cad5c0.         NONE
+CursorLinenr          #ffb500, darkblue.        bold
+Cursorline            NONE, #222222.            NONE
+Delimiter             #aaaaca, NONE.            NONE
+DiffAdd               #e0e3e3, #003802.         NONE
+DiffChange            #fcfcfc, #2e032e.         NONE
+DiffDelete            #300845, #200845.         NONE
+DiffText              #f5f5f5, #423f00.         NONE
+Directory             #bbd0df, NONE.            NONE
+Error                 NONE, #b03452.            NONE
+ErrorMsg              offwhite, #ff4545.        NONE
+Exception             #d0a8ad, bg.              bold
+Float                 #4580b4, NONE.            NONE
+FoldColumn            #dbcaa5, #0a0a18.         NONE
+Folded                whitepink, #171235.       NONE
+Function              #f9c60e, bg.              bold
+Identifier            #5094c4, NONE.            NONE
+Ignore                #666666, NONE.            NONE
+IncSearch             #babeaa, #3a4520.         NONE
+Include               #ba75cf, NONE.            NONE
+Keyword               whitepink, bg.            bold
+LineNr                #2069a9, darkblue.        NONE
+MatchParen            #001122, #7b5a55.         NONE
+ModeMsg               #00AACC, NONE.            NONE
+MoreMsg               #2e8b57, NONE.            NONE
+NonText               #382920, bg.              NONE
+Normal                text, bg
+Number                #339aff, NONE.            NONE
+Operator              #e8cdc0, bg.              NONE
+Pmenu                 #bdbdbd, #915623.         NONE
+PmenuSbar             NONE, #0000ff.            NONE
+PmenuSel              whiteyellow, #4a85ba.     NONE
+PmenuThumb            NONE, #000000.            NONE
+PreProc               #ae15eb, NONE.            NONE
+Question              #AABBCC, #130445.         NONE
+Repeat                #e06070, bg.              NONE
+Search                lightblue, #6b5469.       NONE
+SpecialKey            #90dcb0, NONE.            NONE
+Statement             #ff6c11, NONE.            NONE
+StatusLine            #4079a9, #101130.         bold
+String                lightblue, NONE.          italic
+Structure             #0490e8, NONE.            bold
+TabLineSel            #6079c9, #363649.         NONE
+Title                 #fff7fa, NONE.            NONE
+Todo                  #ffd500, #5c0d43.         NONE
+Type                  #ff3863, NONE.            bold
+Underlined            #bac5ba, NONE.            NONE
+VertSplit             #223355, #22253c.         NONE
+Visual                #102030, #80a0f0.         NONE
+VisualNOS             #201a30, #a3a5FF.         NONE
+WarningMsg            #fa8072, NONE.            NONE
+WildMenu              #000000, #804000.         NONE
+GitGutterAdd          #007822, darkblue.        NONE
+GitGutterChange       #8e830e, darkblue.        NONE
+GitGutterDelete       #6e032e, darkblue.        NONE
+GitGutterChangeDelete #80537e, darkblue.        NONE
 
-" Group         fg_color, bg_color      attribute(s)
-Normal          text, bg
-Cursorline      NONE, #222222
-Structure       #0490e8, NONE.         bold
-Constant        #5c78f0, NONE.         NONE
-String          lightblue, NONE.       italic
-Float           #4580b4, NONE.         NONE
-Boolean         #fca8ad, NONE.         NONE
-Identifier      #5094c4, NONE.         NONE
-Function        #f9c60e, bg.           bold
-Number          #339aff, NONE.         NONE
-Conditional     #d0688d, bg.           NONE
-Operator        #e8cdc0, bg.           NONE
-Exception       #d0a8ad, bg.           bold
-Statement       #ff6c11, NONE.         NONE
-Repeat          #e06070, bg.           NONE
-Keyword         whitepink, bg.         bold
-PreProc         #ae15eb, NONE.         NONE
-Include         #ba75cf, NONE.         NONE
-Type            #ff3863, NONE.         bold
-Delimiter       #aaaaca, NONE.         NONE
-Comment         #349d58, bg.           italic
-NonText         #382920, bg.           NONE
-Ignore          #666666, NONE.         NONE
-SpecialKey      #90dcb0, NONE.         NONE
-Underlined      #bac5ba, NONE.         NONE
-Error           NONE, #b03452.         NONE
-Todo            #ffd500, #5c0d43.      NONE
-MatchParen      #001122, #7b5a55.      NONE
-Cursor          #0000aa, #cad5c0.      NONE
-Visual          #102030, #80a0f0.      NONE
-VisualNOS       #201a30, #a3a5FF.      NONE
-LineNr          #2069a9, #101124.      NONE
-Search          lightblue, #6b5469.    NONE
-IncSearch       #babeaa, #3a4520.      NONE
-WildMenu        #000000, #804000.      NONE
-VertSplit       #223355, #22253c.      NONE
-TabLineSel      #6079c9, #363649.      NONE
-Title           #fff7fa, NONE.         NONE
-PmenuSel        whiteyellow, #4a85ba.  NONE
-PmenuThumb      NONE, #000000.         NONE
-PmenuSbar       NONE, #0000ff.         NONE
-Pmenu           #bdbdbd, #915623.      NONE
-Folded          whitepink, #171235.    NONE
-FoldColumn      #dbcaa5, #0a0a18.      NONE
-Directory       #bbd0df, NONE.         NONE
-DiffDelete      #300845, #200845.      NONE
-DiffText        #f5f5f5, #423f00.      NONE
-DiffAdd         #e0e3e3, #003802.      NONE
-DiffChange      #fcfcfc, #2e032e.      NONE
-ModeMsg         #00AACC, NONE.         NONE
-Question        #AABBCC, #130445.      NONE
-MoreMsg         #2e8b57, NONE.         NONE
-ErrorMsg        offwhite, #ff4545.     NONE
-WarningMsg      #fa8072, NONE.         NONE
-StatusLine      #4079a9, #101130.      bold
-
-link   Label,StorageClass,Typedef                             Structure
-link   ConId,Character,VimwikiLink                            Constant
-link   Define,Macro,PreCondit                                 Include
-link   Debug,Special,SpecialChar,SpecialComment,Tag           Delimiter
-link   StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir   LineNr
-link   NetrwExe                                               Title
-link   SpellBad                                               Todo
-link   SpelLocal,SpellRare,SpellCap                           String
-link   MkdLink                                                Type
-link   adaBegin,adaEnd                                        Function
+link   Label,StorageClass,Typedef                               Structure
+link   ConId,Character,VimwikiLink                              Constant
+link   Define,Macro,PreCondit                                   Include
+link   Debug,Special,SpecialChar,SpecialComment,Tag             Delimiter
+link   StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir     LineNr
+link   NetrwExe                                                 Title
+link   SpellBad                                                 Todo
+link   SpelLocal,SpellRare,SpellCap                             String
+link   MkdLink                                                  Type
+link   adaBegin,adaEnd                                          Function

@@ -11,7 +11,8 @@ palette:
   lightgreen #d7f1e0,
   offwhite #e5e5e5,
   justblue #0000FF,
-  justyellow #FFFF00.
+  justyellow #FFFF00,
+  softred #ff949b.
 
 " group       fg_color, bg_color         attribute
 Normal         text, bg
@@ -33,7 +34,7 @@ Preproc        NONE
 Vertsplit      NONE
 Todo           justblue, justyellow
 Nontext        #81A1C1
-Statusline     NONE, #7abecd
+StatusLine     NONE, #7abecd
 Statuslinenc   NONE, lightblue
 Visual         NONE, #a8caff
 Title          #225555.                  bold
@@ -41,7 +42,7 @@ Matchparen     lightgreen, lightblue
 QfFileName     #0076ff
 Delimiter      #5f5f00
 Comment        #5f5f5f.                  italic
-
+ErrorMsg       text, softred.            bold
 
 " link    group1,group2,...                                                 target group
 link     tabline                                                            tablinefill
@@ -55,12 +56,13 @@ link     netrwdir                                                           func
 link     netrwexe                                                           title
 link     netrwMarkFile                                                      incsearch
 link     spellbad                                                           todo
-link     spellocal,spellrare,spellcap,markdownUrl                           string
+link     spellocal,spellrare,spellcap,markdownUrl,modemsg                   string
 link     markdowncode,mkdlink,vimwikilink                                   type
 link     pmenu                                                              statuslinenc
 link     pmenusel                                                           statusline
+link     error                                                              errormsg
 
 Diffadd NONE, #a5ffa5
 Diffdelete NONE, #ffa5a5
 Diffchange text, #c0beff
-Difftext NONE, #a0aeff. bold
+Diftext NONE, #a0aeff. bold
