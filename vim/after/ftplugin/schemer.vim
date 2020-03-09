@@ -1,5 +1,7 @@
-map <buffer> <leader>CH <Plug>Colorizer
+nnoremap <buffer> <leader>CH :ColorHighlight<CR>
+vnoremap <buffer> <leader>CH :ColorHighlight<CR>
 nnoremap <buffer> <leader>CC :ColorClear<CR>
+vnoremap <buffer> <leader>CC :<C-u>ColorClear<CR>
 if !exists('b:undo_ftplugin')
   let b:undo_ftplugin = ''
 end
