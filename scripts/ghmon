@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-watch -n 2 ghp status ml-notes lecture-notes blog thezeroalpha.github.io automata-complexity-notes

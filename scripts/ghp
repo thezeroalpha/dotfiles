@@ -1,52 +1,90 @@
 #!/usr/bin/env ruby
 require 'faraday'
 require 'json'
-get_status = -> (page) do
-  response = Faraday.get("https://api.github.com/repos/thezeroalpha/#{page}/pages/builds/latest", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
-  if response.success?
-    j = JSON.parse(response.body)
-    return "#{page}: #{j["status"]} #{j['error']['message'] unless j['error']['message'].nil?} (#{j['created_at']})"
-  else
-    return "Failed: #{page}"
+
+class Page
+  def initialize name
+    @url = "https://api.github.com/repos/thezeroalpha/#{name}/pages/builds"
+    @name = name
   end
-end
 
-build = -> (page) do
-  response = Faraday.post("https://api.github.com/repos/thezeroalpha/#{page}/pages/builds", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
-  if response.success?
-    j = JSON.parse(response.body)
-    return "#{page} status: #{j['status']}"
-  else
-    return "Failed: #{page}"
+  def get_status
+    if @etag
+      response = Faraday.get("#{@url}/latest", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}", if_none_match: @etag)
+    else
+      response = Faraday.get("#{@url}/latest", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
+    end
+
+    if response.success?
+      j = JSON.parse(response.body)
+      @etag = response.headers['etag']
+      @code = response.status
+      @created_at = j['created_at']
+      @updated_at = j['updated_at']
+      @status = j['status']
+      @error = j['error']['message']
+    elsif response.status == 304
+      @etag = response.headers['etag']
+      @code = response.status
+    else
+      @code = response.status
+    end
   end
-end
 
-if ARGV.size == 0
-  puts "Must ask for status or build."
-  exit 1
-end
-
-def spin_off resources, action
-  resources.map do |page|
-    Thread.new { action.(page) }
-  end.map(&:value)
+  def build
+    response = Faraday.post(@url, nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
+    if response.success?
+      j = JSON.parse(response.body)
+      @code = response.status
+      @etag = response.headers['etag']
+      @status = j['status']
+    else
+      @code = response.status
+    end
+  end
+  def to_str
+    str = "#{@name}: #{@status}"
+    str += ", #{@updated_at}" unless @updated_at.nil?
+    str += ", #{@error}" unless @error.nil?
+    str += "."
+  end
 end
 
 subcmd = ARGV.shift
-if subcmd == "status" or subcmd == "s"
+
+if ["build", "b"].include? subcmd
   if ARGV.size > 0
-    values = spin_off ARGV, get_status
-    puts "Status:"
+    values = ARGV.map do |page|
+      Thread.new do
+        p = Page.new page
+        p.build
+        p.to_str
+      end
+    end.map(&:value)
+
+    puts "Builds:"
     values.each { |v| puts v }
   else
     puts "Provide the name of one or more repositories."
   end
-elsif subcmd == "build" or "subcmd" == "b"
+elsif ["watch", "w", "status", "s"].include? subcmd
   if ARGV.size > 0
-    values = spin_off ARGV, build
-    puts "Builds requested"
-    values.each { |v| puts v }
+    pages = ARGV.map { |p| Page.new p }
+    while true
+      values = pages.map do |page|
+        Thread.new { page.get_status; page.to_str }
+      end.map(&:value)
+
+      system "clear"
+      puts "Status:"
+      values.each { |v| puts v }
+    end
   else
     puts "Provide the name of one or more repositories."
   end
+elsif ["rate", "remaining"].include? subcmd
+  response = Faraday.get("https://api.github.com/rate_limit", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
+  j = JSON.parse(response.body)
+  core = j['resources']['core']
+  puts "Requests remaining: #{core['remaining']}/#{core['limit']}"
 end
