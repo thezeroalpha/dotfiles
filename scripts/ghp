@@ -82,9 +82,18 @@ elsif ["watch", "w", "status", "s"].include? subcmd
   else
     puts "Provide the name of one or more repositories."
   end
-elsif ["rate", "remaining"].include? subcmd
+elsif ["rate", "remaining", "r"].include? subcmd
   response = Faraday.get("https://api.github.com/rate_limit", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
   j = JSON.parse(response.body)
   core = j['resources']['core']
   puts "Requests remaining: #{core['remaining']}/#{core['limit']}"
+else
+  puts <<-YEET
+  Available commands:
+
+  watch, w, status, s       print out the status of pages
+  build, b                  trigger a build of a page
+  rate, remaining, r        print out the number of remaining API requests
+  YEET
+
 end
