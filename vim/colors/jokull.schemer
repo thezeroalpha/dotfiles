@@ -12,12 +12,13 @@ palette:
   offwhite #e5e5e5,
   justblue #0000FF,
   justyellow #FFFF00,
-  softred #ff949b.
+  softred #ff949b,
+  darkergreen #009051.
 
 " group       fg_color, bg_color         attribute
 Normal         text, bg
 Cursorline     NONE, gray
-String         #009051.                  italic
+String         darkergreen.              italic
 Identifier     #112d4e
 Function       #0096ff.                  bold
 Statement      #0050a0
@@ -43,12 +44,13 @@ QfFileName     #0076ff
 Delimiter      #5f5f00
 Comment        #5f5f5f.                  italic
 ErrorMsg       text, softred.            bold
+Cursorlinenr   #ff9900, NONE.            bold
 
 " link    group1,group2,...                                                 target group
 link     tabline                                                            tablinefill
 link     repeat,conditional,operator                                        statement
 link     define,macro,precondit                                             include
-link     debug,special,specialchar,specialcomment,tag,cursorlinenr,number   delimiter
+link     debug,special,specialchar,specialcomment,tag,number   delimiter
 link     label,storageclass,typedef                                         structure
 link     character                                                          constant
 link     signcolumn                                                         linenr
@@ -66,3 +68,7 @@ Diffadd NONE, #a5ffa5
 Diffdelete NONE, #ffa5a5
 Diffchange text, #c0beff
 Diftext NONE, #a0aeff. bold
+GitGutterAdd          #007822, bg
+GitGutterChange       #8e830e, bg
+GitGutterDelete       #6e032e, bg
+GitGutterChangeDelete #80537e, bg

@@ -35,10 +35,15 @@ hi QfFileName guifg=#0076ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=NONE gui=NO
 hi Delimiter guifg=#5f5f00 guibg=NONE ctermfg=58 ctermbg=NONE cterm=NONE gui=NONE
 hi Comment guifg=#5f5f5f guibg=NONE ctermfg=59 ctermbg=NONE cterm=italic gui=italic
 hi ErrorMsg guifg=#2c2625 guibg=#ff949b ctermfg=0 ctermbg=210 cterm=bold gui=bold
+hi Cursorlinenr guifg=#ff9900 guibg=NONE ctermfg=208 ctermbg=NONE cterm=bold gui=bold
 hi Diffadd guifg=NONE guibg=#a5ffa5 ctermfg=NONE ctermbg=157 cterm=NONE gui=NONE
 hi Diffdelete guifg=NONE guibg=#ffa5a5 ctermfg=NONE ctermbg=217 cterm=NONE gui=NONE
 hi Diffchange guifg=#2c2625 guibg=#c0beff ctermfg=0 ctermbg=147 cterm=NONE gui=NONE
 hi Diftext guifg=NONE guibg=#a0aeff ctermfg=NONE ctermbg=147 cterm=bold gui=bold
+hi GitGutterAdd guifg=#007822 guibg=#e4e4e4 ctermfg=28 ctermbg=254 cterm=NONE gui=NONE
+hi GitGutterChange guifg=#8e830e guibg=#e4e4e4 ctermfg=100 ctermbg=254 cterm=NONE gui=NONE
+hi GitGutterDelete guifg=#6e032e guibg=#e4e4e4 ctermfg=52 ctermbg=254 cterm=NONE gui=NONE
+hi GitGutterChangeDelete guifg=#80537e guibg=#e4e4e4 ctermfg=96 ctermbg=254 cterm=NONE gui=NONE
 " Link definitions
 hi! link precondit include
 hi! link tag delimiter
@@ -67,7 +72,6 @@ hi! link pmenusel statusline
 hi! link modemsg string
 hi! link character constant
 hi! link repeat statement
-hi! link cursorlinenr delimiter
 hi! link debug delimiter
 hi! link special delimiter
 hi! link label structure
@@ -75,7 +79,7 @@ hi! link operator statement
 hi! link vimwikilink type
 hi! link specialchar delimiter
 " Code to clear any groups that are not defined
-let s:DefinedColors=['precondit', 'tag', 'spellocal', 'conditional', 'markdowncode', 'netrwdir', 'netrwexe', 'tabline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'spellbad', 'number', 'define', 'typedef', 'storageclass', 'specialcomment', 'pmenu', 'macro', 'pmenusel', 'modemsg', 'character', 'repeat', 'cursorlinenr', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'preproc', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'diffadd', 'diffdelete', 'diffchange', 'diftext']
+let s:DefinedColors=['precondit', 'tag', 'spellocal', 'conditional', 'markdowncode', 'netrwdir', 'netrwexe', 'tabline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'spellbad', 'number', 'define', 'typedef', 'storageclass', 'specialcomment', 'pmenu', 'macro', 'pmenusel', 'modemsg', 'character', 'repeat', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'preproc', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'diffadd', 'diffdelete', 'diffchange', 'diftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
 function! s:ClearUndefinedColors(colors)
   let undefined_groups = filter(a:colors->keys()->map('tolower(v:val)'), 'index(s:DefinedColors, tolower(v:val)) < 0')
   call map(undefined_groups, "execute('highlight' . ' ' . v:val . ' ' . 'NONE')")
