@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+require 'faraday'
+require 'json'
+get_status = -> (page) do
+  response = Faraday.get("https://api.github.com/repos/thezeroalpha/#{page}/pages/builds/latest", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
+  if response.success?
+    j = JSON.parse(response.body)
+    return "#{page}: #{j["status"]} #{j['error']['message'] unless j['error']['message'].nil?} (#{j['created_at']})"
+  else
+    return "Failed: #{page}"
+  end
+end
+
+build = -> (page) do
+  response = Faraday.post("https://api.github.com/repos/thezeroalpha/#{page}/pages/builds", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
+  if response.success?
+    j = JSON.parse(response.body)
+    return "#{page} status: #{j['status']}"
+  else
+    return "Failed: #{page}"
+  end
+end
+
+if ARGV.size == 0
+  puts "Must ask for status or build."
+  exit 1
+end
+
+def spin_off resources, action
+  resources.map do |page|
+    Thread.new { action.(page) }
+  end.map(&:value)
+end
+
+subcmd = ARGV.shift
+if subcmd == "status" or subcmd == "s"
+  if ARGV.size > 0
+    values = spin_off ARGV, get_status
+    puts "Status:"
+    values.each { |v| puts v }
+  else
+    puts "Provide the name of one or more repositories."
+  end
+elsif subcmd == "build" or "subcmd" == "b"
+  if ARGV.size > 0
+    values = spin_off ARGV, build
+    puts "Builds requested"
+    values.each { |v| puts v }
+  else
+    puts "Provide the name of one or more repositories."
+  end
+end
