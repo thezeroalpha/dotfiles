@@ -46,6 +46,7 @@ class Page
     str = "#{@name}: #{@status}"
     str += ", #{@updated_at}" unless @updated_at.nil?
     str += ", #{@error}" unless @error.nil?
+    str += "not found" if @code == 404
     str += "."
   end
 end
