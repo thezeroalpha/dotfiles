@@ -11,3 +11,4 @@ newsboat/*
 vim/autoload/plug.vim*
 irssi/*.log
 bin/z
+mpv/scripts/shared/sponsorblock.db*
