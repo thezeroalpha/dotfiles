@@ -25,6 +25,7 @@ main() {
       ;;
   esac
 }
+
 process_misc() {
   echo "For other functionality, please add the filename as the first argument."
   select operation in "Record audio" "List devices"; do
@@ -84,7 +85,7 @@ process_audio() {
 }
 
 process_video() {
-  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP" "VOLUME"; do
+  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP" "VOLUME" "FAST" "SLOW" "SCREENSHOT"; do
     case "$to_fmt" in
       "MP4")
         ffmpeg -i "$1" -qscale 0 "${1%%.*}.mp4"
@@ -115,17 +116,29 @@ process_video() {
         read -rp "To time: " endtime
         read -rp "Save as: " outfile
         if [ -z "$endtime" ]; then
-          ffmpeg -i "$1" -ss "$starttime" "$outfile"
+          ffmpeg -i "$1" -ss "$starttime" "${outfile:-out-$1}"
         elif [ -z "$starttime" ]; then
-          ffmpeg -i "$1" -to "$endtime" "$outfile"
+          ffmpeg -i "$1" -to "$endtime" "${outfile:-out-$1}"
         else
-          ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "$outfile"
+          ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "${outfile:-out-$1}"
         fi
         break;;
       "VOLUME")
         read -rp "Amount or percent: " vol;
         read -rp "Enter output filename: " outfile
         ffmpeg -i "$1" -filter:a "volume=$vol" "${outfile:-out-$1}"
+        break;;
+      "FAST")
+        read -rp "Enter output filename: " outfile
+        ffmpeg -i "$1" -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]" -map "[v]" -map "[a]" "${outfile:-out-$1}"
+        break;;
+      "SLOW")
+        read -rp "Enter output filename: " outfile
+        ffmpeg -i "$1" -filter_complex "[0:v]setpts=1.5*PTS[v];[0:a]atempo=0.67[a]" -map "[v]" -map "[a]" "${outfile:-out-$1}"
+        break;;
+      "SCREENSHOT")
+        read -rp "Timestamp to extract: " ts
+        ffmpeg -ss "$ts" -i "$1" -frames:v 1 -q:v 2 "$1.jpg"
         break;;
       *)
         ;;
