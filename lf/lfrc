@@ -1,7 +1,7 @@
 # vim: foldmethod=marker foldlevel=0
 # General settings {{{
 # interpreter for shell commands (needs to be POSIX compatible)
-set shell sh
+set shell bash
 
 # set '-eu' options for shell commands
 # These options are used to have safer shell commands. Option '-e' is used to
@@ -28,9 +28,6 @@ set previewer ~/.config/lf/preview.sh
 # }}}
 # Command definitions {{{
 # define a custom 'open' command
-# This command is called when current file is not a directory. You may want to
-# use either file extensions and/or mime types here. Below uses an editor for
-# text files and a file opener for the rest.
 cmd open ${{
     case $(file --mime-type $f -b) in
         text/*|application/json) $EDITOR $fx;;
@@ -64,6 +61,7 @@ cmd extract ${{
     esac
 }}
 
+# copy the path of the highlighted file
 cmd copy_path ${{
   set -f
   if command -v pbcopy > /dev/null 2> /dev/null; then
@@ -72,6 +70,8 @@ cmd copy_path ${{
     echo "$f" | tr -d '\n' | xclip -sel clip
   fi
 }}
+
+# zip a directory/file
 cmd zip ${{
   set -f
   mkdir $f-zip
@@ -79,6 +79,8 @@ cmd zip ${{
   (cd $f-zip/ && zip -r $f.zip .)
   rm -rf $f-zip/
 }}
+
+# paste as a symbolic link to original
 cmd paste_link %{{
   load=$(lf -remote 'load')
   mode=$(echo "$load" | sed -n '1p')
@@ -88,12 +90,56 @@ cmd paste_link %{{
     lf -remote "send %ln -s $fil .";
   done
 }}
+
+# improve regular paste to work if files are moved between different devices
+cmd paste %{{
+    load=$(lf -remote 'load')
+    mode=$(echo "$load" | sed -n '1p')
+    list=$(echo "$load" | sed '1d')
+    if [ $mode = 'copy' ]; then
+      if command -v rsync &>/dev/null; then
+        rsync -ah --ignore-existing --progress $list .
+      else
+        cp -r $list .
+      fi
+    elif [ $mode = 'move' ]; then
+      if command -v rsync &>/dev/null; then
+        rsync -ah --ignore-existing --remove-source-files $list .
+      else
+        mv $list .
+      fi
+    fi
+    lf -remote 'send load'
+    lf -remote 'send clear'
+}}
+
+# preview the highlighted file with quicklook
 cmd ql_preview &{{
   qlmanage -p "$fx" &> /dev/null;
 }}
+
+# open the lfrc, and source after saving
 cmd edit_config :{{
   $$EDITOR ~/.config/lf/lfrc
   source ~/.config/lf/lfrc
+}}
+
+# quickly cd into frecent directories using github.com/rupa/z
+cmd z ${{
+    set +u
+    if [ $# -gt 0 ]; then
+      dest=''
+      # See: https://github.com/skywind3000/z.lua or https://github.com/rupa/z
+      if [ -f "$DOTFILES/shell/z/z.sh" ]; then
+          export _Z_NO_PROMPT_COMMAND=1
+          source "$DOTFILES/shell/z/z.sh"
+          dest="$(_z "$@" && pwd)"
+      fi
+
+      if test -n "${dest}"; then
+          lf -remote "send $id cd '${dest}'"
+      fi
+    fi
 }}
 # }}}
 # Mappings {{{
@@ -107,6 +153,18 @@ map o &open $fx
 map O push hol
 map v ql_preview
 map r reload
+
+map f
+map f $lf -remote "send $id select $(fzf)"
+
+map .
+map . set hidden!
+
+map <esc>
+map <esc> unselect; clear
+
+map g?
+map g? $lf -doc | $PAGER; clear
 
 map R push :rename<space>
 map cw push :rename<space>
@@ -131,6 +189,7 @@ map g/ cd /
 map gs cd ~/Documents/School
 map g. cd ~/.dotfiles
 map gp cd ~/Documents/Programming
+map gv cd /Volumes
 
 map u
 map uu unselect
@@ -148,3 +207,5 @@ map ee $$EDITOR $f
 map ec edit_config
 
 map tz zip
+
+map z push :z
