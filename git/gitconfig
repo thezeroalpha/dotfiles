@@ -27,6 +27,7 @@
     a = add
     ap = add -p
     af = "!git ls-files -m -o --exclude-standard | fzf --print0 -m --reverse --height=20% | xargs -0 -t -o git add"
+    fa = af
     fzf = "!git ls-files -mo --exclude-standard | fzf -m --reverse --height=20%"
 
     c = commit
@@ -47,6 +48,7 @@
 
     diffs = "diff --staged"
     changes = diff --summary --stat
+    changess = changes --staged
     mergetest = merge --no-commit
     testmerge = mergetest
     mno = merge --no-ff
@@ -67,6 +69,7 @@
     chpn = cherry-pick --no-commit
 
     la = "!git config -l | grep alias | cut -c 7-"
+    rv = remote -v
 
     subget = submodule update --init
     subdate = submodule update --remote
