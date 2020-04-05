@@ -11,3 +11,4 @@ Abolish st such that
 Abolish etc etc.
 Abolish distr{,s} distribution{,s}
 Abolish db{,s} database{,s}
+Abolish seq{,s} sequence{,s}
