@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+require 'faraday'
+require 'json'
+
+class JoplinApi
+  def get endpoint, params=nil, headers=nil
+    if params
+      resp = Faraday.get(@uri+endpoint, {token: @token}.merge(params), headers)
+    else
+      resp = Faraday.get(@uri+endpoint, nil, headers)
+    end
+
+    if resp.success?
+      if resp.body
+        begin
+          JSON.parse(resp.body)
+        rescue JSON::ParserError
+          {}
+        end
+      else
+        nil
+      end
+    end
+  end
+
+  def get_notes
+    notes = get("/folders/#{@notebook}/notes")
+    notes.map do |note|
+      { title: note["title"],
+        id: note["id"],
+        body: (get("/notes/#{note["id"]}", {fields: "body"}))["body"]
+      }
+    end
+  end
+
+  def initialize notebook
+    @token = ENV["JOPLIN_API_KEY"]
+    @uri = "http://localhost:41184"
+
+    parts = notebook.split "/"
+    folders = get("/folders")
+    current = 0
+    part = parts[current]
+    notebook = folders.find { |x| x["title"] == part }
+
+    until part == parts.last
+      folders = notebook["children"]
+      current += 1
+      part = parts[current]
+      notebook = folders.find { |x| x["title"] == part }
+    end
+
+    @notebook = notebook["id"]
+
+  end
+end
