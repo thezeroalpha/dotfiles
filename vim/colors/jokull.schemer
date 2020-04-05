@@ -13,7 +13,8 @@ palette:
   justblue #0000FF,
   justyellow #FFFF00,
   softred #ff949b,
-  darkergreen #009051.
+  darkergreen #009051,
+  orange #ff9900.
 
 " group       fg_color, bg_color         attribute
 Normal         text, bg
@@ -44,7 +45,9 @@ QfFileName     #0076ff
 Delimiter      #5f5f00
 Comment        #5f5f5f.                  italic
 ErrorMsg       text, softred.            bold
-Cursorlinenr   #ff9900, NONE.            bold
+Cursorlinenr   orange, NONE.            bold
+SpecialKey     justblue, NONE.           bold
+Constant       orange, NONE
 
 " link    group1,group2,...                                                 target group
 link     tabline                                                            tablinefill
