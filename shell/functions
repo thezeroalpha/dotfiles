@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # vim:foldmethod=indent:foldlevel=0
-cd() { builtin cd -P "$@" || return; ls; }                                  # list contents after cding
-mkcd() { mkdir -p -- "$1" && cd -p -- "$1" || return; }                     # make dir and cd at the same time
-procinfo() { ps aux | grep "$1"; }                                          # get info about a process (by name)
-rmempty() { find "${1-.}"  -type d -empty -depth -delete; }                 # remove empty directories
-hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }      # insert a <hr> in the terminal
-vimq() { vim -q <($(fc -nl -1)); }                                          # load results of last command (often ag) in vim quickfix
-gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                               # Access global pip while using virtualenvs
-nls() { expr `ls -l | wc -l | xargs echo` - 1; }                            # Count the number of files in the directory
+cd() { builtin cd -P "$@" || return; }                                  # list contents after cding
+mkcd() { mkdir -p -- "$1" && cd -p -- "$1" || return; }                 # make dir and cd at the same time
+procinfo() { ps aux | grep "$1"; }                                      # get info about a process (by name)
+rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove empty directories
+hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }  # insert a <hr> in the terminal
+vimq() { vim -q <($(fc -nl -1)); }                                      # load results of last command (often ag) in vim quickfix
+gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                           # Access global pip while using virtualenvs
+nls() { expr `ls -l | wc -l | xargs echo` - 1; }                        # Count the number of files in the directory
 zsh_recomp() { rm ~/.zcompdump && compinit; }
 notify() {
   if type terminal-notifier &> /dev/null; then
@@ -79,6 +79,15 @@ if command -v qlmanage &> /dev/null; then
   qlf() { qlmanage -p "$@" &> /dev/null; }
 fi
 
+if command -v virtualenv &> /dev/null; then
+  # Useful if want to cd without running any virtualenvwrapper hooks
+  workoncd() {
+    [ $# -eq 1 ] || { echo 'Must provide name of virtualenv.'; return; }
+    [ -z "$WORKON_HOME" ] && { echo '$WORKON_HOME not set, exiting.'; return; }
+    [ -d "$WORKON_HOME/$1" ] || { echo "Virtual environment $1 not found"; return; }
+    source "$WORKON_HOME/$1/bin/activate" && cdproject
+  }
+fi
 # fzf-reliant functions
 if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
   export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -500'"
