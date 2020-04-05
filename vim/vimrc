@@ -1,7 +1,7 @@
 " vim: foldmethod=marker foldlevel=0
 let mapleader=" "   " Set the mapleader to be space
-" Plugins {{{
-" Installation {{{
+" Plugins {{{1
+" Installation {{{2
 " Install vim-plug if needed
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent execute "!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -11,13 +11,13 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " A color table with xterm color codes
-Plug 'guns/xterm-color-table.vim'
+Plug 'guns/xterm-color-table.vim', { 'on': 'Colors' }
 
 " Simple commenting
 Plug 'tpope/vim-commentary'
 
 " Emmet but simpler
-Plug 'rstacruz/sparkup'
+Plug 'rstacruz/sparkup', { 'for': ['html', 'javascript'] }
 
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
@@ -29,16 +29,16 @@ Plug 'machakann/vim-sandwich'
 Plug 'tpope/vim-eunuch'
 
 " A tag overview on the right side
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', { 'on': ['TagbarToggle', 'TagbarOpen'] }
 
 " Personal hypertext files
-Plug 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki', { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
 
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
 
 " Undo tree visualiser
-Plug 'simnalamburt/vim-mundo'
+Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 
 " Quickfix window mappings
 Plug 'romainl/vim-qf'
@@ -47,20 +47,20 @@ Plug 'romainl/vim-qf'
 Plug 'tpope/vim-repeat'
 
 " Distraction-free editing
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'junegunn/limelight.vim', { 'for': 'markdown' }
 
 " Better CSV editing
-Plug 'chrisbra/csv.vim'
+Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 
 " Display ANSI color codes
-Plug 'vim-scripts/AnsiEsc.vim'
+Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc' }
 
 " Disable hlsearch after finished searching
 Plug 'romainl/vim-cool'
 
 " Vim + latex
-Plug 'lervag/vimtex'
+Plug 'lervag/vimtex', { 'for': 'latex' }
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -69,21 +69,17 @@ Plug 'SirVer/ultisnips'
 Plug 'gastonsimone/vim-dokumentary'
 
 " Open devdocs for a keyword
-Plug 'romainl/vim-devdocs'
+Plug 'romainl/vim-devdocs', { 'on': 'DD' }
 
 " Fuzzy finder in vim
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
+Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
 
 " Better abbrevation and substitution
 Plug 'tpope/vim-abolish'
 
-" An improved grep
-Plug 'rking/ag.vim'
-
-
 " Highlight hex colors
-Plug 'chrisbra/colorizer'
+Plug 'chrisbra/colorizer', { 'on': ['ColorHighlight', 'ColorToggle'] }
 
 " Pywal scheme in vim
 Plug 'dylanaraps/wal.vim'
@@ -101,13 +97,13 @@ Plug 'arp242/jumpy.vim'
 Plug 'markonm/traces.vim'
 
 " Omnifuncs
-Plug 'myhere/vim-nodejs-complete'
-Plug 'othree/html5.vim'
-Plug 'vim-scripts/OmniCppComplete'
-Plug 'vim-scripts/pythoncomplete'
+Plug 'myhere/vim-nodejs-complete', { 'for': 'javascript' }
+Plug 'othree/html5.vim', { 'for': 'html' }
+Plug 'vim-scripts/OmniCppComplete', { 'for': 'cpp' }
+Plug 'vim-scripts/pythoncomplete', { 'for': 'python' }
 
 " Alignment
-Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-easy-align', { 'on': ['EasyAlign', 'LiveEasyAlign', '<Plug>(LiveEasyAlign)'] }
 "
 " Peek contents of registers
 Plug 'junegunn/vim-peekaboo'
@@ -119,7 +115,7 @@ Plug 'joom/latex-unicoder.vim'
 Plug 'psliwka/vim-smoothie'
 
 " Asynchronous popery
-Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-dispatch', { 'on': ['Dispatch', 'Make', 'Maketab', 'Start', 'Spawn'] }
 
 " &path for filetypes
 Plug 'tpope/vim-apathy'
@@ -128,13 +124,13 @@ Plug 'tpope/vim-apathy'
 Plug 'dhruvasagar/vim-table-mode'
 
 " Ada syntax, indent, completion
-Plug 'thindil/Ada-Bundle'
+Plug 'thindil/Ada-Bundle', { 'for': 'ada' }
 
 " Vimscript testing
-Plug 'tpope/vim-scriptease'
+Plug 'tpope/vim-scriptease', { 'for': 'vim' }
 
 " Schemer - colorscheme creator
-Plug 'thezeroalpha/vim-schemer'
+Plug 'thezeroalpha/vim-schemer', { 'for': 'schemer', 'on': ['<Plug>SchemerSynstack', '<Plug>SchemerEdit']}
 
 " Relative file complete
 Plug 'thezeroalpha/vim-relatively-complete'
@@ -142,15 +138,16 @@ Plug 'thezeroalpha/vim-relatively-complete'
 " Unicode black magic
 Plug 'segeljakt/vim-isotope'
 
-" Lightweight REPL
-Plug 'axvr/zepl.vim'
+" Lightweight REPL (my fork)
+" upstream: https://github.com/axvr/zepl.vim.git
+Plug 'thezeroalpha/zepl.vim', { 'on': ['Repl', 'ReplSend'], 'do': 'git remote add upstream https://github.com/axvr/zepl.vim.git' }
 
 " Evaluate markdown code blocks
-Plug 'gpanders/vim-medieval'
+Plug 'gpanders/vim-medieval', { 'for': 'markdown' }
 call plug#end()
-" }}}
-" Config {{{
-" Tagbar {{{
+" }}}2
+" Config {{{2
+" Tagbar {{{3
 " Maps
 nnoremap <leader>tt :TagbarToggle<CR>
 nnoremap <leader>to :TagbarOpen fj<CR>
@@ -238,54 +235,57 @@ let g:tagbar_type_zsh = {
       \ ],
       \ 'sort': 0
       \ }
-" }}}
-" Doge {{{
+" Doge {{{3
 let g:doge_mapping = '<leader>gd'
-" }}}
-" Goyo {{{
+" Goyo {{{3
 let g:goyo_width = "80%"
 let g:goyo_height = "85%"
-" }}}
-" Vimtex {{{
+" Vimtex {{{3
 let g:tex_flavor='latex'
 let g:vimtex_view_method='general'
 let g:vimtex_quickfix_mode=0
 let g:tex_conceal='abdmg'
-" }}}
-" Ultisnips {{{
+let g:vimtex_compiler_latexmk = {
+      \ 'build_dir': 'build'
+      \ }
+" Ultisnips {{{3
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsSnippetDirectories = [$DOTFILES.'/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
 cabbrev USE UltiSnipsEdit
-" }}}
-" Dokumentary {{{
+" Dokumentary {{{3
 " Improve what K does
 let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
-" }}}
-" Abolish {{{
+" Abolish {{{3
 " Work with variants of words easily
 let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
-" }}}
-" Ag {{{
-nnoremap <leader>/ :Ag<space>
-" }}}
-" Fzf {{{
+" Fzf {{{3
 set rtp+=~/.fzf
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
 let g:fzf_action = {
+      \ 'ctrl-f': function('s:build_quickfix_list'),
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-i': 'split',
       \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
+let g:fzf_preview_window = 'right:60%'
+
+" Jump to existing buffer/window if possible
+let g:fzf_buffers_jump = 1
 
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
 nnoremap <leader>T :Helptags<CR>
 nnoremap <leader>Q :Tags<CR>
-" }}}
-" Vimwiki {{{
+nnoremap <leader>/ :Ag<CR>
+" Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
 
@@ -301,24 +301,21 @@ let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {'.wiki': 'default'}
 
 nnoremap <leader>wc :VimwikiCheckLinks<CR>
-" }}}
-" Sessions {{{
+nmap <leader>ww <Plug>VimwikiIndex
+" Sessions {{{3
 nmap <leader>ss <Plug>SaveSession
 nmap <leader>sl <Plug>LoadSession
 nmap <leader>sd <Plug>DeleteSession
 nmap <leader>sq <Plug>CloseSession
-" }}}
-" Sparkup {{{
+" Sparkup {{{3
 let g:sparkupExecuteMapping = '<C-x><C-e><CR>'
 let g:sparkupNextMapping = '<C-x><C-e><tab>'
-" }}}
-" Haskell {{{
+" Haskell {{{3
 let hs_highlight_delimiters = 1
 let hs_highlight_boolean = 1
 let hs_highlight_types = 1
 let hs_highlight_more_types = 1
-" }}}
-" EasyAlign {{{
+" EasyAlign {{{3
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(LiveEasyAlign)
 
@@ -326,33 +323,27 @@ xmap ga <Plug>(LiveEasyAlign)
 nmap ga <Plug>(LiveEasyAlign)
 
 nnoremap <leader>ga :normal! ga<CR>
-" }}}
-" Peekaboo {{{
+" Peekaboo {{{3
 let g:peekaboo_compact=1
-" }}}
-" Mundo {{{
+" Mundo {{{3
 nnoremap <leader>u :MundoToggle<CR>
-" }}}
-" Vim-qf {{{
+" Vim-qf {{{3
 nmap <leader>qn <Plug>(qf_qf_next)
 nmap <leader>qp <Plug>(qf_qf_previous)
 nmap <leader>qf <Plug>(qf_qf_toggle)
 " Disable auto-open because it interferes with Dispatch reverting makeprg
 " See here https://github.com/tpope/vim-dispatch/issues/254
 let g:qf_auto_open_quickfix = 0
-" }}}
-" Dispatch {{{
+" Dispatch {{{3
 " Disable default maps
 let g:dispatch_no_maps = 1
 
 " Only enable those I'll actually use
 nnoremap `<CR> :Dispatch<CR>
 nnoremap '<CR> :Start<CR>
-" }}}
-" Table-mode {{{
+" Table-mode {{{3
 let g:table_mode_map_prefix = "<leader><bar>"
-" }}}
-" Sandwich {{{
+" Sandwich {{{3
 " Use mappings from surround.vim
 runtime macros/sandwich/keymap/surround.vim
 
@@ -368,16 +359,14 @@ let g:sandwich#recipes += [
       \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [']']},
       \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [')', 'b']}
       \ ]
-" }}}
-" Ada {{{
+" Ada {{{3
 let g:ada_standard_types = 1
 let g:ada_begin_preproc = 1
 let g:ada_extended_completion = 1
 let g:ada_gnat_extensions = 1
 let g:ada_with_gnat_project_files = 1
 
-" }}}
-" netrw {{{
+" netrw {{{3
 let g:netrw_banner = 0                              " hide the banner
 let g:netrw_fastbrowse = 2                          " only get dir list if not seen, or manually refreshed
 let g:netrw_liststyle = 0                           " thin listing
@@ -387,30 +376,24 @@ let g:netrw_retmap = 1                              " double-click to return to 
 let g:netrw_list_hide = &wildignore                 " hide everything in &wildignore
 let g:netrw_list_hide .= ',\(^\|\s\s\)\zs\.\S\+'    " as well as dotfiles
 let g:netrw_special_syntax = 1                      " use special syntax groups for certain files in browser
-" }}}
-" latex-unicoder {{{
+" latex-unicoder {{{3
 let g:unicoder_cancel_normal = 1
 let g:unicoder_cancel_insert = 1
 let g:unicoder_cancel_visual = 1
 nnoremap <C-l> :call unicoder#start(0)<CR>
 inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
-" }}}
-" colorizer {{{
+" colorizer {{{3
 let g:colorizer_colornames = 0
-" }}}
-" Schemer {{{
+" Schemer {{{3
 " List color group
 nmap <C-P> <Plug>SchemerSynstack
 nmap <C-E><C-L> <Plug>SchemerEdit
-" }}}
-" Relatively complete {{{
+" Relatively complete {{{3
 " Replace default file completion with 'smart' relative complete
 imap <C-x><C-f> <Plug>CompleteRelative
-" }}}
-" Isotope {{{
+" Isotope {{{3
 let g:isotope_use_default_mappings = 0
-" }}}
-" Zepl {{{
+" Zepl {{{3
 augroup zepl
   autocmd!
   autocmd FileType python     let b:repl_config = { 'cmd': 'python3' }
@@ -419,13 +402,10 @@ augroup zepl
   autocmd FileType ruby      let b:repl_config = { 'cmd': 'irb' }
 augroup END
 nnoremap gzr :Repl<CR>
-" }}}
-" Medieval {{{
+" Medieval {{{3
 let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'bash', 'haskell=ghci', 'javascript=node']
-" }}}
-" }}}
-" }}}
-" General {{{
+" }}}1
+" General {{{1
 " Set the colors
 " Use true color
 " Set Vim-specific sequences for RGB colors
@@ -548,7 +528,8 @@ set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabp
 
 set updatetime=100
 " }}}
-" Editor {{{
+" }}}1
+" Editor {{{1
 " In general, don't want anything concealed
 if has('conceallevel')
   set conceallevel=0
@@ -605,7 +586,7 @@ filetype plugin indent on
 syntax on
 
 " Enable fenced code highlighting in markdown (tpope's plugin, ships with vim)
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map', 'vim', 'schemer']
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map', 'vim']
 " Enable markdown folding
 let g:markdown_folding = 1
 
@@ -646,7 +627,7 @@ set scrolloff=5
 " Which formats to use for incrementing/decrementing
 set nrformats=hex,bin
 " }}}
-" Commands {{{
+" Commands {{{1
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
 command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
@@ -688,7 +669,7 @@ if has('terminal')
   command! Tuir tab terminal tuir
 endif
 " }}}
-" Mappings {{{
+" Mappings {{{1
 " So I don't have to mash shift all the time
 nnoremap ; :
 vnoremap ; :
@@ -834,8 +815,12 @@ inoremap <expr> <C-x>s &spell ? "<c-g>u<Esc>[s1z=`]a<c-g>u" : ""
 
 " Make-ing (use Dispatch if enabled)
 nnoremap <leader>m? :set makeprg<CR>
-nnoremap <expr> <leader>mm g:loaded_dispatch ? ":Make<CR>" : ":silent make<CR>\|:redraw!<CR>\|:cwindow<CR>"
-nnoremap <expr> <leader>mc g:loaded_dispatch ? ":Make clean<CR>" : ":silent make clean<CR>\|:redraw!<CR>"
+nnoremap <leader>mm :Make<CR>
+nnoremap <leader>mc :Make clean<CR>
+
+" If Dispatch not used
+" :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
+" :silent make clean<CR>\|:redraw!<CR>
 
 " Buffer text object
 vnoremap & :<C-U>silent! normal! ggVG<CR>
@@ -850,8 +835,7 @@ if has('mouse')
   inoremap <expr> <ScrollWheelUp> pumvisible() ? "<C-p>" : "<Esc><ScrollWheelUp>"
   inoremap <expr> <ScrollWheelDown> pumvisible() ? "<C-n>" : "<Esc><ScrollWheelDown>"
 endif
-" }}}
-" Autocommands {{{
+" Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
     autocmd!
