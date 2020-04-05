@@ -1,0 +1,56 @@
+snippet @book "Book citation" b
+@book{${1:ref},
+    author    = "",
+    title     = "",
+    publisher = "",
+    ?_volume   = "",
+    ?_number   = "",
+    ?_series   = "",
+    ?_address  = "",
+    ?_edition  = "",
+    year      = "",
+    ?_month    = "",
+    ?_note     = ""
+}
+endsnippet
+snippet @article "Article" b
+@article{${1:ref},
+    author    = "",
+    title     = "",
+    journal   = "",
+    ?_volume   = "",
+    ?_number   = "",
+    ?_pages    = "",
+    year      = "",
+    ?_month    = "",
+    ?_note     = ""
+}
+endsnippet
+snippet @proceedings "Proceedings from conference" b
+@inproceedings{${1:ref},
+    author      = "",
+    title       = "",
+    booktitle   = "",
+    ?_editor        = "",
+    ?_volume        = "",
+    ?_number        = "",
+    ?_series        = "",
+    ?_pages     = "",
+    ?_address   = "",
+    ?_organization  = "",
+    ?_publisher = "",
+    year        = "",
+    ?_month     = "",
+    ?_note      = ""
+}
+endsnippet
+snippet @misc "Misc (website, etc.)" b
+@misc{${1:ref},
+    ?_author    = "",
+    ?_title     = "",
+    ?_howpublished = "",
+    ?_year     = "XXXX",
+    ?_month    = "",
+    ?_note     = ""
+}
+endsnippet

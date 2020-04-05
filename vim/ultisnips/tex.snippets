@@ -13,20 +13,20 @@ texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')
 ignore = texIgnoreMathZoneIds[0]
 
 def math():
-	synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
-	try:
-		first = next(
+    synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
+    try:
+        first = next(
             i for i in reversed(synstackids)
             if i in texIgnoreMathZoneIds or i in texMathZoneIds
         )
-		return first != ignore
-	except StopIteration:
-		return False
+        return first != ignore
+    except StopIteration:
+        return False
 endglobal
 # }}}
 
 # Skeletons {{{
-snippet skel "Math skeleton" b
+snippet skel "Assignment skeleton" b
 \documentclass[12pt,a4paper,oneside,fleqn,notitlepage]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -45,6 +45,53 @@ snippet skel "Math skeleton" b
 \begin{document}
   \maketitle
   $0
+\end{document}
+endsnippet
+
+snippet skel "Academic paper" b
+\documentclass[10pt,notitlepage]{article}
+\usepackage[a4paper, top=0.6in, left=0.6in, right=0.6in, bottom=0.6in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage[style=ieee]{biblatex}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\graphicspath{{${1:image directory}}}
+\addbibresource{references.bib}
+
+\title{
+  {${2:title}}\\
+  {\large ${3:institution}}
+}
+\author{
+  ${4:author}
+  \and ${5:second author}
+}
+\date{\today}
+
+\begin{document}
+  \maketitle
+
+  \begin{abstract}
+    This is an abstract.
+  \end{abstract}
+
+  \input{introduction}
+  \input{background}
+  \input{method}
+  \input{results}
+  \input{discussion}
+  \input{conclusion}
+
+  \printbibliography
+
+  \input{appendix}
 \end{document}
 endsnippet
 
@@ -111,16 +158,58 @@ $1
 endsnippet
 
 snippet table "Table" w
-\vspace{1em}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{| l | c | r |}
-  \hline
-  \textbf{${1:heading}} & \textbf{${2:heading}} & \textbf{${3:heading}} \\\\ \hline
-  ${4:cell} & ${5:cell} & ${6:cell} \\\\ \hline
-  $0 \\\\ \hline
-\end{tabular}
-\renewcommand{\arraystretch}{1}
-\vspace{1em}
+\begin{table}[h]
+  \centering
+  \vspace{1em}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{| l | c | r |}
+    \hline
+    \textbf{${1:heading}} & \textbf{${2:heading}} & \textbf{${3:heading}} \\\\ \hline
+    ${4:cell} & ${5:cell} & ${6:cell} \\\\ \hline
+    $0 \\\\ \hline
+  \end{tabular}
+  \renewcommand{\arraystretch}{1}
+  \vspace{1em}
+  \caption{table}
+  \label{tab:whataver}
+\end{table}
+endsnippet
+
+snippet fig "Figure" b
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{${1:/path/to/file}}
+  \caption{${2:caption}}
+  \label{fig:${3:internal reference}}
+\end{figure}
+endsnippet
+
+snippet fig "Subfigures" b
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{${1:/path/to/first.jpg}}
+         \caption{${2:caption}}
+         \label{fig:${3:internal label}}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{${4:/path/to/second}}
+         \caption{${5:caption}}
+         \label{fig:${6:internal label}}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{${7:/path/to/third}}
+         \caption{${8:caption}}
+         \label{fig:${9:internal label}}
+     \end{subfigure}
+        \caption{${10:overall caption}}
+        \label{fig:${11:overall internal label}}
+\end{figure}
 endsnippet
 # }}}
 
@@ -133,11 +222,11 @@ snippet b "bold text" w
 \textbf{$1}
 endsnippet
 
-snippet " "quote" w
+snippet " "quote" wA
 \`\`$1''$0
 endsnippet
 
-snippet ' "single quote" w
+snippet ' "single quote" wA
 \`$1'$0
 endsnippet
 # }}}
@@ -205,10 +294,10 @@ stripped = match.string[:-1]
 depth = 0
 i = len(stripped) - 1
 while True:
-	if stripped[i] == ')': depth += 1
-	if stripped[i] == '(': depth -= 1
-	if depth == 0: break;
-	i -= 1
+    if stripped[i] == ')': depth += 1
+    if stripped[i] == '(': depth -= 1
+    if depth == 0: break;
+    i -= 1
 snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 `{$1}$0
 endsnippet

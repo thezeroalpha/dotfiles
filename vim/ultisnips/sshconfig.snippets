@@ -1,0 +1,12 @@
+snippet skel "Skeleton with everything I might need" b
+Host ${1:user-friendly name}
+  HostName ${2:actual IP address}
+  User ${3:username}
+  Port ${4:22}
+  IdentityFile ${5:/path/to/key}
+  IdentitiesOnly ${6:yes}
+  AddKeysToAgent ${7:yes}
+  ForwardX11 ${8:yes}
+  ProxyJump ${9:other host}
+  SendEnv ${10:ENV_VARIABLE_TO_SEND}
+endsnippet
