@@ -1,0 +1,6 @@
+# Make programs use the ~/.config directory
+alias irssi="irssi --home=$HOME/.config/irssi"
+
+export JUPYTER_CONFIG_DIR="$HOME/.config/jupyter"
+export BUNDLE_USER_HOME="$HOME/.config/bundle"
+export BUNDLE_USER_CACHE="$HOME/.cache/bundle"

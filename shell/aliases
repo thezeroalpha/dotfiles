@@ -1,3 +1,4 @@
+#!/bin/sh
 alias fucking="sudo"                                                            # Because sometimes I'm frustrated
 alias cp='cp -iv'                                                               # Prompt if overwrite, verbose
 alias mv='mv -iv'                                                               # Prompt if overwrite, verbose
@@ -18,4 +19,3 @@ alias j='joplin'
 alias tree="tree -CAFa -I 'CVS|*.*.package|.svn|.git|node_modules' --dirsfirst" # Colorize, ANSI graphics hack, indicate ft with appendices, print all files, ignore certain patterns, list dirs first
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"   # The columns I want to see in lsblk
 alias confucius="curl confucius-quote.herokuapp.com"                            # A joke curl service I made
-alias be="bundle exec"

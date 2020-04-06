@@ -1,3 +1,4 @@
+#!/bin/sh
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
@@ -6,7 +7,7 @@
 
 # System-wide .profile for sh(1)
 if [ -x /usr/libexec/path_helper ]; then
-    eval `/usr/libexec/path_helper -s`
+  eval "$(/usr/libexec/path_helper -s)"
 fi
 
 if [ "${BASH-no}" != "no" ]; then
@@ -48,7 +49,7 @@ fi
 if [ -d "/usr/local/sbin" ]; then
   PATH="/usr/local/sbin:$PATH"
 fi
-if command -v rbenv &>/dev/null; then
+if command -v rbenv 1>/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 if [ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]; then
@@ -59,9 +60,9 @@ if [ -d "$HOME/.local/gnat/bin" ]; then
 fi
 
 export DOTFILES="$HOME/.dotfiles"
-export EDITOR="`which vim`"
+EDITOR="$(command -v vim)"; export EDITOR
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
-if command -v bat &> /dev/null; then
+if command -v bat 1>/dev/null 2>&1; then
   export PAGER="bat"
 else
   export PAGER="less -R"
@@ -71,3 +72,5 @@ export LC_TIME=en_US.UTF-8
 export LC_COLLATE=en_US.UTF-8
 export LC_MONETARY=en_US.UTF-8
 export LC_MESSAGES=en_US.UTF-8
+
+source "$DOTFILES/shell/use-config-dir"

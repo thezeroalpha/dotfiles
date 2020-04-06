@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/sh bash
 # vim:foldmethod=indent:foldlevel=0
 cd() { builtin cd -P "$@" || return; }                                  # list contents after cding
-mkcd() { mkdir -p -- "$1" && cd -p -- "$1" || return; }                 # make dir and cd at the same time
-procinfo() { ps aux | grep "$1"; }                                      # get info about a process (by name)
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                 # make dir and cd at the same time
+procinfo() { pgrep -f "$1"; }                                           # get info about a process (by name)
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove empty directories
 hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }  # insert a <hr> in the terminal
 vimq() { vim -q <($(fc -nl -1)); }                                      # load results of last command (often ag) in vim quickfix
@@ -114,7 +114,7 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
   # config edit
   ce() {
     local files
-    IFS=$'\n' files=($(command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    IFS=$'\n' files=($(command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   }
   # vim setting edit
