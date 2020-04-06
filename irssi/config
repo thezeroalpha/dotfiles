@@ -229,7 +229,7 @@ settings = {
     awl_block = "-14";
     trackbar_require_seen = "yes";
   };
-  "fe-common/core" = { print_active_channel = "no"; theme = "mine"; };
+  "fe-common/core" = { print_active_channel = "no"; theme = "tugg"; };
 };
 hilights = ( { text = "zeroalpha"; nick = "yes"; word = "yes"; } );
 ignores = ( { level = "JOINS PARTS QUITS"; } );
