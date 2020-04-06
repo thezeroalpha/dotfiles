@@ -17,7 +17,7 @@ set statusline+=%=                                                  " Move every
 set statusline+=%{&spell?'[spell]\ ':''}                            " Show spellcheck status
 set statusline+=%y                                                  " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                   " Using spaces or tabs
-set statusline+=%{strlen(&shiftwidth)?&shiftwidth:'none'}]          " Spaces in a tab
+set statusline+=%{statusline#StatuslineSpacesUsed()}]               " Spaces in a tab
 set statusline+=\ [%{statusline#StatuslineFoldmethod()}]            " The current foldlevel
 set statusline+=\ {%{statusline#StatuslineWrapCol()}}               " Textwidth/wrapmargin info
 set statusline+=\ %l/%L\                                            " Cursor line/total lines

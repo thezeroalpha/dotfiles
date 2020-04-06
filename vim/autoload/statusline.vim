@@ -66,3 +66,11 @@ function! statusline#StatuslineWrapCol()
     return "TW ".&textwidth
   endif
 endfunction
+
+function! statusline#StatuslineSpacesUsed()
+  if &expandtab
+    return strlen(&shiftwidth) ? &shiftwidth : 'none'
+  else
+    return &tabstop
+  endif
+endfunction
