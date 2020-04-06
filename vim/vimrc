@@ -526,6 +526,8 @@ set wildmode=longest:list,full
 " Add everything to sessions
 set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabpages
 
+" Use ag for grepping
+set grepprg=ag\ --vimgrep
 set updatetime=100
 " }}}
 " }}}1
