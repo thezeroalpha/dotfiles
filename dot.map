@@ -4,7 +4,7 @@ scripts: ~/.scripts
 
 # Utilities
 compton: ~/.config/compton
-ctags.d: ~/.ctags.d
+ctags: ~/.config/ctags
 gdb:
 - gdbinit: ~/.gdbinit
 git:
