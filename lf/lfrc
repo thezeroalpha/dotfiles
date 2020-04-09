@@ -91,6 +91,37 @@ cmd paste_link %{{
   done
 }}
 
+# paste and rename the file on paste
+cmd paste_rename %{{
+    load=$(lf -remote 'load')
+    mode=$(echo "$load" | sed -n '1p')
+    list=($(echo "$load" | sed '1d'))
+    declare -a newnames
+    for i in "${!list[@]}"; do
+      printf "Rename ${list[$i]} to: "
+      read newname
+      newnames[$i]="$newname"
+    done
+    for i in "${!list[@]}"; do
+      if [ $mode = 'copy' ]; then
+        if command -v rsync &>/dev/null; then
+          rsync -ah --ignore-existing --progress "${list[$i]}" . && mv ./"${list[$i]##*/}" ./"${newnames[$i]}"
+        else
+          cp -r "${list[$i]}" ./"${newnames[$i]}"
+        fi
+      elif [ $mode = 'move' ]; then
+        if command -v rsync &>/dev/null; then
+          rsync -ah --ignore-existing --remove-source-files "${list[$i]}" . && mv ./"${list[$i]##*/}" ./"${newnames[$i]}"
+        else
+          mv "${list[$i]}" ./"${newnames[$i]}"
+        fi
+      fi
+    done
+    lf -remote 'send load'
+    lf -remote 'send clear'
+}}
+
+
 # improve regular paste to work if files are moved between different devices
 cmd paste %{{
     load=$(lf -remote 'load')
@@ -177,6 +208,7 @@ map Y copy_path
 map p
 map pp paste
 map pl paste_link
+map pr paste_rename
 
 map i $~/.config/lf/preview.sh $f | less -R
 
