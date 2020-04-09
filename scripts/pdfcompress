@@ -1,0 +1,16 @@
+#!/bin/sh
+if ! command -v gs 1>/dev/null 2>&1; then
+  echo "ghostscript not installed." >&2
+  exit 1
+fi
+[ $# -eq 2 ] || { echo "Arguments: infile, outfile"; exit 1; }
+
+while
+  _i=0 _quality='' quality=''
+  for _name in "/screen (lowest)" "/ebook" "/printer" "/prepress" "/default"; do echo "$((_i+=1))) $_name"; done
+  printf '$# '; read -r _quality
+do
+  case $_quality in 1) quality="/screen (lowest)";; 2) quality="/ebook";; 3) quality="/printer";; 4) quality="/prepress";; 5) quality="/default";; *) continue;; esac
+  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS="$quality" -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$2" "$1"
+  break
+done
