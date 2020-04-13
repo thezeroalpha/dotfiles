@@ -255,6 +255,9 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsSnippetDirectories = [$DOTFILES.'/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
 cabbrev USE UltiSnipsEdit
+" Complete ultisnips with <C-x><C-u>, which is coincidentally the same mapping as user completion
+" (custom function btw)
+set completefunc=ultisnips_complete#ListSnippets
 " Dokumentary {{{3
 " Improve what K does
 let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
