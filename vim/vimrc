@@ -283,9 +283,10 @@ let g:fzf_preview_window = 'right:60%'
 let g:fzf_buffers_jump = 1
 
 nnoremap <leader>F :Files<CR>
+nnoremap <leader>O :Files<space>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
-nnoremap <leader>T :Helptags<CR>
+nnoremap <leader>? :Helptags<CR>
 nnoremap <leader>Q :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
 " Vimwiki {{{3
@@ -532,7 +533,6 @@ set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabp
 " Use ag for grepping
 set grepprg=ag\ --vimgrep
 set updatetime=100
-" }}}
 " }}}1
 " Editor {{{1
 " In general, don't want anything concealed

@@ -1,3 +1,3 @@
 if g:loaded_plug
-  command! PlugUp PlugUpgrade | PlugUpdate
+  command! PU PlugUpgrade | PlugUpdate
 endif
