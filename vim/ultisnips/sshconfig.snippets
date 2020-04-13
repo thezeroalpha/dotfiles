@@ -4,9 +4,9 @@ Host ${1:user-friendly name}
   User ${3:username}
   Port ${4:22}
   IdentityFile ${5:/path/to/key}
-  IdentitiesOnly ${6:yes}
-  AddKeysToAgent ${7:yes}
-  ForwardX11 ${8:yes}
-  ProxyJump ${9:other host}
-  SendEnv ${10:ENV_VARIABLE_TO_SEND}
+  ${6:IdentitiesOnly yes}
+  ${7:AddKeysToAgent yes}
+  ${8:ForwardX11 yes}
+  ${9:ProxyJump other host}
+  ${10:SendEnv ENV_VARIABLE_TO_SEND}
 endsnippet

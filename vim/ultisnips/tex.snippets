@@ -25,7 +25,7 @@ def math():
 endglobal
 # }}}
 
-# Skeletons {{{
+# Skeletons {{{1
 snippet skel "Assignment skeleton" b
 \documentclass[12pt,a4paper,oneside,fleqn,notitlepage]{article}
 \usepackage{amsmath}
@@ -99,7 +99,7 @@ snippet front "Front matter" b
 \title{$1}
 \author{$2}
 endsnippet
-# }}}
+# }}}1
 
 # Environments {{{
 snippet ul "unordered list" b
@@ -121,7 +121,7 @@ snippet - "item in list" b
 $2
 endsnippet
 
-snippet beg "begin{} / end{}" bA
+snippet beg "begin{} / end{}" b
 \begin{$1}
   $0
 \end{$1}
@@ -142,7 +142,7 @@ snippet sssec "subsection{}" b
 $0
 endsnippet
 
-snippet mk "Inline math" wA
+snippet mk "Inline math" w
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
     snip.rv = ' '
@@ -151,7 +151,7 @@ else:
 `$2
 endsnippet
 
-snippet dm "Displayed math" wA
+snippet dm "Displayed math" w
 \[
 $1
 \] $0
