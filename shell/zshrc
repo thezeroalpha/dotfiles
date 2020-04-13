@@ -105,6 +105,10 @@ lfcd () {
 }
 bindkey -s '^o' 'lfcd\n'
 
+_zsh_cli_fg() { fg; }
+zle -N _zsh_cli_fg
+bindkey '^Z' _zsh_cli_fg
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 source_if_exists $DOTFILES/shell/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
