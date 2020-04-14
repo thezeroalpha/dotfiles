@@ -132,8 +132,11 @@ Plug 'tpope/vim-scriptease', { 'for': 'vim' }
 " Schemer - colorscheme creator
 Plug 'thezeroalpha/vim-schemer', { 'for': 'schemer', 'on': ['<Plug>SchemerSynstack', '<Plug>SchemerEdit']}
 
-" Relative file complete
+" Make ins-completion relative to current file
 Plug 'thezeroalpha/vim-relatively-complete'
+
+" Select files with LF
+Plug 'thezeroalpha/vim-lf'
 
 " Unicode black magic
 Plug 'segeljakt/vim-isotope'
@@ -287,7 +290,7 @@ nnoremap <leader>O :Files<space>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
 nnoremap <leader>? :Helptags<CR>
-nnoremap <leader>Q :Tags<CR>
+nnoremap <leader>T :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
@@ -408,6 +411,9 @@ augroup END
 nnoremap gzr :Repl<CR>
 " Medieval {{{3
 let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'bash', 'haskell=ghci', 'javascript=node']
+" LF {{{3
+nmap <leader>\ <Plug>LfEdit
+nmap <leader><c-\> <Plug>LfSplit
 " }}}1
 " General {{{1
 " Set the colors
