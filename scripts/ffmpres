@@ -94,8 +94,17 @@ process_video() {
         ffmpeg -i "$1" "${1%%.*}.mp3"
         break;;
       "GIF")
+        printf "FPS (default 24): "
+        read -r fps
+        printf "Scale (default unchanged): "
+        read -r scale
+        if [ -n "$scale" ]; then
+          local filters="fps=${fps:-24},scale=$scale:flags=lanczos"
+        else
+          local filters="fps=${fps:-24},scale=0:-1:flags=lanczos"
+        fi
+        echo "Creating gif"
         local palette="/tmp/palette.png"
-        local filters="fps=24,scale=0:-1:flags=lanczos"
         ffmpeg -v warning -i "$1" -vf "$filters,palettegen" -y "$palette"
         ffmpeg -v warning -i "$1" -i "$palette" -lavfi "$filters [x]; [x][1:v] paletteuse" -y "${1%%.*}.gif"
         break;;
