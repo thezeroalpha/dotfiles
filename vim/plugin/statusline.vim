@@ -5,7 +5,13 @@ endif
 let g:loaded_statusline = 1
 
 set laststatus=2                                                    " Always show status bar
-set statusline=%f                                                   " Relative path and filename
+set statusline=                                                     " Init statusline
+set statusline+=%#DiffChange#%{(mode()=='n')?'\ \ N\ ':''}          " Normal mode indicator
+set statusline+=%#DiffAdd#%{(mode()=='i')?'\ \ I\ ':''}             " Insert mode indicator
+set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ R\ ':''}          " Replace mode indicator
+set statusline+=%#Todo#%{(mode()=='v')?'\ \ V\ ':''}                " Visual mode indicator
+set statusline+=%*                                                  " Clear highlighting
+set statusline+=\ %f                                                " Relative path and filename
 set statusline+=\ %m%r%w                                            " Flags (modified, readonly, help, preview)
 set statusline+=%#error#                                            " Start error highlighting
 set statusline+=%{statusline#StatuslineTabWarning()}                " Inconsistent indentation warning

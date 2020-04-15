@@ -74,3 +74,7 @@ function! statusline#StatuslineSpacesUsed()
     return &tabstop
   endif
 endfunction
+
+function! statusline#StatuslineWordCount()
+  return wordcount().words . " words"
+endfunction
