@@ -103,7 +103,7 @@ lfcd () {
     [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
   fi
 }
-bindkey -s '^o' 'lfcd\n'
+bindkey -s '^o' '^ulfcd\n'
 
 _zsh_cli_fg() { fg; }
 zle -N _zsh_cli_fg
