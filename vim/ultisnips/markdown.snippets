@@ -40,22 +40,28 @@ endsnippet
 
 snippet format "Pandoc format" b
 ---
+title: '${1:title of document}'
+subtitle: '${2:subtitle}'
+author:
+- ${3:author 1}
+- ${4:author 2}
 fontsize: 10pt
 pagestyle: empty
-bibliography: ${1:references.bib}
+bibliography: ${3:references.bib}
 citation-style: https://raw.githubusercontent.com/citation-style-language/styles/master/ieee.csl
 link-citations: true
 geometry:
 - a4paper
-- left=${2:1in}
-- right=${2:1in}
-- top=${2:1in}
-- bottom=${2:1in}
+- left=${4:1in}
+- right=${4:1in}
+- top=${4:1in}
+- bottom=${4:1in}
 # For image placement
 header-includes:
  \usepackage{float}
  \floatplacement{figure}{H}
 ---
+\maketitle
 
 # References
 ::: {#refs}
