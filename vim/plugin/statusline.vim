@@ -35,3 +35,6 @@ augroup statusline
   autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
   autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
 augroup END
+
+command! StatuslineWCAdd setlocal statusline+=%{statusline#StatuslineWordCount()}
+command! StatuslineWCRem setlocal statusline-=%{statusline#StatuslineWordCount()}

@@ -506,6 +506,8 @@ set ttyfast
 " Show partial command on last line
 set showcmd
 
+" Don't show current mode (it's in the statusline)
+set noshowmode
 " Command completion
 set wildmenu
 
