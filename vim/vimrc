@@ -286,7 +286,7 @@ let g:fzf_preview_window = 'right:60%'
 let g:fzf_buffers_jump = 1
 
 nnoremap <leader>F :Files<CR>
-nnoremap <leader>O :Files<space>
+nnoremap <leader><c-f> :Files<space>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
 nnoremap <leader>? :Helptags<CR>
@@ -397,7 +397,7 @@ nmap <C-P> <Plug>SchemerSynstack
 nmap <C-E><C-L> <Plug>SchemerEdit
 " Relatively complete {{{3
 " Replace default file completion with 'smart' relative complete
-imap <C-x><C-f> <Plug>CompleteRelative
+imap <C-x><C-f> <Plug>RelativelyCompleteFile
 " Isotope {{{3
 let g:isotope_use_default_mappings = 0
 " Zepl {{{3
