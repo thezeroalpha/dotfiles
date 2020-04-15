@@ -59,6 +59,7 @@
     pf = "!git-pull-menu"
     fuckit = reset --hard HEAD
     fuckitall = reset --hard origin/master
+    ssh = "!git remote get-url origin | sed -E 's|^https?://([^/]+)/(.+)|git@\\1:\\2|' | tr -d '\n'"
     home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|' | tr -d '\n'"
     open = "!xdg-open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
