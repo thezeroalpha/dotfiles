@@ -28,10 +28,11 @@ set previewer ~/.config/lf/preview.sh
 # }}}
 # Command definitions {{{
 # define a custom 'open' command
-cmd open ${{
-    case $(file --mime-type $f -b) in
+cmd _open &{{
+    case $(file --mime-type "$f" -b) in
         text/*|application/json) $EDITOR $fx;;
-        *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;;
+        application/epub+zip) ebook-viewer $fx >/dev/null 2>&1 & disown;;
+        *) for f in $fx; do $OPENER "$f" > /dev/null 2> /dev/null & disown; done;;
     esac
 }}
 
@@ -171,13 +172,15 @@ map x $$f
 map X !$f
 
 # dedicated keys for file opener actions
-map o &open $fx
+map o
+map O
+map o :_open $fx
 map O push hol
 map v ql_preview
 map r reload
 
 map f
-map f $lf -remote "send $id select $(fzf)"
+map f $lf -remote "send $id select \"$(fzf)\""
 
 map .
 map . set hidden!
@@ -192,7 +195,7 @@ map R push :rename<space>
 map cw push :rename<space>
 map E $$EDITOR $f
 map D delete
-map <enter> &open $fx
+map <enter> :_open $fx
 map S shell
 map Y copy_path
 
@@ -213,6 +216,7 @@ map gs cd ~/Documents/School
 map g. cd ~/.dotfiles
 map gp cd ~/Documents/Programming
 map gv cd /Volumes
+map gb cd ~/Documents/Calibre\ Library/
 
 map u
 map uu unselect
