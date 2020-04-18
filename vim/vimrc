@@ -557,16 +557,14 @@ endif
 " Highlight current line
 set cursorline
 
-" Text wrap sucks most of the time
-set nowrap
-
-" Linebreak when obsessive
-set linebreak
-set textwidth=150
-
 " Reduce waiting on keys (like esc)
 set timeoutlen=1000 ttimeoutlen=0
 
+" Wrap settings - no wrap by default
+set nowrap
+set textwidth=0
+set wrapmargin=0
+set linebreak " break at &breakat
 " Continue wrapped line on same indent as previous
 if has('breakindent')
   set breakindent
@@ -838,14 +836,6 @@ nnoremap <leader>mc :Make clean<CR>
 " :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
 " :silent make clean<CR>\|:redraw!<CR>
 
-" Buffer text object
-vnoremap & :<C-U>silent! normal! ggVG<CR>
-omap & :normal V&<CR>
-
-" 'Up to current line' text object
-vnoremap u :<C-u>silent! normal! ggV``<CR>
-omap u :normal Vu<CR>``
-
 " Allow scrolling popup menus with the mouse
 if has('mouse')
   inoremap <expr> <ScrollWheelUp> pumvisible() ? "<C-p>" : "<Esc><ScrollWheelUp>"
@@ -857,6 +847,7 @@ if has('autocmd')
     autocmd!
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertLeave * setlocal cursorline
+    autocmd FileType * setlocal formatoptions=qnlj
   augroup END
   augroup vimrc_commands
     autocmd!
