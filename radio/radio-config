@@ -14,10 +14,10 @@ six_forty="http://54.173.171.80:8000/6forty"
 
 # SOMA FM #
 groove_salad="https://somafm.com/groovesalad256.pls"			# Ambient/downtempo
-mission_control="https://somafm.com/missioncontrol.pls"			# Ambient with sounds from space 
+mission_control="https://somafm.com/missioncontrol.pls"			# Ambient with sounds from space
 the_trip="https://somafm.com/thetrip.pls"				# Prog house/trance
 beat_blender="https://somafm.com/beatblender.pls"			# Deep house, downtempo chill
-dub_step="https://somafm.com/dubstep256.pls"				# Dubstep, dub 
+dub_step="https://somafm.com/dubstep256.pls"				# Dubstep, dub
 defcon="https://somafm.com/defcon256.pls"				# Music for hacking
 deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/experimental
 
@@ -44,13 +44,13 @@ radios=(
 radio_names=(
     "Drive Radio"
     "Nightwave Plaza"
-    "SOMA - Groove Salad"
-    "SOMA - Mission Control"
-    "SOMA - The Trip"
-    "SOMA - Beat Blender"
+    "SOMA - Groove Salad (ambient/downtempo)"
+    "SOMA - Mission Control (ambient, space)"
+    "SOMA - The Trip (prog house/trance)"
+    "SOMA - Beat Blender (deep house, downtempo)"
     "SOMA - Dub Step"
-    "SOMA - Defcon"
-    "SOMA - Deep Space"
+    "SOMA - Defcon "
+    "SOMA - Deep Space (deep ambient electro/experimental)"
     "PSYSTATION - Classic Goa"
     "PSYSTATION - Progressive Psy Trance"
     "6forty radio - Post Rock"
