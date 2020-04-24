@@ -26,7 +26,7 @@ hr() {
    printf '#%.0s' $(seq 1 "$cols")
 }
 clean_up() {
-   kill $cache_sudo_pid
+   kill $cache_sudo_pid &>/dev/null
    exit ${1:-0}
 }
 
@@ -99,7 +99,17 @@ if command -v brew &> /dev/null; then
    brew update > /dev/null;
    outdated="$(brew outdated)"
    outdated_c="$(brew cask outdated --greedy)"
-   echo
+   if [ "${#outdated_c}" -eq 0 ]; then
+      echo_succ "No casks to update."
+    else
+      notify "Cask: Finished reading updates" "Click to view outdated casks."
+      echo -e "Casks to update:"
+      brew cask outdated --greedy
+
+      if [ "$select_casks" -eq 1 ]; then
+        read -rp "Casks to upgrade (empty string cancels upgrade of casks): " -a CASKS;
+      fi
+   fi
 
    # Programs {{{
    if [[ "$maintenance" == 1 ]] || { [[ "$formulas" == 0 ]] && [[ "${#outdated}" != 0 ]]; }; then
@@ -123,14 +133,10 @@ if command -v brew &> /dev/null; then
    elif [ "$casks" -eq 0 ] && [ "$select_casks" -eq 0 ]; then
       echo_succ "No casks will be updated."
    else
-      echo -e "Casks to update:"
-      brew cask outdated --greedy;
 
-      notify "Cask: Finished reading updates" "Click to view outdated casks."
       if [ "$casks" -eq 1 ] && [ "$select_casks" -eq 0 ]; then
          brew cask upgrade --greedy
       elif [ "$select_casks" -eq 1 ]; then
-         read -rp "Casks to upgrade (empty string cancels upgrade): " -a CASKS;
          for i in ${CASKS[@]}; do
             if ! brew cask upgrade "$i"; then echo -e "Could not upgrade cask $i."; fi
          done
