@@ -13,7 +13,12 @@ i3: ~/.config/regolith/i3
 irssi: ~/.config/irssi
 karabiner: ~/.config/karabiner
 lf: ~/.config/lf
-newsboat: ~/.newsboat
+newsboat:
+- config: ~/.config/newsboat/config
+- urls: ~/.config/newsboat/urls
+- cache.db: ~/.local/share/newsboat/cache.db
+- history.search: ~/.local/share/newsboat/history.search
+- history.cmdline: ~/.local/share/newsboat/history.cmdline
 polybar: ~/.config/polybar
 radio:
 - radio-config: ~/.radio-config
@@ -22,7 +27,7 @@ tuir: ~/.config/tuir
 screen:
 - screenrc: ~/.screenrc
 tmux:
-- tmux.conf: ~/.tmux.conf
+- tmux.conf: ~/.config/tmux/tmux.conf
 ghci: ~/.ghci
 mpv: ~/.config/mpv
 mps-youtube:
