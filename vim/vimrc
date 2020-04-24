@@ -9,6 +9,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vader.vim'
 
 " A color table with xterm color codes
 Plug 'guns/xterm-color-table.vim', { 'on': 'Colors' }
@@ -32,7 +33,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'majutsushi/tagbar', { 'on': ['TagbarToggle', 'TagbarOpen'] }
 
 " Personal hypertext files
-Plug 'vimwiki/vimwiki', { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
+Plug 'vimwiki/vimwiki' ", { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
 
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
@@ -276,7 +277,7 @@ function! s:build_quickfix_list(lines)
 endfunction
 let g:fzf_action = {
       \ 'ctrl-f': function('s:build_quickfix_list'),
-      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-t': 'tabedit',
       \ 'ctrl-i': 'split',
       \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
@@ -304,7 +305,7 @@ let wiki.template_ext = '.tpl'
 let wiki.syntax = 'default'
 let wiki.ext = '.txt'
 let g:vimwiki_list = [wiki]
-let g:vimwiki_global_ext = 0
+let g:vimwiki_global_ext = 1
 let g:vimwiki_ext2syntax = {'.wiki': 'default'}
 
 nnoremap <leader>wc :VimwikiCheckLinks<CR>
