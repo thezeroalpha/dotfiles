@@ -17,10 +17,12 @@ function! goyo_custom#goyo_enter()
   call goyo_custom#modify_hlgroups()
   setlocal ruler
   autocmd BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI * call goyo_custom#update_ruler()
+  Limelight
 endfunction
 function! goyo_custom#goyo_leave()
   setlocal textwidth< wrapmargin< linebreak< wrap< rulerformat< ruler< spell<
   autocmd! BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI
   execute "colorscheme ".g:colors_name
   unlet g:goyo_wordcount
+  Limelight!
 endfunction
