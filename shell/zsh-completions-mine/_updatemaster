@@ -1,0 +1,11 @@
+#compdef updatemaster
+local arguments
+arguments=(
+  '-c[upgrade all casks]'
+  '-f[upgrade all formulas]'
+  '-s[select casks to upgrade]'
+  '-n[do not upgrade anything]'
+  '-h[show help]'
+)
+
+_arguments -s $arguments
