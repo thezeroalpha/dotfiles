@@ -1,6 +1,11 @@
 # Make programs use the ~/.config directory
 alias irssi="irssi --home=$HOME/.config/irssi"
+alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
 
 export JUPYTER_CONFIG_DIR="$HOME/.config/jupyter"
 export BUNDLE_USER_HOME="$HOME/.config/bundle"
 export BUNDLE_USER_CACHE="$HOME/.cache/bundle"
+export _Z_DATA="$HOME/.cache/z/z-data"
+export HTTPIE_CONFIG_DIR="$HOME/.config/httpie"
+export CABAL_DIR="$HOME/.config/cabal"
+export GHCUP_INSTALL_BASE_PREFIX="$HOME/.config"
