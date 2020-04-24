@@ -43,8 +43,8 @@ if [ -f "$HOME/.secret_env_variables" ] ; then
   . "$HOME/.secret_env_variables"
 fi
 # Haskell
-if [ -d "$HOME/.ghcup/bin" ]; then
-   PATH="$HOME/.ghcup/bin:$PATH"
+if [ -d "$HOME/.config/.ghcup/bin" ]; then
+   PATH="$HOME/.config/.ghcup/bin:$PATH"
 fi
 if [ -d "/usr/local/sbin" ]; then
   PATH="/usr/local/sbin:$PATH"
@@ -73,4 +73,4 @@ export LC_COLLATE=en_US.UTF-8
 export LC_MONETARY=en_US.UTF-8
 export LC_MESSAGES=en_US.UTF-8
 
-source "$DOTFILES/shell/use-config-dir"
+. "$DOTFILES/shell/use-config-dir"
