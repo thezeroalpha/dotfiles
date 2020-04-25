@@ -4,7 +4,7 @@ require 'json'
 
 class Page
   def initialize name
-    @url = "https://api.github.com/repos/thezeroalpha/#{name}/pages/builds"
+    @url = "https://api.github.com/repos/#{ENV['GITHUB_AUTH_USER']}/#{name}/pages/builds"
     @name = name
   end
 
