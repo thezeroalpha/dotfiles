@@ -38,6 +38,7 @@
     # os_icon               # os identifier
     dir                     # current directory
     vcs                     # git status
+    nest_level
     prompt_char             # prompt symbol
   )
 
@@ -1267,6 +1268,21 @@
   # Type `p10k help segment` for documentation and a more sophisticated example.
   function prompt_example() {
     p10k segment -f 2 -i '⭐' -t 'hello, %n'
+  }
+
+  # shell nest level
+  function prompt_nest_level() {
+    # _my_lvl := $TMUX == "" ? $SHLVL : $((SHLVL-1))
+    # local lvl='${${_my_lvl::=${${TMUX:+$((SHLVL-1))}:-$SHLVL}}+}'
+    # p10k segment -f 4 -e -t $lvl'%B${(l:$_my_lvl::$_my_lvl:)}%(1j.%j.)'
+    # These ^ are cool functions but overkill for me
+    local lvl=$(if [ $SHLVL -gt 1 ]; then printf "(L$SHLVL)"; else printf ""; fi)
+    p10k segment -f 4 -t "$lvl"
+  }
+
+  # shell nest level instant placeholder
+  function instant_prompt_nest_level() {
+    prompt_nest_level
   }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
