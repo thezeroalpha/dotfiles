@@ -1,7 +1,7 @@
 . $HOME/.dotfiles/shell/z/z.sh
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[[ -f ~/.aliases ]] && source ~/.aliases
-[[ -f ~/.functions ]] && source ~/.functions
+[[ -f $DOTFILES/shell/aliases ]] && source $DOTFILES/shell/aliases
+[[ -f $DOTFILES/shell/functions ]] && source $DOTFILES/shell/functions
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options

@@ -1,1 +1,2 @@
 . $HOME/.profile
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history

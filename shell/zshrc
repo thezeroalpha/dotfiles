@@ -1,10 +1,6 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
-if [ -n "$VIMRUNTIME" ]; then set -o vi
-else set -o emacs
-fi
-
 [ -n "$DOTFILES" ] || { echo '$DOTFILES not set' && exit 1; }
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -17,8 +13,33 @@ source_if_exists() {
   fi
 }
 
-# Allow comments in shell
-setopt interactivecomments
+# Options
+if [ -n "$VIMRUNTIME" ]; then set -o vi
+else set -o emacs
+fi
+setopt alwaystoend         # On completion, move cursor to end of word
+setopt autocd              # If I forget 'cd' before a path
+setopt autopushd           # Make cd push old directory onto stack
+setopt completeinword      # Completion from both ends of word
+setopt extendedhistory     # Save timestamp and duration of commands in histfile
+setopt interactivecomments # Allow comments
+setopt monitor             # Allow job control
+setopt nocaseglob          # Globs should be case insensitive
+setopt noflowcontrol       # Disable ^S and ^Q
+setopt promptsubst         # Parameter expansion, command subst, arithmetic expansion done in prompt
+setopt pushdignoredups     # Don't pushd duplicate directories
+setopt pushdminus          # Exchange meanings of + and - on directory stack
+
+# History options
+setopt sharehistory        # Import commands from histfile and append typed to histfile
+setopt appendhistory       # Append to history
+setopt incappendhistory    # Append immediately, not at shell exit
+setopt histexpiredupsfirst # When trimming history, remove duplicates first
+setopt histignoredups      # Don't save command into history if duplicate of previous
+setopt histignorespace     # Don't save command into history if starts with space
+setopt histfindnodups      # Ignore duplicates when searching
+setopt histreduceblanks    # Remove blank lines from history
+setopt histverify          # Show expansion first before executing
 
 # Enable extra completions
 fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/zsh-completions-mine/ $fpath)
@@ -31,20 +52,13 @@ source $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
 
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
-if [[ "$ENABLE_CORRECTION" == "true" ]]; then
-  alias cp='nocorrect cp'
-  alias ebuild='nocorrect ebuild'
-  alias gist='nocorrect gist'
-  alias heroku='nocorrect heroku'
-  alias hpodder='nocorrect hpodder'
-  alias man='nocorrect man'
-  alias mkdir='nocorrect mkdir'
-  alias mv='nocorrect mv'
-  alias mysql='nocorrect mysql'
-  alias sudo='nocorrect sudo'
-
-  setopt correct_all
-fi
+alias cp='nocorrect cp'
+alias man='nocorrect man'
+alias mkdir='nocorrect mkdir'
+alias mv='nocorrect mv'
+alias sudo='nocorrect sudo'
+setopt correct
+setopt correct_all
 
 # Import colorscheme from 'wal' asynchronously
 # &   # Run the process in the background.
@@ -79,8 +93,8 @@ source_if_exists $DOTFILES/shell/zsh-plugins/bundler.plugin.zsh
 source_if_exists $DOTFILES/shell/zsh-plugins/gitignore.plugin.zsh
 
 # Enable custom aliases and functions
-source_if_exists ~/.aliases
-source_if_exists ~/.functions
+source_if_exists "$DOTFILES/shell/aliases"
+source_if_exists "$DOTFILES/shell/functions"
 
 insert-arg-of-prev-cmd() {
 : ${NUMERIC:-1}

@@ -47,10 +47,8 @@ emacs:
 
 # All shell configs
 shell:
-- aliases: ~/.aliases
-- functions: ~/.functions
 - zshenv: ~/.zshenv
-- zshrc: ~/.zshrc
+- zshrc: ~/.config/zsh/zshrc
 - bash_profile: ~/.bash_profile
 - bashrc: ~/.bashrc
 - profile: ~/.profile
