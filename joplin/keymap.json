@@ -4,7 +4,7 @@
   { "keys": ["h"],          "type": "function",    "command": "focus_previous" },
   { "keys": ["k"],          "type": "function",    "command": "move_up" },
   { "keys": ["j"],          "type": "function",    "command": "move_down" },
-  { "keys": ["ENTER"],      "type": "function",    "command": "activate" },
+  { "keys": ["ENTER", "E", "o"],      "type": "function",    "command": "activate" },
   { "keys": ["dd"],         "type": "function",    "command": "delete" },
   { "keys": ["`"],          "type": "function",    "command": "toggle_console" },
   { "keys": ["\\"],         "type": "function",    "command": "toggle_metadata" },
