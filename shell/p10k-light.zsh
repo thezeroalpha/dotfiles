@@ -1276,7 +1276,12 @@
     # local lvl='${${_my_lvl::=${${TMUX:+$((SHLVL-1))}:-$SHLVL}}+}'
     # p10k segment -f 4 -e -t $lvl'%B${(l:$_my_lvl::$_my_lvl:)}%(1j.%j.)'
     # These ^ are cool functions but overkill for me
-    local lvl=$(if [ $SHLVL -gt 1 ]; then printf "(L$SHLVL)"; else printf ""; fi)
+    local lvl="";
+    if [ $SHLVL -gt 1 ]; then
+      if [ $SHLVL -gt 2 ] || ( [ -z "$VIMRUNTIME" ] && [ -z "$TMUX" ] ); then
+        lvl="(L$SHLVL)"
+      fi
+    fi
     p10k segment -f 4 -t "$lvl"
   }
 
