@@ -28,9 +28,10 @@ set previewer ~/.config/lf/preview.sh
 # }}}
 # Command definitions {{{
 # define a custom 'open' command
-cmd _open &{{
+cmd open &{{
     case $(file --mime-type "$f" -b) in
-        text/*|application/json) $EDITOR $fx;;
+        text/*) $EDITOR $f;;
+        application/json) $EDITOR $f;;
         application/epub+zip) ebook-viewer $fx >/dev/null 2>&1 & disown;;
         *) for f in $fx; do $OPENER "$f" > /dev/null 2> /dev/null & disown; done;;
     esac
@@ -174,7 +175,7 @@ map X !$f
 # dedicated keys for file opener actions
 map o
 map O
-map o :_open $fx
+map o &open $fx
 map O push hol
 map v ql_preview
 map r reload
@@ -195,7 +196,7 @@ map R push :rename<space>
 map cw push :rename<space>
 map E $$EDITOR $f
 map D delete
-map <enter> :_open $fx
+map <enter> &open $fx
 map S shell
 map Y copy_path
 
