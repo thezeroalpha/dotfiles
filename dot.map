@@ -35,6 +35,7 @@ mps-youtube:
 - config.json: ~/.config/mps-youtube/config.json
 - playlists: ~/.config/mps-youtube/playlists
 joplin/keymap.json: ~/.config/joplin/keymap.json
+sxiv: ~/.config/sxiv
 
 # X server (Linux)
 xinitrc: ~/.xinitrc

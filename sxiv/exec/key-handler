@@ -1,0 +1,10 @@
+#!/bin/sh
+while read file; do
+  fullpath="$(pwd)$file"
+  case "$1" in
+    "y")
+      printf "$file" | clipcopy;;
+    "Y")
+      printf "$fullpath" | clipcopy;;
+  esac
+done
