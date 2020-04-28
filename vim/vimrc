@@ -645,6 +645,9 @@ set scrolloff=5
 
 " Which formats to use for incrementing/decrementing
 set nrformats=hex,bin
+
+" We write posix shell scripts
+let g:is_posix = 1
 " }}}
 " Commands {{{1
 command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
