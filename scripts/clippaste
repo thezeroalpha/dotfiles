@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# clippaste - "Paste" data from clipboard to stdout
+#
+# Usage:
+#
+#   clippaste   - writes clipboard's contents to stdout
+#
+#   clippaste | <command>    - pastes contents and pipes it to another process
+#
+#   clippaste > <file>      - paste contents to a file
+#
+# Examples:
+#
+#   # Pipe to another process
+#   clippaste | grep foo
+#
+#   # Paste to a file
+#   clippaste > file.txt
+if [[ $OSTYPE == darwin* ]]; then
+  pbpaste
+elif [[ $OSTYPE == cygwin* || $OSTYPE == msys* ]]; then
+  cat /dev/clipboard
+else
+  if command -v xclip &>/dev/null; then
+    xclip -out -selection clipboard
+  elif command -v xsel &>/dev/null; then
+    xsel --clipboard --output
+  else
+    print "clipcopy: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
+    return 1
+  fi
+fi
