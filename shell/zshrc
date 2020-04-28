@@ -56,6 +56,7 @@ alias man='nocorrect man'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
 alias sudo='nocorrect sudo'
+alias z='nocorrect z'
 setopt correct
 setopt correct_all
 
