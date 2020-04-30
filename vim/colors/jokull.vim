@@ -13,14 +13,14 @@ hi String guifg=#009051 guibg=NONE ctermfg=29 ctermbg=NONE cterm=italic gui=ital
 hi Identifier guifg=#112d4e guibg=NONE ctermfg=17 ctermbg=NONE cterm=NONE gui=NONE
 hi Function guifg=#0096ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=bold gui=bold
 hi Statement guifg=#0050a0 guibg=NONE ctermfg=25 ctermbg=NONE cterm=NONE gui=NONE
-hi Include guifg=#2696bf guibg=NONE ctermfg=31 ctermbg=NONE cterm=bold gui=bold
-hi Type guifg=#005493 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
+hi Include guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=bold gui=bold
+hi Type guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
 hi Search guifg=NONE guibg=#d7f1e0 ctermfg=NONE ctermbg=194 cterm=NONE gui=NONE
 hi Incsearch guifg=NONE guibg=#b7d1b0 ctermfg=NONE ctermbg=151 cterm=bold gui=bold
-hi Folded guifg=#236dff guibg=#d0d0d0 ctermfg=27 ctermbg=252 cterm=NONE gui=NONE
+hi Folded guifg=#0076ff guibg=#d0d0d0 ctermfg=33 ctermbg=252 cterm=NONE gui=NONE
 hi Tablinefill guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=NONE
 hi Tablinesel guifg=NONE guibg=#e5e5e5 ctermfg=NONE ctermbg=7 cterm=NONE gui=NONE
-hi Wildmenu guifg=#005493 guibg=#e5e5e5 ctermfg=24 ctermbg=7 cterm=bold gui=bold
+hi Wildmenu guifg=#005f87 guibg=#e5e5e5 ctermfg=24 ctermbg=7 cterm=bold gui=bold
 hi Linenr guifg=#9b9b4c guibg=NONE ctermfg=101 ctermbg=NONE cterm=NONE gui=NONE
 hi Preproc guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE cterm=NONE gui=NONE
 hi Vertsplit guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE cterm=NONE gui=NONE
@@ -38,7 +38,7 @@ hi Matchparen guifg=#d7f1e0 guibg=#a8dbfd ctermfg=194 ctermbg=153 cterm=NONE gui
 hi QfFileName guifg=#0076ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=NONE gui=NONE
 hi Delimiter guifg=#5f5f00 guibg=NONE ctermfg=58 ctermbg=NONE cterm=NONE gui=NONE
 hi Comment guifg=#5f5f5f guibg=NONE ctermfg=59 ctermbg=NONE cterm=italic gui=italic
-hi ErrorMsg guifg=#2c2625 guibg=#ff949b ctermfg=0 ctermbg=210 cterm=bold gui=bold
+hi ErrorMsg guifg=#2c2625 guibg=#ffa5a5 ctermfg=0 ctermbg=217 cterm=bold gui=bold
 hi Cursorlinenr guifg=#ff9900 guibg=NONE ctermfg=208 ctermbg=NONE cterm=bold gui=bold
 hi SpecialKey guifg=#0000FF guibg=NONE ctermfg=21 ctermbg=NONE cterm=bold gui=bold
 hi Constant guifg=#ff9900 guibg=NONE ctermfg=208 ctermbg=NONE cterm=NONE gui=NONE
