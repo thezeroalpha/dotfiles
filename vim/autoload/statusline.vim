@@ -41,7 +41,7 @@ endfunction
 " build the current working directory string
 function! statusline#StatuslineBuildCwd()
   let cwd = substitute(getcwd(),$HOME,'~','g')
-  return "CWD: " . cwd
+  return "(".cwd.")"
 endfunction
 
 " get the current fold info

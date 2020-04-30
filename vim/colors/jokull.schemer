@@ -37,10 +37,12 @@ Preproc                 NONE
 Vertsplit               NONE
 Todo                    justblue, justyellow
 Nontext                 #81A1C1
-StatusLine              NONE, #4aaecd
-Statuslinenc            NONE, lightblue
+StatusLine              offwhite, #005f87
+Statuslinenc            offwhite, #0087af
 StatusLineTermNC        NONE, midgreen
 StatusLineTerm          NONE, darkergreen
+StatusLineFile          offwhite, #0087af
+StatusLineNormMode      #0087af, #d0d0d0.
 Visual                  NONE, #a8caff
 Title                   #225555.                   bold
 Matchparen              lightgreen, lightblue
