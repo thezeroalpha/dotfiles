@@ -682,6 +682,7 @@ cnoreabbrev Colors XtermColorTable
 cnoreabbrev lset setl
 cnoreabbrev sudow w !sudo tee > /dev/null %
 cnoreabbrev hg helpgrep
+cnoreabbrev gitr system("git root")
 
 if has('terminal')
   cnoreabbrev tt tab terminal

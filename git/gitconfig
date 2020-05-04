@@ -77,7 +77,7 @@
     substatus = submodule status
     subactive = "!git submodule status | grep -v '^-'"
 
-    root = rev-parse --show-toplevel
+    root = !git rev-parse --show-toplevel | tr -d '\n'
 
     edit-changed = "!$EDITOR `git status --porcelain | sed -ne 's/^ M //p'`"
     commit-at = "!f(){\
