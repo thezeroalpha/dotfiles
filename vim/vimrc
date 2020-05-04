@@ -33,7 +33,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'majutsushi/tagbar', { 'on': ['TagbarToggle', 'TagbarOpen'] }
 
 " Personal hypertext files
-Plug 'vimwiki/vimwiki' ", { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
+Plug 'thezeroalpha/vimwiki' ", { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
 
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
@@ -475,7 +475,7 @@ set noswapfile
 set magic
 
 " directories to search on find, gf, etc.
-set path=.,**,/usr/include,/usr/local/include,,
+set path=.,**,$DOTFILES/vim/**,/usr/include,/usr/local/include,,
 set wildignore=**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
 " set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
 set wildignorecase

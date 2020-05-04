@@ -1,6 +1,6 @@
 syn match markdownError "\w\@<=\w\@="
 syn match markdownCite "\[@\w\+\]" contains=@NoSpell
-syn match markdownLatex "\\[a-z0-9]\+" contains=@NoSpell
+syn match markdownLatex "\\[a-z0-9]\+{\?.*}\?" contains=@NoSpell
 syn region markdownMathInline start="\(\\\)\@<!\$\(\$\)\@!" end="\$" contains=@NoSpell
 syn region markdownMathBlock start="\$\$" end="\$\$" contains=@NoSpell
 syn region markdownComment start="<!--" end="-->" contains=@NoSpell
