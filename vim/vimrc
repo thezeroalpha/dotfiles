@@ -293,6 +293,11 @@ nnoremap <leader>G :Lines<CR>
 nnoremap <leader>? :Helptags<CR>
 nnoremap <leader>T :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
+
+" Search for Todos/Fixmes
+command! Todo Ag ((TO ?DO)|FIXME):<space>
+nnoremap <leader>! :Todo<CR>
+
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
@@ -650,8 +655,6 @@ set nrformats=hex,bin
 let g:is_posix = 1
 " }}}
 " Commands {{{1
-command! TodoP vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ **/*.* | copen
-command! Todo vimgrep /^ *[#%\/E]* *\(TODO\|TO DO\)/ % | copen
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
 command! Note vimgrep /NOTE\C/ % | copen
 command! FixP vimgrep /FIXME\C/ **/*.* | copen
@@ -670,8 +673,8 @@ command! BeautifyJson %!python -m json.tool
 command! Dos2unix %!dos2unix
 command! -nargs=1 Cheat terminal curl cheat.sh/<args>
 command! Reveal exe "silent !open ".shellescape(expand("%:p:h")) | redraw!
-command! Softwrap setlocal textwidth=0 wrapmargin=0 wrap
-command! Hardwrap setlocal textwidth< wrapmargin< nowrap
+command! Softwrap setlocal wrap formatoptions-=cat
+command! Hardwrap setlocal nowrap formatoptions+=cat
 command! Syncwin windo set scrollbind! cursorbind!
 
 " Fat finger fixes/convenience abbreviations
