@@ -44,6 +44,7 @@ ModeMsg               #00AACC, NONE.            NONE
 MoreMsg               #2e8b57, NONE.            NONE
 NonText               #382920, bg.              NONE
 Normal                text, bg
+StatusLineNormMode    #ff8f00
 Number                #339aff, NONE.            NONE
 Operator              #e8cdc0, bg.              NONE
 Pmenu                 #bdbdbd, #915623.         NONE

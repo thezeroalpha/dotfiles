@@ -38,6 +38,7 @@ hi ModeMsg guifg=#00AACC guibg=NONE ctermfg=38 ctermbg=NONE cterm=NONE gui=NONE
 hi MoreMsg guifg=#2e8b57 guibg=NONE ctermfg=29 ctermbg=NONE cterm=NONE gui=NONE
 hi NonText guifg=#382920 guibg=#11121A ctermfg=1 ctermbg=0 cterm=NONE gui=NONE
 hi Normal guifg=#969696 guibg=#11121A ctermfg=246 ctermbg=0 cterm=NONE gui=NONE
+hi StatusLineNormMode guifg=#ff8f00 guibg=NONE ctermfg=208 ctermbg=NONE cterm=NONE gui=NONE
 hi Number guifg=#339aff guibg=NONE ctermfg=12 ctermbg=NONE cterm=NONE gui=NONE
 hi Operator guifg=#e8cdc0 guibg=#11121A ctermfg=187 ctermbg=0 cterm=NONE gui=NONE
 hi Pmenu guifg=#bdbdbd guibg=#915623 ctermfg=250 ctermbg=94 cterm=NONE gui=NONE
@@ -96,7 +97,7 @@ hi! link SpellBad Todo
 hi! link netrwDir LineNr
 hi! link SpecialChar Delimiter
 " Code to clear any groups that are not defined
-let s:DefinedColors=['precondit', 'tag', 'define', 'mkdlink', 'typedef', 'spellocal', 'vimwikilink', 'signcolumn', 'macro', 'tabline', 'character', 'debug', 'spellcap', 'special', 'tablinefill', 'spellrare', 'label', 'statuslinenc', 'adabegin', 'storageclass', 'specialcomment', 'netrwexe', 'adaend', 'conid', 'spellbad', 'netrwdir', 'specialchar', 'boolean', 'comment', 'conditional', 'constant', 'cursor', 'cursorlinenr', 'cursorline', 'delimiter', 'diffadd', 'diffchange', 'diffdelete', 'difftext', 'directory', 'error', 'errormsg', 'exception', 'float', 'foldcolumn', 'folded', 'function', 'identifier', 'ignore', 'incsearch', 'include', 'keyword', 'linenr', 'matchparen', 'modemsg', 'moremsg', 'nontext', 'normal', 'number', 'operator', 'pmenu', 'pmenusbar', 'pmenusel', 'pmenuthumb', 'preproc', 'question', 'repeat', 'search', 'specialkey', 'statement', 'statusline', 'string', 'structure', 'tablinesel', 'title', 'todo', 'type', 'underlined', 'vertsplit', 'visual', 'visualnos', 'warningmsg', 'wildmenu', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
+let s:DefinedColors=['precondit', 'tag', 'define', 'mkdlink', 'typedef', 'spellocal', 'vimwikilink', 'signcolumn', 'macro', 'tabline', 'character', 'debug', 'spellcap', 'special', 'tablinefill', 'spellrare', 'label', 'statuslinenc', 'adabegin', 'storageclass', 'specialcomment', 'netrwexe', 'adaend', 'conid', 'spellbad', 'netrwdir', 'specialchar', 'boolean', 'comment', 'conditional', 'constant', 'cursor', 'cursorlinenr', 'cursorline', 'delimiter', 'diffadd', 'diffchange', 'diffdelete', 'difftext', 'directory', 'error', 'errormsg', 'exception', 'float', 'foldcolumn', 'folded', 'function', 'identifier', 'ignore', 'incsearch', 'include', 'keyword', 'linenr', 'matchparen', 'modemsg', 'moremsg', 'nontext', 'normal', 'statuslinenormmode', 'number', 'operator', 'pmenu', 'pmenusbar', 'pmenusel', 'pmenuthumb', 'preproc', 'question', 'repeat', 'search', 'specialkey', 'statement', 'statusline', 'string', 'structure', 'tablinesel', 'title', 'todo', 'type', 'underlined', 'vertsplit', 'visual', 'visualnos', 'warningmsg', 'wildmenu', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
 function! s:ClearUndefinedColors(colors)
   let undefined_groups = filter(a:colors->keys()->map('tolower(v:val)'), 'index(s:DefinedColors, tolower(v:val)) < 0')
   call map(undefined_groups, "execute('highlight' . ' ' . v:val . ' ' . 'NONE')")
