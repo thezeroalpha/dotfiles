@@ -52,6 +52,8 @@ source $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
 alias cp='nocorrect cp'
+alias g='nocorrect g'
+alias git='nocorrect git'
 alias man='nocorrect man'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
