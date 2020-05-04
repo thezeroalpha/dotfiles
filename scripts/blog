@@ -1,0 +1,52 @@
+#!/bin/sh
+
+die() {
+  echo "$1" >&2
+  exit 1
+}
+blogdir="/Users/alex/Documents/Programming/thezeroalpha.github.io/blog"
+[ -d "$blogdir" ] || die "Blog directory does not exist"
+if ! command -v tmux 1>/dev/null 2>&1; then
+  echo "tmux not installed." >&2
+  exit 1
+fi
+
+# Clear rbenv variables before starting tmux
+unset RBENV_VERSION
+unset RBENV_DIR
+
+tmux start-server;
+
+cd "$blogdir" || die "Cannot cd to $blogdir"
+
+# Create the session and the first window. Manually switch to root
+# directory if required to support tmux < 1.9
+TMUX='' tmux new-session -d -s blog -n site
+tmux send-keys -t blog:1 cd\ "$blogdir" C-m
+
+
+# Create other windows.
+tmux new-window -c "$blogdir" -t blog:2 -n post
+tmux new-window -c "$blogdir" -t blog:3 -n server
+
+
+# Window "site"
+tmux send-keys -t blog:1 vim\ -o\ _layouts/default.html\ _sass/jekyll-theme-minimal.scss C-m
+
+
+# Window "post"
+tmux send-keys -t blog:2 vim C-m
+
+
+# Window "server"
+tmux send-keys -t blog:3 bundle\ exec\ jekyll\ serve\ --drafts C-m
+
+
+tmux select-window -t blog:post
+tmux select-pane -t blog:post.1
+
+if [ -z "$TMUX" ]; then
+  exec tmux -u attach-session -t blog
+else
+  exec tmux -u switch-client -t blog
+fi
