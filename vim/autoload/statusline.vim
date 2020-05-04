@@ -78,3 +78,11 @@ endfunction
 function! statusline#StatuslineWordCount()
   return wordcount().words . " words"
 endfunction
+
+function! statusline#StatuslineVimtexCompiler()
+  if exists('b:vimtex.compiler') && b:vimtex.compiler.is_running()
+    return '⚙︎'
+  endif
+  return ''
+endfunction
+

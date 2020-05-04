@@ -7,8 +7,10 @@ let g:loaded_statusline = 1
 set laststatus=2                                                     " Always show status bar
 set statusline=%#statuslinenormmode#%{(mode()=='n')?'\ \ N\ ':''}    " Normal mode indicator
 set statusline+=%#DiffAdd#%{(mode()=='i')?'\ \ I\ ':''}              " Insert mode indicator
+set statusline+=%#DiffAdd#%{(mode()=='t')?'\ \ T\ ':''}              " Insert mode indicator
 set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ R\ ':''}           " Replace mode indicator
 set statusline+=%#Todo#%{(mode()=='v')?'\ \ V\ ':''}                 " Visual mode indicator
+set statusline+=%#Todo#%{(mode()=='s')?'\ \ S\ ':''}                 " Visual mode indicator
 set statusline+=%#statuslinefile#\ %f\ %*                            " Relative path and filename
 set statusline+=%(\ %m%r%w\ %)                                       " Flags (modified, readonly, help, preview). don't show if empty.
 set statusline+=%#error#                                             " Start error highlighting
@@ -20,6 +22,7 @@ set statusline+=%<                                                   " Start tru
 set statusline+=\ %{statusline#StatuslineBuildCwd()}\                " Current working directory, replacing home with ~
 set statusline+=%#statuslinefile#                                    " Highlight same as filename
 set statusline+=%(\ %{&spell?'[spell]\ ':''}%)                       " Show spellcheck status
+set statusline+=%(\ %{statusline#StatuslineVimtexCompiler()}%)
 set statusline+=\ %y                                                 " File type
 set statusline+=\ [%{&expandtab?'spaces':'tabs'},                    " Using spaces or tabs
 set statusline+=%{statusline#StatuslineSpacesUsed()}]                " Spaces in a tab
