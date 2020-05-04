@@ -278,11 +278,10 @@ endfunction
 let g:fzf_action = {
       \ 'ctrl-f': function('s:build_quickfix_list'),
       \ 'ctrl-t': 'tabedit',
-      \ 'ctrl-i': 'split',
+      \ 'ctrl-p': 'split',
       \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
 let g:fzf_preview_window = 'right:60%'
-
 " Jump to existing buffer/window if possible
 let g:fzf_buffers_jump = 1
 
