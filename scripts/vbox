@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+die() {
+  echo "$1" >&2
+  exit 1
+}
+
+start() {
+  [ $# -eq 1 ] || die "Only one argument: VM name"
+  VBoxManage startvm "$1" --type headless
+}
+
+stop() {
+  [ $# -eq 1 ] || die "Only one argument: VM name"
+  VBoxManage controlvm "$1" acpipowerbutton
+}
+
+list() {
+  VBoxManage list vms
+}
+
+running() {
+  VBoxManage list runningvms
+}
+
+info() {
+  VBoxManage showvminfo "$1"
+}
+
+# share /folder/path vmname /mount/point
+share() {
+  [ $# -eq 3 ] || die "Not enough arguments"
+  [ -d $1 ] || die "$1 is not a directory or does not exist"
+  VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$1" --automount --auto-mount-point "$3"
+}
+
+
+sharetmp() {
+  [ $# -eq 3 ] || die "Not enough arguments"
+  [ -d $1 ] || die "$1 is not a directory or does not exist"
+  VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$1" --automount --auto-mount-point "$3" --transient
+}
+
+PARAMS=""
+
+while (( "$#" )); do
+  case "$1" in
+    -h|--help)
+      echo "Usage:"
+      echo "start vmname                                  start a VM"
+      echo "stop vmname                                   stop a VM"
+      echo "list                                          list VMs"
+      echo "running                                       list running VMs"
+      echo "share /local/path vmname /mount/point         share a local folder"
+      echo "sharetmp /local/path vmname /mount/point      temporarily share a local folder"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+[ $# -ge 1 ] || die "Not enough arguments provided."
+
+case "$1" in
+  "start")
+    shift;
+    start "$@";
+    ;;
+  "stop")
+    shift;
+    stop "$@";
+    ;;
+  "list")
+    list;
+    ;;
+  "running")
+    running;
+    ;;
+  "share")
+    shift;
+    share "$@";
+    ;;
+  "sharetmp")
+    shift;
+    sharetmp "$@";
+    ;;
+  "info")
+    shift;
+    info "$@";
+    ;;
+  *)
+    die "Unsupported command $1";
+    ;;
+esac

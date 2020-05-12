@@ -1,0 +1,40 @@
+#compdef vbox
+_vboxmachines() {
+    VBoxManage list vms | egrep -o '^"[^"]+"' 2>/dev/null | sed -e 's|"||g' | while read machine; do
+        _wanted 'machine' expl 'machine' compadd $machine
+    done
+}
+_vbox() {
+  local -a arguments
+  arguments=(
+    'start:start a VM'
+    'stop:stop a VM'
+    'list:list known VMs'
+    'info:get information about a VM'
+    'running:list currently running VMs'
+    'share:share a local folder'
+    'sharetmp:temporarily share a local folder'
+  )
+  local context state line expl
+  local -A opt_args
+  _arguments '*:: :->subcmds' && return 0
+
+  if (( CURRENT == 1 )); then
+    _describe -t commands "vbox commands" arguments -V1
+    return
+  fi
+
+  case "$words[1]" in
+    share|sharetmp)
+      _arguments \
+        ':hostpath:_files -/' \
+        :machine:_vboxmachines \
+        ':name: :'
+      ;;
+    start|stop|info)
+      _arguments \
+        :machine:_vboxmachines
+      ;;
+  esac
+  return 1
+}
