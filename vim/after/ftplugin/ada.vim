@@ -1,4 +1,3 @@
-compiler ada
 if !exists('b:undo_ftplugin')
   let b:undo_ftplugin = ''
 end
