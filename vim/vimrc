@@ -48,8 +48,8 @@ Plug 'romainl/vim-qf'
 Plug 'tpope/vim-repeat'
 
 " Distraction-free editing
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-Plug 'junegunn/limelight.vim', { 'for': 'markdown' }
+Plug 'junegunn/goyo.vim', { 'for': 'markdown', 'on': 'Goyo' }
+Plug 'junegunn/limelight.vim', { 'for': 'markdown', 'on': 'Limelight' }
 
 " Better CSV editing
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
@@ -120,9 +120,6 @@ Plug 'tpope/vim-dispatch', { 'on': ['Dispatch', 'Make', 'Maketab', 'Start', 'Spa
 
 " &path for filetypes
 Plug 'tpope/vim-apathy'
-
-" easier markdown-style tables
-Plug 'dhruvasagar/vim-table-mode'
 
 " Ada syntax, indent, completion
 Plug 'thindil/Ada-Bundle', { 'for': 'ada' }
@@ -334,7 +331,8 @@ xmap ga <Plug>(LiveEasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(LiveEasyAlign)
 
-nnoremap <leader>ga :normal! ga<CR>
+nmap <leader>ga <Plug>(EasyAlign)
+xmap <leader>ga <Plug>(EasyAlign)
 " Peekaboo {{{3
 let g:peekaboo_compact=1
 " Mundo {{{3
@@ -353,8 +351,6 @@ let g:dispatch_no_maps = 1
 " Only enable those I'll actually use
 nnoremap `<CR> :Dispatch<CR>
 nnoremap '<CR> :Start<CR>
-" Table-mode {{{3
-let g:table_mode_map_prefix = "<leader><bar>"
 " Sandwich {{{3
 " Use mappings from surround.vim
 runtime macros/sandwich/keymap/surround.vim
@@ -479,8 +475,10 @@ set noswapfile
 set magic
 
 " directories to search on find, gf, etc.
-set path=.,**,$DOTFILES/vim/**,/usr/include,/usr/local/include,,
+set path=.,$DOTFILES/vim/**,/usr/include,/usr/local/include,,
+set suffixesadd+=.vim
 set wildignore=**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+
 " set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
 set wildignorecase
 
@@ -849,6 +847,9 @@ nnoremap <leader>mc :Make clean<CR>
 " If Dispatch not used
 " :silent make<CR>\|:redraw!<CR>\|:cwindow<CR>
 " :silent make clean<CR>\|:redraw!<CR>
+
+" Vmap for searching in selection
+vnoremap <leader>/ <esc>/\%V
 
 " Allow scrolling popup menus with the mouse
 if has('mouse')
