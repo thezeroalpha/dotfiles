@@ -13,14 +13,14 @@ function! goyo_custom#modify_hlgroups()
 endfunction
 function! goyo_custom#goyo_enter()
   call goyo_custom#update_ruler()
-  setlocal textwidth=0 wrapmargin=0 wrap linebreak spell
+  setlocal textwidth=0 wrapmargin=0 wrap linebreak spell scrolloff=0
   call goyo_custom#modify_hlgroups()
   setlocal ruler
   autocmd BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI * call goyo_custom#update_ruler()
   Limelight
 endfunction
 function! goyo_custom#goyo_leave()
-  setlocal textwidth< wrapmargin< linebreak< wrap< rulerformat< ruler< spell<
+  setlocal textwidth< wrapmargin< linebreak< wrap< rulerformat< ruler< spell< scrolloff
   autocmd! BufEnter,BufReadPost,BufWritePost,TextChanged,TextChangedI
   execute "colorscheme ".g:colors_name
   unlet g:goyo_wordcount
