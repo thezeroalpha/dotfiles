@@ -66,7 +66,6 @@ Tablinefill            NONE, lightgrey
 Tablinesel             NONE, offwhite
 Wildmenu               ddarkblue, offwhite.       bold
 Linenr                 olive, NONE
-Preproc                NONE
 Vertsplit              NONE
 Todo                   justblue, justyellow
 Nontext                bluegrey
@@ -99,7 +98,7 @@ GitGutterChangeDelete  offlightred, bg
 " link    group1,group2,...                                                 target group
 link     tabline                                                            tablinefill
 link     repeat,conditional,operator                                        statement
-link     define,macro,precondit                                             include
+link     define,macro,precondit,preproc                                     include
 link     debug,special,specialchar,specialcomment,tag,number                delimiter
 link     label,storageclass,typedef                                         structure
 link     character                                                          constant
