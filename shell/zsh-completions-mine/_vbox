@@ -9,11 +9,13 @@ _vbox() {
   arguments=(
     'start:start a VM'
     'stop:stop a VM'
-    'list:list known VMs'
+    'ls:list known VMs'
     'info:get information about a VM'
     'running:list currently running VMs'
     'share:share a local folder'
+    'unshare:unshare a local folder'
     'sharetmp:temporarily share a local folder'
+    'shared:list shared folders for a VM'
   )
   local context state line expl
   local -A opt_args
@@ -31,7 +33,12 @@ _vbox() {
         :machine:_vboxmachines \
         ':name: :'
       ;;
-    start|stop|info)
+    unshare)
+      _arguments \
+        ':hostpath:_files -/' \
+        :machine:_vboxmachines
+      ;;
+    start|stop|info|shared)
       _arguments \
         :machine:_vboxmachines
       ;;
