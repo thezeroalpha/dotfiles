@@ -14,7 +14,7 @@ stop() {
   VBoxManage controlvm "$1" acpipowerbutton
 }
 
-list() {
+ls() {
   VBoxManage list vms
 }
 
@@ -30,16 +30,25 @@ info() {
 share() {
   [ $# -eq 3 ] || die "Not enough arguments"
   [ -d $1 ] || die "$1 is not a directory or does not exist"
-  VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$1" --automount --auto-mount-point "$3"
+  VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$(realpath "$1")" --automount --auto-mount-point "$3"
 }
 
+unshare() {
+  [ $# -eq 2 ] || die "Not enough arguments"
+  [ -d $1 ] || die "$1 is not a directory or does not exist"
+  VBoxManage sharedfolder remove "$2" --name "$(basename $(realpath "$1"))" --transient
+}
 
 sharetmp() {
   [ $# -eq 3 ] || die "Not enough arguments"
   [ -d $1 ] || die "$1 is not a directory or does not exist"
-  VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$1" --automount --auto-mount-point "$3" --transient
+  VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$(realpath "$1")" --automount --auto-mount-point "$3" --transient
 }
 
+shared() {
+  [ $# -eq 1 ] || die "Not enough arguments"
+  VBoxManage showvminfo "$1" | grep '^Name: .*Host path: '
+}
 PARAMS=""
 
 while (( "$#" )); do
@@ -48,10 +57,12 @@ while (( "$#" )); do
       echo "Usage:"
       echo "start vmname                                  start a VM"
       echo "stop vmname                                   stop a VM"
-      echo "list                                          list VMs"
+      echo "ls                                            ls VMs"
       echo "running                                       list running VMs"
       echo "share /local/path vmname /mount/point         share a local folder"
+      echo "unshare /local/path                           unshare a local folder"
       echo "sharetmp /local/path vmname /mount/point      temporarily share a local folder"
+      echo "shared                                        list shared folders"
       exit 0
       ;;
     --) # end arg parsing
@@ -81,8 +92,8 @@ case "$1" in
     shift;
     stop "$@";
     ;;
-  "list")
-    list;
+  "ls")
+    ls;
     ;;
   "running")
     running;
@@ -91,9 +102,17 @@ case "$1" in
     shift;
     share "$@";
     ;;
+  "unshare")
+    shift;
+    unshare "$@";
+    ;;
   "sharetmp")
     shift;
     sharetmp "$@";
+    ;;
+  "shared")
+    shift;
+    shared "$@";
     ;;
   "info")
     shift;
