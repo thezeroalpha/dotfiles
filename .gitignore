@@ -3,10 +3,7 @@ batteryCheck.scpt
 secret_env_variables
 oh-my-zsh/cache
 error.log
-newsboat/*
-!newsboat/config
-!newsboat/urls
-!newsboat/cache.db
+newsboat/notify-wrapper
 *.pyc
 vim/autoload/plug.vim*
 irssi/*.log
