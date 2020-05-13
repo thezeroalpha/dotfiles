@@ -8,4 +8,5 @@ newsboat/notify-wrapper
 vim/autoload/plug.vim*
 irssi/*.log
 bin/z
+bin/lf
 mpv/scripts/shared/sponsorblock.db*
