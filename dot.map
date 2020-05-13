@@ -50,7 +50,7 @@ emacs:
 # All shell configs
 shell:
 - zshenv: ~/.zshenv
-- zshrc: ~/.config/zsh/zshrc
+- zshrc: ~/.config/zsh/.zshrc
 - bash_profile: ~/.bash_profile
 - bashrc: ~/.bashrc
 - profile: ~/.profile
