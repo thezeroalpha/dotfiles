@@ -14,6 +14,14 @@ stop() {
   VBoxManage controlvm "$1" acpipowerbutton
 }
 
+pause() {
+  [ $# -eq 1 ] || die "Only one argument: VM name"
+  VBoxManage controlvm "$1" pause
+}
+resume() {
+  [ $# -eq 1 ] || die "Only one argument: VM name"
+  VBoxManage controlvm "$1" resume
+}
 ls() {
   VBoxManage list vms
 }
@@ -26,11 +34,19 @@ info() {
   VBoxManage showvminfo "$1"
 }
 
+status() {
+  VBoxManage showvminfo "$1" | awk -F'  +' '/^State/ { print $2 }'
+}
+
 # share /folder/path vmname /mount/point
 share() {
   [ $# -eq 3 ] || die "Not enough arguments"
   [ -d $1 ] || die "$1 is not a directory or does not exist"
   VBoxManage sharedfolder add "$2" --name "$(basename $(realpath "$1"))" --hostpath "$(realpath "$1")" --automount --auto-mount-point "$3"
+  if [ $? -ne 0 ]; then
+    echo "Could not add shared folder, machine is probably running."
+    echo "Stop the machine to add a permanent folder, or use sharetmp to add a transient folder."
+  fi
 }
 
 unshare() {
@@ -63,6 +79,10 @@ while (( "$#" )); do
       echo "unshare /local/path                           unshare a local folder"
       echo "sharetmp /local/path vmname /mount/point      temporarily share a local folder"
       echo "shared                                        list shared folders"
+      echo "pause                                         pause a running VM"
+      echo "resume                                        resume a paused VM"
+      echo "info                                          get information about a VM"
+      echo "status                                        print a VM's status"
       exit 0
       ;;
     --) # end arg parsing
@@ -117,6 +137,18 @@ case "$1" in
   "info")
     shift;
     info "$@";
+    ;;
+  "status")
+    shift;
+    status "$@";
+    ;;
+  "pause")
+    shift;
+    pause "$@";
+    ;;
+  "resume")
+    shift;
+    resume "$@";
     ;;
   *)
     die "Unsupported command $1";

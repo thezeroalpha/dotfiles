@@ -9,8 +9,11 @@ _vbox() {
   arguments=(
     'start:start a VM'
     'stop:stop a VM'
+    'pause:pause a VM'
+    'resume:resume a paused VM'
     'ls:list known VMs'
     'info:get information about a VM'
+    'status:get status of a VM'
     'running:list currently running VMs'
     'share:share a local folder'
     'unshare:unshare a local folder'
@@ -38,7 +41,7 @@ _vbox() {
         ':hostpath:_files -/' \
         :machine:_vboxmachines
       ;;
-    start|stop|info|shared)
+    start|stop|status|info|shared|pause|resume)
       _arguments \
         :machine:_vboxmachines
       ;;
