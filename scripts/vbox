@@ -18,9 +18,24 @@ pause() {
   [ $# -eq 1 ] || die "Only one argument: VM name"
   VBoxManage controlvm "$1" pause
 }
+suspend() {
+  [ $# -eq 1 ] || die "Only one argument: VM name"
+  VBoxManage controlvm "$1" savestate
+}
 resume() {
   [ $# -eq 1 ] || die "Only one argument: VM name"
-  VBoxManage controlvm "$1" resume
+  vminfo="$(VBoxManage showvminfo "$1")"
+  if [ "$(awk '/^State/ { print $2 }' <<< "$vminfo")" = "saved" ]; then
+    snapshots="$(awk '/^Snapshot folder/ { print $3 }' <<< "$vminfo")"
+    snapfile="$(find "$snapshots" -name "*.sav" -exec stat -c "%y %n" {} + | sort -r | head -n1 | cut -d " " -f 4-)"
+
+    [ -n "$snapfile" ] \
+      && echo "VM suspended, resuming from saved state..." \
+      && VBoxManage startvm "$1" --type headless
+  else
+    echo "VM paused, resuming..."
+    VBoxManage controlvm "$1" resume
+  fi
 }
 ls() {
   VBoxManage list vms
@@ -73,7 +88,7 @@ while (( "$#" )); do
       echo "Usage:"
       echo "start vmname                                  start a VM"
       echo "stop vmname                                   stop a VM"
-      echo "ls                                            ls VMs"
+      echo "list, ls                                      ls VMs"
       echo "running                                       list running VMs"
       echo "share /local/path vmname /mount/point         share a local folder"
       echo "unshare /local/path                           unshare a local folder"
@@ -112,7 +127,7 @@ case "$1" in
     shift;
     stop "$@";
     ;;
-  "ls")
+  "ls"|"list")
     ls;
     ;;
   "running")
@@ -145,6 +160,10 @@ case "$1" in
   "pause")
     shift;
     pause "$@";
+    ;;
+  "suspend")
+    shift;
+    suspend "$@";
     ;;
   "resume")
     shift;
