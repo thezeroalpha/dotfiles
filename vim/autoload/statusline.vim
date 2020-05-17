@@ -81,7 +81,7 @@ endfunction
 
 function! statusline#StatuslineVimtexCompiler()
   if exists('b:vimtex.compiler') && b:vimtex.compiler.is_running()
-    return '⚙︎'
+    return '⚙︎ {'.(fnamemodify(b:vimtex.compiler.target_path, ":p:.")).'}'
   endif
   return ''
 endfunction
