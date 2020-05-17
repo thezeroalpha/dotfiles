@@ -52,8 +52,8 @@ fi
 if command -v rbenv 1>/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
-if [ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]; then
-  PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ]; then
+  PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 fi
 if [ -d "$HOME/.local/gnat/bin" ]; then
   PATH="$PATH:$HOME/.local/gnat/bin"
