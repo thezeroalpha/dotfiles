@@ -286,6 +286,7 @@ nnoremap <leader>F :Files<CR>
 nnoremap <leader><c-f> :Files<space>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
+nnoremap <leader>W :BLines<CR>
 nnoremap <leader>? :Helptags<CR>
 nnoremap <leader>T :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
@@ -502,7 +503,7 @@ set encoding=utf-8 nobomb
 set fileformats=unix,dos,mac
 
 " Number of lines to use for command line
-" (this fixes the 'press enter to continue' thing on :help)
+" (this fixes the 'press  to continue' thing on :help)
 set cmdheight=1
 
 " Send more characters at a given time
@@ -518,6 +519,10 @@ set wildmenu
 
 " Allow the mouse, good for e.g. resizing splits
 set mouse=a
+" fix issue with not being able to drag resize split windows in tmux
+if &term =~ '^screen' || $TMUX !=# ""
+  set ttymouse=xterm2
+endif
 
 highlight ColorColumn ctermbg=233
 
@@ -856,6 +861,9 @@ if has('mouse')
   inoremap <expr> <ScrollWheelUp> pumvisible() ? "<C-p>" : "<Esc><ScrollWheelUp>"
   inoremap <expr> <ScrollWheelDown> pumvisible() ? "<C-n>" : "<Esc><ScrollWheelDown>"
 endif
+
+" 'Zoom' the current buffer in a new tab
+nnoremap <C-w>Z :tab split<CR>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
