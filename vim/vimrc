@@ -290,6 +290,7 @@ nnoremap <leader>W :BLines<CR>
 nnoremap <leader>? :Helptags<CR>
 nnoremap <leader>T :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
+nnoremap <leader>M :Marks<CR>
 
 " Search for Todos/Fixmes
 command! Todo Ag ((TO ?DO)|FIXME):<space>
