@@ -69,7 +69,7 @@ brew "imagemagick"
 brew "irssi"
 brew "isync"
 brew "jenv"
-brew "joplin"
+brew "joplin", link: false
 brew "jq"
 brew "lf"
 brew "libmtp"
