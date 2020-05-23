@@ -44,6 +44,7 @@ http://groups.google.com/group/vim_announce/feeds                          "~Vim
 https://github.com/romkatv/powerlevel10k/releases.atom                     "~powerlevel10k"                        "software releases"
 https://github.com/junegunn/fzf/releases.atom                              "~fzf"                                  "software releases"
 https://www.freelists.org/feed/regolith-linux                              "~Regolith Linux"                       "software releases"
+https://github.com/laurent22/joplin/releases                               "~Joplin"                               "software releases"
 
 # Videos
 https://youtube.com/feeds/videos.xml?channel_id=UCmomtZFNN-A_nB7jHM7H1bw   "~AcesToAces"                           "yt-videos"
