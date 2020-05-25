@@ -207,17 +207,17 @@ map pr paste_rename
 
 map i $~/.config/lf/preview.sh $f | less -R
 
-map gd cd ~/Documents
+map gdd cd ~/Documents
+map gds cd ~/Documents/School
+map gdz cd ~/Documents/Programming/thezeroalpha.github.io/
+map gdb cd ~/Documents/Calibre\ Library/
+map gdp cd ~/Documents/Personal\ documents/
 map gD cd ~/Desktop
 map gl cd ~/Downloads
 map gw cd ~/Dropbox/vimwiki
-map gz cd ~/Documents/Programming/thezeroalpha.github.io/
 map g/ cd /
-map gs cd ~/Documents/School
 map g. cd ~/.dotfiles
-map gp cd ~/Documents/Programming
 map gv cd /Volumes
-map gb cd ~/Documents/Calibre\ Library/
 
 map u
 map uu unselect
