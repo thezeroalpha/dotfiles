@@ -1,0 +1,22 @@
+#!/bin/sh
+if ! command -v curl 1>/dev/null 2>&1; then
+  echo "curl not installed." >&2
+  exit 1
+fi
+if ! command -v clipcopy 1>/dev/null 2>&1; then
+  echo "clipcopy script not present." >&2
+  exit 1
+fi
+
+die() {
+  echo "$1" >&2
+  exit 1
+}
+
+[ $# -eq 1 ] || die "File not provided as first argument."
+[ -f "$1" ] || die "File $1 does not exist."
+response=$(curl -s -F file=@"$1" http://0x0.st)
+printf 'Response: %s' "$response"
+{ printf '%s' "$response" | sed 's/^.*\(http[^"]*\).*/\1/' | clipcopy; } || echo "Direct link copied to clipboard."
+
+
