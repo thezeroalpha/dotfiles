@@ -74,7 +74,7 @@ Plug 'romainl/vim-devdocs', { 'on': 'DD' }
 
 " Fuzzy finder in vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
-Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
+Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'Filetypes'] }
 
 " Better abbrevation and substitution
 Plug 'tpope/vim-abolish'
@@ -295,6 +295,10 @@ nnoremap <leader>M :Marks<CR>
 " Search for Todos/Fixmes
 command! Todo Ag ((TO ?DO)|FIXME):<space>
 nnoremap <leader>! :Todo<CR>
+
+" Set a filetype
+command! Setf Filetypes
+cabbrev setf Setf
 
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
