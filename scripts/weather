@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-curl -s wttr.in/${1:-amsterdam} | less -R
+curl -s v2.wttr.in/${1:-amsterdam} | less -R
