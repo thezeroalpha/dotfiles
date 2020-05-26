@@ -1,0 +1,18 @@
+#!/bin/bash
+if [[ ! -p $HOME/.cache/mpv/input ]]; then
+    mkfifo $HOME/.cache/mpv/input
+fi
+if pgrep -f MPV-Q > /dev/null
+then
+    printf "%s\n" "loadfile \"$1\" append-play" > $HOME/.cache/mpv/input
+else
+    mpv --volume=50 --no-terminal --x11-name=MPV-Q --input-file=$HOME/.cache/mpv/input --player-operation-mode=pseudo-gui "$1" &
+fi
+
+#link archive
+arc(){
+title=$(youtube-dl --ignore-config --get-title --get-duration --get-description "$1" 2>/dev/null)
+printf "%b\n" "0a\n▪▪▪►Link►  $1\n▪▪▪►Description► $title\n\n.\nw" >> $HOME/.cache/mpv/linkarchive
+}
+arc "$1" &
+exit 0

@@ -2,10 +2,13 @@ auto-reload no
 reload-threads 8
 show-read-feeds no
 delete-read-articles-on-quit yes
-notify-program "~/.newsboat/notify-wrapper"
+notify-program "~/.config/newsboat/notify-wrapper"
 notify-always yes
 article-sort-order date
-error-log "~/.newsboat/error.log"
+error-log "~/.config/newsboat/error.log"
+prepopulate-query-feeds yes
+
+define-filter "read articles" "unread = \"no\""
 
 bind-key j down
 bind-key k up
@@ -29,6 +32,11 @@ bind-key E edit-urls
 bind-key ^r reload-urls
 bind-key t set-tag
 bind-key ^t clear-tag
+bind-key e enqueue
+unbind-key :
+bind-key ; cmdline
+bind-key s sort
+bind-key S rev-sort
 
 color background white default
 color listnormal white default
@@ -40,7 +48,7 @@ color listnormal_unread white default
 browser "open -g '%u'"
 macro , open-in-browser
 macro i set browser "i(){ youtube-dl --get-title --get-duration --get-description $1 | less;};i"; open-in-browser ; set browser "open '%u'"
-macro v set browser "nohup mpv --volume=50 %u  &>/dev/null"; open-in-browser ; set browser "open '%u'"
+macro v set browser "nohup youtube-mpv-player %u"; open-in-browser ; set browser "open '%u'"
 macro w set browser "w3m"; open-in-browser ; set browser "open '%u'"
 macro l set browser "lynx"; open-in-browser ; set browser "open '%u'"
 macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open '%u'"

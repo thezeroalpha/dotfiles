@@ -190,6 +190,7 @@ https://youtube.com/feeds/videos.xml?channel_id=UCVmcc4Lg9iod6gQWvM4dm-g   "~Zel
 https://youtube.com/feeds/videos.xml?channel_id=UCUF2zNpdFN7ZGMvMqJaGtoA   "~Záchranný kruh"                       "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UC4wAq5HbeqhqxNXIbWFfdyQ   "~Загасан Ширээт Тамга official"        "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UCWtcaoN-VA4wseYrws-csKw   "~Никита Ордынский"                     "yt-videos"
+"query:Videos:tags # \"yt-videos\""
 
 # Music
 https://youtube.com/feeds/videos.xml?channel_id=UCAczJcKcJ_cA5w_PVS3o8aw   "~Cole Rolland"                         "yt-music"
@@ -222,3 +223,4 @@ https://youtube.com/feeds/videos.xml?channel_id=UCw7RrKdqIMddn-JpnOtnWPg   "~YEA
 https://youtube.com/feeds/videos.xml?channel_id=UCAmt29QykFXnuIqQoEEnEFg   "~Sigur Rós"                            "yt-music"
 https://youtube.com/feeds/videos.xml?channel_id=UCnDvLN38Co9d_NE-a_Bglqg   "~RJD2"                                 "yt-music"
 https://youtube.com/feeds/videos.xml?channel_id=UCFYMDSW-BzeYZKFSxROw3Rg   "~The Living Tombstone"                 "yt-music"
+"query:Music:tags # \"yt-music\""
