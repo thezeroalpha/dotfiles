@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+if ! command -v osascript 1>/dev/null 2>&1; then
+  echo "osascript not installed." >&2
+  exit 1
+fi
+# Either use first arg as app name
+if [ $# -ge 1 ]; then
+  osascript <<YEET
+    tell application "$1"
+      activate
+    end tell
+
+    tell application "System Events"
+      # Get the frontmost app's *process* object.
+      set frontAppProcess to first application process whose frontmost is true
+    end tell
+
+    # Tell the *process* to count its windows and return its front window's name.
+    tell frontAppProcess
+      if (count of windows) > 0 then
+        set window_name to name of front window
+      end if
+    end tell
+YEET
+# Or just use currently focused app
+else
+  echo "No args passed, getting title of frontmost window of current application."
+  osascript <<YEET
+    tell application "System Events"
+      # Get the frontmost app's *process* object.
+      set frontAppProcess to first application process whose frontmost is true
+    end tell
+
+    # Tell the *process* to count its windows and return its front window's name.
+    tell frontAppProcess
+      if (count of windows) > 0 then
+        set window_name to name of front window
+      end if
+    end tell
+YEET
+  fi
