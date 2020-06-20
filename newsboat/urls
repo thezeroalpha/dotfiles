@@ -3,7 +3,7 @@ http://lukesmith.xyz/rss.xml                                                "~Lu
 https://notrelated.libsyn.com/rss                                           "~Not Related podcast"                  "tech"
 https://cli.fan/posts/index.xml                                             "~cli.fan"                              "tech"
 http://thedarnedestthing.com/rss.xml                                        "~The Darnedest Thing"                  "tech"
-https://www.mrspeaker.net/rss                                               "~Oi Mr Speaker"                        "tech"
+https://www.mrspeaker.net/rss                                               "~O! Mr Speaker"                        "tech"
 http://feeds.labnol.org/labnol                                              "~Digital Inspiration"                  "tech"
 https://castel.dev/rss.xml                                                  "~Gilles Castel"                        "tech"
 https://til.hashrocket.com/rss                                              "~TIL Hashrocket"                       "tech"
@@ -154,7 +154,7 @@ https://youtube.com/feeds/videos.xml?channel_id=UCmRfQHc3U4fV1-i8Ry1HmtA    "~Re
 https://youtube.com/feeds/videos.xml?channel_id=UCP5tjEmvPItGyLhmjdwP7Ww    "~RealLifeLore"                         "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UC4bFDmAPEqV44RbSsTrTr2g    "~Realm of the Mad God"                 "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UCblfuW_4rakIf2h6aqANefA    "~Red Bull"                             "yt-videos"
-https://youtube.com/feeds/videos.xml?channel_id=UChnxLLvzviaR5NeKOevB8iQ    "~Red Means Recording"                  "yt-videos"
+# https://youtube.com/feeds/videos.xml?channel_id=UChnxLLvzviaR5NeKOevB8iQ    "~Red Means Recording"                  "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UCJ2PjxiSOMqX0GhcXTv0_7w    "~Ronnie Street Stunts"                 "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UCXkJ1rKMvuaP7yW4hsNZK_Q    "~ROTMG Igotnoname"                     "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UC3vf4lm87MBKxZDm_B2iTXQ    "~Sanzhar Gabdushev"                    "yt-videos"
@@ -193,6 +193,7 @@ https://youtube.com/feeds/videos.xml?channel_id=UCUF2zNpdFN7ZGMvMqJaGtoA    "~Z�
 https://youtube.com/feeds/videos.xml?channel_id=UC4wAq5HbeqhqxNXIbWFfdyQ    "~Загасан Ширээт Тамга official"        "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UCWtcaoN-VA4wseYrws-csKw    "~Никита Ордынский"                     "yt-videos"
 https://youtube.com/feeds/videos.xml?channel_id=UCxDZs_ltFFvn0FDHT6kmoXA    "~Bald and Bankrupt"                    "yt-videos"
+https://youtube.com/feeds/videos.xml?channel_id=UCW5OrUZ4SeUYkUg1XqcjFYA    "~GeoWizard"                            "yt-videos"
 "query:Videos:tags # \"yt-videos\""
 
 # Music
