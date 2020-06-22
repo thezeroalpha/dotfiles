@@ -1,7 +1,8 @@
 #!/usr/local/bin/bash
-battery_pct=$(pmset -g batt | tail -1 | awk '{ print $3 }' | cut -d% -f1)
-if [ -n "$(pmset -g batt | grep "from 'Battery Power'")" ] && [ "$battery_pct" -le 15 ]; then
-  say "Charge your computer";
-elif [ -n "$(pmset -g batt | grep "from 'AC Power'")" ] && [ "$battery_pct" -ge 95 ]; then
-  say "Battery charged"
+batt_status=$(pmset -g batt)
+battery_pct=$(awk '/InternalBattery/ { print $3 }' <<< "$batt_status" | cut -d% -f1)
+if { grep -q "from 'Battery Power'" <<< "$batt_status"; }  && [ "$battery_pct" -le 15 ]; then
+  /usr/local/bin/terminal-notifier -title "Battery low" -message "Charge your computer" -group battery;
+elif { grep -q "from 'AC Power'" <<< "$batt_status"; } && [ "$battery_pct" -ge 95 ]; then
+  /usr/local/bin/terminal-notifier -title "Charged" -message "You can unplug your charger" -group battery;
 fi
