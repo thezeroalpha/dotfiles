@@ -61,17 +61,21 @@ function! statusline#StatuslineWrapCol()
     return "softwrap"
   endif
   if &textwidth == 0
-    return "TW ".(winwidth(0)-&wrapmargin)."(M".&wrapmargin.")"
+    return "⟺  ".(winwidth(0)-&wrapmargin)."(M".&wrapmargin.")"
   else
-    return "TW ".&textwidth
+    return "⟺  ".&textwidth
   endif
 endfunction
 
 function! statusline#StatuslineSpacesUsed()
   if &expandtab
-    return strlen(&shiftwidth) ? &shiftwidth : 'none'
+    return (&shiftwidth ># 0 ? &shiftwidth : &tabstop)
   else
-    return &tabstop
+    if &shiftwidth ==# &tabstop
+      return &shiftwidth
+    else
+      return &tabstop."s".&shiftwidth
+    endif
   endif
 endfunction
 
