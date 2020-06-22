@@ -29,6 +29,8 @@ Plug 'machakann/vim-sandwich'
 " Eunuch - shell commands but in vim
 Plug 'tpope/vim-eunuch'
 
+Plug 'tpope/vim-projectionist'
+
 " A tag overview on the right side
 Plug 'majutsushi/tagbar', { 'on': ['TagbarToggle', 'TagbarOpen'] }
 
@@ -61,7 +63,7 @@ Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc' }
 Plug 'romainl/vim-cool'
 
 " Vim + latex
-Plug 'lervag/vimtex', { 'for': 'latex' }
+Plug 'lervag/vimtex', { 'for': ['latex', 'tex'] }
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -121,9 +123,6 @@ Plug 'tpope/vim-dispatch', { 'on': ['Dispatch', 'Make', 'Maketab', 'Start', 'Spa
 " &path for filetypes
 Plug 'tpope/vim-apathy'
 
-" Ada syntax, indent, completion
-Plug 'thindil/Ada-Bundle', { 'for': 'ada' }
-
 " Vimscript testing
 Plug 'tpope/vim-scriptease', { 'for': 'vim' }
 
@@ -145,6 +144,8 @@ Plug 'thezeroalpha/zepl.vim', { 'on': ['Repl', 'ReplSend'], 'do': 'git remote ad
 
 " Evaluate markdown code blocks
 Plug 'gpanders/vim-medieval', { 'for': 'markdown' }
+
+Plug 'jmckiern/vim-venter', { 'on': 'Venter' }
 call plug#end()
 " }}}2
 " Config {{{2
@@ -375,13 +376,6 @@ let g:sandwich#recipes += [
       \   {'buns': ['(', ')'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(', 'b']},
       \   {'buns': ['(', ')'], 'nesting': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(', 'b']}
       \ ]
-" Ada {{{3
-let g:ada_standard_types = 1
-let g:ada_begin_preproc = 1
-let g:ada_extended_completion = 1
-let g:ada_gnat_extensions = 1
-let g:ada_with_gnat_project_files = 1
-
 " netrw {{{3
 let g:netrw_banner = 0                              " hide the banner
 let g:netrw_fastbrowse = 2                          " only get dir list if not seen, or manually refreshed
@@ -396,14 +390,13 @@ let g:netrw_special_syntax = 1                      " use special syntax groups 
 let g:unicoder_cancel_normal = 1
 let g:unicoder_cancel_insert = 1
 let g:unicoder_cancel_visual = 1
-nnoremap <C-l> :call unicoder#start(0)<CR>
 inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
 " colorizer {{{3
 let g:colorizer_colornames = 0
 " Schemer {{{3
 " List color group
 nmap <C-P> <Plug>SchemerSynstack
-nmap <C-E><C-L> <Plug>SchemerEdit
+nmap <leader><C-E><C-L> <Plug>SchemerEdit
 " Relatively complete {{{3
 " Replace default file completion with 'smart' relative complete
 imap <C-x><C-f> <Plug>RelativelyCompleteFile
@@ -423,6 +416,11 @@ let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'bash', 'haskell=ghci', 
 " LF {{{3
 nmap <leader>\ <Plug>LfEdit
 nmap <leader><c-\> <Plug>LfSplit
+" Ada {{3
+let g:ada_standard_types = 1
+let g:ada_space_errors = 1
+let g:ada_begin_preproc = 1
+let g:ada_omni_with_keywords = 1
 " }}}1
 " General {{{1
 " Set the colors
