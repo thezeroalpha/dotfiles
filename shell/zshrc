@@ -49,6 +49,9 @@ source $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
 source $DOTFILES/shell/oh-my-zsh-defaults/history.zsh
 source $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
 
+# Allow pasting bare URLs
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
 alias cp='nocorrect cp'
@@ -61,6 +64,9 @@ alias sudo='nocorrect sudo'
 alias z='nocorrect z'
 setopt correct
 setopt correct_all
+
+# Built-in Tetris (because why not)
+alias tetris="autoload -Uz tetriscurses && tetriscurses"
 
 # Import colorscheme from 'wal' asynchronously
 # &   # Run the process in the background.
