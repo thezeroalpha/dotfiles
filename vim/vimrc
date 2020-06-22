@@ -757,8 +757,8 @@ nnoremap <leader><right> :tabmove +1<CR>
 " Window resizing mappings
 nnoremap <C-k> <C-w>+
 nnoremap <C-j> <C-w>-
-nnoremap <C-h> <C-W>>
-nnoremap <C-l> <C-W><
+nnoremap <C-h> <C-W><
+nnoremap <C-l> <C-W>>
 
 " Delete hidden buffers
 nmap <leader>dh <Plug>DeleteHiddenBuffers
@@ -867,6 +867,8 @@ endif
 
 " 'Zoom' the current buffer in a new tab
 nnoremap <C-w>Z :tab split<CR>
+
+nnoremap <leader>gg :call input("go line:col> ")->split(":")->cursor()<CR>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
