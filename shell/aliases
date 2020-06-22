@@ -1,6 +1,6 @@
 #!/bin/sh
 alias fucking="sudo"                                                            # Because sometimes I'm frustrated
-alias cp='cp -iv'                                                               # Prompt if overwrite, verbose
+alias cp='cp -ivR'                                                              # Prompt if overwrite, verbose
 alias mv='mv -iv'                                                               # Prompt if overwrite, verbose
 alias mkdir='mkdir -pv'                                                         # Create intermediate dirs, verbose
 alias ls="ls -lh"                                                               # List in long format, human-readable sizes
@@ -20,3 +20,4 @@ alias tree="tree -CAFa -I 'CVS|*.*.package|.svn|.git|node_modules' --dirsfirst" 
 alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"   # The columns I want to see in lsblk
 alias confucius="curl confucius-quote.herokuapp.com"                            # A joke curl service I made
 alias tx="tmuxinator"
+alias mpva="mpv --no-audio-display --no-video --volume=50"
