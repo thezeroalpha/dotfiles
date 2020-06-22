@@ -88,7 +88,7 @@ process_video() {
   select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP" "VOLUME" "FAST" "SLOW" "SCREENSHOT"; do
     case "$to_fmt" in
       "MP4")
-        ffmpeg -i "$1" -qscale 0 "${1%%.*}.mp4"
+        ffmpeg -i "$1" -vcodec copy -qscale 0 -c:s mov_text "${1%%.*}.mp4"
         break;;
       "MP3")
         ffmpeg -i "$1" "${1%%.*}.mp3"
