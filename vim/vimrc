@@ -665,8 +665,9 @@ command! Note vimgrep /NOTE\C/ % | copen
 command! FixP vimgrep /FIXME\C/ **/*.* | copen
 command! Fix vimgrep /FIXME\C/ % | copen
 command! ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
-command! CDC cd %:p:h
-command! LCDC lcd %:p:h
+command! CD cd %:p:h
+command! LCD lcd %:p:h
+command! TCD tcd %:p:h
 command! Maketab set noet ts=2 | %retab!
 command! Diff w !diff % -
 command! Diffg w !git diff % -
@@ -681,6 +682,7 @@ command! Reveal exe "silent !open ".shellescape(expand("%:p:h")) | redraw!
 command! Softwrap setlocal wrap formatoptions-=cat
 command! Hardwrap setlocal nowrap formatoptions+=cat
 command! Syncwin windo set scrollbind! cursorbind!
+command! EF exe "split $HOME/.vim/after/ftplugin/".&filetype.".vim"
 
 " Fat finger fixes/convenience abbreviations
 cnoreabbrev E Explore
