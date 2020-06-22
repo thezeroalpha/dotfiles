@@ -3,5 +3,4 @@ if ! command -v mpv &>/dev/null; then
   echo "mpv not installed." >&2
   exit 1
 fi
-
-mpv --loop --volume=50 "https://rainymood.com/audio1110/0.m4a"
+mpv --loop --volume=50 "https://rainymood.com/audio1112/0.m4a"
