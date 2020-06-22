@@ -10,3 +10,4 @@ irssi/*.log
 bin/z
 bin/lf
 mpv/scripts/shared/sponsorblock.db*
+karabiner/automatic_backups/
