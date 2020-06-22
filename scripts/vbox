@@ -4,6 +4,7 @@ die() {
   exit 1
 }
 
+command -v gstat &>/dev/null && statcmd="gstat"
 start() {
   [ $# -eq 1 ] || die "Only one argument: VM name"
   VBoxManage startvm "$1" --type headless
@@ -27,7 +28,7 @@ resume() {
   vminfo="$(VBoxManage showvminfo "$1")"
   if [ "$(awk '/^State/ { print $2 }' <<< "$vminfo")" = "saved" ]; then
     snapshots="$(awk '/^Snapshot folder/ { print $3 }' <<< "$vminfo")"
-    snapfile="$(find "$snapshots" -name "*.sav" -exec stat -c "%y %n" {} + | sort -r | head -n1 | cut -d " " -f 4-)"
+    snapfile="$(find "$snapshots" -name "*.sav" -exec "${statcmd:-stat}" -c "%y %n" {} + | sort -r | head -n1 | cut -d " " -f 4-)"
 
     [ -n "$snapfile" ] \
       && echo "VM suspended, resuming from saved state..." \
