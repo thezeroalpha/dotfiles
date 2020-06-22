@@ -117,6 +117,14 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
     IFS=$'\n' files=($(command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   }
+
+  # config find
+  cf() {
+    local f
+    IFS=$'\n' f=($(command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
+    [[ -n "$f" ]] && printf "$f"
+  }
+
   # vim setting edit
   ve() {
     local files
