@@ -598,10 +598,10 @@ set relativenumber
 set smarttab
 
 " and 1 tab == 2 spaces
-set tabstop=4       " visual length of \t in spaces
+set tabstop=8       " visual length of \t in spaces, should be left at 8
 set expandtab       " use spaces instead of tabs
+set softtabstop=4   " 4 spaces inserted when TAB pressed
 set shiftwidth=2    " 2 spaces when >>
-set softtabstop=2   " and when pressing TAB
 set shiftround      " always shift by multiple of shiftwidth
 
 " Auto indent when starting new line
