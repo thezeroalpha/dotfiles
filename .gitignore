@@ -4,6 +4,8 @@ secret_env_variables
 oh-my-zsh/cache
 error.log
 newsboat/notify-wrapper
+newsboat/history.cmdline
+newsboat/history.search
 *.pyc
 vim/autoload/plug.vim*
 irssi/*.log
