@@ -16,7 +16,6 @@ set statusline+=\ 〉%*                                                " Separat
 set statusline+=%(\ %m%r%w\ %)                                        " Flags (modified, readonly, help, preview). don't show if empty.
 set statusline+=%#error#                                              " Start error highlighting
 set statusline+=%(%{statusline#StatuslineTabWarning()}%)              " Inconsistent indentation warning
-set statusline+=%(%{statusline#StatuslineTrailingSpaceWarning()}%)    " Trailing whitespace warning
 set statusline+=%*                                                    " Clear highlighting
 set statusline+=%=                                                    " Move everything after this to the right
 set statusline+=%<                                                    " Start truncating here
@@ -24,9 +23,10 @@ set statusline+=\ %{statusline#StatuslineBuildCwd()}\                 " Current 
 set statusline+=%#statuslinefile#                                     " Highlight same as filename
 set statusline+=%(\ %{&spell?'📖\ ':''}%)                             " Show spellcheck status
 set statusline+=%(\ %{statusline#StatuslineVimtexCompiler()}%)        " Vimtex compiler status
-set statusline+=%(\ %y\ \|%)                                                  " File type
+set statusline+=%(\ %y\ \|%)                                          " File type
 set statusline+=\ %{&expandtab?'⤻':'⥅'}\                              " Using spaces or tabs
 set statusline+=%{statusline#StatuslineSpacesUsed()}                  " Spaces in a tab
+set statusline+=%(\ \|\ %{&paste?'📋':''}%)                           " Is paste set?
 set statusline+=\ \|\ %{statusline#StatuslineWrapCol()}\              " Textwidth/wrapmargin info
 set statusline+=\ %#statuslinenormmode#                               " Highlight same as normal mode indicator
 set statusline+=\ [%{statusline#StatuslineFoldmethod()}]              " The current foldlevel
@@ -37,7 +37,6 @@ augroup statusline
   " recalculate the tab/trailing whitespace warning flags when idle and after writing
   autocmd!
   autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
-  autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
 augroup END
 
 command! StatuslineWCAdd setlocal statusline+=%{statusline#StatuslineWordCount()}

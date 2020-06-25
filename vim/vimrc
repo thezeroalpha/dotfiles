@@ -416,7 +416,7 @@ let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'bash', 'haskell=ghci', 
 " LF {{{3
 nmap <leader>\ <Plug>LfEdit
 nmap <leader><c-\> <Plug>LfSplit
-" Ada {{3
+" Ada {{{3
 let g:ada_standard_types = 1
 let g:ada_space_errors = 1
 let g:ada_begin_preproc = 1
