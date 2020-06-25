@@ -15,6 +15,7 @@ https://brave.com/feed/?cc=1                                                "~Br
 https://usesthis.com/feed.atom                                              "~X Uses This"                          "tech"
 http://ridiculousfish.com/blog/atom.xml                                     "~Ridiculous Fish"                      "tech"
 https://news.ycombinator.com/rss                                            "~Hacker News"                          "tech"
+https://gizmodo.com/rss                                                     "~Gizmodo"                              "tech"
 
 # Deep web
 https://pirate.london/feed                                                  "~pirate dot london"                    "deep web"
@@ -37,6 +38,7 @@ https://www.universetoday.com/feed/                                         "~Un
 # Others
 https://waitbutwhy.com/feed                                                 "~Wait But Why"                         "others"
 http://remaster.realmofthemadgod.com/?feed=rss2                             "~ROTMG"                                "others"
+https://lifehacker.com/rss                                                  "~Lifehacker"                           "others"
 
 # Software releases (these are all hidden except for the query feed)
 https://github.com/gokcehan/lf/releases.atom                                "~lf"                                   "software-releases" "!"
