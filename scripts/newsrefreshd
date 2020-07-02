@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+alias git=/usr/local/bin/git
+alias newsboat=/usr/local/bin/newsboat
+
+newsboat -x reload
+cd "${DOTFILES:-$HOME/.dotfiles}"
+git commit -m "Newsboat cache" newsboat/cache.db
+newsboat -x print-unread | xargs -I{} /usr/local/bin/terminal-notifier -group news -sender news -title 'Newsboat reloaded' -message "{}"
+previous_commit_msg="$(git log --format=%s -n 1 HEAD~)"
+if [ "$previous_commit_msg" = "Newsboat cache" ]; then
+  git stash save \
+    && git reset --soft HEAD~2 \
+    && git commit -m "Newsboat cache" \
+    && git push --force-with-lease origin master \
+    && git stash pop;
+else
+  git push origin master
+fi
