@@ -1,6 +1,5 @@
 servers = (
-  { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; },
-  { 
+  {
     address = "irc.undernet.org";
     chatnet = "Undernet";
     port = "6667";
@@ -18,11 +17,12 @@ servers = (
     port = "6697";
     use_tls = "yes";
     tls_verify = "no";
-  }
+  },
+  { address = "irc.rekt.network"; chatnet = "Rekt"; use_tls = "yes"; },
+
 );
 
 chatnets = {
-  SILC = { type = "SILC"; };
   Undernet = {
     type = "IRC";
     max_kicks = "1";
@@ -41,6 +41,7 @@ chatnets = {
     max_msgs = "4";
     max_whois = "1";
   };
+  Rekt = { type = "IRC"; max_kicks = "1"; max_msgs = "4"; max_whois = "1"; };
 };
 
 channels = (
@@ -50,7 +51,8 @@ channels = (
   { name = "#bash"; chatnet = "Freenode"; autojoin = "yes"; },
   { name = "#irssi"; chatnet = "Freenode"; autojoin = "yes"; },
   { name = "#bookz"; chatnet = "Undernet"; autojoin = "yes"; },
-  { name = "#audiobooks"; chatnet = "IRCHighWay"; autojoin = "yes"; }
+  { name = "#audiobooks"; chatnet = "IRCHighWay"; autojoin = "yes"; },
+  { name = "#rekt"; chatnet = "Rekt"; autojoin = "yes"; }
 );
 
 aliases = {
@@ -230,6 +232,7 @@ settings = {
     trackbar_require_seen = "yes";
   };
   "fe-common/core" = { print_active_channel = "no"; theme = "tugg"; };
+  "irc/core" = { alternate_nick = "xza"; };
 };
 hilights = ( { text = "zeroalpha"; nick = "yes"; word = "yes"; } );
 ignores = ( { level = "JOINS PARTS QUITS"; } );
