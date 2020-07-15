@@ -8,7 +8,7 @@ http://feeds.labnol.org/labnol                                              "tec
 https://castel.dev/rss.xml                                                  "tech"                      "~Gilles Castel"
 https://til.hashrocket.com/rss                                              "tech"                      "~TIL Hashrocket"
 https://habd.as/post/index.xml                                              "tech"                      "~Josh Habdas"
-https://www.portexe.com/feed                                                "tech"                      "~PortEXE"
+# https://www.portexe.com/feed                                                "tech"                      "~PortEXE"
 https://blog.horejsek.com/posts.atom                                        "tech"                      "~Michal Hořejšek"
 https://blog.zeroalpha.codes/feed.xml                                       "tech"                      "~ZeroAlpha"
 https://brave.com/feed/?cc=1                                                "tech"                      "~Brave Browser"
@@ -18,7 +18,7 @@ https://news.ycombinator.com/rss                                            "tec
 https://gizmodo.com/rss                                                     "tech"                      "~Gizmodo"
 https://blog.privacytools.io/rss/                                           "tech"                      "~PrivacyTools.io"
 https://nikodoko.com/index.xml                                              "tech"                      "~Niko doko"
-https://pragmaticpineapple.com/                                             "tech"                      "~Pragmatic Pineapple"
+https://pragmaticpineapple.com/rss.xml                                      "tech"                      "~Pragmatic Pineapple"
 
 # Deep web
 https://pirate.london/feed                                                  "deep web"                  "~pirate dot london"
@@ -46,7 +46,7 @@ https://lifehacker.com/rss                                                  "blo
 
 # Software releases (these are all hidden except for the query feed)
 https://github.com/gokcehan/lf/releases.atom                                "software-releases"  "!"    "~lf"
-http://groups.google.com/group/vim_announce/feeds                           "software-releases"  "!"    "~Vim"
+https://groups.google.com/forum/feed/vim_announce/topics/rss.xml?num=15     "software-releases"  "!"    "~Vim"
 https://github.com/romkatv/powerlevel10k/releases.atom                      "software-releases"  "!"    "~powerlevel10k"
 https://github.com/junegunn/fzf/releases.atom                               "software-releases"  "!"    "~fzf"
 https://www.freelists.org/feed/regolith-linux                               "software-releases"  "!"    "~Regolith Linux"
@@ -116,7 +116,6 @@ https://youtube.com/feeds/videos.xml?channel_id=UCRbOPaGDB_xOQkVM8Rnn62Q    "yt-
 https://youtube.com/feeds/videos.xml?channel_id=UC0hbVIbYqMNoI5oCntS7l4g    "yt-videos"                 "~IDoZ"
 https://youtube.com/feeds/videos.xml?channel_id=UCP5bYRGZUJMG93AVoMekz9g    "yt-videos"                 "~Imaginary Ambition"
 https://youtube.com/feeds/videos.xml?channel_id=UChyiOdyhcIgu0f3JzDVtiGA    "yt-videos"                 "~imamusicmogul"
-https://youtube.com/feeds/videos.xml?channel_id=UCOWnB4nPUKWjUs7e9_w5LPA    "yt-videos"                 "~Impractical Jokers"
 https://youtube.com/feeds/videos.xml?channel_id=UC3bMVnVyT_Wp27HUACHf4lA    "yt-videos"                 "~InstalokTV"
 https://youtube.com/feeds/videos.xml?channel_id=UCR1D15p_vdP3HkrH8wgjQRw    "yt-videos"                 "~Internet Historian"
 https://youtube.com/feeds/videos.xml?channel_id=UCMBGBqMVx6eJcAglml8BZ2w    "yt-videos"                 "~ISP FILM"
@@ -206,7 +205,6 @@ https://youtube.com/feeds/videos.xml?channel_id=UC9IEWlai2qeneqqgewPvlNw    "yt-
 # Music on youtube
 https://youtube.com/feeds/videos.xml?channel_id=UCAczJcKcJ_cA5w_PVS3o8aw    "yt-music"                  "~Cole Rolland"
 https://youtube.com/feeds/videos.xml?channel_id=UC59ZRYCHev_IqjUhremZ8Tg    "yt-music"                  "~Harry Mack"
-https://youtube.com/feeds/videos.xml?channel_id=UC-B2LyEZcl3avG0coKeohGQ    "yt-music"                  "~itsRucka"
 https://youtube.com/feeds/videos.xml?channel_id=UCSmwOCqzjnQksFn0t7ARkkw    "yt-music"                  "~Jacob Koller / The Mad Arranger"
 https://youtube.com/feeds/videos.xml?channel_id=UCyBu_xFCmzhMS3JUbIqq-Hg    "yt-music"                  "~JFB BATTLEJAM"
 https://youtube.com/feeds/videos.xml?channel_id=UC_5NNLN6cTclV7XvWSDNN6g    "yt-music"                  "~Mashd N Kutcher"
@@ -227,7 +225,7 @@ https://youtube.com/feeds/videos.xml?channel_id=UC_wx5McpzV5_Las0Qulbusw    "yt-
 https://youtube.com/feeds/videos.xml?channel_id=UCw7RrKdqIMddn-JpnOtnWPg    "yt-music"                  "~YEAR OF THE OX"
 https://youtube.com/feeds/videos.xml?channel_id=UCAmt29QykFXnuIqQoEEnEFg    "yt-music"                  "~Sigur Rós"
 https://youtube.com/feeds/videos.xml?channel_id=UCnDvLN38Co9d_NE-a_Bglqg    "yt-music"                  "~RJD2"
-https://youtube.com/feeds/videos.xml?channel_idUCI1Oq88rmpUeSEAQFtuMv5w     "yt-music"                  "~ALEM (handpan music)"
+https://youtube.com/feeds/videos.xml?channel_id=UCI1Oq88rmpUeSEAQFtuMv5w     "yt-music"                  "~ALEM (handpan music)"
 # https://youtube.com/feeds/videos.xml?channel_id=UCqmhfPcgiaRVWUy9F_HeV5g    "yt-music"                  "~Trap and Bass"
 # https://youtube.com/feeds/videos.xml?channel_id=UC65afEgL62PGFWXY7n6CUbA    "yt-music"                  "~Trap City"
 # https://youtube.com/feeds/videos.xml?channel_id=UCa10nxShhzNrCE1o2ZOPztg    "yt-music"                  "~Trap Nation"
