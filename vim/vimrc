@@ -871,6 +871,9 @@ endif
 nnoremap <C-w>Z :tab split<CR>
 
 nnoremap <leader>gg :call input("go line:col> ")->split(":")->cursor()<CR>
+
+" Avoid paste hijacking in insert mode
+inoremap <c-r> <c-r><c-o>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
