@@ -294,7 +294,7 @@ nnoremap <leader>/ :Ag<CR>
 nnoremap <leader>M :Marks<CR>
 
 " Search for Todos/Fixmes
-command! Todo Ag ((TO ?DO)|FIXME):<space>
+command! Todo Ag ((TO ?DO)|FIXME):?<space>?
 nnoremap <leader>! :Todo<CR>
 
 " Set a filetype
