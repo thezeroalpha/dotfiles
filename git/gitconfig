@@ -41,7 +41,7 @@
 
     rp = reset -p
 
-    ss = "!f(){ git stash push $@ -- $(git diff --staged --name-only); }; f"
+    ss = "!f(){ git stash push \"$@\" -- $(git diff --staged --name-only); }; f"
     sp = stash pop
     sa = stash apply
     sd = stash drop
