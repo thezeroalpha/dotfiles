@@ -85,7 +85,7 @@ process_audio() {
 }
 
 process_video() {
-  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP" "VOLUME" "FAST" "SLOW" "SCREENSHOT"; do
+  select to_fmt in "MP4" "MP3" "GIF" "NO AUDIO" "CONCAT" "CLIP" "VOLUME" "FAST" "SLOW" "SCREENSHOT" "OPTIMISE"; do
     case "$to_fmt" in
       "MP4")
         ffmpeg -i "$1" -vcodec copy -qscale 0 -c:s mov_text "${1%%.*}.mp4"
@@ -148,6 +148,21 @@ process_video() {
       "SCREENSHOT")
         read -rp "Timestamp to extract: " ts
         ffmpeg -ss "$ts" -i "$1" -frames:v 1 -q:v 2 "$1.jpg"
+        break;;
+      "OPTIMISE")
+        codec="$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "$1")"
+        read -rp "Enter output filename: " outfile
+        if [ "$codec" = "h264" ]; then
+          read -rp "Use h265? [Y/n] " -n 1 conf
+          echo
+          if [ "$conf" = "Y" ] || [ "$conf" = "y" ]; then
+            read -rp "CRF value (24..30, lower == higher bitrate): " crf
+            ffmpeg -i "$1" -vcodec libx265 -crf "$crf" "${outfile:-optimised-$1}"
+            return
+          fi
+        fi
+        read -rp "CRF value (18..24, lower == higher bitrate): " crf
+        ffmpeg -i "$1" -vcodec libx264 -crf "$crf" "${outfile:-optimised-$1}"
         break;;
       *)
         ;;
