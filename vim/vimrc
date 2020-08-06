@@ -646,7 +646,7 @@ set complete=.,w,b,u,t,i,kspell
 "   a match, don't select anything automatically.
 set completeopt=menu,menuone,preview
 
-nmap <leader># <Plug>ToggleNumber
+nnoremap <silent><expr> <leader># ":set ".(&relativenumber?'norelativenumber number':'relativenumber number')."<CR>"
 
 set omnifunc=syntaxcomplete#Complete
 
