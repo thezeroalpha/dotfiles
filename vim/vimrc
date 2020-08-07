@@ -870,7 +870,11 @@ endif
 " 'Zoom' the current buffer in a new tab
 nnoremap <C-w>Z :tab split<CR>
 
+" Go to line:column
 nnoremap <leader>gg :call input("go line:col> ")->split(":")->cursor()<CR>
+
+" Which commit introduced this line?
+nnoremap <silent><Leader>gb :call setbufvar(winbufnr(popup_atcursor(systemlist("cd " . shellescape(fnamemodify(resolve(expand('%:p')), ":h")) . " && git log --no-merges -n 1 -L " . shellescape(line("v") . "," . line(".") . ":" . resolve(expand("%:p")))), { "padding": [1,1,1,1], "pos": "botleft", "wrap": 0, "highlight": "StatusLine"})), "&filetype", "git")<CR>
 
 " Avoid paste hijacking in insert mode
 inoremap <c-r> <c-r><c-o>
