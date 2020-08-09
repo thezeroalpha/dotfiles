@@ -13,6 +13,9 @@ prog_psy_trance="http://hestia2.cdnstream.com/1453_128"
 # 6forty
 six_forty="http://54.173.171.80:8000/6forty"
 
+# Fnoob techno
+fnoob="http://play.fnoobtechno.com:2199/tunein/fnoobtechno320.pls"
+
 # SOMA FM #
 groove_salad="https://somafm.com/groovesalad256.pls"			# Ambient/downtempo
 mission_control="https://somafm.com/missioncontrol.pls"			# Ambient with sounds from space
@@ -21,6 +24,8 @@ beat_blender="https://somafm.com/beatblender.pls"			# Deep house, downtempo chil
 dub_step="https://somafm.com/dubstep256.pls"				# Dubstep, dub
 defcon="https://somafm.com/defcon256.pls"				# Music for hacking
 deep_space="https://somafm.com/deepspaceone.pls"			# Deep ambient electronic/experimental
+thisle="https://somafm.com/thistle.pls"                                 # Celtic
+fluid="https://somafm.com/fluid.pls"                                    # Instrumental hip hop, liquid trap
 
 # Subreddit
 subreddit=""
@@ -28,19 +33,22 @@ subreddit=""
 #### END LIST ###
 # Initialising the arrays
 radios=(
-    $nightride_fm
-    $nw_plaza
-    $groove_salad
-    $mission_control
-    $the_trip
-    $beat_blender
-    $dub_step
-    $defcon
-    $deep_space
-    $classic_goa
-    $prog_psy_trance
-    $six_forty
-    $subreddit
+    "$nightride_fm"
+    "$nw_plaza"
+    "$groove_salad"
+    "$mission_control"
+    "$the_trip"
+    "$beat_blender"
+    "$dub_step"
+    "$defcon"
+    "$deep_space"
+    "$thistle"
+    "$fluid"
+    "$classic_goa"
+    "$prog_psy_trance"
+    "$fnoob"
+    "$six_forty"
+    "$subreddit"
 )
 radio_names=(
     "Nightride FM"
@@ -50,10 +58,13 @@ radio_names=(
     "SOMA - The Trip (prog house/trance)"
     "SOMA - Beat Blender (deep house, downtempo)"
     "SOMA - Dub Step"
-    "SOMA - Defcon "
+    "SOMA - Defcon"
     "SOMA - Deep Space (deep ambient electro/experimental)"
+    "SOMA - Thistle Radio (Celtic)"
+    "SOMA - Fluid (instr. hip hop, liquid trap"
     "PSYSTATION - Classic Goa"
     "PSYSTATION - Progressive Psy Trance"
+    "Fnoob Techno - Underground techno"
     "6forty radio - Post Rock"
     "Play from music subreddit"
 )
