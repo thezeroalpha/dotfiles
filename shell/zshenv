@@ -1,2 +1,3 @@
 . $HOME/.profile
-HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+export ZDOTDIR=$HOME/.config/zsh
+export HISTFILE=$ZDOTDIR/.zsh_history
