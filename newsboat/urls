@@ -19,6 +19,7 @@ https://gizmodo.com/rss                                                     "tec
 https://blog.privacytools.io/rss/                                           "tech"                      "~PrivacyTools.io"
 https://nikodoko.com/index.xml                                              "tech"                      "~Niko doko"
 https://pragmaticpineapple.com/rss.xml                                      "tech"                      "~Pragmatic Pineapple"
+https://vimtricks.substack.com/feed                                         "tech"                      "~Vimtricks"
 
 # Deep web
 https://pirate.london/feed                                                  "deep web"                  "~pirate dot london"
@@ -66,7 +67,8 @@ https://youtube.com/feeds/videos.xml?channel_id=UCR1D15p_vdP3HkrH8wgjQRw    "yt-
 https://youtube.com/feeds/videos.xml?channel_id=UCMb0O2CdPBNi-QqPk5T3gsQ    "yt-videos"                 "~James Hoffmann"
 https://youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q    "yt-videos"                 "~Kurzgesagt – In a Nutshell"
 https://youtube.com/feeds/videos.xml?channel_id=UCS5tt2z_DFvG7-39J3aE-bQ    "yt-videos"                 "~Life of Boris"
-https://youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA    "yt-videos"                 "~Luke Smith"
+#https://youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA    "yt-videos"                 "~Luke Smith"
+https://videos.lukesmith.xyz/feeds/videos.xml?accountId=3                   "yt-videos"                 "~Luke Smith"
 https://youtube.com/feeds/videos.xml?channel_id=UCLRsP4_PvUWsu1sdA1wapyg    "yt-videos"                 "~Mania Chykulay"
 https://youtube.com/feeds/videos.xml?channel_id=UCpXwMqnXfJzazKS5fJ8nrVw    "yt-videos"                 "~shiey"
 https://youtube.com/feeds/videos.xml?channel_id=UCDZESjYAwh-ws7ZSZZ8DKeg    "yt-videos"                 "~LA Beast"
