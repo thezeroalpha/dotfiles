@@ -12,8 +12,8 @@ fi
 
 #link archive
 arc(){
-title=$(youtube-dl --ignore-config --get-title --get-duration --get-description "$1" 2>/dev/null)
-printf "%b\n" "0a\n▪▪▪►Link►  $1\n▪▪▪►Description► $title\n\n.\nw" >> $HOME/.cache/mpv/linkarchive
+  title=$(youtube-dl --ignore-config --get-title "$1" 2>/dev/null)
+  printf "%b\n" "$title\t$1" >> "$HOME/.cache/mpv/linkarchive"
 }
 arc "$1" &
 exit 0
