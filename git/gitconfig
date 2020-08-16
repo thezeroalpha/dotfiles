@@ -4,6 +4,7 @@
 
 [alias]
     s = status
+    v = "!vim -c 'Gstatus | only'"
     co = checkout
     cob = checkout -b
     f = fetch --all
