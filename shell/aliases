@@ -21,3 +21,4 @@ alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"   
 alias confucius="curl confucius-quote.herokuapp.com"                            # A joke curl service I made
 alias tx="tmuxinator"
 alias mpva="mpv --no-audio-display --no-video --volume=50"
+alias irrsi="irssi --home=~/.config/irssi"
