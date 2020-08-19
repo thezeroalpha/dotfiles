@@ -52,6 +52,8 @@ source $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
 # Allow pasting bare URLs
 autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
 alias cp='nocorrect cp'
