@@ -298,8 +298,7 @@ command! Todo Ag ((TO ?DO)|FIXME):?<space>?
 nnoremap <leader>! :Todo<CR>
 
 " Set a filetype
-command! Setf Filetypes
-cabbrev setf Setf
+cabbrev setf Filetypes
 
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
@@ -683,6 +682,10 @@ command! Softwrap setlocal wrap formatoptions-=cat
 command! Hardwrap setlocal nowrap formatoptions+=cat
 command! Syncwin windo set scrollbind! cursorbind!
 command! EF exe "split $HOME/.vim/after/ftplugin/".&filetype.".vim"
+command! -nargs=1 Img
+      \ exe "r! find ".shellescape(expand("%:p:h"))." -maxdepth ".<args>." -type f -exec file --mime-type '{}' \\+"
+      \ ."| awk -F: '$2 ~ /image\\//{print $1}'"
+      \ ."| sxiv -qto - 2>/dev/null"
 
 " Fat finger fixes/convenience abbreviations
 cnoreabbrev E Explore
