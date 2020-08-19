@@ -1,11 +1,14 @@
 #!/bin/sh
 alias fucking="sudo"                                                            # Because sometimes I'm frustrated
 alias cp='cp -ivR'                                                              # Prompt if overwrite, verbose
+alias grep='grep --color=auto'
 alias mv='mv -iv'                                                               # Prompt if overwrite, verbose
+alias lynx='lynx -vikeys'
 alias mkdir='mkdir -pv'                                                         # Create intermediate dirs, verbose
-alias ls="ls -lh"                                                               # List in long format, human-readable sizes
-alias l="ls -lah"                                                               # Ls but with all files
-alias ll="ls -FGlAhpO@"                                                         # Ls but show everything you can
+alias ls="command ls -lh"                                                       # List in long format, human-readable sizes
+alias l="command ls -lah"                                                       # Ls but with all files
+alias ll="command ls -FGlAhpO@"                                                 # Ls but show everything you can
+alias l.="command ls -a | grep '^\.'"                                           # Ls but only dotfiles
 alias less='less -iRXc'                                                         # Search ig case, fix ANSI colors, don't send init strings, clear screen
 alias du="du -skh"                                                              # Show entry for each file, show block counts in 1kb blocks, human-readable sizes
 alias df="df -h"                                                                # Show human-readable sizes
