@@ -1,0 +1,168 @@
+* Bootstrap
+** Set up automatic file locations
+   Don't create lockfiles:
+
+   #+BEGIN_SRC emacs-lisp
+     (setq-default 
+      create-lockfiles nil)
+   #+END_SRC
+   
+   Place autosave files (=#file#=) in ~/.emacs.d/backups/:
+
+   #+BEGIN_SRC emacs-lisp
+     (setq backup-directory-alist
+	   `(("." . ,(concat user-emacs-directory "backups"))))
+   #+END_SRC
+
+   Place backup files (=file~=) in ~/.emacs.d/saves/:
+
+   #+BEGIN_SRC emacs-lisp
+     (setq
+	backup-by-copying t      ; don't clobber symlinks
+	backup-directory-alist
+	`(("." . ,(concat user-emacs-directory "saves"))) ; don't litter my fs
+	delete-old-versions t
+	kept-new-versions 6
+	kept-old-versions 2
+	version-control t)       ; use versioned backups
+   #+END_SRC
+** Enable installing packages from MELPA
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
+#+END_SRC
+
+Also bootstrap =use-package=:
+
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile (require 'use-package))
+#+END_SRC
+** Garbage collection
+   Garbage-collect on focus-out, Emacs /should/ feel snappier.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'focus-out-hook #'garbage-collect)
+   #+END_SRC
+
+** Load custom.el
+   Using the built-in customization interface appends code to init file.
+   Instead we want that interface to append code to a different file.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+     (when (file-exists-p custom-file)
+       (load custom-file))
+   #+END_SRC
+
+* Theming
+  Load the theme.
+
+  #+BEGIN_SRC emacs-lisp
+    (unless (package-installed-p 'doom-themes)
+    (package-refresh-contents)
+    (package-install 'doom-themes))
+
+
+    (use-package doom-themes
+      :config
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
+      (load-theme 'doom-one t)
+
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
+
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      (doom-themes-neotree-config)
+      ;; or for treemacs users
+      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      (doom-themes-treemacs-config)
+
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config))
+  #+END_SRC
+
+* Packages
+** emacs-which-key
+   Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+
+   #+BEGIN_SRC emacs-lisp
+     (unless (package-installed-p 'which-key)
+       (package-refresh-contents)
+       (package-install 'which-key))
+     (which-key-mode)
+   #+END_SRC
+** helm
+   Install if not installed:
+
+   #+BEGIN_SRC emacs-lisp
+     (unless (package-installed-p 'helm)
+       (package-refresh-contents)
+       (package-install 'helm))
+   #+END_SRC
+
+   Configure:
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm
+       :defer nil
+       :custom
+       (helm-M-x-always-save-history t)
+       (helm-display-function 'pop-to-buffer)
+       (savehist-additional-variables '(extended-command-history))
+       (history-delete-duplicates t)
+       :custom-face
+       (helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
+       (helm-ff-file-extension ((t (:inherit default))))
+       (helm-buffer-file ((t (:inherit default))))
+       :bind
+       (("M-x" . helm-M-x)
+	("C-x C-f" . helm-find-files)
+	("C-x C-b" . helm-buffers-list)
+	("C-x b" . helm-buffers-list)
+	("C-x C-r" . helm-recentf)
+	("C-x C-i" . helm-imenu)
+	("M-y" . helm-show-kill-ring))
+       :config
+       (helm-mode)
+       (savehist-mode))
+   #+END_SRC
+   
+   I'd also like helm in a popup frame so:
+** org
+   In org mode, I want to use bullets instead of stars.
+   Also, I add a few expansions 
+   #+BEGIN_SRC emacs-lisp
+     (use-package org
+       :config
+       (unless (package-installed-p 'org-bullets)
+	 (package-refresh-contents)
+	 (package-install 'org-bullets))
+       (require 'org-bullets)
+       (require 'org-tempo)
+
+       :hook
+       (org-mode . (lambda () (org-bullets-mode 1))))
+   #+END_SRC
+* Defaults
+** Appearance
+   Highlight the current line
+
+   #+BEGIN_SRC emacs-lisp
+     (global-hl-line-mode)
+     (show-paren-mode 1)
+   #+END_SRC
+
+   Disable some UI elements:
+
+   #+BEGIN_SRC emacs-lisp
+     (when window-system
+     (scroll-bar-mode 0) ; Disable scrollbar
+     (tool-bar-mode 0)); Disable toolbar
+   #+END_SRC

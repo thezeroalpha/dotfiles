@@ -44,7 +44,7 @@ Xresources: ~/.Xresources
 
 # Emacs config
 emacs:
-- emacs.d/themes: ~/.emacs.d/themes
+- emacs.d/config.org: ~/.emacs.d/config.org
 - emacs: ~/.emacs
 
 # All shell configs
