@@ -12,7 +12,7 @@ main() {
       echo "VIDEO: $1"
       process_video "$@"
       ;;
-    *.mp3|*.wav|*.ogg|*.flac)
+    *.mp3|*.wav|*.ogg|*.flac|*.m4a)
       if ! [ -f "$1" ] ; then echo "$1 not found." && exit 1; fi
       echo "AUDIO: $1"
       process_audio "$@"
