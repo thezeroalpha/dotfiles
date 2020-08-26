@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-# clippaste - "Paste" data from clipboard to stdout
+# clp - "Paste" data from clipboard to stdout
 #
 # Usage:
 #
-#   clippaste   - writes clipboard's contents to stdout
+#   clp   - writes clipboard's contents to stdout
 #
-#   clippaste | <command>    - pastes contents and pipes it to another process
+#   clp | <command>    - pastes contents and pipes it to another process
 #
-#   clippaste > <file>      - paste contents to a file
+#   clp > <file>      - paste contents to a file
 #
 # Examples:
 #
 #   # Pipe to another process
-#   clippaste | grep foo
+#   clp | grep foo
 #
 #   # Paste to a file
-#   clippaste > file.txt
+#   clp > file.txt
 if [[ $OSTYPE == darwin* ]]; then
   pbpaste
 elif [[ $OSTYPE == cygwin* || $OSTYPE == msys* ]]; then
@@ -26,7 +26,7 @@ else
   elif command -v xsel &>/dev/null; then
     xsel --clipboard --output
   else
-    print "clipcopy: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
+    print "clc: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
     return 1
   fi
 fi

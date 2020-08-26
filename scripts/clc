@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# clipcopy - Copy data to clipboard
+# clc - Copy data to clipboard
 #
 # Usage:
 #
-#  <command> | clipcopy    - copies stdin to clipboard
+#  <command> | clc    - copies stdin to clipboard
 #
-#  clipcopy <file>         - copies a file's contents to clipboard
+#  clc <file>         - copies a file's contents to clipboard
 #
 file=$1
 if [[ $OSTYPE == darwin* ]]; then
@@ -34,7 +34,7 @@ else
       cat "$file" | xsel --clipboard --input
     fi
   else
-    print "clipcopy: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
+    print "clc: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
     return 1
   fi
 fi

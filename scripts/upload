@@ -3,8 +3,8 @@ if ! command -v curl 1>/dev/null 2>&1; then
   echo "curl not installed." >&2
   exit 1
 fi
-if ! command -v clipcopy 1>/dev/null 2>&1; then
-  echo "clipcopy script not present." >&2
+if ! command -v clc 1>/dev/null 2>&1; then
+  echo "clc script not present." >&2
   exit 1
 fi
 
@@ -17,6 +17,6 @@ die() {
 [ -f "$1" ] || die "File $1 does not exist."
 response=$(curl -s -F file=@"$1" http://0x0.st)
 printf 'Response: %s' "$response"
-{ printf '%s' "$response" | sed 's/^.*\(http[^"]*\).*/\1/' | clipcopy; } || echo "Direct link copied to clipboard."
+{ printf '%s' "$response" | sed 's/^.*\(http[^"]*\).*/\1/' | clc; } || echo "Direct link copied to clipboard."
 
 

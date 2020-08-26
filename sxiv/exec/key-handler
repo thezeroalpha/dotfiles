@@ -3,8 +3,8 @@ while read file; do
   fullpath="$(pwd)$file"
   case "$1" in
     "y")
-      printf "$file" | clipcopy;;
+      printf "$file" | clc;;
     "Y")
-      printf "$fullpath" | clipcopy;;
+      printf "$fullpath" | clc;;
   esac
 done
