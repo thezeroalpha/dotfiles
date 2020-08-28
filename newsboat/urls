@@ -50,6 +50,7 @@ https://github.com/gokcehan/lf/releases.atom                                "sof
 https://groups.google.com/forum/feed/vim_announce/topics/rss.xml?num=15     "software-releases"  "!"    "~Vim"
 https://github.com/romkatv/powerlevel10k/releases.atom                      "software-releases"  "!"    "~powerlevel10k"
 https://github.com/junegunn/fzf/releases.atom                               "software-releases"  "!"    "~fzf"
+https://github.com/getzola/zola/releases.atom                               "software-releases"  "!"    "~Zola"
 https://www.freelists.org/feed/regolith-linux                               "software-releases"  "!"    "~Regolith Linux"
 https://github.com/laurent22/joplin/releases.atom                           "software-releases"  "!"    "~Joplin"
 https://gitlab.com/ajak/tuir/-/tags?format=atom                             "software-releases"  "!"    "~Tuir"
