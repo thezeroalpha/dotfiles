@@ -1,0 +1,16 @@
+#!/bin/sh
+[ -d public ] || { echo "No public/ folder present" && exit 1; }
+destdir=/var/www/"$(basename "$(pwd)")"
+
+printf "Upload public/ to vps:%s? [Y/n] " "$destdir"
+read -r conf
+case "$conf" in
+  Y|y|Yes|yes)
+    ;;
+  *)
+    echo "User cancelled."
+    exit 0
+    ;;
+esac
+
+rsync -mrvzhLuP  --del public/ vps:"$destdir"
