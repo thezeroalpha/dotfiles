@@ -33,6 +33,7 @@ cmd _open &{{
         text/*|application/json) $EDITOR $fx;;
         image/*) sxiv $fx 2>&1 & disown;;
         application/epub+zip) ebook-viewer $fx >/dev/null 2>&1 & disown;;
+        video/*) mpvq $f;;
         *) for f in $fx; do $OPENER "$f" > /dev/null 2> /dev/null & disown; done;;
     esac
 }}
@@ -208,9 +209,7 @@ map pr paste_rename
 map i $~/.config/lf/preview.sh $f | less -R
 
 map gd. cd ~/Documents
-map gds. cd ~/Documents/School
-map gdsb cd ~/Documents/School/bachelors/
-map gdsh cd ~/Documents/School/honours-project/
+map gds cd ~/Documents/School
 map gdz cd ~/Documents/Programming/thezeroalpha.github.io/
 map gb cd ~/Documents/Calibre\ Library/
 map gdp cd ~/Documents/Personal\ documents/
@@ -235,7 +234,9 @@ map cd push %mkdir<space>
 map e
 map ee $$EDITOR $f
 map ec edit_config
+map ce edit_config
 
 map tz zip
+map tu extract
 
 map z push :z
