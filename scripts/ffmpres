@@ -124,12 +124,22 @@ process_video() {
         read -rp "From time: " starttime
         read -rp "To time: " endtime
         read -rp "Save as: " outfile
-        if [ -z "$endtime" ]; then
-          ffmpeg -i "$1" -ss "$starttime" "${outfile:-out-$1}"
-        elif [ -z "$starttime" ]; then
-          ffmpeg -i "$1" -to "$endtime" "${outfile:-out-$1}"
+        if [ -z "$outfile" ]; then
+          if [ -z "$endtime" ]; then
+            ffmpeg -i "$1" -ss "$starttime" -acodec copy -vcodec copy "out-$1"
+          elif [ -z "$starttime" ]; then
+            ffmpeg -i "$1" -to "$endtime" -acodec copy -vcodec copy "out-$1"
+          else
+            ffmpeg -i "$1" -ss "$starttime" -to "$endtime" -acodec copy -vcodec copy "out-$1"
+          fi
         else
-          ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "${outfile:-out-$1}"
+          if [ -z "$endtime" ]; then
+            ffmpeg -i "$1" -ss "$starttime" "$outfile"
+          elif [ -z "$starttime" ]; then
+            ffmpeg -i "$1" -to "$endtime" "$outfile"
+          else
+            ffmpeg -i "$1" -ss "$starttime" -to "$endtime" "$outfile"
+          fi
         fi
         break;;
       "VOLUME")
