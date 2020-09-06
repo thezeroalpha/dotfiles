@@ -138,6 +138,28 @@ cmd paste %{{
     lf -remote 'send clear'
 }}
 
+# allow overwriting existing files
+cmd paste_overwrite %{{
+    load=$(lf -remote 'load')
+    mode=$(echo "$load" | sed -n '1p')
+    list=$(echo "$load" | sed '1d')
+    if [ $mode = 'copy' ]; then
+      if command -v rsync &>/dev/null; then
+        rsync -ah --progress $list .
+      else
+        cp -rf $list .
+      fi
+    elif [ $mode = 'move' ]; then
+      if command -v rsync &>/dev/null; then
+        rsync -ah --remove-source-files $list .
+      else
+        mv $list .
+      fi
+    fi
+    lf -remote 'send load'
+    lf -remote 'send clear'
+}}
+
 # preview the highlighted file with quicklook
 cmd ql_preview &{{
   qlmanage -p "$fx" &> /dev/null;
@@ -203,6 +225,7 @@ map Y copy_path
 
 map p
 map pp paste
+map po paste_overwrite
 map pl paste_link
 map pr paste_rename
 
