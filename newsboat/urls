@@ -10,7 +10,7 @@ https://til.hashrocket.com/rss                                              "tec
 https://habd.as/post/index.xml                                              "tech"                      "~Josh Habdas"
 # https://www.portexe.com/feed                                                "tech"                      "~PortEXE"
 https://blog.horejsek.com/posts.atom                                        "tech"                      "~Michal Hořejšek"
-https://blog.zeroalpha.codes/feed.xml                                       "tech"                      "~ZeroAlpha"
+https://blog.alex.balgavy.eu/atom.xml                                       "tech"                      "~My blog"
 https://brave.com/feed/?cc=1                                                "tech"                      "~Brave Browser"
 https://usesthis.com/feed.atom                                              "tech"                      "~X Uses This"
 http://ridiculousfish.com/blog/atom.xml                                     "tech"                      "~Ridiculous Fish"
@@ -21,6 +21,8 @@ https://nikodoko.com/index.xml                                              "tec
 https://pragmaticpineapple.com/rss.xml                                      "tech"                      "~Pragmatic Pineapple"
 https://vimtricks.substack.com/feed                                         "tech"                      "~Vimtricks"
 https://resynth1943.net/feed.xml                                            "tech"                      "~Resynth"
+https://sysid.github.io/rss                                                 "tech"                      "~sysid"
+https://www.ralismark.xyz/feed.xml                                          "tech"                      "~Timmy Yao"
 
 # Deep web
 https://pirate.london/feed                                                  "deep web"                  "~pirate dot london"
