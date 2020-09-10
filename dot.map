@@ -68,7 +68,7 @@ vim:
 - ultisnips: ~/.vim/ultisnips
 - words: ~/.vim/words
 - spell: ~/.vim/spell
-- vimrc: ~/.vimrc
+- vimrc: ~/.vim/vimrc
 
 # Mappings for your dotfiles
 # The format of this file is:
