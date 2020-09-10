@@ -1,19 +1,27 @@
 #!/bin/bash
-if [[ ! -p $HOME/.cache/mpv/input ]]; then
-    mkfifo $HOME/.cache/mpv/input
-fi
-if pgrep -f MPV-Q > /dev/null; then
-    printf "%s\n" "loadfile \"$1\" append-play" > $HOME/.cache/mpv/input
-    terminal-notifier -title "Video queued" -message "Added to queue successfully" -group "mpv" &>/dev/null
-else
-    terminal-notifier -title "Playing video" -message "MPV is launching..." -group "mpv" &>/dev/null
-    mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-file=$HOME/.cache/mpv/input --player-operation-mode=pseudo-gui "$1" &
+if [[ ! -p "$HOME"/.cache/mpv/input ]]; then
+    mkfifo "$HOME"/.cache/mpv/input
 fi
 
-#link archive
+# queue the video
+play() {
+  if pgrep -f MPV-Q > /dev/null; then
+    printf "%s\n" "loadfile \"$1\" append-play" > "$HOME"/.cache/mpv/input
+    terminal-notifier -title "Video queued" -message "Added to queue successfully" -group "mpv" &>/dev/null
+  else
+    terminal-notifier -title "Playing video" -message "MPV is launching..." -group "mpv" &>/dev/null
+    mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-file="$HOME"/.cache/mpv/input --player-operation-mode=pseudo-gui "$1" &
+  fi
+}
+
+# link archive
 arc(){
   title=$(youtube-dl --ignore-config --get-title "$1" 2>/dev/null)
   printf "%b\n" "$title\t$1" >> "$HOME/.cache/mpv/linkarchive"
 }
-arc "$1" &
+
+for l in "$@"; do
+  play "$l"
+  arc "$1" &
+done
 exit 0
