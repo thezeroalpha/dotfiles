@@ -120,9 +120,6 @@ Plug 'psliwka/vim-smoothie'
 " Asynchronous popery
 Plug 'tpope/vim-dispatch', { 'on': ['Dispatch', 'Make', 'Maketab', 'Start', 'Spawn'] }
 
-" &path for filetypes
-Plug 'tpope/vim-apathy'
-
 " Vimscript testing
 Plug 'tpope/vim-scriptease', { 'for': 'vim' }
 
@@ -477,12 +474,17 @@ set noswapfile
 " make regexes consistent with other programs (extended)
 set magic
 
-" directories to search on find, gf, etc.
-set path=.,$DOTFILES/vim/**,/usr/include,/usr/local/include,,
-set suffixesadd+=.vim
-set wildignore=**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+" global setting for directories to search for files (e.g. for gf)
+" . == directory of current file, ,, == current working directory
+set path=.,$DOTFILES/vim/**,,
 
-" set wildignore=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
+" global suffixes to add when looking for files (configured otherwise on per-language basis)
+set suffixesadd=.vim
+
+" include, includeexpr, define: very language-specific, so no default global value
+
+" global patterns to ignore in wildmenu
+set wildignore=*.swp
 set wildignorecase
 
 " Persistent undos (useful for plugins too){{{
@@ -575,7 +577,7 @@ endif
 set cursorline
 
 " Reduce waiting on keys (like esc)
-set timeoutlen=1000 ttimeoutlen=0
+set timeoutlen=1000 ttimeoutlen=50
 
 " Wrap settings - no wrap by default
 set nowrap
