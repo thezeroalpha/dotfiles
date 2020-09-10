@@ -70,7 +70,7 @@ if command -v osascript &> /dev/null; then
     osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
   }
   # echo selected Finder file
-  fsel() {
+  gsf() {
     osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
   }
 fi
