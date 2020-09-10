@@ -90,3 +90,10 @@ function! statusline#StatuslineVimtexCompiler()
   return ''
 endfunction
 
+function! statusline#StatuslineRemoteFile()
+  if exists('b:netrw_lastfile')
+    return ' ('.b:netrw_lastfile.')'
+  endif
+  return ''
+endfunction
+
