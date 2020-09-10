@@ -84,5 +84,7 @@ link   StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir     LineNr
 link   NetrwExe                                                 Title
 link   SpellBad                                                 Todo
 link   SpelLocal,SpellRare,SpellCap                             String
-link   MkdLink                                                  Type
-link   adaBegin,adaEnd                                          Function
+
+link   MkdLink           Type
+link   adaBegin,adaEnd   Function
+link   markdownCode      SpecialComment
