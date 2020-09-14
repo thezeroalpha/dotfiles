@@ -22,3 +22,6 @@
 [submodule "tools/conf"]
 	path = tools/conf
 	url = git@github.com:thezeroalpha/conf
+[submodule "tools/tmpmail"]
+	path = tools/tmpmail
+	url = https://github.com/sdushantha/tmpmail.git

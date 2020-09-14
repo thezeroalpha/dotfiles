@@ -1,8 +1,10 @@
-# Custom stuff I write
+# Third-party single binaries
 bin: ~/.bin
+
+# My scripts
 scripts: ~/.scripts
 
-# Utilities
+# Config: utilities
 compton: ~/.config/compton
 ctags: ~/.config/ctags
 gdb:
@@ -37,17 +39,17 @@ mps-youtube:
 joplin/keymap.json: ~/.config/joplin/keymap.json
 sxiv: ~/.config/sxiv
 
-# X server (Linux)
+# Config: X server (Linux)
 xinitrc: ~/.xinitrc
 xprofile: ~/.xprofile
 Xresources: ~/.Xresources
 
-# Emacs config
+# Config: Emacs
 emacs:
 - emacs.d/config.org: ~/.emacs.d/config.org
 - emacs: ~/.emacs
 
-# All shell configs
+# Config: shell
 shell:
 - zshenv: ~/.zshenv
 - zshrc: ~/.config/zsh/.zshrc
@@ -56,7 +58,7 @@ shell:
 - profile: ~/.profile
 - inputrc: ~/.inputrc
 
-# Vim config
+# Config: Vim
 vim:
 - after: ~/.vim/after
 - autoload: ~/.vim/autoload
@@ -70,56 +72,10 @@ vim:
 - spell: ~/.vim/spell
 - vimrc: ~/.vim/vimrc
 
-# Mappings for your dotfiles
-# The format of this file is:
-#   - comments:
-#     - lines starting with '#' are comments
-#     - a comment must be on its own line
-#     - there are no multi-line comments
-#   - whitespace:
-#     - whitespace is ignored, except inside a mapping definition
-#        (i.e. you can indent lines however you like, and insert blank lines)
-#   - mappings:
-#     - a mapping definition is: "source: destination"
-#     - source paths are relative to $DOTFILES (set in scripts/conf, or from an environment variable)
-#     - lines that don't start with a '-' are top-level directories or files
-#     - lines starting with n number of '-' are files/directories n levels deep
-#         (i.e. '- bin' is one level deep, '-- bin' is two levels deep, etc.)
-#     - every file/directory that is not at the root level must be under some top directory
-#         (i.e. you can't have a line starting with '-' as the first line of the mapfile)
-#     - every mapping source must exist (scripts/conf will complain if it doesn't)
-
-# For example, the map definitions:
-#   vim:
-#     - vimrc: ~/.vimrc
-#     - autoload:
-#       -- script1.vim: ~/.vim/autoload/script1.vim
-#       -- script2.vim: ~/.vim/autoload/script2.vim
-#   tmux/tmux.conf: ~/.tmux.conf
-#   ghci: ~/.ghci
-#
-# Get parsed as:
-#   vim/vimrc => ~/.vimrc
-#   vim/autoload/script1.vim => ~/.vim/autoload/script1.vim
-#   vim/autoload/script2.vim => ~/.vim/autoload/script2.vim
-#   tmux/tmux.conf => ~/.tmux.conf
-#   ghci => ~/.ghci
-#
-# And executed as the commands:
-#   ln -svf "$DOTFILES/vim/vimrc" "~/.vimrc"
-#   ln -svf "$DOTFILES/vim/autoload/script1.vim" "~/.vim/autoload/script1.vim"
-#   ln -svf "$DOTFILES/vim/autoload/script2.vim" "~/.vim/autoload/script2.vim"
-#   ln -svf "$DOTFILES/tmux/tmux.conf" "~/.tmux.conf"
-#   ln -svf "$DOTFILES/ghci" "~/.ghci"
-#
-# Every existing file will be backed up.
-# If a directory in the destination path doesn't exist, it is created.
-# `scripts/conf` doesn't take care of removing empty directories after unlinking.
-#
-# The arrows "x => y" mean:
-#   - "source => name_of_symlink"
-#   - "the symbolic link to x is y"
-#   - "y points to x"
-#
-# When linking/unlinking you either provide the name of the top directory,
-#  or the full name of the mapped path.
+# Thirdparty tools
+tools:
+- solvitaire:
+  -- freecell: bin/freecell
+  -- sol: bin/solitaire
+  -- spider: bin/spider
+- tmpmail/tmpmail: bin/tmpmail
