@@ -233,7 +233,9 @@ map i $~/.config/lf/preview.sh $f | less -R
 
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
-map gdz cd ~/Documents/Programming/thezeroalpha.github.io/
+map gdw cd ~/Documents/Programming/alex.balgavy.eu/
+map gdb cd ~/Documents/Programming/blog.alex.balgavy.eu/
+map gdl cd ~/Documents/Programming/lectures.alex.balgavy.eu/
 map gb cd ~/Documents/Calibre\ Library/
 map gdp cd ~/Documents/Personal\ documents/
 map gD cd ~/Desktop
