@@ -18,6 +18,7 @@ lf: ~/.config/lf
 newsboat:
 - config: ~/.config/newsboat/config
 - urls: ~/.config/newsboat/urls
+- notify-wrapper: ~/.config/newsboat/notify-wrapper
 - cache.db: ~/.local/share/newsboat/cache.db
 - history.search: ~/.local/share/newsboat/history.search
 - history.cmdline: ~/.local/share/newsboat/history.cmdline

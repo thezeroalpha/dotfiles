@@ -59,6 +59,7 @@ https://github.com/getzola/zola/releases.atom                               "sof
 https://www.freelists.org/feed/regolith-linux                               "software-releases"  "!"    "~Regolith Linux"
 https://github.com/laurent22/joplin/releases.atom                           "software-releases"  "!"    "~Joplin"
 https://gitlab.com/ajak/tuir/-/tags?format=atom                             "software-releases"  "!"    "~Tuir"
+https://github.com/newsboat/newsboat/releases.atom                          "software-releases"  "!"    "~Newsboat"
 "query:Software releases:tags # \"software-releases\""                      "tech"
 
 # Followed videos

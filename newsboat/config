@@ -48,7 +48,7 @@ color listnormal_unread white default
 
 browser "open -g '%u'"
 macro , open-in-browser
-macro i set browser "i(){ youtube-dl --get-title --get-duration --get-description $1 | less;};i"; open-in-browser ; set browser "open -g '%u'"
+macro i set browser "youtube-dl --get-title --get-duration --get-description '%u' | less"; open-in-browser; set browser "open -g '%u'"
 macro v set browser "mpvq %u 1>/dev/null 2>&1 & disown"; open-in-browser ; set browser "open -g '%u'"
 macro w set browser "w3m"; open-in-browser ; set browser "open -g '%u'"
 macro l set browser "lynx"; open-in-browser ; set browser "open -g '%u'"
@@ -56,4 +56,4 @@ macro c set browser "pbcopy <<<" ; open-in-browser ; set browser "open -g '%u'"
 macro u set browser "urlview"; open-in-browser ; set browser "open -g '%u'"
 macro a set browser "newsboat-dl aonly %u 1>/dev/null 2>&1 & disown"; open-in-browser ; set browser "open -g '%u'"
 macro d set browser "newsboat-dl av %u 1>/dev/null 2>&1 & disown"; open-in-browser ; set browser "open -g '%u'"
-macro s set browser "{ open -gj 'pocket://add?url=%u' && sleep 3 && killall Pocket; } 1>/dev/null 2>&1 & disown"; open-in-browser ; set browser "open -g '%u'"
+macro s set browser "pocketsave '%u' 1>/dev/null 2>&1 & disown"; open-in-browser ; set browser "open -g '%u'"

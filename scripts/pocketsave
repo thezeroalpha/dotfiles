@@ -1,0 +1,5 @@
+#!/bin/sh
+open -gj "pocket://add?url=$1" \
+  && sleep 3 \
+  && killall Pocket
+
