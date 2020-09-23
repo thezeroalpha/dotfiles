@@ -1,9 +1,10 @@
 snippet readfile "Read from a file" b
-open(${1:handle}, "<${2:filename}") or die "Couldn't open the file $2, \$!";
+open(${1:handle}, "<", "${2:filename}") or die "Couldn't open the file $2, \$!";
 
-while(<$1>) {
+while(my $line = <$1) {
   $0
 }
+close($1);
 endsnippet
 
 snippet functable "Function dispatch table" b
