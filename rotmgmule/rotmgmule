@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Term::Choose "choose";
+use MIME::Base64;
+
+my $exaltpath = "$ENV{HOME}/RealmOfTheMadGod/Production/RotMGExalt.app";
+my $accountfile = "$ENV{HOME}/.local/share/rotmgmule/accounts.tsv";
+
+open(accfile_h, "<", $accountfile) or die "Couldn't open the file $accountfile, $!";
+
+my %accounts;
+while(my $line = <accfile_h>) {
+  chomp $line;
+  my ($k, $v) = split("\t", $line);
+  $accounts{$k} = $v;
+}
+close(accfile_h);
+
+my $choice = choose([keys %accounts], { layout => 3 });
+system("open", "-n", $exaltpath, "--args", "'data:{platform:Deca,password:@{[encode_base64($accounts{$choice}, '')]},guid:@{[encode_base64($choice,'')]},env:4}'");
