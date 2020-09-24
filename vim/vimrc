@@ -590,6 +590,13 @@ if has('breakindent')
   set breakindentopt+=shift:3
 endif
 
+" Default formatoptions:
+" - q: allow gq
+" - n: recognise numbered lists
+" - l: don't break long lines in insert mode
+" - j: remove comment leader when joining
+set formatoptions=qnlj
+
 " Numbered lines
 set number
 set numberwidth=3
@@ -889,7 +896,6 @@ if has('autocmd')
     autocmd!
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertLeave * setlocal cursorline
-    autocmd FileType * setlocal formatoptions=qnlj
   augroup END
   augroup vimrc_commands
     autocmd!
