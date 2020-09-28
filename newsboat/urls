@@ -298,4 +298,5 @@ https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=mynameisgriz&type=changes&limit=5&format=Atom                          "music"     "~GRIZ"
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=65daysofstatic&type=changes&limit=5&format=Atom                        "music"     "~65daysofstatic"
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=gramatik&type=changes&limit=5&format=Atom                              "music"     "~Gramatik"
+https://rss.alex.balgavy.eu/?action=display&bridge=Soundcloud&u=TroyBoi&t=tracks&format=Atom                                                            "music"     "~TroyBoi"
 "query:Music:tags # \"music\""
