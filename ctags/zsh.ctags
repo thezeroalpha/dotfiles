@@ -1,6 +1,6 @@
 --langdef=zsh
 --langmap=zsh:(zshrc)
 --regex-zsh=/^.*source ([^ \t]+)/"\1"/s,source/
---regex-zsh=/^[ \t]*(export )?([A-Z0-9_]+)=([^ \t\n]+)/\2: "\3"/e,env_variable/
+--regex-zsh=/^[ \t]*(export )?([A-Z0-9_]+)=([^ \t\n]+)/\2: "\3"/e,envvariable/
 --regex-zsh=/^[ \t]*([a-zA-Z0-9_\-]+) ?\(\)/\1\(\)/f,function/
 --regex-zsh=/^[ \t]*bindkey ['"]([^'"]+)["'] ([^ \t#]+)/\1: \2/m,mapping/
