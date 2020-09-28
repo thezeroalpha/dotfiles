@@ -189,19 +189,6 @@ let g:tagbar_type_go = {
       \ 'ctagsbin'  : 'gotags',
       \ 'ctagsargs' : '-sort -silent'
       \ }
-let g:tagbar_type_markdown = {
-      \ 'ctagstype' : 'markdown',
-      \ 'kinds' : [
-      \ 'c:Heading L1',
-      \ 's:Heading L2',
-      \ 'S:Heading L3',
-      \ 't:Heading L4',
-      \ 'T:Heading L5',
-      \ 'u:Heading L6'
-      \ ],
-      \ 'sort': 0
-      \ }
-
 let g:tagbar_type_scss = {
       \ 'ctagstype' : 'scss',
       \ 'kinds' : [
@@ -715,6 +702,9 @@ if has('terminal')
   command! Tuir tab terminal tuir
 endif
 " }}}
+" Digraphs {{{1
+exe 'digraphs o+ ' .. 0x2295
+exe 'digraphs O+ ' .. 0x2a01
 " Mappings {{{1
 " So I don't have to mash shift all the time
 nnoremap ; :
