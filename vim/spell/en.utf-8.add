@@ -270,3 +270,6 @@ malloc
 config
 Equational
 shellcode
+CRLF
+stdin
+hostname
