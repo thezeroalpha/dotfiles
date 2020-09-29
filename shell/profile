@@ -39,6 +39,9 @@ fi
 if [ -d "$HOME/go/bin" ] ; then
     PATH="$HOME/go/bin:$PATH"
 fi
+if [ -d "/usr/local/opt/util-linux/bin" ] ; then
+    PATH="/usr/local/opt/util-linux/bin:$PATH"
+fi
 if [ -f "$HOME/.secret_env_variables" ] ; then
   . "$HOME/.secret_env_variables"
 fi
