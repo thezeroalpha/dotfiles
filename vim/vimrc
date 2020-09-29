@@ -814,6 +814,7 @@ nnoremap <leader>P "+P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
 nnoremap <leader>yy "+yg_
+nnoremap <leader>y<leader> :<c-u>let @*=@0<CR>
 nnoremap Y y$
 
 " Insert lines without moving cursor and going into insert mode
