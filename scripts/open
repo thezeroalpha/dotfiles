@@ -1,0 +1,50 @@
+#!/bin/sh
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+PARAMS=""
+while [ $(("$#")) -ne 0 ]; do
+  case "$1" in
+    -g|--background)
+      background=1
+      shift 2
+      ;;
+    -h|--help)
+      echo "Usage:"
+      echo "open [-g] file"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+background=${background:-0}
+case $os in
+  linux*)
+    # not sure how backgrounding is handled with xdg-open
+    command xdg-open "$@"
+    ;;
+  darwin*)
+    if [ $background -eq 1 ]; then open -g "$@"
+    else open "$@"
+    fi
+    /usr/bin/open "$@"
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    printf "Windows not supported yet.\n"
+    ;;
+  *)
+    printf "Operating system %s not supported yet.\n" "$os"
+    ;;
+esac
