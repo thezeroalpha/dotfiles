@@ -1,5 +1,5 @@
 #!/bin/sh
-[ -x /usr/libexec/path_helper ] && eval "$(/usr/libexec/path_helper -s)"
+[ -x /usr/libexec/path_helper ] && unset PATH && eval "$(/usr/libexec/path_helper -s)"
 [ -d "$HOME/bin" -o -L "$HOME/bin" ]                                                             && [ -n "${PATH##*"$HOME/bin"*}" ]                               && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/.local/bin" -o -L "$HOME/.local/bin" ]                                               && [ -n "${PATH##*"$HOME/.local/bin"*}" ]                        && PATH="$HOME/.local/bin:$PATH"
 [ -d "$HOME/.scripts" -o -L "$HOME/.scripts" ]                                                   && [ -n "${PATH##*"$HOME/.scripts"*}" ]                          && PATH="$HOME/.scripts:$PATH"
