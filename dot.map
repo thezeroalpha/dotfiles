@@ -55,11 +55,9 @@ emacs:
 
 # Config: shell
 shell:
-- zshenv: ~/.zshenv
+- zshenv_bootstrap: ~/.zshenv
+- zshenv: ~/.config/zsh/.zshenv
 - zshrc: ~/.config/zsh/.zshrc
-- bash_profile: ~/.bash_profile
-- bashrc: ~/.bashrc
-- profile: ~/.profile
 - inputrc: ~/.inputrc
 
 # Config: Vim

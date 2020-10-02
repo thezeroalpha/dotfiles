@@ -1,6 +1,6 @@
 batteryCheck.scpt
 .DS_Store
-secret_env_variables
+secret_env
 oh-my-zsh/cache
 error.log
 newsboat/notify-wrapper

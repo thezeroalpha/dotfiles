@@ -1,22 +1,18 @@
+# ZSH-specific inits
+. "$DOTFILES"/shell/rc
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
-[ -n "$DOTFILES" ] || { echo '$DOTFILES not set' && exit 1; }
-
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source_if_exists() {
-  if [[ -f "$1" ]]; then
-    source "$1"
-  fi
-}
+source_if_exists() { [ -f "$1" ] && . "$1"; }
 
 # Options
 if [ -n "$VIMRUNTIME" ]; then set -o vi
-else set -o emacs
-fi
+else set -o emacs; fi
+
 setopt alwaystoend         # On completion, move cursor to end of word
 setopt autocd              # If I forget 'cd' before a path
 setopt autopushd           # Make cd push old directory onto stack
@@ -57,7 +53,7 @@ zle -N bracketed-paste bracketed-paste-magic
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
 alias cp='nocorrect cp'
-alias g='nocorrect g'
+alias g='nocorrect git'
 alias git='nocorrect git'
 alias man='nocorrect man'
 alias mkdir='nocorrect mkdir'
@@ -70,30 +66,9 @@ setopt correct_all
 # Built-in Tetris (because why not)
 alias tetris="autoload -Uz tetriscurses && tetriscurses"
 
-# Import colorscheme from 'wal' asynchronously
-# &   # Run the process in the background.
-# # ( ) # Hide shell job control messages.
-(cat ~/.cache/wal/sequences &)
-
-# # To add support for TTYs this line can be optionally added.
-. ~/.cache/wal/colors-tty.sh
-
-
-# Enable virtualenvwrapper if installed
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-  export WORKON_HOME=$HOME/.config/virtualenvs
-  export VIRTUALENVWRAPPER_PYTHON=`which python3`
-  export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-  mkdir -p $WORKON_HOME
-  source /usr/local/bin/virtualenvwrapper_lazy.sh
-fi
-
 # Powerlevel10k theme
 source_if_exists ~/.p10k.zsh
 source_if_exists $DOTFILES/shell/powerlevel10k/powerlevel10k.zsh-theme
-
-# The 'z' command to jump around dirs
-source_if_exists $DOTFILES/shell/z/z.sh
 
 # FZF for fuzzy finding
 source_if_exists ~/.fzf.zsh
@@ -101,10 +76,6 @@ source_if_exists ~/.fzf.zsh
 # Ruby bundler plugin, automatically runs binstub in .bin or `bundle exec`s
 source_if_exists $DOTFILES/shell/zsh-plugins/bundler.plugin.zsh
 source_if_exists $DOTFILES/shell/zsh-plugins/gitignore.plugin.zsh
-
-# Enable custom aliases and functions
-source_if_exists "$DOTFILES/shell/aliases"
-source_if_exists "$DOTFILES/shell/functions"
 
 insert-arg-of-prev-cmd() {
 : ${NUMERIC:-1}
@@ -140,6 +111,3 @@ bindkey '^Z' _zsh_cli_fg
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 source_if_exists $DOTFILES/shell/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

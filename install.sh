@@ -50,7 +50,7 @@ case $yn in
     ;;
 esac
 
-echo "Don't forget to create a ~/.secret_env_variables with:"
+echo "Don't forget to create a $DOTFILES/shell/secret_env with:"
 # Don't want these variables to expand
 # shellcheck disable=SC2016
 echo '- $DISCOGS_API_TOKEN'

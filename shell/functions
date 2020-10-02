@@ -1,11 +1,11 @@
-#!/bin/sh bash
+#!/usr/bin/env bash
 # vim:foldmethod=indent:foldlevel=0
 cd() { builtin cd -P "$@" || return; }                                  # list contents after cding
 mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                 # make dir and cd at the same time
 procinfo() { pgrep -f "$1"; }                                           # get info about a process (by name)
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove empty directories
-hr() { for ((i=0; i<$(tput cols); i++)); do echo -n "#"; done; echo; }  # insert a <hr> in the terminal
-vimq() { vim -q <(eval $(fc -nl -1)); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
+hr() { : $((i=0)); while [ $((i<$(tput cols))) -ne 0 ]; do printf "#"; _=$((i=i+1)); done; echo; }  # insert a <hr> in the terminal
+vimq() { vim -q <(eval "$(fc -nl -1)"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
 gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                           # Access global pip while using virtualenvs
 nls() { expr `ls -l | wc -l | xargs echo` - 1; }                        # Count the number of files in the directory
 reload-completions() { rm ~/.zcompdump && compinit; }
