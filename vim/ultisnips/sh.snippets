@@ -23,7 +23,7 @@ endsnippet
 snippet argparse "Parse arguments/flags" b
 PARAMS=""
 
-while [ \$(("\$#")) -ne 0 ]; do
+while [ \$((\$#)) -ne 0 ]; do
   case "\$1" in
     -${1:letter}|--${2:long name})
       $2="\$2"
