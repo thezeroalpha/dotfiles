@@ -63,7 +63,7 @@
     fuckitall = reset --hard origin/master
     ssh = "!git remote get-url origin | sed -E 's|^https?://([^/]+)/(.+)|git@\\1:\\2|' | tr -d '\n'"
     home = "!git remote get-url origin | sed -E 's|^git@([^:]+):|https://\\1/|' | tr -d '\n'"
-    open = "!xdg-open $(git home)"
+    open = "!open $(git home)"
     dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
     reignore = "!git rm -r --cached .; git add ."
     rb = "rebase --committer-date-is-author-date"

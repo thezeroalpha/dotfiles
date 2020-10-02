@@ -1,12 +1,11 @@
 #!/bin/sh
-os=$(uname -s | tr '[:upper:]' '[:lower:]')
-
+set -x
 PARAMS=""
-while [ $(("$#")) -ne 0 ]; do
+while [ $(($#)) -ne 0 ]; do
   case "$1" in
     -g|--background)
       background=1
-      shift 2
+      shift
       ;;
     -h|--help)
       echo "Usage:"
@@ -30,16 +29,16 @@ done
 eval set -- "$PARAMS"
 
 background=${background:-0}
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case $os in
   linux*)
     # not sure how backgrounding is handled with xdg-open
     command xdg-open "$@"
     ;;
   darwin*)
-    if [ $background -eq 1 ]; then open -g "$@"
-    else open "$@"
+    if [ $background -eq 1 ]; then /usr/bin/open -g "$@"
+    else /usr/bin/open "$@"
     fi
-    /usr/bin/open "$@"
     ;;
   msys*|cygwin*|mingw*|nt|win*)
     printf "Windows not supported yet.\n"
