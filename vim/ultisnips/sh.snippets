@@ -23,7 +23,7 @@ endsnippet
 snippet argparse "Parse arguments/flags" b
 PARAMS=""
 
-while (( "\$#" )); do
+while [ \$(("\$#")) -ne 0 ]; do
   case "\$1" in
     -${1:letter}|--${2:long name})
       $2="\$2"
@@ -92,4 +92,25 @@ case "$conf" in
     ;;
 esac
 $0
+endsnippet
+
+snippet osdetect "Detect OS" b
+os=\$(uname -s | tr '[:upper:]' '[:lower:]')
+case "\$os" in
+  linux*)
+    ${1:# code for Linux}
+    ;;
+  darwin*)
+    ${2:# code for macOS}
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    ${3:# code for Windows}
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "\$os"
+    ;;
+esac
+endsnippet
+snippet contains "String contains substring" w
+[ -z "\${${1:strvar}##*${2:substr}*}" ]$0
 endsnippet
