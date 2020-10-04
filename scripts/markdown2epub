@@ -1,0 +1,46 @@
+#!/bin/sh
+command -v pandoc 1>/dev/null 2>&1 || { printf "error: pandoc not installed.\n"; exit 1; }
+[ $# -eq 2 ] || { printf "Usage: markdown2epub input.md output.epub\n"; exit 1; }
+[ -f "$1" ] || { printf "File %s not found.\n" "$1"; exit 1; }
+
+write_css() {
+  # CSS intentionally formatted like crap, it doesn't matter
+  cat <<- 'EOF' > "$1"
+h4{text-align:left}h5{text-align:left}h6{text-align:left}nav#landmarks
+ol,nav#toc ol{padding:0;margin-left:1em}nav#landmarks ol li,nav#toc ol
+li{list-style-type:none;margin:0;padding:0}a.footnote-ref{vertical-align:super}em,em
+em em,em em em em em{font-style:italic}em em,em em em
+em{font-style:normal}span.smallcaps{font-variant:small-caps}span.underline{text-decoration:underline}q{quotes:"“"
+"”" "‘"
+"’"}div.column{display:inline-block;vertical-align:top;width:50%}div.hanging-indent{margin-left:1.5em;text-indent:-1.5em}
+body{font-family:"DejaVu
+Serif",serif;margin:5% 5% 20%
+5%;text-align:justify;font-size:.75em;line-height:1.5}h1{text-align:left;font-size:2em}
+h2{text-align:left}h3{text-align:left}h1.title{text-align:center}p.author{text-align:center}code{font-family:"DejaVu Sans
+Mono",monospace;background-color:#ebebeb;font-size:100%;line-height:inherit;white-space:pre-wrap}
+pre{font-family:"DejaVu Sans Mono",monospace;padding:1em;overflow:auto;font-size:100%;line-height:inherit;border-radius:.25em;
+background-color:#ebebeb;white-space:pre-wrap}table{border-collapse:collapse;font-size:100%}td,th{padding:.8em}
+table,td,th{border:.06em solid #000}a{text-decoration:none}blockquote{border-style:solid solid solid
+solid;border-color:#a41434;border-width:medium;border-radius:.5em;padding-left:1em;padding-right:1em;background-color:#fcecf4}@media
+screen{.sourceCode{overflow:visible!important;white-space:pre-wrap!important}}
+EOF
+}
+
+outfile="${2%%.epub}.epub"
+
+cssfile="$(mktemp)"
+trap 'rm $cssfile' INT TERM EXIT
+write_css "$cssfile"
+
+printf "Title: "; read -r title
+while [ -z "$title" ]; do printf "Title required: "; read -r title; done
+printf "Author: "; read -r author
+while [ -z "$author" ]; do printf "Author required: "; read -r author; done
+printf "Language (default 'en-US'): "; read -r lang
+pandoc "$1" -f gfm --toc --standalone --top-level-division=chapter \
+  --css="$cssfile" \
+  -M title="$title" -M author="$author" -M lang="${lang:-en-US}" \
+  -o "$outfile"
+trap - INT TERM EXIT
+rm "$cssfile"
+printf "Output saved to %s.\n" "$outfile"
