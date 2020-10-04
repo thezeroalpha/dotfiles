@@ -15,3 +15,7 @@ mpv/scripts/shared/sponsorblock.db*
 karabiner/automatic_backups/
 rotmgmule/accounts.tsv
 scripts/rotmgmule
+w3m/*
+!w3m/config
+!w3m/mailcap
+!w3m/keymap

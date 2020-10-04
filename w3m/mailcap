@@ -1,0 +1,2 @@
+image/*; sxiv -a '%s'
+video/*; mpvq '%s'
