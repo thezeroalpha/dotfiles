@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # clc - Copy data to clipboard
 #
 # Usage:
@@ -8,33 +8,41 @@
 #  clc <file>         - copies a file's contents to clipboard
 #
 file=$1
-if [[ $OSTYPE == darwin* ]]; then
-  if [[ -z $file ]]; then
-    pbcopy
-  else
-    pbcopy < "$file"
-  fi
-elif [[ $OSTYPE == cygwin* || $OSTYPE == msys* ]]; then
-  if [[ -z "$file" ]]; then
-    cat > /dev/clipboard
-  else
-    cat "$file" > /dev/clipboard
-  fi
-else
-  if command -v xclip &>/dev/null; then
-    if [[ -z $file ]]; then
-      xclip -in -selection clipboard
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  linux*)
+    if command -v xclip 1>/dev/null 2>&1; then
+      if [ -z "$file" ]; then
+        xclip -in -selection clipboard
+      else
+        xclip -in -selection clipboard "$file"
+      fi
+    elif command -v xsel 1>/dev/null 2>&1; then
+      if [ -z "$file" ]; then
+        xsel --clipboard --input
+      else
+        xsel --clipboard --input < "$file"
+      fi
     else
-      xclip -in -selection clipboard "$file"
+      printf "xclip/xsel not installed\n"
     fi
-  elif command -v xsel &>/dev/null; then
-    if [[ -z $file ]]; then
-      xsel --clipboard --input
+    ;;
+  darwin*)
+    if [ -z "$file" ]; then
+      pbcopy
     else
-      cat "$file" | xsel --clipboard --input
+      pbcopy < "$file"
     fi
-  else
-    print "clc: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    if [ -z "$file" ]; then
+      cat > /dev/clipboard
+    else
+      cat "$file" > /dev/clipboard
+    fi
+    ;;
+  *)
+    printf "clc: Platform %s not supported.\n" "$os"
     return 1
-  fi
-fi
+    ;;
+esac

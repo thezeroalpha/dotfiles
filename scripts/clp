@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # clp - "Paste" data from clipboard to stdout
 #
 # Usage:
@@ -16,17 +16,25 @@
 #
 #   # Paste to a file
 #   clp > file.txt
-if [[ $OSTYPE == darwin* ]]; then
-  pbpaste
-elif [[ $OSTYPE == cygwin* || $OSTYPE == msys* ]]; then
-  cat /dev/clipboard
-else
-  if command -v xclip &>/dev/null; then
-    xclip -out -selection clipboard
-  elif command -v xsel &>/dev/null; then
-    xsel --clipboard --output
-  else
-    print "clc: Platform $OSTYPE not supported or xclip/xsel not installed" >&2
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  linux*)
+    if command -v xclip 1>/dev/null 2>&1; then
+      xclip -out -selection clipboard
+    elif command -v xsel 1>/dev/null 2>&1; then
+      xsel --clipboard --output
+    else
+      printf "clc: xclip/xsel not installed\n"
+    fi
+    ;;
+  darwin*)
+    pbpaste
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    cat /dev/clipboard
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "$os"
     return 1
-  fi
-fi
+    ;;
+esac
