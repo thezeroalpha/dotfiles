@@ -81,6 +81,11 @@ endsnippet
 snippet trap "Exit trap" b
 trap ${1:cleanup_function} INT TERM EXIT
 endsnippet
+
+snippet untrap "Disable exit trap" b
+trap - INT TERM EXIT
+endsnippet
+
 snippet confirm "Ask for confirmation" b
 read -rp "${1:prompt}" -n 1 -s conf
 case "$conf" in
@@ -111,6 +116,24 @@ case "\$os" in
     ;;
 esac
 endsnippet
+
 snippet contains "String contains substring" w
 [ -z "\${${1:strvar}##*${2:substr}*}" ]$0
+endsnippet
+
+snippet herevar "Store heredoc in a variable" b
+# EOF quoted means no var expansion, dash means ignore indentation
+unset ${1:heredoc}
+while IFS="$(printf "\n")" read -r line; do
+  $1="$(printf "%s%s" "\$$1" "$line\n")"
+done <<-'EOF'
+${2:heredoc contents}
+EOF
+endsnippet
+
+snippet herefile "Store heredoc in a file" b
+# EOF quoted means no var expansion, dash means ignore indentation
+cat <<-'EOF' > "${1:filename}"
+${2:heredoc contents}
+EOF
 endsnippet
