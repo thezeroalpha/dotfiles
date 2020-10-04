@@ -13,7 +13,7 @@ case "$1" in
     setsid -f mpva "$1"
     ;;
   http://*|https://*)
-    w3m "$1"
+    w3m -config ~/.config/w3m/config "$1"
     ;;
   *)
     if [ -f "$1" ]; then "$EDITOR" "$1"
