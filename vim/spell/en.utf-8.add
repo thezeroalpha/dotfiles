@@ -273,3 +273,5 @@ shellcode
 CRLF
 stdin
 hostname
+eval
+unsanitized
