@@ -28,6 +28,8 @@ https://idlewords.com/index.xml                                                 
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=multi&rs=vim%2Ccommandline%2Cprivacy%2Cprivacytoolsio&format=Atom     "tech"      "~Subreddits"
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=freegamefindings&format=Atom                                 "tech"      "~Free games"
 https://learnbyexample.github.io/atom.xml                                                                                               "tech"      "~Sundeep Agarwal"
+https://craphound.com/feed/                                                                                                             "tech"      "~Cory Doctorow"
+https://boingboing.net/author/cory_doctorow_1/feed                                                                                      "tech"      "~Cory Doctorow (BoingBoing)"
 
 # Deep web
 https://pirate.london/feed                                                  "deep web"                  "~pirate dot london"
