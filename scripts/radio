@@ -1,18 +1,24 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'json'
-require 'rest-client' # TODO: get rid of this gem, just use net/http
 class Subreddit
+  require 'json'
+  require 'open-uri'
+
   def initialize(name)
     @url = "https://www.reddit.com/r/#{name}/top.json?t=week&limit=100&show=all"
-    response = RestClient.get(@url)
-    data = JSON.parse(response)['data']
-    @posts = data['children']
+    begin
+      URI.open(@url, 'User-Agent' => 'ruby/2.7', 'Accept' => 'application/json') do |response|
+        data = JSON.parse(response.read)['data']
+        @posts = data['children']
+      end
+    rescue OpenURI::HTTPError
+      @posts = []
+    end
   end
 
   def posts?
-    @posts.!empty?
+    !@posts.empty?
   end
 
   def play
