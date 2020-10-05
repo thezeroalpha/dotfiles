@@ -1,6 +1,5 @@
 #!/bin/sh
 # vim: foldmethod=marker foldlevel=0
-command -v rbenv 1>/dev/null 2>&1 && eval "$(rbenv init -)"
 export DOTFILES="$HOME/.dotfiles"
 EDITOR="$(command -v vim)"; export EDITOR
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"

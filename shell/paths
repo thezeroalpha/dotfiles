@@ -7,9 +7,9 @@
 [ -d "/usr/local/sbin" -o -L "/usr/local/sbin" ]                                                    && [ -n "${PATH##*"/usr/local/sbin"*}" ]                            && PATH="/usr/local/sbin:$PATH"
 [ -d "/usr/local/opt/coreutils/libexec/gnubin" -o -L "/usr/local/opt/coreutils/libexec/gnubin" ]    && [ -n "${PATH##*"/usr/local/opt/coreutils/libexec/gnubin"*}" ]    && PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 [ -d "$HOME/.local/gnat/bin" -o -L "$HOME/.local/gnat/bin" ]                                        && [ -n "${PATH##*"$HOME/.local/gnat/bin"*}" ]                      && PATH="$HOME/.local/gnat/bin:$PATH"
-rubygemspath="$(ruby -e 'puts Gem.user_dir')/bin"                                                   && [ -n "${PATH##*"$rubygemspath"*}" ]                              && PATH="$rubygemspath:$PATH"
 [ -d "$HOME/bin" -o -L "$HOME/bin" ]                                                                && [ -n "${PATH##*"$HOME/bin"*}" ]                                  && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/.bin" -o -L "$HOME/.bin" ]                                                              && [ -n "${PATH##*"$HOME/.bin"*}" ]                                 && PATH="$HOME/.bin:$PATH"
 [ -d "$HOME/.scripts" -o -L "$HOME/.scripts" ]                                                      && [ -n "${PATH##*"$HOME/.scripts"*}" ]                             && PATH="$HOME/.scripts:$PATH"
 [ -d "$HOME/.local/share/gems/bin" -o -L "$HOME/.local/share/gems/bin" ]                            && [ -n "${PATH##*"$HOME/.local/share/gems/bin"*}" ]                && PATH="$HOME/.local/share/gems/bin:$PATH"
+command -v rbenv 1>/dev/null 2>&1 && eval "$(rbenv init -)"
 export PATH
