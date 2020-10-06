@@ -25,3 +25,6 @@
 [submodule "tools/tmpmail"]
 	path = tools/tmpmail
 	url = https://github.com/sdushantha/tmpmail.git
+[submodule "tools/radio"]
+	path = tools/radio
+	url = git@github.com:thezeroalpha/radio
