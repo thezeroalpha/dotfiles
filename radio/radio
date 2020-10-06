@@ -1,0 +1,116 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+class Subreddit
+  require 'json'
+  require 'open-uri'
+
+  def initialize(name)
+    @url = "https://www.reddit.com/r/#{name}/top.json?t=week&limit=100&show=all"
+    begin
+      URI.open(@url, 'User-Agent' => 'ruby/2.7', 'Accept' => 'application/json') do |response|
+        data = JSON.parse(response.read)['data']
+        @posts = data['children']
+      end
+    rescue OpenURI::HTTPError
+      @posts = []
+    end
+  end
+
+  def posts?
+    !@posts.empty?
+  end
+
+  def play
+    mpv_options = '--no-video --volume=50'
+    links = []
+    @posts.each do |post|
+      p = post['data']
+      if !p['is_self'] && p['post_hint'] != 'image'
+        links.append(title: p['title'], url: p['url'], reddit: "https://reddit.com#{p['permalink']}")
+      end
+    end
+
+    begin
+      puts "Number of tracks: #{links.length}"
+      links.each do |link|
+        puts "\n-----\n"
+        puts "# #{link[:title]}"
+        puts "Reddit: #{link[:reddit]}"
+        puts '(press q to skip, ^C to stop)'
+        puts "Cannot play #{link[:url]}" unless system("mpv #{mpv_options} '#{link[:url]}'")
+      end
+    rescue Interrupt
+      true
+    end
+  end
+end
+
+class Radio
+  CONFIG_FILE = "#{ENV['HOME']}/.config/radio/urls"
+  SUBREDDIT_CHANNEL = 'Play from music subreddit'
+  def initialize
+    unless system('command -v mpv 1>/dev/null 2>&1')
+      warn 'mpv not installed.'
+      exit 1
+    end
+    unless File.exist? "#{ENV['HOME']}/.config/radio/urls"
+      warn "Please set URLs in #{ENV['HOME']}/.config/radio/urls."
+      exit 1
+    end
+    @channels = {}
+    File.open(CONFIG_FILE, 'r').each do |line|
+      unless line.match?(/^\s*\#/)
+        parts = line.chomp.split(/(?<=")\s+(?=http)/)
+        @channels[parts.first.gsub('"', '')] = parts.last
+      end
+    end
+    @channels[SUBREDDIT_CHANNEL] = SUBREDDIT_CHANNEL
+  end
+
+  def select
+    puts "\e[H\e[2J"
+    channel_names = @channels.keys
+    user_selection = false
+    begin
+      until user_selection
+        channel_names.each_with_index do |name, i|
+          puts "#{i + 1}: #{name}"
+        end
+        print 'Enter number or press ^C to exit> '
+        user_selection = (Integer(gets) - 1) rescue false
+        if user_selection && !@channels[channel_names[user_selection]]
+          puts 'Invalid selection, please try again.'
+          user_selection = false
+        end
+      end
+      @channels[channel_names[user_selection]]
+    rescue Interrupt
+      nil
+    end
+  end
+
+  def play(selection)
+    if selection == SUBREDDIT_CHANNEL
+      print 'Enter subreddit name: '
+      sub = Subreddit.new(gets.chomp)
+      until sub.posts?
+        puts 'Subreddit has no music posts or does not exist.'
+        print 'Enter subreddit name: '
+        sub = Subreddit.new(gets.chomp)
+      end
+      sub.play
+    else
+      puts "\e[H\e[2J"
+      puts "Loading #{selection}..."
+      system 'mpv', selection, '--volume=50'
+      # visualiser: system 'mpv', selection, '--volume=50 --script="$HOME/.config/mpv/visualizer.lua" --really-quiet -vo caca'
+    end
+  end
+end
+
+radio = Radio.new
+while (selection = radio.select)
+  result = radio.play selection
+  puts "Error playing #{selection}" unless result
+end

@@ -27,7 +27,8 @@ newsboat:
 - history.cmdline: ~/.local/share/newsboat/history.cmdline
 polybar: ~/.config/polybar
 radio:
-- radio-config: ~/.config/radio-config
+- urls: ~/.config/radio/urls
+- radio: ~/.scripts/radio
 ranger: ~/.config/ranger
 tuir: ~/.config/tuir
 screen:
