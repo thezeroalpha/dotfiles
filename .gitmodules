@@ -28,3 +28,6 @@
 [submodule "tools/radio"]
 	path = tools/radio
 	url = git@github.com:thezeroalpha/radio
+[submodule "tools/sc-im"]
+	path = tools/sc-im
+	url = https://github.com/andmarti1424/sc-im.git
