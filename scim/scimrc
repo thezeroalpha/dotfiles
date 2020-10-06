@@ -1,0 +1,14 @@
+nnoremap ";" ":"
+set autocalc
+
+# Number, zero, decimal point begins entry
+set numeric
+set numeric_zero
+set numeric_decimal
+set filename_with_mode
+set ignorecase
+
+# Truncate text overflow, otherwise gets asterisked
+set truncate
+
+set newline_action = 0

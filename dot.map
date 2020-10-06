@@ -41,6 +41,7 @@ mps-youtube:
 joplin/keymap.json: ~/.config/joplin/keymap.json
 sxiv: ~/.config/sxiv
 w3m: ~/.config/w3m
+scim/scimrc: ~/.config/scimrc
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
