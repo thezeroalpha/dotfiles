@@ -26,9 +26,6 @@ newsboat:
 - history.search: ~/.local/share/newsboat/history.search
 - history.cmdline: ~/.local/share/newsboat/history.cmdline
 polybar: ~/.config/polybar
-radio:
-- urls: ~/.config/radio/urls
-- radio: ~/.scripts/radio
 ranger: ~/.config/ranger
 tuir: ~/.config/tuir
 screen:
@@ -68,7 +65,7 @@ vim:
 - autoload: ~/.vim/autoload
 - colors: ~/.vim/colors
 - compiler: ~/.vim/compiler
-- ftdetect: ~/.vim/ftdetect
+- filetype.vim: ~/.vim/filetype.vim
 - plugin: ~/.vim/plugin
 - syntax: ~/.vim/syntax
 - ultisnips: ~/.vim/ultisnips
