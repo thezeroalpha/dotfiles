@@ -31,3 +31,6 @@
 [submodule "tools/sc-im"]
 	path = tools/sc-im
 	url = https://github.com/andmarti1424/sc-im.git
+[submodule "tools/hpanot"]
+	path = tools/hpanot
+	url = git@git.alex.balgavy.eu:hpanot.git
