@@ -34,3 +34,7 @@
 [submodule "tools/hpanot"]
 	path = tools/hpanot
 	url = git@git.alex.balgavy.eu:hpanot.git
+[submodule "radio"]
+	url = git@git.alex.balgavy.eu:radio.git
+[submodule "conf"]
+	url = git@git.alex.balgavy.eu:conf.git
