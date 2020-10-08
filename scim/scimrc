@@ -2,9 +2,7 @@ nnoremap ";" ":"
 set autocalc
 
 # Number, zero, decimal point begins entry
-set numeric
-set numeric_zero
-set numeric_decimal
+set numeric = 0
 set filename_with_mode
 set ignorecase
 
