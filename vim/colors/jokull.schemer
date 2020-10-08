@@ -50,6 +50,8 @@ palette:
     " Orange
     orange #ff9900.
 
+ansi: #eff0f3, #125394, #145a9c, #1562c0, #2182e1, #2377e1, #3c68e6, #0a0c0f, #525963, #125394, #145a9c, #1562c0, #2182e1, #2377e1, #3c68e6, #0a0c0f
+
 " group                fg_color, bg_color.        attribute
 Normal                 text, bg
 Cursorline             NONE, lightgrey
@@ -88,7 +90,7 @@ Constant               orange, NONE.
 Diffadd                NONE, llightgreen
 Diffdelete             NONE, softred
 Diffchange             text, lightpurp
-Diftext                NONE, darkpurp.            bold
+Difftext                NONE, darkpurp.            bold
 GitGutterAdd           ddarkgreen, bg
 GitGutterChange        gold, bg
 GitGutterDelete        darkred, bg
