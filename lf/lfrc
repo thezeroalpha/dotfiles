@@ -28,13 +28,13 @@ set previewer ~/.config/lf/preview
 # }}}
 # Command definitions {{{
 # define a custom 'open' command
-cmd _open &{{
-    case $(file --mime-type "$f" -b) in
+cmd open &{{
+    case $(file --mime-type "$f" -bL) in
         text/*|application/json) $EDITOR $fx;;
         image/*) sxiv $fx 2>&1 & disown;;
-        application/epub+zip) ebook-viewer $fx >/dev/null 2>&1 & disown;;
+        application/epub*) ebook-viewer $fx >/dev/null 2>&1 & disown;;
         video/*) mpvq $f;;
-        *) for f in $fx; do $OPENER "$f" > /dev/null 2> /dev/null & disown; done;;
+        *) for f in $fx; do open "$f" > /dev/null 2> /dev/null & disown; done;;
     esac
 }}
 
@@ -74,90 +74,39 @@ cmd zip ${{
   rm -rf $f-zip/
 }}
 
+cmd paste &{{
+    load=$(lf -remote 'load')
+    mode=$(echo "$load" | sed -n '1p')
+    list=$(echo "$load" | sed '1d')
+    if [ $mode = 'copy' ]; then
+        rsync -av --ignore-existing --progress $list . \
+        | stdbuf -i0 -o0 -e0 tr '\r' '\n' \
+        | while read line; do
+            lf -remote "send $id echo $line"
+        done
+    elif [ $mode = 'move' ]; then
+        mv -n $list .
+    fi
+    lf -remote 'send load'
+    lf -remote 'send clear'
+}}
+
 # paste as a symbolic link to original
 cmd paste_link %{{
-  load=$(lf -remote 'load')
-  mode=$(echo "$load" | sed -n '1p')
-  list=$(echo "$load" | sed '1d')
-
-  echo $list | while read -r fil; do
-    lf -remote "send %ln -s $fil .";
+for file in $(lf -remote 'load'); do
+    if [ ! -n "${mode+1}" ]; then
+      mode="$file"
+      continue
+    fi
+    files+=("$file")
   done
-}}
-
-# paste and rename the file on paste
-cmd paste_rename %{{
-    load=$(lf -remote 'load')
-    mode=$(echo "$load" | sed -n '1p')
-    list=($(echo "$load" | sed '1d'))
-    declare -a newnames
-    for i in "${!list[@]}"; do
-      printf "Rename ${list[$i]} to: "
-      read newname
-      newnames[$i]="$newname"
-    done
-    for i in "${!list[@]}"; do
-      if [ $mode = 'copy' ]; then
-        if command -v rsync &>/dev/null; then
-          rsync -ah --ignore-existing --progress "${list[$i]}" . && mv ./"${list[$i]##*/}" ./"${newnames[$i]}"
-        else
-          cp -r "${list[$i]}" ./"${newnames[$i]}"
-        fi
-      elif [ $mode = 'move' ]; then
-        if command -v rsync &>/dev/null; then
-          rsync -ah --ignore-existing --remove-source-files "${list[$i]}" . && mv ./"${list[$i]##*/}" ./"${newnames[$i]}"
-        else
-          mv "${list[$i]}" ./"${newnames[$i]}"
-        fi
-      fi
-    done
-    lf -remote 'send load'
-    lf -remote 'send clear'
-}}
-
-
-# improve regular paste to work if files are moved between different devices
-cmd paste %{{
-    load=$(lf -remote 'load')
-    mode=$(echo "$load" | sed -n '1p')
-    list=$(echo "$load" | sed '1d')
-    if [ $mode = 'copy' ]; then
-      if command -v rsync &>/dev/null; then
-        rsync -ah --ignore-existing --progress $list .
-      else
-        cp -r $list .
-      fi
-    elif [ $mode = 'move' ]; then
-      if command -v rsync &>/dev/null; then
-        rsync -ah --ignore-existing --remove-source-files $list .
-      else
-        mv $list .
-      fi
-    fi
-    lf -remote 'send load'
-    lf -remote 'send clear'
-}}
-
-# allow overwriting existing files
-cmd paste_overwrite %{{
-    load=$(lf -remote 'load')
-    mode=$(echo "$load" | sed -n '1p')
-    list=$(echo "$load" | sed '1d')
-    if [ $mode = 'copy' ]; then
-      if command -v rsync &>/dev/null; then
-        rsync -ah --progress $list .
-      else
-        cp -rf $list .
-      fi
-    elif [ $mode = 'move' ]; then
-      if command -v rsync &>/dev/null; then
-        rsync -ah --remove-source-files $list .
-      else
-        mv $list .
-      fi
-    fi
-    lf -remote 'send load'
-    lf -remote 'send clear'
+  if [ "${#files[@]}" -lt 1 ]; then
+    lf -remote "send $id echo no files to link files: ${files}"
+    exit 0
+  fi
+    ln -sr $files -t .
+  fi
+done
 }}
 
 # preview the highlighted file with quicklook
@@ -198,7 +147,7 @@ map X !$f
 # dedicated keys for file opener actions
 map o
 map O
-map o :_open $fx
+map o :open $fx
 map O push hol
 map v ql_preview
 map r reload
@@ -219,17 +168,15 @@ map R push :rename<space>
 map cw push :rename<space>
 map E $$EDITOR $f
 map D delete
-map <enter> :_open $fx
+map <enter> :open $fx
 map S shell
 map Y copy_path
 
 map p
 map pp paste
-map po paste_overwrite
 map pl paste_link
-map pr paste_rename
 
-map i $~/.config/lf/preview.sh $f | less -R
+map i $~/.config/lf/preview $f | less -R
 
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
