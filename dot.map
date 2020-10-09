@@ -31,7 +31,7 @@ tuir: ~/.config/tuir
 screen:
 - screenrc: ~/.screenrc
 tmux:
-- tmux.conf: ~/.config/tmux/tmux.conf
+- tmux-dark.conf: ~/.config/tmux/tmux.conf
 tmuxinator: ~/.config/tmuxinator
 ghci: ~/.ghci
 mpv: ~/.config/mpv
