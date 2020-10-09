@@ -24,6 +24,8 @@ set scrolloff 10
 
 set color256 on
 set previewer ~/.config/lf/preview
+set ignorecase true
+set preview true
 
 # }}}
 # Command definitions {{{
