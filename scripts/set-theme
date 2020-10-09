@@ -1,90 +1,80 @@
-#!/usr/bin/env bash
-set -x
-get_profile_id() {
-  while read -r profid; do
-    name=$(dconf read /org/gnome/terminal/legacy/profiles:/:"$profid"/visible-name | tr -d "'")
-    if [ "$name" = "$1" ]; then
-      echo "$profid"
-      return
-    fi
-  done < <(dconf list /org/gnome/terminal/legacy/profiles:/ | grep ^: | tr -d ':/')
-}
-change_to_profile() {
-  gsettings set org.gnome.Terminal.ProfilesList default "$(get_profile_id "$1")"
+#!/bin/sh
+# vim: foldmethod=syntax foldlevel=1
+set_macos() {
+  case "$1" in
+    dark) dark="true";;
+    light) dark="false";;
+  esac
+  osascript - <<EOF
+on run
+  tell application "System Events"
+    tell appearance preferences
+      set dark mode to $dark
+    end tell
+  end tell
+end run
+EOF
 }
 
-switch_to_dark() {
-  if [ -x ~/.local/bin/wal ] &>/dev/null; then
-    ~/.local/bin/wal -i "$HOME/Pictures/Backgrounds/dark.jpg"
+set_iterm2() {
+  ITERM2_COOKIE=$(osascript -e 'tell application "iTerm2" to request cookie') ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/3.7.5/bin/python3 \
+    - "$1" <<EOF
+#!/usr/bin/env python3
+import iterm2
+from sys import argv
+async def main(connection):
+    profiles = [p for p in await iterm2.PartialProfile.async_query(connection) if p.name.startswith("Default ")]
+    if len(argv) > 1:
+        theme = str(argv[1])
+    else:
+        import subprocess
+        result = subprocess.run(['osascript', '-e', 'tell application "System Events" to tell appearance preferences to return (get dark mode as text)'], stdout=subprocess.PIPE)
+        theme = str(result.stdout.rstrip().decode("utf-8"))
+    for p in profiles:
+        if "Light" in p.name and theme == "light":
+            await p.async_make_default()
+            return
+        elif "Dark" in p.name and theme == "dark":
+            await p.async_make_default()
+            return
+try:
+    iterm2.run_until_complete(main)
+except Exception as exception:
+    print("Error: ", exception)
+EOF
+}
+
+set_terminal_and_wallpaper() {
+  if [ "$1" = "light" ]; then
+    /usr/local/bin/wal --saturate 0.8 -i ~/Pictures/Backgrounds/light.jpg -l;
   else
-    gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Pictures/Backgrounds/dark.jpg";
-  fi
-  gsettings set org.gnome.desktop.screensaver picture-uri "file://$HOME/Pictures/Backgrounds/dark-lock.jpg";
-  gsettings set org.gnome.Terminal.Legacy.Settings theme-variant dark
-  gsettings set org.gnome.shell.extensions.user-theme name 'Flat-Remix-Miami-Dark'
-  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-  ln -sf $HOME/.dotfiles/shell/p10k-dark.zsh ~/.p10k.zsh
-  change_to_profile "Dark"
-}
-switch_to_light() {
-  if [ -x ~/.local/bin/wal ] &>/dev/null; then
-    ~/.local/bin/wal -i "$HOME/Pictures/Backgrounds/light.jpg" -l
-  else
-    gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Pictures/Backgrounds/light.jpg";
-  fi
-  gsettings set org.gnome.desktop.screensaver picture-uri "file://$HOME/Pictures/Backgrounds/light-lock.jpg";
-  gsettings set org.gnome.Terminal.Legacy.Settings theme-variant light
-  gsettings set org.gnome.shell.extensions.user-theme name 'Flat-Remix-Miami'
-  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
-  ln -sf $HOME/.dotfiles/shell/p10k-light.zsh ~/.p10k.zsh
-  change_to_profile "Light"
-}
-restart_gnome_shell() {
-  gnome-shell -r &>/dev/null &
-  disown
-}
-restart_i3() {
-  i3 restart
-}
-set_xcape() {
-  if command -v xcape &> /dev/null; then
-    setxkbmap -option 'caps:ctrl_modifier'
-    xcape -e 'Caps_Lock=Escape'
+    /usr/local/bin/wal -i ~/Pictures/Backgrounds/dark.jpg;
   fi
 }
-switch_polybar() {
-  "$HOME"/.config/polybar/polybar.sh
+
+set_p10k() {
+  [ -f ~/.dotfiles/shell/p10k-"$1".zsh ] && ln -sf ~/.dotfiles/shell/p10k-"$1".zsh ~/.p10k.zsh
 }
 
-die() {
-  echo "$1" >&2
-  exit 1
+set_tmux() {
+  [ -f ~/.dotfiles/tmux/tmux-"$1".conf ] && ln -sf ~/.dotfiles/tmux/tmux-"$1".conf ~/.config/tmux/tmux.conf
 }
 
-[ $# -eq 1 ] || die "Need a theme."
-if ! command -v i3 &>/dev/null; then
-  echo "i3 not installed." >&2
-  exit 1
-fi
-if ! command -v gsettings &>/dev/null; then
-  echo "gsettings not installed." >&2
-  exit 1
-fi
-if ! command -v gnome-shell &>/dev/null; then
-  echo "gnome-shell not installed." >&2
-  exit 1
-fi
+[ $# -eq 1 ] || { printf "Arguments: dark, light\n" && exit 1; }
+case "$1" in
+  dark) THEME="dark";;
+  light) THEME="light";;
+  *) printf "Arguments: dark, light\n" && exit 1;;
+esac
 
-if [ "$1" = "dark" ]; then switch_to_dark
-elif [ "$1" = "light" ]; then switch_to_light
-else die "Either light or dark."
-fi
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  darwin*)
+    set_macos "$THEME"
+    set_iterm2 "$THEME"
+    ;;
+esac
 
-if ! [ -z "$(pgrep i3)" ]; then
-  restart_i3 &>/dev/null
-elif ! [ -z "$(pgrep gnome-shell)" ]; then
-  restart_gnome_shell
-fi
-
-sleep 3
-set_xcape
+set_terminal_and_wallpaper "$THEME"
+set_p10k "$THEME"
+set_tmux "$THEME"
