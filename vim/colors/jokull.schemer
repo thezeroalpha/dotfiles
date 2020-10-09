@@ -114,3 +114,5 @@ link     markdowncode,mkdlink,vimwikilink                                   type
 link     pmenu                                                              statuslinenc
 link     pmenusel                                                           statusline
 link     error                                                              errormsg
+link     gitcommitSummary                                                   include
+link     gitcommitOverflow                                                  errormsg
