@@ -23,7 +23,7 @@ set ifs "\n"
 set scrolloff 10
 
 set color256 on
-set previewer ~/.config/lf/preview.sh
+set previewer ~/.config/lf/preview
 
 # }}}
 # Command definitions {{{

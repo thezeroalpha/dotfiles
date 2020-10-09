@@ -1,0 +1,19 @@
+#!/bin/sh
+WIDTH="$2"
+[ -z "$2" ] && WIDTH="$(tput cols)"
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  linux*)
+    printf "Haven't chosen a previewer for Linux yet.\n"
+    ;;
+  darwin*)
+    command -v chafa 1>/dev/null 2>&1 || { printf "Please install chafa\n" && exit 1; }
+    chafa -c 256 -s 80x"$WIDTH" "$1"
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    printf "Windows not supported.\n"
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "$os"
+    ;;
+esac
