@@ -30,15 +30,7 @@ set preview true
 # }}}
 # Command definitions {{{
 # define a custom 'open' command
-cmd open &{{
-    case $(file --mime-type "$f" -bL) in
-        text/*|application/json) $EDITOR $fx;;
-        image/*) sxiv $fx 2>&1 & disown;;
-        application/epub*) ebook-viewer $fx >/dev/null 2>&1 & disown;;
-        video/*) mpvq $f;;
-        *) for f in $fx; do open "$f" > /dev/null 2> /dev/null & disown; done;;
-    esac
-}}
+cmd open $opener $fx
 
 # define a custom 'rename' command without prompt for overwrite
 cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
@@ -149,7 +141,7 @@ map X !$f
 # dedicated keys for file opener actions
 map o
 map O
-map o :open $fx
+map o open $fx
 map O push hol
 map v ql_preview
 map r reload
@@ -170,7 +162,7 @@ map R push :rename<space>
 map cw push :rename<space>
 map E $$EDITOR $f
 map D delete
-map <enter> :open $fx
+map <enter> open $fx
 map S shell
 map Y copy_path
 
