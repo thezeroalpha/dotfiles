@@ -275,3 +275,8 @@ stdin
 hostname
 eval
 unsanitized
+ROP
+JIT
+NOPs
+ASLR
+alloc
