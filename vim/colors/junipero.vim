@@ -6,6 +6,8 @@ if version > 580
   endif
 endif
 let g:colors_name = "junipero"
+"ANSI colors for :terminal
+let g:terminal_ansi_colors = ["#01021e", "#185668", "#cb4e62", "#f59970", "#e1bf78", "#557983", "#4dbba3", "#f3edc5", "#aaa589", "#185668", "#cb4e62", "#f59970", "#e1bf78", "#557983", "#4dbba3", "#f3edc5"]
 " Highlight group definitions
 hi Boolean guifg=#fca8ad guibg=NONE ctermfg=217 ctermbg=NONE cterm=NONE gui=NONE
 hi Comment guifg=#349d58 guibg=#11121A ctermfg=71 ctermbg=0 cterm=italic gui=italic

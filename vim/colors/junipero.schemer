@@ -12,6 +12,8 @@ palette:
   offwhite #f0e2e2,
   darkblue #101124.
 
+ansi: #01021e, #185668, #cb4e62, #f59970, #e1bf78, #557983, #4dbba3, #f3edc5, #aaa589, #185668, #cb4e62, #f59970, #e1bf78, #557983, #4dbba3, #f3edc5
+
 " Group               fg_color, bg_color      attribute(s)
 Boolean               #fca8ad, NONE.            NONE
 Comment               #349d58, bg.              italic
