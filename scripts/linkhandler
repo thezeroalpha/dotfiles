@@ -13,7 +13,7 @@ case "$1" in
     setsid -f mpva "$1"
     ;;
   http://*|https://*)
-    w3m -config ~/.config/w3m/config "$1"
+    python3 -W ignore -m readability.readability -u "$1" | w3m -config ~/.config/w3m/config -T text/html
     ;;
   *)
     if [ -f "$1" ]; then "$EDITOR" "$1"

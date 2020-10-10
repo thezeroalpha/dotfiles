@@ -15,7 +15,7 @@ keymap C-f NEXT_PAGE
 keymap C-b PREV_PAGE
 keymap C-d NEXT_HALF_PAGE
 keymap C-u PREV_HALF_PAGE
-
+keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_URL | w3m -config ~/.config/w3m/config -T text/html'
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ADD_BOOKMARK  Add current page to bookmarks
