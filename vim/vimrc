@@ -1,5 +1,10 @@
 " vim: foldmethod=marker foldlevel=0
 let mapleader=" "   " Set the mapleader to be space
+if empty($DOTFILES)
+  throw "Please set the $DOTFILES variable, required for tool detection."
+  finish
+endif
+
 " Plugins {{{1
 " Installation {{{2
 " Install vim-plug if needed
@@ -75,7 +80,7 @@ Plug 'gastonsimone/vim-dokumentary'
 Plug 'romainl/vim-devdocs', { 'on': 'DD' }
 
 " Fuzzy finder in vim
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
+Plug 'junegunn/fzf', { 'dir': '$DOTFILES/tools/fzf', 'do': './install --all --xdg --no-fish', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
 Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'Filetypes'] }
 
 " Better abbrevation and substitution
@@ -251,7 +256,7 @@ let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
 " Work with variants of words easily
 let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
 " Fzf {{{3
-set rtp+=~/.fzf
+set rtp+="$DOTFILES"/tools/fzf
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
   copen

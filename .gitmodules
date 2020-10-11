@@ -41,3 +41,6 @@
 [submodule "tools/anotools-chrome"]
 	path = tools/anotools-chrome
 	url = https://git.alex.balgavy.eu/anotools-chrome.git
+[submodule "tools/fzf"]
+	path = tools/fzf
+	url = https://github.com/junegunn/fzf.git
