@@ -88,7 +88,7 @@ bindkey "\e^y" insert-arg-of-prev-cmd
 
 bindkey '\e#' pound-insert
 bindkey '^]' vi-find-next-char
-bindkey '^\e]' vi-find-prev-char
+bindkey '\e^]' vi-find-prev-char
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
