@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 PARAMS=""
 while [ $(($#)) -ne 0 ]; do
   case "$1" in
@@ -20,7 +21,7 @@ while [ $(($#)) -ne 0 ]; do
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="$PARAMS $1"
+      { [ -z "$PARAMS" ] && PARAMS="$(printf '%q' "$1")"; }|| PARAMS="$PARAMS $(printf '%q' "$1")"
       shift
       ;;
   esac
