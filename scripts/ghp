@@ -1,52 +1,55 @@
 #!/usr/bin/env ruby
-require 'faraday'
+require 'open-uri'
+require 'net/http'
 require 'json'
 
 class Page
   def initialize name
     @url = "https://api.github.com/repos/#{ENV['GITHUB_AUTH_USER']}/#{name}/pages/builds"
     @name = name
+    @headers = {'Authorization' => "token #{ENV['GITHUB_AUTH_TOKEN']}"}
   end
 
   def get_status
-    if @etag
-      response = Faraday.get("#{@url}/latest", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}", if_none_match: @etag)
-    else
-      response = Faraday.get("#{@url}/latest", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
-    end
-
-    if response.success?
-      j = JSON.parse(response.body)
-      @etag = response.headers['etag']
-      @code = response.status
+    begin
+      if @etag
+        response = URI.open("#{@url}/latest", @headers.merge({'If-None-Match' => @etag}))
+      else
+        response = URI.open("#{@url}/latest", @headers)
+      end
+      j = JSON.parse(response.read)
+      @etag = response.meta['etag']
+      @code = response.status.first
       @created_at = j['created_at']
       @updated_at = j['updated_at']
       @status = j['status']
       @error = j['error']['message']
-    elsif response.status == 304
-      @etag = response.headers['etag']
-      @code = response.status
-    else
-      @code = response.status
+    rescue OpenURI::HTTPError => err
+      if err.io.status.first == '304'
+        @etag = err.io.meta['etag']
+        @code = err.io.status.first
+      else
+        @code = err.io.status.first
+      end
     end
   end
 
   def build
-    response = Faraday.post(@url, nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
-    if response.success?
+    response = Net::HTTP.post URI(@url), nil, @headers
+    if response.code == '201'
       j = JSON.parse(response.body)
-      @code = response.status
-      @etag = response.headers['etag']
+      @code = response.code
+      @etag = response['etag']
       @status = j['status']
     else
-      @code = response.status
+      @code = response.code
     end
   end
   def to_str
     str = "#{@name}: #{@status}"
     str += ", #{@updated_at}" unless @updated_at.nil?
     str += ", #{@error}" unless @error.nil?
-    str += "not found" if @code == 404
+    str += "not found" if @code == '404'
     str += "."
   end
 end
@@ -84,8 +87,8 @@ elsif ["watch", "w", "status", "s"].include? subcmd
     puts "Provide the name of one or more repositories."
   end
 elsif ["rate", "remaining", "r"].include? subcmd
-  response = Faraday.get("https://api.github.com/rate_limit", nil, authorization: "token #{ENV['GITHUB_AUTH_TOKEN']}")
-  j = JSON.parse(response.body)
+  response = URI.open("https://api.github.com/rate_limit", 'Authorization' => "token #{ENV['GITHUB_AUTH_TOKEN']}")
+  j = JSON.parse(response.read)
   core = j['resources']['core']
   puts "Requests remaining: #{core['remaining']}/#{core['limit']}"
 else
