@@ -280,3 +280,7 @@ JIT
 NOPs
 ASLR
 alloc
+#orr
+lol
+crashless
+callsite
