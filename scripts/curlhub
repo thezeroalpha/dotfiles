@@ -1,6 +1,6 @@
 #!/bin/sh
 command -v curl 1>/dev/null 2>&1 || { printf "curl not installed\n" && exit 1; }
-[ $# -lt 2 ] && { printf "Usage:\twgethub username/repository filename [branch]\n" && exit 1; }
+[ $# -lt 2 ] && { printf "Usage:\tcurlhub username/repository filename [branch]\n" && exit 1; }
 lnk="https://raw.githubusercontent.com/$1/${3:-master}/$2"
 printf "%s\n" "Saving to current directory from $lnk"
 curl -LO "$lnk"
