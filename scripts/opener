@@ -4,6 +4,7 @@ case $(file --mime-type "$1" -bL) in
   text/*|application/json|inode/x-empty) $EDITOR "$1";;
   image/*) setsid -f sxiv "$@" 2>&1;;
   application/epub*) setsid -f ebook-viewer "$1" >/dev/null 2>&1;;
+  application/x-sc) sc-im "$1";;
   video/*) mpvq "$@";;
   audio/*) mpv --no-audio-display --no-video --volume=50 "$1";;
   *) setsid -f open "$@" > /dev/null 2>&1;;
