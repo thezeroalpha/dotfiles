@@ -39,7 +39,7 @@ palette:
     lightgreen #99FF77,
     llightgreen #a5ffa5,
     airgreen #d7f1e0,
-    greygreen #b7d1b0,
+    greygreen #a7c1a0,
     darkturq #225555,
 
     " Greys
@@ -62,7 +62,7 @@ Statement              #0050a0
 Include                ddarkblue.                 bold
 Type                   ddarkblue
 Search                 NONE, airgreen
-Incsearch              NONE, greygreen.           bold
+Incsearch              NONE, greygreen.           bold,underline
 Folded                 lighterblue, lightgrey
 Tablinefill            NONE, lightgrey
 Tablinesel             NONE, offwhite

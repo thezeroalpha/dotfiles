@@ -18,7 +18,7 @@ hi Statement guifg=#0050a0 guibg=NONE ctermfg=25 ctermbg=NONE cterm=NONE gui=NON
 hi Include guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=bold gui=bold
 hi Type guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
 hi Search guifg=NONE guibg=#d7f1e0 ctermfg=NONE ctermbg=194 cterm=NONE gui=NONE
-hi Incsearch guifg=NONE guibg=#b7d1b0 ctermfg=NONE ctermbg=151 cterm=bold gui=bold
+hi Incsearch guifg=NONE guibg=#a7c1a0 ctermfg=NONE ctermbg=145 cterm=bold,underline gui=bold,underline
 hi Folded guifg=#0076ff guibg=#d0d0d0 ctermfg=33 ctermbg=252 cterm=NONE gui=NONE
 hi Tablinefill guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=NONE
 hi Tablinesel guifg=NONE guibg=#e5e5e5 ctermfg=NONE ctermbg=7 cterm=NONE gui=NONE
