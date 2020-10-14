@@ -1,6 +1,5 @@
-[user]
-    name = <name>
-    email = <email>
+[include]
+  path = identity
 
 [alias]
     s = status
@@ -95,8 +94,6 @@
 [core]
     autocrlf = input
 
-[init]
-    templatedir = /home/zeroalpha/.dotfiles/git/git_template
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
