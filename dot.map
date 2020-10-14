@@ -13,7 +13,7 @@ ctags: ~/.config/ctags
 gdb:
 - gdbinit: ~/.gdbinit
 git:
-- gitconfig: ~/.gitconfig
+- gitconfig: ~/.config/git/config
 i3: ~/.config/regolith/i3
 irssi: ~/.config/irssi
 karabiner: ~/.config/karabiner
