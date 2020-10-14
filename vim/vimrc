@@ -1,9 +1,5 @@
 " vim: foldmethod=marker foldlevel=0
 let mapleader=" "   " Set the mapleader to be space
-if empty($DOTFILES)
-  throw "Please set the $DOTFILES variable, required for tool detection."
-  finish
-endif
 
 " Plugins {{{1
 " Installation {{{2
@@ -80,7 +76,7 @@ Plug 'gastonsimone/vim-dokumentary'
 Plug 'romainl/vim-devdocs', { 'on': 'DD' }
 
 " Fuzzy finder in vim
-Plug 'junegunn/fzf', { 'dir': '$DOTFILES/tools/fzf', 'do': './install --all --xdg --no-fish', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
+Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
 Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'Filetypes'] }
 
 " Better abbrevation and substitution
@@ -243,7 +239,7 @@ let g:vimtex_compiler_latexmk = {
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsSnippetDirectories = [$DOTFILES.'/vim/ultisnips']
+let g:UltiSnipsSnippetDirectories = ['"$HOME"/.dotfiles/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
 cabbrev USE UltiSnipsEdit
 " Complete ultisnips with <C-x><C-u>, which is coincidentally the same mapping as user completion
@@ -254,9 +250,9 @@ set completefunc=ultisnips_complete#ListSnippets
 let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
 " Abolish {{{3
 " Work with variants of words easily
-let g:abolish_save_file = $DOTFILES.'/vim/abolish_save_file.vim'
+let g:abolish_save_file = '"$HOME"/.dotfiles/vim/abolish_save_file.vim'
 " Fzf {{{3
-set rtp+="$DOTFILES"/tools/fzf
+set rtp+="$HOME"/.dotfiles/tools/fzf
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
   copen
@@ -468,7 +464,7 @@ set magic
 
 " global setting for directories to search for files (e.g. for gf)
 " . == directory of current file, ,, == current working directory
-set path=.,$DOTFILES/vim/**,,
+set path=.,"$HOME"/.dotfiles/vim/**,,
 
 " global suffixes to add when looking for files (configured otherwise on per-language basis)
 set suffixesadd=.vim
@@ -710,6 +706,7 @@ endif
 " Digraphs {{{1
 exe 'digraphs o+ ' .. 0x2295
 exe 'digraphs O+ ' .. 0x2a01
+exe 'digraphs e$ ' .. 0x20ac
 " Mappings {{{1
 " So I don't have to mash shift all the time
 nnoremap ; :
