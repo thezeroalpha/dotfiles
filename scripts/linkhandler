@@ -3,14 +3,22 @@
 
 case "$1" in
   *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*)
+    notify 'Starting mpv' "Opening $1..." 'linkhandler'
     setsid -f mpvq "$1" 1>/dev/null 2>&1
     ;;
   *png|*jpg|*jpe|*jpeg|*gif)
+    notify 'Starting sxiv' "Opening $1..." 'linkhandler'
     curl -sL "$1" > "/tmp/$(printf "%s" "$1" | sed "s/.*\///")" \
       && sxiv -a "/tmp/$(printf "%s" "$1" | sed "s/.*\///")"  1>/dev/null 2>&1 &
     ;;
   *mp3|*flac|*opus|*mp3?source*)
     setsid -f mpva "$1"
+    ;;
+  *news.ycombinator.com*)
+    w3m -config ~/.config/w3m/config "$1"
+    ;;
+  *reddit.com*)
+    tuir "$1"
     ;;
   http://*|https://*)
     python3 -W ignore -m readability.readability -u "$1" | w3m -config ~/.config/w3m/config -T text/html
