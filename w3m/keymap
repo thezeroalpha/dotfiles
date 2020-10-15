@@ -7,7 +7,7 @@ keymap l MOVE_RIGHT
 keymap j MOVE_DOWN
 keymap k MOVE_UP
 keymap H BACK
-keymap g BEGIN
+keymap gg BEGIN
 keymap G END
 keymap C-e UP
 keymap C-y DOWN
@@ -15,7 +15,17 @@ keymap C-f NEXT_PAGE
 keymap C-b PREV_PAGE
 keymap C-d NEXT_HALF_PAGE
 keymap C-u PREV_HALF_PAGE
-keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_URL | w3m -config ~/.config/w3m/config -T text/html'
+keymap SPCr PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))'
+keymap C-w CLOSE_TAB
+keymap C-t NEW_TAB
+keymap gt NEXT_TAB
+keymap gT PREV_TAB
+keymap C-o TAB_GOTO
+keymap r RELOAD
+keymap M-r REINIT
+# REINIT                Reload configuration file
+# RELOAD                Load current document anew
+
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ADD_BOOKMARK  Add current page to bookmarks
@@ -24,7 +34,6 @@ keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_UR
 # CENTER_H      Center on cursor column
 # CENTER_V      Center on cursor line
 # CHARSET       Change the character encoding for the current document
-# CLOSE_TAB     Close tab
 # CLOSE_TAB_MOUSE Close tab at mouse pointer
 # COMMAND       Invoke w3m function(s)
 # COOKIE                View cookie list
@@ -80,7 +89,6 @@ keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_UR
 # MOVE_UP               Cursor up
 # MOVE_UP1      Cursor up. With edge touched, slide
 # MSGS          Display error messages
-# NEW_TAB       Open a new tab (with current document)
 # NEXT          Switch to the next buffer
 # NEXT_DOWN     Move downward to the next hyperlink
 # NEXT_LEFT     Move left to the next hyperlink
@@ -89,7 +97,6 @@ keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_UR
 # NEXT_MARK     Go to the next mark
 # NEXT_RIGHT    Move right to the next hyperlink
 # NEXT_RIGHT_DOWN       Move right or downward to the next hyperlink
-# NEXT_TAB      Switch to the next tab
 # NEXT_UP               Move upward to the next hyperlink
 # NEXT_VISITED  Move to the next visited hyperlink
 # NEXT_WORD     Move to the next word
@@ -104,7 +111,6 @@ keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_UR
 # PREV          Switch to the previous buffer
 # PREV_LINK     Move to the previous hyperlink
 # PREV_MARK     Go to the previous mark
-# PREV_TAB      Switch to the previous tab
 # PREV_VISITED  Move to the previous visited hyperlink
 # PREV_WORD     Move to the previous word
 # PRINT         Save rendered document
@@ -113,8 +119,6 @@ keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_UR
 # REDO          Cancel the last undo
 # REDRAW                Draw the screen anew
 # REG_MARK      Mark all occurences of a pattern
-# REINIT                Reload configuration file
-# RELOAD                Load current document anew
 # RESHAPE       Re-render document
 # RIGHT         Shift screen one column right
 # SAVE          Save document source
@@ -137,7 +141,6 @@ keymap SPC\R PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_UR
 # STOP_IMAGE    Stop loading and drawing of images
 # SUBMIT                Submit form
 # SUSPEND       Suspend w3m to background
-# TAB_GOTO      Open specified document in a new tab
 # TAB_GOTO_RELATIVE     Open relative address in a new tab
 # TAB_LEFT      Move left along the tab bar
 # TAB_LINK      Follow current hyperlink in a new tab
