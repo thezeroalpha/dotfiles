@@ -3,9 +3,6 @@ bin: ~/.bin
 
 # My scripts
 scripts: ~/.scripts
-rotmgmule:
-- rotmgmule: ~/.scripts/rotmgmule
-- accounts.tsv: ~/.local/share/rotmgmule/accounts.tsv
 
 # Config: utilities
 compton: ~/.config/compton
