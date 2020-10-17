@@ -53,6 +53,7 @@ https://huntnewsnu.com/feed/                                                "new
 https://www.universetoday.com/feed/                                         "news"                      "~Universe Today"
 http://feeds.feedburner.com/sciencealert-latestnews                         "news"                      "~ScienceAlert"
 https://feeds.feedburner.com/HaveIBeenPwnedLatestBreaches                   "news"                      "~Pwned sites"
+https://www.eset.com/cz/blog/rss.xml                                        "news"                      "~ESET"
 
 # Misc blogs
 https://waitbutwhy.com/feed                                                 "blogs"                     "~Wait But Why"
