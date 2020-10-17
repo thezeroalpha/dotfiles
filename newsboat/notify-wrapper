@@ -1,0 +1,19 @@
+#!/bin/sh
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+message="$1"
+case "$os" in
+  linux*)
+    printf "Linux not implemented yet.\n"
+    ;;
+  darwin*)
+    if command -v terminal-notifier 1>/dev/null 2>&1; then
+      terminal-notifier -sender news -group news -title 'Newsboat reloaded' -message "$message"
+    fi
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    printf "Windows not implemented yet.\n"
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "$os"
+    ;;
+esac
