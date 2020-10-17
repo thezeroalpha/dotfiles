@@ -88,6 +88,8 @@
     GIT_COMMITTER_DATE=\"$1\" GIT_AUTHOR_DATE=\"$1\" git commit;\
     fi; }; f"
 
+    df = !git --git-dir=$DOTFILES/.git --work-tree=$DOTFILES
+
 [merge]
     tool = vimdiff
 
