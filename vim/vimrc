@@ -143,7 +143,14 @@ Plug 'thezeroalpha/zepl.vim', { 'on': ['Repl', 'ReplSend'], 'do': 'git remote ad
 " Evaluate markdown code blocks
 Plug 'gpanders/vim-medieval', { 'for': 'markdown' }
 
+" Center the window vertically (like Goyo but keeps statusline/whatever)
 Plug 'jmckiern/vim-venter', { 'on': 'Venter' }
+
+" More text objects, seeking behavior, 'next' objects
+Plug 'wellle/targets.vim'
+
+" Edit files directly in quickfix window
+Plug 'stefandtw/quickfix-reflector.vim'
 call plug#end()
 " }}}2
 " Config {{{2
@@ -239,7 +246,7 @@ let g:vimtex_compiler_latexmk = {
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsSnippetDirectories = ['"$HOME"/.dotfiles/vim/ultisnips']
+let g:UltiSnipsSnippetDirectories = ['~/.dotfiles/vim/ultisnips']
 let g:UltiSnipsEditSplit = "vertical"
 cabbrev USE UltiSnipsEdit
 " Complete ultisnips with <C-x><C-u>, which is coincidentally the same mapping as user completion
