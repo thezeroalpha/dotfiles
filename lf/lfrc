@@ -130,6 +130,19 @@ cmd z ${{
       fi
     fi
 }}
+
+# trash command with confirmation
+cmd trash %{{
+  for f in $fx; do
+    printf "Trash $f? [Y/n/a] "
+    read -r ans
+    case "$ans" in
+      Y*|y*) trash "$f";;
+      A*|a*) trash $fx; printf "Deleted all files.\n"; break;;
+      *) printf "Not deleting $f\n"; sleep 1;;
+    esac
+  done
+}}
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
@@ -160,7 +173,7 @@ map g? $lf -doc | $PAGER; clear
 map R push :rename<space>
 map cw push :rename<space>
 map E $$EDITOR $f
-map D delete
+map D trash
 map <enter> open $fx
 map S shell
 map Y copy_path
@@ -184,6 +197,7 @@ map gw cd ~/Dropbox/vimwiki
 map g/ cd /
 map g. cd ~/.dotfiles
 map gv cd /Volumes
+map gt cd ~/.Trash/
 
 map u
 map uu unselect
