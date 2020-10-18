@@ -28,6 +28,15 @@ set preview true
 
 # }}}
 # Command definitions {{{
+# the prefix shows what kind of command it is
+#   $: runs as shell command
+#   %: runs as piped shell command (stdout => statusline)
+#   !: runs as interactive shell command (puts lf in the bg)
+#   :: runs as lf command
+#
+# commands run in the shell, you can use $f, $fs, $fx vars.
+# you can also send remote commands.
+
 # define a custom 'open' command
 cmd open $opener $fx
 
@@ -137,7 +146,7 @@ cmd trash %{{
     printf "Trash $f? [Y/n/a] "
     read -r ans
     case "$ans" in
-      Y*|y*) trash "$f";;
+      Y*|y*) trash "$f"; printf "Deleted $f.\n";;
       A*|a*) trash $fx; printf "Deleted all files.\n"; break;;
       *) printf "Not deleting $f\n"; sleep 1;;
     esac
