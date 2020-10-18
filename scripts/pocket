@@ -1,0 +1,97 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'open-uri'
+require 'json'
+require 'net/http'
+require 'byebug'
+
+def die(message)
+  warn "error: #{message}"
+  exit 1
+end
+
+# The Pocket API interface class
+class Pocket
+  ACCESS_TOKEN_FILE = "#{ENV['HOME']}/.cache/pocket-access-token"
+
+  def initialize
+    # byebug
+    die 'Please set the POCKET_CONSUMER_KEY environment variable.' unless ENV['POCKET_CONSUMER_KEY']
+    @base = 'https://getpocket.com/v3'
+    @consumer_key = ENV['POCKET_CONSUMER_KEY']
+    @headers = { 'Content-Type' => 'application/json; charset=UTF8', 'X-Accept' => 'application/json' }
+    if File.exist? ACCESS_TOKEN_FILE
+      @access_token = File.read ACCESS_TOKEN_FILE
+    else
+      query = { consumer_key: @consumer_key, redirect_uri: 'https://google.com' }
+      response = Net::HTTP.post URI("#{@base}/oauth/request"), query.to_json, @headers
+      if response.code == '200'
+        @pocket_code = JSON.parse(response.body)['code']
+      else
+        die 'Could not retrieve code.'
+      end
+      puts "Please open: https://getpocket.com/auth/authorize?request_token=#{@pocket_code}&redirect_uri=#{query['redirect_uri']}"
+      # TODO: receive this with a temp server
+      print 'Press enter when done.'
+      STDIN.getc
+      query = { consumer_key: @consumer_key, code: @pocket_code }
+      response = Net::HTTP.post URI("#{@base}/oauth/authorize"), query.to_json, @headers
+      if response.code == '200'
+        body = JSON.parse(response.body)
+        puts "Authenticated for username #{body['username']}"
+        @access_token = body['access_token']
+      else
+        die "Could not authenticate, code: #{response.code}"
+      end
+      puts "Writing access token to #{ACCESS_TOKEN_FILE}, remove this file to revoke authorization."
+      File.write ACCESS_TOKEN_FILE, @access_token
+    end
+    @security_params = { consumer_key: @consumer_key, access_token: @access_token }
+  end
+
+  def save(url)
+    response = Net::HTTP.post URI("#{@base}/add"), { url: url }.merge(@security_params).to_json, @headers
+    if response.code == '200'
+      puts 'URL added'
+    else
+      die "Could not add, code #{response.code}"
+    end
+  end
+
+  def audio
+    query = { domain: '*.bandcamp.com', count: 5 }
+    response = Net::HTTP.post URI("#{@base}/get"), query.merge(@security_params).to_json, @headers
+    if response.code == '200'
+      items = JSON.parse(response.body)['list']
+      items.each do |_id, data|
+        puts "#{data['resolved_title']}\t#{data['resolved_url']}"
+      end
+    else
+      die "Could not get, code #{response.code}"
+    end
+  end
+end
+
+def usage
+  puts <<~HEREDOC
+    Usage: pocket command [arg1 [arg2...]]
+
+    Commands:
+    save [URL]\tsave URL to Pocket
+    audio\tget saved audio to Pocket
+  HEREDOC
+end
+if ARGV.empty?
+  usage
+  exit 1
+end
+pocket = Pocket.new
+if ARGV[0] == 'save'
+  die 'save: URL required' unless ARGV[1]
+  pocket.save ARGV[1]
+elsif ARGV[0] == 'audio'
+  pocket.audio
+else
+  die "Command '#{ARGV[0]}' not recognised."
+end
