@@ -39,22 +39,23 @@ http://feeds.feedburner.com/Torrentfreak                                    "dee
 https://darknetlive.com/index.xml                                           "deep web"                  "~Darknetlive"
 
 # News
-http://www.esa.int/rssfeed/Our_Activities/Space_News                        "news"                      "~ESA"
-https://www.nasa.gov/rss/dyn/breaking_news.rss                              "news"                      "~NASA"
-http://www.jpl.nasa.gov/multimedia/rss/news.xml                             "news"                      "~NASA Jet Propulsion Lab"
-https://www.ceskenoviny.cz/sluzby/rss/cr.php                                "news"                      "~Zprávy z ČR"
-https://www.ceskenoviny.cz/sluzby/rss/svet.php                              "news"                      "~Zprávy ze světa"
-https://www.ceskenoviny.cz/sluzby/rss/ekonomika.php                         "news"                      "~Ekonomika"
-https://www.aktuality.sk/rss/domace/                                        "news"                      "~Aktuality -  Domáce"
-https://www.aktuality.sk/rss/zahranicne/                                    "news"                      "~Aktuality - Zahraničné"
-https://www.rferl.org/api/z$qimetkiy                                        "news"                      "~RFE/RL"
-https://www.dutchnews.nl/feed/?news                                         "news"                      "~DutchNews"
-https://huntnewsnu.com/feed/                                                "news"                      "~Huntington News"
-https://www.universetoday.com/feed/                                         "news"                      "~Universe Today"
-http://feeds.feedburner.com/sciencealert-latestnews                         "news"                      "~ScienceAlert"
-https://feeds.feedburner.com/HaveIBeenPwnedLatestBreaches                   "news"                      "~Pwned sites"
-https://www.eset.com/cz/blog/rss.xml                                        "news"                      "~ESET"
-https://themarkup.org/feeds/atom.xml                                        "news"                      "~The Markup"
+http://www.esa.int/rssfeed/Our_Activities/Space_News                                                                     "news"     "~ESA"
+https://www.nasa.gov/rss/dyn/breaking_news.rss                                                                           "news"     "~NASA"
+http://www.jpl.nasa.gov/multimedia/rss/news.xml                                                                          "news"     "~NASA Jet Propulsion Lab"
+https://www.ceskenoviny.cz/sluzby/rss/cr.php                                                                             "news"     "~Zprávy z ČR"
+https://www.ceskenoviny.cz/sluzby/rss/svet.php                                                                           "news"     "~Zprávy ze světa"
+https://www.ceskenoviny.cz/sluzby/rss/ekonomika.php                                                                      "news"     "~Ekonomika"
+https://www.aktuality.sk/rss/domace/                                                                                     "news"     "~Aktuality -  Domáce"
+https://www.aktuality.sk/rss/zahranicne/                                                                                 "news"     "~Aktuality - Zahraničné"
+https://www.rferl.org/api/z$qimetkiy                                                                                     "news"     "~RFE/RL"
+https://www.dutchnews.nl/feed/?news                                                                                      "news"     "~DutchNews"
+https://huntnewsnu.com/feed/                                                                                             "news"     "~Huntington News"
+https://www.universetoday.com/feed/                                                                                      "news"     "~Universe Today"
+http://feeds.feedburner.com/sciencealert-latestnews                                                                      "news"     "~ScienceAlert"
+https://feeds.feedburner.com/HaveIBeenPwnedLatestBreaches                                                                "news"     "~Pwned sites"
+https://www.eset.com/cz/blog/rss.xml                                                                                     "news"     "~ESET"
+https://themarkup.org/feeds/atom.xml                                                                                     "news"     "~The Markup"
+https://rss.alex.balgavy.eu/?action=display&bridge=SeznamZpravy&context=By+Author&author=janek-rubes-506&format=Atom     "news"     "~Janek Rubeš (Seznam)"
 
 # Misc blogs
 https://waitbutwhy.com/feed                                                 "blogs"                     "~Wait But Why"
@@ -74,7 +75,6 @@ https://github.com/newsboat/newsboat/releases.atom                          "sof
 https://github.com/searx/searx/releases.atom                                "software-releases"  "!"    "~Searx"
 https://github.com/RSS-Bridge/rss-bridge/commits/master.atom                "software-releases"  "!"    "~RSS Bridge commits"
 https://github.com/jbarlow83/OCRmyPDF/commits/master.atom                   "software-releases"  "!"    "~OCRmyPDF commits"
-
 "query:Software releases:tags # \"software-releases\""                      "tech"
 
 # Followed videos
