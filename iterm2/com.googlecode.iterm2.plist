@@ -8,6 +8,8 @@
 	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
+	<key>ApplePressAndHoldEnabled</key>
+	<false/>
 	<key>AppleScrollAnimationEnabled</key>
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
@@ -409,7 +411,7 @@
 	<key>NSFontPanelAttributes</key>
 	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/.dotfiles/iterm2</string>
+	<string>~/Library/Application Support/iTerm2/Scripts</string>
 	<key>NSNavLastUserSetHideExtensionButtonState</key>
 	<false/>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
@@ -436,7 +438,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAdKGdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAc7Gdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -487,17 +489,17 @@
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>9 9 1422 882 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>9 9 1422 882 0 0 1440 900 </string>
+	<string>9 11 1900 1060 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>9 23 1417 868 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>139 441 850 346 0 0 1440 900 </string>
+	<string>9 9 1902 1062 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>1080 13 353 213 0 0 1440 900 </string>
+	<string>9 9 1902 1062 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>377 23 850 346 0 0 1440 900 </string>
+	<string>9 11 1900 1060 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
-	<string>260 467 850 346 0 0 1440 900 </string>
+	<string>9 11 1900 1060 0 0 1920 1080 </string>
 	<key>NeverWarnAboutShortLivedSessions_307F07E0-8CA7-4810-8143-1323B1F43151</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_307F07E0-8CA7-4810-8143-1323B1F43151_selection</key>
@@ -1130,6 +1132,8 @@
 				<real>0.70980000495910645</real>
 			</dict>
 			<key>Send Code When Idle</key>
+			<false/>
+			<key>Set Local Environment Vars</key>
 			<false/>
 			<key>Shortcut</key>
 			<string></string>
@@ -1795,12 +1799,14 @@
 			</dict>
 			<key>Send Code When Idle</key>
 			<false/>
+			<key>Set Local Environment Vars</key>
+			<false/>
 			<key>Shortcut</key>
 			<string></string>
 			<key>Silence Bell</key>
 			<false/>
 			<key>Smart Cursor Color</key>
-			<false/>
+			<true/>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
@@ -3239,15 +3245,21 @@
 	</array>
 	<key>NoSyncAllAppVersions</key>
 	<array>
-		<string>3.2.9</string>
+		<string>3.3.10</string>
+		<string>3.3.8</string>
+		<string>3.3.12</string>
 		<string>3.3.1</string>
-		<string>3.3.4</string>
-		<string>3.3.0</string>
 		<string>3.3.3</string>
 		<string>3.3.7</string>
+		<string>3.3.9</string>
+		<string>3.2.9</string>
+		<string>3.3.0</string>
+		<string>3.3.4</string>
 	</array>
 	<key>NoSyncBFPRecents</key>
 	<array>
+		<string>Hermit</string>
+		<string>Monaco</string>
 		<string>MesloLGS NF</string>
 		<string>Meslo LG L DZ for Powerline</string>
 	</array>
@@ -3263,9 +3275,9 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {1440, 900}}</string>
+		<string>{{0, 0}, {1920, 1080}}</string>
 		<key>topLeft</key>
-		<string>{326, 900}</string>
+		<string>{404, 878}</string>
 	</dict>
 	<key>NoSyncHaveRequestedFullDiskAccess</key>
 	<true/>
@@ -3280,7 +3292,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>53F46757-36B0-48FF-9D36-A2A6F56905BB</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>179</integer>
+	<integer>655</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -3294,7 +3306,7 @@
 	<key>NoSyncPersistentRateLimitedUpdates</key>
 	<dict>
 		<key>CheckForUpdatedPythonRuntime</key>
-		<real>597183394.26214194</real>
+		<real>625003322.82146704</real>
 	</dict>
 	<key>NoSyncRecordedVariables</key>
 	<dict>
@@ -3654,6 +3666,14 @@
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
+				<string>currentTab.currentSession.jobPid</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
 				<string>frame</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
@@ -3855,17 +3875,17 @@
 		<array>
 			<dict>
 				<key>isTerminal</key>
-				<false/>
+				<true/>
 				<key>name</key>
-				<string>currentSession</string>
+				<string>currentSession.pid</string>
 				<key>nonterminalContext</key>
-				<integer>1</integer>
+				<integer>0</integer>
 			</dict>
 			<dict>
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
-				<string>currentSession</string>
+				<string>currentSession.user.gitDirty</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -4071,17 +4091,17 @@
 			</dict>
 			<dict>
 				<key>isTerminal</key>
-				<true/>
+				<false/>
 				<key>name</key>
-				<string>currentSession.pid</string>
+				<string>currentSession</string>
 				<key>nonterminalContext</key>
-				<integer>0</integer>
+				<integer>1</integer>
 			</dict>
 			<dict>
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
-				<string>currentSession.user.gitDirty</string>
+				<string>currentSession</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -4114,19 +4134,12 @@
 			</dict>
 		</array>
 	</dict>
-	<key>NoSyncSearchHistory</key>
-	<array>
-		<string>busy</string>
-		<string>unmount</string>
-	</array>
-	<key>NoSyncSearchHistory2</key>
-	<array>
-		<string>5037</string>
-		<string>prefer putt</string>
-		<string>water</string>
-		<string>config</string>
-		<string>f/fw</string>
-	</array>
+	<key>NoSyncSuppressClipboardAccessDeniedWarning</key>
+	<true/>
+	<key>NoSyncSuppressDownloadConfirmation</key>
+	<true/>
+	<key>NoSyncSuppressDownloadConfirmation_selection</key>
+	<integer>0</integer>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>543107659.62469399</real>
 	<key>PMPrintingExpandedStateForPrint2</key>
@@ -4183,11 +4196,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-08-26T11:09:29Z</date>
+	<date>2020-01-27T22:39:13Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
-	<false/>
+	<true/>
 	<key>Selection Respects Soft Boundaries</key>
 	<true/>
 	<key>ShowBookmarkName</key>
@@ -5727,7 +5740,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.3.7</string>
+	<string>3.3.12</string>
 	<key>iTermAPIAuthorizationControllerSavedAccessSettings</key>
 	<dict>
 		<key>api_key=16777223:38171063:eef5ad00c2de8f1f2505fe9cd1e766828ff07f94693acb5a542eb8bd6c916662:python3 /Users/alex/Library/ApplicationSupport/iTerm2/Scripts/toggle_dark_mode.py</key>
