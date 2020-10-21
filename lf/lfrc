@@ -152,6 +152,14 @@ cmd trash %{{
     esac
   done
 }}
+cmd trashempty %{{
+  printf "Empty trash? [Y/n] "
+  read -r ans
+  case "$ans" in
+    Y*|y*) trash -ey; printf "Emptied.\n";;
+    *) printf "Not emptying.\n";;
+  esac
+}}
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
@@ -181,7 +189,7 @@ map g? $lf -doc | $PAGER; clear
 
 map R push :rename<space>
 map cw push :rename<space>
-map E $$EDITOR $f
+map E $$EDITOR $fx
 map D trash
 map <enter> open $fx
 map S shell
