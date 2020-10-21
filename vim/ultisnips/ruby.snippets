@@ -1,4 +1,4 @@
-snippet request_post "Post request with Net::HTTP" b
+snippet http_post "Post request with Net::HTTP" b
 headers = {'X-Accept' => 'application/json', 'Accept' => 'application/json', 'Content-Type' => 'application/json; charset=UTF8'}
 data = {${1:param_1}: ${2:value_1}}
 response = Net::HTTP.post URI(${3:destination url}), data.to_json, headers
@@ -9,7 +9,7 @@ else
 end
 endsnippet
 
-snippet request_get "Get request with open-uri" b
+snippet http_get "Get request with open-uri" b
 headers = {'Accept' => 'application/json'}
 response = URI.open(${1:url}, headers)
 body = JSON.parse(response.read)
