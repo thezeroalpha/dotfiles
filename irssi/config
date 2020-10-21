@@ -1,5 +1,5 @@
 servers = (
-  {
+  { 
     address = "irc.undernet.org";
     chatnet = "Undernet";
     port = "6667";
