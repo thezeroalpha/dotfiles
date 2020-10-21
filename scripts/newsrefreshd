@@ -17,6 +17,7 @@ if [ "$previous_commit_msg" = "Newsboat cache" ]; then
     && git reset --soft HEAD~2 \
     && git commit -m "Newsboat cache" \
     && git push --force-with-lease origin master \
+    && git fetch --all \
     && git stash pop; } || notidie "Newsboat error: refreshed but unpushed" "Could not push new cache, check the state of the git repository."
 else
   git push origin master
