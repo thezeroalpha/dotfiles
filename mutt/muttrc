@@ -1,4 +1,6 @@
-# vim: filetype=neomuttrc
+# vim: filetype=neomuttrc foldmethod=marker
+source `{ [ -f ~/.config/dark-theme ] && printf "colors-dark"; } || printf "colors-light";`
+
 # Personal account
 set mbox_type = Maildir
 set mail_check=0 # minimum time between scans

@@ -1,0 +1,37 @@
+color normal color7 color16
+color index color13 color16 '.*'
+color index bold color7 color16 '~N'
+color index_author color8 color16 '.*'
+color index_author bold color6 color16 '~N'
+color index_number color11 color16
+color index_subject color4 color16 '.*'
+color index_subject bold color3 color16 '~N'
+color indicator default color1
+
+color header blue color16 ".*"
+color header brightmagenta color16 "^(From)"
+color header brightcyan color16 "^(Subject)"
+color header brightwhite color16 "^(CC|BCC)"
+color body brightred color16 "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+color body brightblue color16 "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
+color body green color16 "\`[^\`]*\`" # Green text between ` and `
+color body brightblue color16 "^# \.*" # Headings as bold blue
+color body brightcyan color16 "^## \.*" # Subheadings as bold cyan
+color body brightgreen color16 "^### \.*" # Subsubheadings as bold green
+color body yellow color16 "^(\t| )*(-|\\*) \.*" # List items as yellow
+color body brightcyan color16 "[;:][-o][)/(|]" # emoticons
+color body brightcyan color16 "[;:][)(|]" # emoticons
+color body brightcyan color16 "[ ][*][^*]*[*][ ]?" # more emoticon?
+color body brightcyan color16 "[ ]?[*][^*]*[*][ ]" # more emoticon?
+color body red color16 "(BAD signature)"
+color body cyan color16 "(Good signature)"
+color body brightblack color16 "^gpg: Good signature .*"
+color body brightyellow color16 "^gpg: "
+color body brightyellow red "^gpg: BAD signature from.*"
+color attachment color11 color16
+color quoted green color16
+color quoted1 blue color16
+color quoted2 cyan color16
+color quoted3 yellow color16
+color quoted4 red color16
+color quoted5 brightred color16
