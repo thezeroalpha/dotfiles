@@ -1,0 +1,4 @@
+#!/bin/sh
+export BW_SESSION="$(bw unlock --raw)"
+mbsync -c /Users/alex/.config/mbsync/mbsyncrc -Va
+notmuch new

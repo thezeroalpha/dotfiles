@@ -1,0 +1,137 @@
+# vim: filetype=neomuttrc
+# Personal account
+set mbox_type = Maildir
+set mail_check=0 # minimum time between scans
+unset mark_old # it's enough to see whats unread
+set mailcap_path = ~/.config/mutt/mailcap
+
+bind index,pager i noop
+source school
+folder-hook $folder 'source ~/.config/mutt/school'
+macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<enter><change-folder>!<enter>;<check-stats>' "switch to school"
+
+source personal
+folder-hook $folder 'source ~/.config/mutt/personal'
+macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-folder>!<enter>;<check-stats>' "switch to personal"
+
+bind index,pager S sync-mailbox
+bind compose p postpone-message
+bind index p recall-message
+bind index g noop
+bind index gg       first-entry
+bind index G        last-entry
+bind index R        group-reply
+bind index <space>  collapse-thread
+set delete               # don't ask, just do
+unset confirmappend      # don't ask, just do!
+set quit                 # don't ask, just do!!
+
+# Sidebar
+set sidebar_visible = yes
+set sidebar_width = 20
+set sidebar_short_path = yes
+set sidebar_next_new_wrap = yes
+set mail_check_stats
+set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
+bind index,pager \Ck sidebar-prev
+bind index,pager \Cj sidebar-next
+bind index,pager \Cl sidebar-open
+bind index,pager \Cp sidebar-prev-new
+bind index,pager \Cn sidebar-next-new
+bind index,pager B sidebar-toggle-visible
+
+set date_format = "%m/%d"
+set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
+set sort = threads                         # like gmail
+set sort_aux = reverse-last-date-received  # like gmail
+set uncollapse_jump                        # don't collapse on an unread message
+set sort_re                                # thread based on regex
+set reply_regex = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+# Pager
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+set menu_scroll            # scroll in menus
+set tilde                  # show tildes like in vim
+unset markers              # no ugly plus signs
+set quote_regex = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+alternative_order text/plain text/enriched text/html
+bind pager k  previous-line
+bind pager j  next-line
+bind pager g noop
+bind pager gg top
+bind pager G  bottom
+bind pager R  group-reply
+bind attach <return> view-mailcap
+macro pager u "|urlview<enter>" "call urlview to open links"
+
+# Composing
+set edit_headers                     # show headers when composing
+set fast_reply                       # skip to compose when replying
+set fcc_attach                       # save attachments with the body
+set mime_forward                     # forward attachments as part of body
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode                   # decode when forwarding
+set attribution = "On %d, %n wrote:" # format of quoting header
+set reply_to                         # reply to Reply to: field
+set reverse_name                     # reply as whomever it was to
+set include                          # include message in replies
+set forward_quote                    # include message in forwards
+bind attach <return> view-mailcap
+bind attach l view-mailcap
+
+bind index j next-entry
+bind index k previous-entry
+bind attach <return> view-mailcap
+bind attach l view-mailcap
+bind editor <space> noop
+bind index G last-entry
+bind index gg first-entry
+bind pager,attach h exit
+bind pager l view-attachments
+bind index D delete-message
+bind index U undelete-message
+bind index L limit
+bind index h noop
+bind index l display-message
+macro browser h '<change-dir><kill-line>..<enter>' "Go to parent folder"
+bind index,pager H view-raw-message
+bind browser l select-entry
+bind pager,browser gg top-page
+bind pager,browser G bottom-page
+bind index,pager,browser \Cd half-down
+bind index,pager,browser \Cu half-up
+bind index \031 previous-undeleted	# Mouse wheel
+bind index \005 next-undeleted		# Mouse wheel
+bind pager \031 previous-line		# Mouse wheel
+bind pager \005 next-line		# Mouse wheel
+set query_command = "contacts -Sf '%eTOKEN%n' '%s' | sed -e 's/TOKEN/\t/g'"
+bind editor <Tab> complete-query
+bind editor ^T    complete
+bind index,pager M noop
+bind index,pager C noop
+bind index,pager N search-opposite
+macro index a "<limit>all<enter>"
+macro index,pager A "<save-message>=Archive<enter>" "move mail to Archive"
+macro index,pager gi "<change-folder>=Inbox<enter>" "go to Inbox"
+macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to Drafts"
+macro index,pager gj "<change-folder>=Spam<enter>" "go to Spam"
+macro index,pager gt "<change-folder>=Trash<enter>" "go to Trash"
+macro index,pager gs "<change-folder>=Sent<enter>" "go to Sent"
+macro index,pager MI "<save-message>=Inbox<enter>" "move mail to Inbox"
+macro index,pager MA "<save-message>=Archive<enter>" "move mail to Archive"
+macro index,pager MD "<save-message>=Drafts<enter>" "move mail to Drafts"
+macro index,pager MJ "<save-message>=Spam<enter>" "move mail to Spam"
+macro index,pager MT "<save-message>=Trash<enter>" "move mail to Trash"
+macro index,pager MS "<save-message>=Sent<enter>" "move mail to Sent"
+macro index,pager MM "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index,pager CI "<copy-message>=Inbox<enter>" "copy mail to Inbox"
+macro index,pager CA "<copy-message>=Archive<enter>" "copy mail to Archive"
+macro index,pager CD "<copy-message>=Drafts<enter>" "copy mail to Drafts"
+macro index,pager CJ "<copy-message>=Spam<enter>" "copy mail to Spam"
+macro index,pager CT "<copy-message>=Trash<enter>" "copy mail to Trash"
+macro index,pager CS "<copy-message>=Sent<enter>" "copy mail to Sent"
+macro index,pager CC "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"

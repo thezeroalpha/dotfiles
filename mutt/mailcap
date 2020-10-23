@@ -1,0 +1,4 @@
+image/*; sxiv -a %s
+video/*; mpvq %s
+text/html; w3m -config /Users/alex/.config/w3m/config -T text/html %s
+text/plain; less

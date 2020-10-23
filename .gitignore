@@ -12,3 +12,4 @@ w3m/*
 !w3m/config
 !w3m/mailcap
 !w3m/keymap
+mutt/secret

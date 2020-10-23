@@ -26,3 +26,5 @@ alias tx="tmuxinator"
 alias mpva="mpv --no-audio-display --no-video --volume=50"
 alias irrsi="irssi --home=~/.config/irssi"
 alias scim="sc-im"
+alias mbsync="mbsync -c $HOME/.config/mbsync/mbsyncrc"
+alias mutt='BW_SESSION="$(bw unlock --raw)" neomutt'

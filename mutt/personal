@@ -1,0 +1,31 @@
+# vim: syntax=neomuttrc
+# Receive
+source secret
+set imap_user=$my_personal_email
+set imap_pass=$my_personal_pass_cmd
+set folder = ~/.local/share/mail/$my_personal_email
+set postponed = +Drafts
+set trash = +Trash
+set record = +Sent
+set spoolfile = +Inbox
+set mbox = +Archive
+unmailboxes *
+mailboxes +Inbox +Archive +Drafts +Sent +Trash +Spam
+set header_cache = '~/.cache/mutt/$my_personal_email/headers'
+set message_cachedir = '~/.cache/mutt/$my_personal_email/bodies'
+
+# Send
+set realname=$my_name
+set from=$my_personal_email
+set sendmail="msmtp -a $my_personal_email"
+set sendmail_wait = 0
+alias me $realname <$my_personal_email>
+set signature=""
+set ssl_force_tls = yes
+set ssl_starttls = yes
+
+# Hook -- IMPORTANT!
+account-hook $folder "set imap_user=$my_personal_email imap_pass=$my_personal_pass_cmd"
+
+macro index O "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_personal_email<enter>" "run mbsync to sync $my_personal_email"
+macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_personal_email:Inbox<enter>" "run mbsync to sync all mail"
