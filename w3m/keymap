@@ -16,6 +16,10 @@ keymap C-b PREV_PAGE
 keymap C-d NEXT_HALF_PAGE
 keymap C-u PREV_HALF_PAGE
 keymap SPCr PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))'
+keymap SPCo EXEC_SHELL 'open "$W3M_URL"'
+keymap SPCt EXEC_SHELL 'open "$W3M_CURRENT_LINK"'
+keymap SPCy EXEC_SHELL 'printf "%s" $W3M_CURRENT_LINK | clc'
+keymap SPCc EXEC_SHELL 'printf "%s" $W3M_URL | clc'
 keymap C-w CLOSE_TAB
 keymap C-t NEW_TAB
 keymap gt NEXT_TAB
