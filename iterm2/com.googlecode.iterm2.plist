@@ -365,7 +365,7 @@
 	<key>Default Arrangement Name</key>
 	<string>Notes</string>
 	<key>Default Bookmark Guid</key>
-	<string>307F07E0-8CA7-4810-8143-1323B1F43151</string>
+	<string>AAAFDAD8-B005-4447-BAC1-AC0DCB0D3AE9</string>
 	<key>DimBackgroundWindows</key>
 	<true/>
 	<key>DimInactiveSplitPanes</key>
@@ -489,7 +489,7 @@
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>9 9 1422 882 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>9 9 1422 882 0 0 1440 900 </string>
+	<string>9 23 1417 868 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>9 11 1900 1060 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -3292,7 +3292,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>53F46757-36B0-48FF-9D36-A2A6F56905BB</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>660</integer>
+	<integer>661</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
