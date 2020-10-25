@@ -20,6 +20,7 @@ if [ "$previous_commit_msg" = "Newsboat cache" ]; then
 else
   printf "Previous commit is not Newsboat\n"
   git push origin master
+  git fetch --all
 fi
 
 newsboat -x print-unread | xargs -I{} terminal-notifier -group news -sender news -title 'Newsboat reloaded' -message "{}"
