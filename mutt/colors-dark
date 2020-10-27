@@ -7,6 +7,8 @@ color index_number color11 color16
 color index_subject color4 color16 '.*'
 color index_subject bold color3 color16 '~N'
 color indicator default color1
+color status color14 color16
+color sidebar_highlight bold underline default color16
 
 color header blue color16 ".*"
 color header brightmagenta color16 "^(From)"
