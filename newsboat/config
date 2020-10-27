@@ -7,6 +7,7 @@ notify-always yes
 article-sort-order date
 error-log "~/.config/newsboat/error.log"
 prepopulate-query-feeds yes
+goto-next-feed no
 
 define-filter "read articles" "unread = \"no\""
 define-filter "downloaded" "flags # \"d\""
