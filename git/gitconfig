@@ -79,6 +79,7 @@
     subdate = submodule update --remote
     substatus = submodule status
     subactive = "!git submodule status | grep -v '^-'"
+    subdel = "!f(){ set -x; git submodule deinit -f "$1"; rm -rf .git/modules/"$1"; git rm -f "$1"; set +x; }; f"
 
     root = !git rev-parse --show-toplevel | tr -d '\n'
 
