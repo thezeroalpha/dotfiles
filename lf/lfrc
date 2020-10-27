@@ -76,6 +76,14 @@ cmd zip ${{
   rm -rf $f-zip/
 }}
 
+cmd tar ${{
+  set -f
+  mkdir $f-tgz
+  cp -r $fx $f-tgz
+  (cd $f-tgz && tar cvzf $f.tar.gz .)
+  rm -rf $f-tgz
+}}
+
 cmd paste &{{
     load=$(lf -remote 'load')
     mode=$(echo "$load" | sed -n '1p')
@@ -233,6 +241,7 @@ map ec edit_config
 map ce edit_config
 
 map tz zip
+map tt tar
 map tu extract
 
 map z push :z
