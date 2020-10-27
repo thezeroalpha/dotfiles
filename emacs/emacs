@@ -1,3 +1,29 @@
 (setq org-src-tab-acts-natively t)
-(defconst config-org (expand-file-name "config.org" user-emacs-directory))
-(org-babel-load-file config-org)
+
+(let ((gc-cons-percentage .6)
+      (gc-cons-threshold most-positive-fixnum)
+      (read-process-output-max (* 1024 1024))))
+
+;; Disable that pesky echo message
+;;(setq-default inhibit-startup-echo-area-message (user-login-name))
+
+;; Set repositories
+(require 'package)
+(setq-default
+ load-prefer-newer t
+ package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
+;; Install dependencies
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package t))
+(setq-default
+ use-package-always-defer t
+ use-package-always-ensure t)
+
+;; Tangle configuration
+(setq vc-follow-symlinks t)
+(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+(garbage-collect)

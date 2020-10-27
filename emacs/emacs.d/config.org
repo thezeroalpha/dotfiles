@@ -1,47 +1,4 @@
 * Bootstrap
-** Set up automatic file locations
-   Don't create lockfiles:
-
-   #+BEGIN_SRC emacs-lisp
-     (setq-default 
-      create-lockfiles nil)
-   #+END_SRC
-   
-   Place autosave files (=#file#=) in ~/.emacs.d/backups/:
-
-   #+BEGIN_SRC emacs-lisp
-     (setq backup-directory-alist
-	   `(("." . ,(concat user-emacs-directory "backups"))))
-   #+END_SRC
-
-   Place backup files (=file~=) in ~/.emacs.d/saves/:
-
-   #+BEGIN_SRC emacs-lisp
-     (setq
-	backup-by-copying t      ; don't clobber symlinks
-	backup-directory-alist
-	`(("." . ,(concat user-emacs-directory "saves"))) ; don't litter my fs
-	delete-old-versions t
-	kept-new-versions 6
-	kept-old-versions 2
-	version-control t)       ; use versioned backups
-   #+END_SRC
-** Enable installing packages from MELPA
-#+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (package-initialize)
-#+END_SRC
-
-Also bootstrap =use-package=:
-
-#+BEGIN_SRC emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (eval-when-compile (require 'use-package))
-#+END_SRC
 ** Garbage collection
    Garbage-collect on focus-out, Emacs /should/ feel snappier.
 
@@ -60,20 +17,18 @@ Also bootstrap =use-package=:
    #+END_SRC
 
 * Theming
-  Load the theme.
+  Load the themes (from Doom emacs).
 
   #+BEGIN_SRC emacs-lisp
     (unless (package-installed-p 'doom-themes)
-    (package-refresh-contents)
-    (package-install 'doom-themes))
-
+      (package-refresh-contents)
+      (package-install 'doom-themes))
 
     (use-package doom-themes
       :config
       ;; Global settings (defaults)
       (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
-      (load-theme 'doom-one t)
 
       ;; Enable flashing mode-line on errors
       (doom-themes-visual-bell-config)
@@ -88,6 +43,20 @@ Also bootstrap =use-package=:
       (doom-themes-org-config))
   #+END_SRC
 
+  Choose a theme depending on the system theme:
+
+  #+begin_src emacs-lisp
+    (if (file-exists-p "~/.config/dark-theme")
+	(load-theme 'doom-one t)
+      (load-theme 'doom-one-light t))
+  #+end_src
+
+
+  Set the right theme based on system theme:
+
+  #+begin_src emacs-lisp
+    (add-hook 'after-init-hook (lambda () (load-theme 'doom-one-light t)))
+  #+end_src
 * Packages
 ** emacs-which-key
    Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
