@@ -16,6 +16,13 @@ source personal
 folder-hook $folder 'source ~/.config/mutt/personal'
 macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-folder>!<enter>;<check-stats>' "switch to personal"
 
+set pgp_default_key = 0x67A9DD9A68AE0B7C
+set crypt_autosign
+set crypt_verify_sig
+set crypt_replysign
+set crypt_opportunistic_encrypt
+set pgp_self_encrypt
+
 bind index,pager S sync-mailbox
 bind compose p postpone-message
 bind index p recall-message
@@ -66,7 +73,11 @@ bind pager gg top
 bind pager G  bottom
 bind pager R  group-reply
 bind attach <return> view-mailcap
-macro pager u "|urlview<enter>" "call urlview to open links"
+macro index,pager,attach,compose u "\
+<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+<pipe-message> urlview<Enter>\
+<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+"call urlview to extract URLs out of a message"
 
 # Composing
 set edit_headers                     # show headers when composing
