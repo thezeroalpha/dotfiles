@@ -150,6 +150,18 @@ Also bootstrap =use-package=:
        :hook
        (org-mode . (lambda () (org-bullets-mode 1))))
    #+END_SRC
+** exec-path-from-shell
+   In macOS, the path is not set correctly in the GUI app. This fixes it.
+   #+begin_src emacs-lisp
+     (when (memq window-system '(mac ns x))
+       (exec-path-from-shell-initialize))
+   #+end_src
+** lean-mode
+   Shift completion for lean-mode and company-lean:
+
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "S-SPC") #'company-complete)
+   #+end_src
 * Defaults
 ** Appearance
    Highlight the current line
@@ -166,3 +178,11 @@ Also bootstrap =use-package=:
      (scroll-bar-mode 0) ; Disable scrollbar
      (tool-bar-mode 0)); Disable toolbar
    #+END_SRC
+** Backup files
+   By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
+   This setting puts them in ~/.local/share/emacs/saves.
+
+   #+begin_src emacs-lisp
+     (setq backup-directory-alist '(("." . "~/.local/share/emacs/saves")))
+     (setq backup-by-copying t)
+   #+end_src
