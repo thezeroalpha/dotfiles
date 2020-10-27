@@ -20,6 +20,8 @@ keymap SPCo SHELL 'open "$W3M_URL"'
 keymap SPCt SHELL 'open "$W3M_CURRENT_LINK"'
 keymap SPCy EXEC_SHELL 'printf "%s" $W3M_CURRENT_LINK | clc'
 keymap SPCc EXEC_SHELL 'printf "%s" $W3M_URL | clc'
+keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
+keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
 keymap C-w CLOSE_TAB
 keymap C-t NEW_TAB
 keymap gt NEXT_TAB
