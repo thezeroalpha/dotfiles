@@ -1,12 +1,14 @@
 #!/bin/sh
-BW_SESSION="$(bw unlock --raw)"; export BW_SESSION
+BW_SESSION="${BW_SESSION:-$(bw unlock --raw)}"
+[ $? -eq 0 ] || { printf "Could not unlock vault.\n" && exit 1; }
+export BW_SESSION
 mbsync -c /Users/alex/.config/mbsync/mbsyncrc -Va
 notmuch new
 
 notification_str=""
 for i in ~/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new; do
   mailbox_name="$(printf "%s" "$i" | sed 's:^.*mail/::; s:/[Ii][Nn][Bb][Oo][Xx]/new.*$::')"
-  num_new_messages="$(find "$i"/* -type f | wc -l)"
+  num_new_messages="$(find "$i"/* -type f 2>/dev/null | wc -l)"
   [ "$num_new_messages" -gt 0 ] \
     && notification_str="${notification_str}
 $(printf "%s: %d" "$mailbox_name" "$num_new_messages")"
