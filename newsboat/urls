@@ -63,6 +63,8 @@ https://meduza.io/rss2/all                                                      
 https://ria.ru/export/rss2/archive/index.xml                                                                            "news"  "~RIA Новости"
 https://www.vtimes.io/rss                                                                                               "news"  "~VTimes"
 https://ep00.epimg.net/rss/tags/ultimas_noticias.xml                                                                    "news"  "~El País"
+https://climateandeconomy.com/feed/                                                                                     "news"  "~Climate and Economy"
+https://www.advalvas.vu.nl/rss.xml                                                                                      "news"  "~Ad Valvas"
 
 # Misc blogs
 https://waitbutwhy.com/feed                                                 "blogs"                     "~Wait But Why"
