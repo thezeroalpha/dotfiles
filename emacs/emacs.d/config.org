@@ -1,19 +1,24 @@
 * Bootstrap
+** Auto-compile this config file
+   #+begin_src emacs-lisp
+     (defun tangle-init ()
+       "If the current buffer is 'init.org' the code-blocks are
+     tangled, and the tangled file is compiled."
+       (when (equal (buffer-file-name)
+		    (expand-file-name (concat user-emacs-directory "initconfig.org")))
+	 ;; Avoid running hooks when tangling.
+	 (let ((prog-mode-hook nil))
+	   (org-babel-tangle)
+	   (byte-compile-file (concat user-emacs-directory "config.el")))))
+
+     (add-hook 'after-save-hook 'tangle-init)   
+   #+end_src
+
 ** Garbage collection
    Garbage-collect on focus-out, Emacs /should/ feel snappier.
 
    #+BEGIN_SRC emacs-lisp
      (add-hook 'focus-out-hook #'garbage-collect)
-   #+END_SRC
-
-** Load custom.el
-   Using the built-in customization interface appends code to init file.
-   Instead we want that interface to append code to a different file.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
-     (when (file-exists-p custom-file)
-       (load custom-file))
    #+END_SRC
 
 * Theming
@@ -141,6 +146,13 @@
      (scroll-bar-mode 0) ; Disable scrollbar
      (tool-bar-mode 0)); Disable toolbar
    #+END_SRC
+   
+   Line numbers
+
+   #+begin_src emacs-lisp
+     (global-linum-mode 1)
+   #+end_src
+
 ** Backup files
    By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
    This setting puts them in ~/.local/share/emacs/saves.
