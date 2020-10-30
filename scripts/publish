@@ -1,5 +1,5 @@
 #!/bin/sh
-[ -d public ] || { echo "No public/ folder present" && exit 1; }
+[ -d ./public ] || { echo "No public/ folder present in current directory" && exit 1; }
 destdir=/var/www/"$(basename "$(pwd)")"
 
 printf "Upload public/ to vps:%s? [Y/n] " "$destdir"
@@ -13,4 +13,16 @@ case "$conf" in
     ;;
 esac
 
-rsync -mrvzhLuP  --del public/ vps:"$destdir"
+# Use long names for clarity
+rsync \
+  --partial \
+  --update \
+  --recursive \
+  --copy-links \
+  --compress \
+  --prune-empty-dirs \
+  --delete-after \
+  --verbose \
+  --human-readable \
+  --progress \
+  public/ vps:"$destdir"
