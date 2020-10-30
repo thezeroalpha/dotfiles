@@ -160,6 +160,7 @@ cmd trash %{{
     esac
   done
 }}
+
 cmd trashempty %{{
   printf "Empty trash? [Y/n] "
   read -r ans
@@ -168,6 +169,39 @@ cmd trashempty %{{
     *) printf "Not emptying.\n";;
   esac
 }}
+
+cmd pgp_encrypt_recipient %{{
+  printf "Recipient: "
+  read -r recipient
+  case "$recipient" in
+    "") printf "Cancelled.\n";;
+    *) gpg --encrypt --sign --recipient "$recipient" $f;;
+  esac
+}}
+
+cmd pgp_encrypt_pass ${{
+  gpg --symmetric $f;
+}}
+
+cmd pgp_decrypt ${{
+  gpg --output ${f%.gpg} --decrypt $f
+}}
+
+# Encode input into binary or ASCII-armored output with an integrated signature
+cmd pgp_sign ${{
+  gpg --sign $f
+}}
+
+# Wrap input in plaintext signature
+cmd pgp_sign_clear ${{
+  gpg --clearsign $f
+}}
+
+# Create binary or ASCII-armored detached signature from input
+cmd pgp_sign_detach ${{
+  gpg --detach-sign $f
+}}
+
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
@@ -179,7 +213,7 @@ map X !$f
 map o
 map O
 map o open $fx
-map O push hol
+map O $open $(dirname $f)
 map v ql_preview
 map r reload
 
@@ -243,5 +277,11 @@ map ce edit_config
 map tz zip
 map tt tar
 map tu extract
+map te pgp_encrypt_recipient
+map tp pgp_encrypt_pass
+map td pgp_decrypt
+map ts. pgp_sign
+map tsc pgp_sign_clear
+map tsd pgp_sign_detach
 
 map z push :z
