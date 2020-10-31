@@ -28,4 +28,4 @@ set ssl_starttls = yes
 account-hook $folder "set imap_user=$my_school_email imap_pass=$my_school_pass_cmd"
 
 macro index O "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email<enter>" "run mbsync to sync $my_school_email"
-macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email:Inbox<enter>" "run mbsync to sync all mail"
+macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email:Inbox,'Sent Items'<enter>" "run mbsync to sync all mail"
