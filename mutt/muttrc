@@ -22,6 +22,7 @@ set crypt_verify_sig
 set crypt_replysign
 set crypt_opportunistic_encrypt
 set pgp_self_encrypt
+set postpone_encrypt
 
 bind index,pager S sync-mailbox
 bind compose p postpone-message
