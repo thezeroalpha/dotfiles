@@ -120,7 +120,7 @@ bind index \031 previous-undeleted	# Mouse wheel
 bind index \005 next-undeleted		# Mouse wheel
 bind pager \031 previous-line		# Mouse wheel
 bind pager \005 next-line		# Mouse wheel
-set query_command = "contacts -Sf '%eTOKEN%n' '%s' | sed -e 's/TOKEN/\t/g'"
+set query_command = "goobook query %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 bind index,pager M noop
