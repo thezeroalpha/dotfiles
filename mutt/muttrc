@@ -26,6 +26,8 @@ set postpone_encrypt
 
 bind index,pager S sync-mailbox
 bind compose p postpone-message
+bind compose l view-attach
+bind compose h exit
 bind index p recall-message
 bind index g noop
 bind index gg       first-entry
