@@ -1,0 +1,10 @@
+#!/bin/sh
+# Send a file to Vim
+case "$1" in
+  /*) fpath="$1";;
+  *) fpath="$(pwd)/$1";;
+esac
+
+# Have to use $fpath directly here otherwise opens two windows
+# shellcheck disable=SC2059
+printf "]51;[\"drop\", \"$fpath\"]"
