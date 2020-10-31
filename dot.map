@@ -42,6 +42,7 @@ scim/scimrc: ~/.config/scimrc
 mutt: ~/.config/mutt
 mbsync: ~/.config/mbsync
 urlview/urlview: ~/.urlview
+gnupg: ~/.config/gnupg
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
