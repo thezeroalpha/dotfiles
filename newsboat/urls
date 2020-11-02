@@ -30,6 +30,7 @@ https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=priva
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=commandline&format=Atom                                      "tech"      "~/r/commandline"
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=vim&format=Atom                                              "tech"      "~/r/vim"
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=stallmanwasright&format=Atom                                 "tech"      "~/r/stallmanwasright"
+https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=youtubedl&format=Atom                                        "tech"      "~/r/youtubedl"
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=freegamefindings&format=Atom                                 "tech"      "~Free games"
 https://learnbyexample.github.io/atom.xml                                                                                               "tech"      "~Sundeep Agarwal"
 https://craphound.com/feed/                                                                                                             "tech"      "~Cory Doctorow"
