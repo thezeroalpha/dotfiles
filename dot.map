@@ -43,6 +43,7 @@ mutt: ~/.config/mutt
 mbsync: ~/.config/mbsync
 urlview/urlview: ~/.urlview
 gnupg: ~/.config/gnupg
+bat: ~/.config/bat
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc

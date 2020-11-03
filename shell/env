@@ -4,7 +4,7 @@ export DOTFILES="$HOME/.dotfiles"
 EDITOR="$(command -v vim)"; export EDITOR
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
 
-if command -v bat 1>/dev/null 2>&1; then export PAGER="bat"; export BAT_PAGER="less -Ri"
+if command -v bat 1>/dev/null 2>&1; then export PAGER="bat"
 else export PAGER="less -Ri"; fi
 
 export LANG="en_US.UTF-8"

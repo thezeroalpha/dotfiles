@@ -1,0 +1,5 @@
+--italic-text=always
+--paging=auto
+--pager="less -Ri"
+--color=always
+# --theme set dynamically from ~/.dotfiles/shell/aliases
