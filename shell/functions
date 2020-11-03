@@ -9,6 +9,7 @@ vimq() { vim -q <(eval "$(fc -nl -1)"); }                                  # loa
 gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                           # Access global pip while using virtualenvs
 nls() { expr `ls -l | wc -l | xargs echo` - 1; }                        # Count the number of files in the directory
 reload-completions() { rm ~/.zcompdump && compinit; }
+zp() { z -l "$@" | awk -F' ' 'END {printf $2}'; }                       # Get the result of a "z" comman
 reload() {
   local START_TIME=$SECONDS
   if [[ $SHELL = *"zsh"* ]]; then
