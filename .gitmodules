@@ -41,3 +41,6 @@
 [submodule "tools/fzf"]
 	path = tools/fzf
 	url = https://github.com/junegunn/fzf.git
+[submodule "tools/LocalCDN"]
+	path = tools/LocalCDN
+	url = https://codeberg.org/nobody/LocalCDN.git
