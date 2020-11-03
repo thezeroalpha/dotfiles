@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   *.tgz|*.tar.gz) tar tzf "$1";;
   *.tar.bz2|*.tbz2) tar tjf "$1";;
@@ -12,7 +12,9 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   # *.torrent) transmission-show "$1";;
   # *.iso) iso-info --no-header -l "$1";;
   *.epub|*.rtf|*.doc|*.docx|*.otd|*.ods|*.odp|*.sxw)
-    pandoc -s -t markdown -- "$1" | bat --color=always --theme=base16
+    { [ -f ~/.config/dark-theme ] && theme=1337; } || theme=GitHub
+    bat --color=always --theme="$theme" "$1"
+    pandoc -s -t markdown -- "$1" | bat --color=always --theme="$theme"
     exit 1
     ;;
   *.csv) sed s/,/\\n/g "$1";;
@@ -35,7 +37,8 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
     rm "$CACHE"
     ;;
   *)
-    bat --color=always --theme=base16 "$1"
+    { [ -f ~/.config/dark-theme ] && theme=1337; } || theme=GitHub
+    bat --color=always --theme="$theme" "$1"
     ;;
 esac
 
