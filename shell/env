@@ -17,9 +17,9 @@ export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 
 # Force use of XDG Base Directory {{{1
-alias irssi="irssi --home=$HOME/.config/irssi"
-alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
-alias w3m="w3m -config $HOME/.config/w3m/config"
+alias irssi='irssi --home=$HOME/.config/irssi'
+alias tmux='tmux -f $HOME/.config/tmux/tmux.conf'
+alias w3m='w3m -config $HOME/.config/w3m/config'
 export JUPYTER_CONFIG_DIR="$HOME/.config/jupyter"
 export BUNDLE_USER_HOME="$HOME/.config/bundle"
 export BUNDLE_USER_CACHE="$HOME/.cache/bundle"
