@@ -1,17 +1,31 @@
+# The bane of every mac user
 .DS_Store
+
+# Secrets
 shell/secret_env
+mutt/secret
+
+# CLI for my router
+scripts/wifi
+
+# Newsboat
 newsboat/history.cmdline
 newsboat/history.search
 newsboat/error.log
+
+# w3m: don't want to share history, cookies, etc.
+w3m/*
+!w3m/config
+!w3m/mailcap
+!w3m/keymap
+
+# GNUPG: Don't want to share my keys, but I want the config in git
+gnupg/*
+!gnupg/gpg.conf
+
+# Misc
 *.pyc
 vim/autoload/plug.vim*
 irssi/*.log
 mpv/scripts/shared/sponsorblock.db*
 karabiner/automatic_backups/
-w3m/*
-!w3m/config
-!w3m/mailcap
-!w3m/keymap
-mutt/secret
-gnupg/*
-!gnupg/gpg.conf
