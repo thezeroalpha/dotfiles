@@ -2,6 +2,7 @@
 [include]
   path = identity
   ; this file isn't in the repo
+  ; sets user.name, user.email, and init.templatedir
 
 [alias]
     s = status
