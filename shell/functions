@@ -7,7 +7,7 @@ rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove
 hr() { : $((i=0)); while [ $((i<$(tput cols))) -ne 0 ]; do printf "#"; _=$((i=i+1)); done; echo; }  # insert a <hr> in the terminal
 vimq() { vim -q <(eval "$(fc -nl -1)"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
 gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                           # Access global pip while using virtualenvs
-nls() { expr `ls -l | wc -l | xargs echo` - 1; }                        # Count the number of files in the directory
+nls() { printf $((`ls -l | wc -l | xargs echo` - 1)); }                        # Count the number of files in the directory
 reload-completions() { rm ~/.zcompdump && compinit; }
 zp() { z -l "$@" | awk -F' ' 'END {printf $2}'; }                       # Get the result of a "z" comman
 reload() {
