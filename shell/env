@@ -1,7 +1,11 @@
 #!/bin/sh
 # vim: foldmethod=marker foldlevel=0
 export DOTFILES="$HOME/.dotfiles"
-EDITOR="$(command -v vim)"; export EDITOR
+
+if [ -n "$VIM_TERMINAL" ]; then EDITOR="vimsend"
+else EDITOR="$(command -v vim)"; fi
+export EDITOR
+
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
 
 if command -v bat 1>/dev/null 2>&1 && [ -z "$VIMRUNTIME" ]; then export PAGER="bat"
