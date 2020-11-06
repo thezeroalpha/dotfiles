@@ -4,7 +4,6 @@
 require 'open-uri'
 require 'json'
 require 'net/http'
-require 'byebug'
 
 def die(message)
   warn "error: #{message}"
