@@ -15,3 +15,4 @@ cd "$name" || { printf "Couldn't cd into directory %s\n" "$(pwd)/$name"; exit 1;
 youtube-dlc -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url"
 printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u
 youtube-dlc -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url" >> "$name".m3u
+notify "Downloaded $artist - $name" "$url" bcdl
