@@ -76,7 +76,7 @@ Plug 'gastonsimone/vim-dokumentary'
 Plug 'romainl/vim-devdocs', { 'on': 'DD' }
 
 " Fuzzy finder in vim
-Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag'] }
+Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'BLines'] }
 Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'Filetypes'] }
 
 " Better abbrevation and substitution
