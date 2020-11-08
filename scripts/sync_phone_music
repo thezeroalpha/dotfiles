@@ -28,23 +28,52 @@ PHONE_DIR="/storage/5D6D-E047/Music"
 MUSIC_DIR="${MUSIC_DIR:-$HOME/Music}"
 
 [ -d "$MUSIC_DIR" ] || die "Music dir not present, expected at $MUSIC_DIR"
-[ ! -z "$(adb devices | grep device$)" ] || die "Phone not connected."
+[ -n "$(adb devices | grep device$)" ] || die "Phone not connected."
 
 PARAMS=""
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -y)
+      skip_dry_run=1
+      shift
+      ;;
 
+    -h|--help)
+      echo "Pass -y to skip dry run."
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
 # Piping directly didn't work for some reason, less wouldn't page it
-outfile=$(mktemp)
-trap "rm $outfile" INT TERM EXIT
-echo "Calculating differences..."
-{ do_sync "$MUSIC_DIR"/ "$PHONE_DIR" --dry-run; } &> "$outfile"
-less -fR "$outfile" && rm "$outfile"
-trap - INT TERM EXIT
+if [ -z "$skip_dry_run" ]; then
+  outfile=$(mktemp)
+  trap "rm $outfile" INT TERM EXIT
+  echo "Calculating differences..."
+  { do_sync "$MUSIC_DIR"/ "$PHONE_DIR" --dry-run; } &> "$outfile"
+    less -fR "$outfile" && rm "$outfile"
+    trap - INT TERM EXIT
 
-read -rp "Execute? [Y/n]" -n 1 -s conf
-echo
+    read -rp "Execute? [Y/n]" -n 1 -s conf
+    echo
 
-case "$conf" in
-  Y|y) do_sync "$MUSIC_DIR"/ "$PHONE_DIR";;
-  *) die "User cancelled.";;
-esac
+    case "$conf" in
+      Y|y) do_sync "$MUSIC_DIR"/ "$PHONE_DIR";;
+      *) die "User cancelled.";;
+    esac
+  else
+    do_sync "$MUSIC_DIR"/ "$PHONE_DIR"
+fi
 
