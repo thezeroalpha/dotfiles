@@ -25,6 +25,7 @@ set scrolloff 10
 set previewer ~/.config/lf/preview
 set ignorecase true
 set preview true
+set icons
 
 # }}}
 # Command definitions {{{
