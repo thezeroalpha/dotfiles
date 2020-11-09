@@ -121,10 +121,10 @@ if ARGV.empty?
   exit 1
 end
 
-def count_sort_from_second_arg
+def get_count_sort(args)
   begin
-    count = Integer(ARGV[1])
-  rescue ArgumentError
+    count = Integer(args[1])
+  rescue TypeError
     die 'Second argument must be an integer.'
   end
   return { count: count.abs, sort: 'oldest' } if count.negative?
@@ -134,20 +134,32 @@ end
 
 pocket = Pocket.new
 if ARGV[0] == 'save'
-  die 'save: URL required' unless ARGV[1]
-  pocket.save ARGV[1]
+  if $stdin.stat.pipe?
+    urls = $stdin.readlines
+    die 'save: URL required' if urls.empty?
+    urls.each { |url| pocket.save url }
+  else
+    die 'save: URL required' unless ARGV[1]
+    pocket.save ARGV[1]
+  end
 elsif ARGV[0] == 'audio'
-  params = { domain: '*.bandcamp.com', contentType: 'article' }.merge(count_sort_from_second_arg)
-  puts pocket.retrieve_list(params)
+  params = { domain: '*.bandcamp.com', contentType: 'article' }.merge(get_count_sort(ARGV))
+  print pocket.retrieve_list(params)
 elsif ARGV[0] == 'video'
-  params = { has_video: 2, contentType: 'article' }.merge(count_sort_from_second_arg)
-  puts pocket.retrieve_list(params)
+  params = { contentType: 'video' }.merge(get_count_sort(ARGV))
+  print pocket.retrieve_list(params)
+elsif ARGV[0] == 'articles'
+  if ARGV[1]
+    params = { contentType: 'article' }.merge(get_count_sort(ARGV))
+    print pocket.retrieve_list(params)
+  else
+    print pocket.retrieve_list(contentType: 'article')
+  end
 elsif ARGV[0] == 'list'
   if ARGV[1]
-    params = { contentType: 'article' }.merge(count_sort_from_second_arg)
-    puts pocket.retrieve_list(params)
+    print pocket.retrieve_list(get_count_sort(ARGV))
   else
-    puts pocket.retrieve_list(contentType: 'article')
+    print pocket.retrieve_list({})
   end
 else
   die "Command '#{ARGV[0]}' not recognised."
