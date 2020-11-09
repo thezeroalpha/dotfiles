@@ -109,9 +109,10 @@ def usage
     Usage: pocket command [arg1 [arg2...]]
 
     Commands:
-    save [URL]\tsave URL to Pocket
+    save [URL]\tsave URL to Pocket (can also read list of URLs from stdin)
     audio [n]\tget n recently saved audio URLs (if n is negative, get oldest)
     video [n]\tget n recently saved video URLs (if n is negative, get oldest)
+    articles [n]\tget n recently saved article URLS (if n is negative, get oldest)
     list [n]\tlist n recently saved URLs (if n is negative, get oldest)
   HEREDOC
 end
