@@ -131,9 +131,9 @@ macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter
 bind index,pager i noop
 source school
 folder-hook $folder 'source ~/.config/mutt/school'
-macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<enter><change-folder>!<enter>;<check-stats>' "switch to school"
+macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<enter><change-folder>!<enter><check-stats>' "switch to school"
 
 source personal
 folder-hook $folder 'source ~/.config/mutt/personal'
-macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-folder>!<enter>;<check-stats>' "switch to personal"
+macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-folder>!<enter><check-stats>' "switch to personal"
 
