@@ -203,6 +203,13 @@ cmd pgp_sign_detach ${{
   gpg --detach-sign $f
 }}
 
+# Select based on glob filter
+cmd filter %{{
+  printf "Filter: "
+  read -r filter_expr
+  lf -remote "send $id unselect"
+  lf -remote "send $id glob-select $filter_expr"
+}}
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
@@ -258,6 +265,9 @@ map g/ cd /
 map g. cd ~/.dotfiles
 map gv cd /Volumes
 map gt cd ~/.Trash/
+
+map <space> :toggle; down
+map F filter
 
 map u
 map uu unselect
