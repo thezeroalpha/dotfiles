@@ -1,0 +1,65 @@
+#!/bin/sh
+command -v bc >/dev/null 2>&1 || { printf "bc not installed.\n" && exit 1; }
+
+usage() {
+  printf "Usage: %s [options] num" "$0"
+}
+[ $# -ge 1 ] || { usage && exit 1; }
+
+PARAMS=""
+
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -x|--hex)
+      obase=16
+      shift
+      ;;
+    -d|--decimal)
+      obase=10
+      shift
+      ;;
+    -o|--octal)
+      obase=8
+      shift
+      ;;
+    -b|--binary)
+      obase=2
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+case "$1" in
+  0x*) ibase=16; val="$(printf "%s" "${1#0x}" | tr '[:lower:]' '[:upper:]')";;
+  0d*) ibase=10; val="${1#0d}";;
+  0o*) ibase=8; val="${1#0o}";;
+  0b*) ibase=2; val="${1#0b}";;
+  *) ibase=10; val="$1";;
+esac
+
+if [ -n "$obase" ]; then
+  printf "obase=%s; ibase=%s; %s\n" "$obase" "$ibase" "$val" | bc -w | tr -d '\n'
+else
+  printf "Dec: %s\n" "$(printf "obase=10; ibase=%s; %s\n" "$ibase" "$val" | bc -w)" \
+    && printf "Hex: %s\n" "$(printf "obase=16; ibase=%s; %s\n" "$ibase" "$val" | bc -w)" \
+    && printf "Oct: %s\n" "$(printf "obase=8; ibase=%s; %s\n" "$ibase" "$val" | bc -w)" \
+    && printf "Bin: %s\n" "$(printf "obase=2; ibase=%s; %s\n" "$ibase" "$val" | bc -w)"
+fi
+
