@@ -43,7 +43,13 @@ bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
 
-set date_format = "%m/%d"
+# Switch ; and : keys
+unbind generic :
+unbind generic ;
+bind generic \; enter-command
+bind generic : tag-prefix
+
+set date_format = "%d/%m"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail
