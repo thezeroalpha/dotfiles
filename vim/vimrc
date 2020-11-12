@@ -77,7 +77,7 @@ Plug 'romainl/vim-devdocs', { 'on': 'DD' }
 
 " Fuzzy finder in vim
 Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish', 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'BLines'] }
-Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'Filetypes'] }
+Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Tags', 'Buffers', 'Files', 'Helptags', 'Lines', 'Ag', 'Filetypes', 'Commands'] }
 
 " Better abbrevation and substitution
 Plug 'tpope/vim-abolish'
@@ -284,6 +284,7 @@ nnoremap <leader>? :Helptags<CR>
 nnoremap <leader>T :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
 nnoremap <leader>M :Marks<CR>
+nnoremap <leader>; :History:<CR>
 
 " Search for Todos/Fixmes
 command! Todo Ag ((TO ?DO)|FIXME):?<space>?
@@ -745,7 +746,6 @@ vnoremap k gk
 vnoremap gj j
 vnoremap gk k
 
-
 " Move visual block
 xnoremap D :m '>+1<CR>gv=gv
 xnoremap U :m '<-2<CR>gv=gv
@@ -762,8 +762,8 @@ nnoremap <leader>= mlgg=G`lzz
 " Tab mappings
 nnoremap <C-t> :tabnew<CR>
 nnoremap <C-c> :tabclose<CR>
-nnoremap <leader><left> :tabmove -1<CR>
-nnoremap <leader><right> :tabmove +1<CR>
+nnoremap <leader>th :tabmove -1<CR>
+nnoremap <leader>tl :tabmove +1<CR>
 
 " Window resizing mappings
 nnoremap <C-k> <C-w>+
@@ -828,10 +828,6 @@ nnoremap Y y$
 nnoremap <leader>o m`o<esc>``
 nnoremap <leader>O m`O<esc>``
 
-" This should be a plugin but for now...
-" time (hh:mm-hh:mm) to duration in hours
-nnoremap <leader>td 0f-l"aywf:l"byw0"cywf:l"dywA (=((a*60+b)-(c*60+d))/60.0)F.r:wyw"aywcw=0.a*60F.2xih0:s/:0h/h
-
 " Custom session maps
 nnoremap <leader>ss :call sessions#SaveSession()<CR>
 nnoremap <leader>sl :call sessions#LoadSession()<CR>
@@ -884,10 +880,15 @@ nnoremap <C-w>Z :tab split<CR>
 nnoremap <leader>gg :call input("go line:col> ")->split(":")->cursor()<CR>
 
 " Which commit introduced this line?
-nnoremap <silent><Leader>gb :call setbufvar(winbufnr(popup_atcursor(systemlist("cd " . shellescape(fnamemodify(resolve(expand('%:p')), ":h")) . " && git log --no-merges -n 1 -L " . shellescape(line("v") . "," . line(".") . ":" . resolve(expand("%:p")))), { "padding": [1,1,1,1], "pos": "botleft", "wrap": 0, "highlight": "StatusLine"})), "&filetype", "git")<CR>
+nnoremap <silent><Leader>gw :call setbufvar(winbufnr(popup_atcursor(systemlist("cd " . shellescape(fnamemodify(resolve(expand('%:p')), ":h")) . " && git log --no-merges -n 1 -L " . shellescape(line("v") . "," . line(".") . ":" . resolve(expand("%:p")))), { "padding": [1,1,1,1], "pos": "botleft", "wrap": 0, "highlight": "StatusLine"})), "&filetype", "git")<CR>
 
 " Avoid paste hijacking in insert mode
 inoremap <c-r> <c-r><c-o>
+
+" Up/down errors on the command line search for commands starting with current
+" string. I want <c-n/p> to do the same.
+cnoremap <c-p> <up>
+cnoremap <c-d> <down>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
