@@ -12,7 +12,7 @@ for i in `seq 0 $nvideos`; do
   url="$(cat "$1" | jq ."$name")"
   echo "$name: $url"
 
-  youtube-dl -o "$(echo $name | tr -d '"' | sed 's/.mp4//').mp4" "$(echo $url | tr -d '"')" &>/dev/null &
+  youtube-dlc -o "$(echo $name | tr -d '"' | sed 's/.mp4//').mp4" "$(echo $url | tr -d '"')" &>/dev/null &
   echo "Downloading $name"
 
   if [ $(expr $i % 4) -eq 0 ]; then

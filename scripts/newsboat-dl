@@ -6,16 +6,16 @@ downloads="$HOME/Downloads/"
 audiodir="$downloads/newsboat/audio"
 videodir="$downloads/newsboat/video"
 logfile="$HOME/.cache/newsboat-download.log"
-title=$(youtube-dl --ignore-config --get-title --get-duration --get-description "$where" 2>/dev/null)
+title=$(youtube-dlc --ignore-config --get-title --get-duration --get-description "$where" 2>/dev/null)
 
 terminal-notifier -title "Started $what download" -message "Downloading \"$title\"" -group "$where"
 case "$what" in
   "aonly")
     mkdir -p "$audiodir"
-    youtube-dl --add-metadata -xic -f bestaudio/best -o "$audiodir/%(title)s-%(creator)s.%(ext)s" "$where" 2>&1 >> "$logfile"
+    youtube-dlc --add-metadata -xic -f bestaudio/best -o "$audiodir/%(title)s-%(creator)s.%(ext)s" "$where" 2>&1 >> "$logfile"
     ;;
   "av")
-    youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$videodir/%(title)s-%(creator)s.%(ext)s" "$where" 2>&1 >> "$logfile"
+    youtube-dlc --add-metadata -ic --write-sub --embed-subs -o "$videodir/%(title)s-%(creator)s.%(ext)s" "$where" 2>&1 >> "$logfile"
     ;;
   *)
     terminal-notifier -title "Error" -message "Download option not valid" -group "$where"

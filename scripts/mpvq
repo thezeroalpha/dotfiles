@@ -16,7 +16,7 @@ play() {
 
 # link archive
 arc(){
-  title=$(youtube-dl --ignore-config --get-title "$1" 2>/dev/null)
+  title=$(youtube-dlc --ignore-config --get-title "$1" 2>/dev/null)
   printf "%b\n" "$title\t$1" >> "$HOME/.cache/mpv/linkarchive"
 }
 
