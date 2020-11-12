@@ -1,5 +1,5 @@
-#!/bin/bash
-if [[ ! -p "$HOME"/.cache/mpv/input ]]; then
+#!/bin/sh
+if ! [ -p "$HOME"/.cache/mpv/input ]; then
     mkfifo "$HOME"/.cache/mpv/input
 fi
 
@@ -7,9 +7,9 @@ fi
 play() {
   if pgrep -f MPV-Q > /dev/null; then
     printf "%s\n" "loadfile \"$1\" append-play" > "$HOME"/.cache/mpv/input
-    terminal-notifier -title "Video queued" -message "Added to queue successfully" -group "mpv" &>/dev/null
+    terminal-notifier -title "Video queued" -message "Added to queue successfully" -group "mpv" 1>/dev/null 2>&1
   else
-    terminal-notifier -title "Playing video" -message "MPV is launching..." -group "mpv" &>/dev/null
+    terminal-notifier -title "Playing video" -message "MPV is launching..." -group "mpv" 1>/dev/null 2>&1
     mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-file="$HOME"/.cache/mpv/input --player-operation-mode=pseudo-gui "$1" &
   fi
 }
@@ -20,6 +20,16 @@ arc(){
   printf "%b\n" "$title\t$1" >> "$HOME/.cache/mpv/linkarchive"
 }
 
+if ! [ -t 0 ]; then
+  while read -r l; do
+    entered_read=1
+    play "$l"
+    arc "$l" &
+  done
+  [ -n "$entered_read" ] && exit 0
+fi
+
+[ $# -eq 0 ] && printf "Links expected as arguments or stdin; none provided.\n" && exit 1
 for l in "$@"; do
   play "$l"
   arc "$1" &
