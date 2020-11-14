@@ -217,6 +217,9 @@ map ; push :
 map x $$f
 map X !$f
 
+# avoid a crash
+map w
+
 # dedicated keys for file opener actions
 map o
 map O
