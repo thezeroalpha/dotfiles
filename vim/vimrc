@@ -522,8 +522,6 @@ if &term =~ '^screen' || $TMUX !=# ""
   set ttymouse=xterm2
 endif
 
-highlight ColorColumn ctermbg=233
-
 " How to split new windows
 set splitbelow splitright
 
@@ -895,10 +893,12 @@ if has('autocmd')
     autocmd!
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertLeave * setlocal cursorline
+    autocmd ColorScheme * highlight ColorColumn ctermbg=233
   augroup END
   augroup vimrc_commands
     autocmd!
     autocmd BufWritePre * silent StripTrailingWhitespace
+
   augroup END
 endif
 " }}}
