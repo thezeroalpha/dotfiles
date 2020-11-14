@@ -1,5 +1,5 @@
 -- youtube-quality.lua
---
+-- https://github.com/jgreco/mpv-youtube-quality
 -- Change youtube video quality on the fly.
 --
 -- Diplays a menu that lets you switch to different ytdl-format settings while
