@@ -39,6 +39,7 @@ https://web.hypothes.is/blog/feed/                                              
 https://www.linuxjournal.com/node/feed                                                                                                  "tech"      "~Linux Journal"
 https://write.as/thenewoil/feed/                                                                                                        "tech"      "~The New Oil"
 https://feeds.feedburner.com/http/unix-schoolblogspotcom                                                                                "tech"      "~The UNIX School"
+https://sneak.berlin/feed.xml                                                                                                           "tech"      "~Jeffrey Paul"
 
 # Deep web
 https://pirate.london/feed                                                  "deep web"                  "~pirate dot london"
@@ -326,4 +327,5 @@ https://rss.alex.balgavy.eu/?action=display&bridge=Soundcloud&u=TroyBoi&t=tracks
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=sigurros&type=releases&limit=5&format=Atom                              "music"    "~Sigur Rós"
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=balkanbump&type=releases&limit=5&format=Atom                            "music"    "~Balkan Bump"
 https://rss.alex.balgavy.eu/?action=display&bridge=Soundcloud&u=thegeek&t=tracks&format=Atom                                                             "music"    "~The Geek x VRV"
+https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=igorrr&type=releases&limit=5&format=Atom                                "music"    "~Igorrr"
 "query:Music:tags # \"music\""
