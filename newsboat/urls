@@ -78,6 +78,7 @@ https://waitbutwhy.com/feed                                                 "blo
 http://remaster.realmofthemadgod.com/?feed=rss2                             "blogs"                     "~ROTMG"
 https://lifehacker.com/rss                                                  "blogs"                     "~Lifehacker"
 https://garfieldminusgarfield.net/rss                                       "blogs"                     "~Garfield minus Garfield"
+https://www.real.discount/feed/?post_type=product                           "blogs"                     "~Real.Discount Udemy Coupons"
 
 # Software releases (these are all hidden except for the query feed)
 https://github.com/gokcehan/lf/releases.atom                                "software-releases"  "!"    "~lf"
