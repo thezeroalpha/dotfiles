@@ -74,11 +74,12 @@ https://climateandeconomy.com/feed/                                             
 https://www.advalvas.vu.nl/rss.xml                                                                                      "news"  "~Ad Valvas"
 
 # Misc blogs
-https://waitbutwhy.com/feed                                                 "blogs"                     "~Wait But Why"
-http://remaster.realmofthemadgod.com/?feed=rss2                             "blogs"                     "~ROTMG"
-https://lifehacker.com/rss                                                  "blogs"                     "~Lifehacker"
-https://garfieldminusgarfield.net/rss                                       "blogs"                     "~Garfield minus Garfield"
-https://www.real.discount/feed/?post_type=product                           "blogs"                     "~Real.Discount Udemy Coupons"
+https://waitbutwhy.com/feed                                                                             "blogs" "~Wait But Why"
+http://remaster.realmofthemadgod.com/?feed=rss2                                                         "blogs" "~ROTMG"
+https://lifehacker.com/rss                                                                              "blogs" "~Lifehacker"
+https://garfieldminusgarfield.net/rss                                                                   "blogs" "~Garfield minus Garfield"
+https://www.real.discount/feed/?post_type=product                                                       "blogs" "~Real.Discount Udemy Coupons"
+https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=personalfinance&format=Atom  "blogs" "~Reddit Personal Finance"
 
 # Software releases (these are all hidden except for the query feed)
 https://github.com/gokcehan/lf/releases.atom                                "software-releases"  "!"    "~lf"
