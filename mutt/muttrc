@@ -42,6 +42,7 @@ bind index,pager \Cl sidebar-open
 bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
+bind index t tag-entry
 
 # Switch ; and : keys
 unbind generic :
