@@ -1,10 +1,10 @@
 #!/bin/sh
 while read file; do
-  fullpath="$(pwd)$file"
   case "$1" in
     "y")
       printf "$file" | clc;;
     "Y")
+      fullpath="$(realpath $file)"
       printf "$fullpath" | clc;;
   esac
 done
