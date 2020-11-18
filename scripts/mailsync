@@ -1,10 +1,15 @@
 #!/bin/sh
-BW_SESSION="${BW_SESSION:-$(bw unlock --raw)}"
-[ $? -eq 0 ] || { printf "Could not unlock vault.\n" && exit 1; }
-export BW_SESSION
+if [ -z "$BW_SESSION" ]; then
+  if [ -n "$BW_SESHFILE" ] && [ -f "$BW_SESHFILE" ]; then
+    BW_SESSION="$(cat "$BW_SESHFILE")"
+  else
+    BW_SESSION="$(bw unlock --raw)"
+    [ $? -eq 0 ] || { printf "Could not unlock vault.\n" && exit 1; }
+  fi
+  export BW_SESSION
+fi
 mbsync -c /Users/alex/.config/mbsync/mbsyncrc -Va
 notmuch new
-
 notification_str=""
 for i in ~/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new; do
   mailbox_name="$(printf "%s" "$i" | sed 's:^.*mail/::; s:/[Ii][Nn][Bb][Oo][Xx]/new.*$::')"

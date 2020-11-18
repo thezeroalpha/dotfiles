@@ -143,3 +143,28 @@ if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
   }
 fi
 
+# bitwarden functions
+if command -v bw 1>/dev/null 2>&1; then
+  bwl() {
+    [ -n "$BW_SESHFILE" ] || { printf "Set BW_SESHFILE in your env.\n" && exit 1; }
+    [ -f "$BW_SESHFILE" ] && rm "$BW_SESHFILE"
+    unset BW_SESSION
+    bw lock
+  }
+  bwg() {
+    [ -n "$BW_SESHFILE" ] || { printf "Set BW_SESHFILE in your env.\n" && exit 1; }
+    { [ -f "$BW_SESHFILE" ] && cat "$BW_SESHFILE"; } || printf "No active session.\n"
+  }
+  bwu() {
+    [ -n "$BW_SESHFILE" ] || { printf "Set BW_SESHFILE in your env.\n" && exit 1; }
+    if ! [ -f "$BW_SESHFILE" ]; then
+      touch "$BW_SESHFILE"
+      chmod 600 "$BW_SESHFILE"
+      bw unlock --raw > "$BW_SESHFILE"
+      printf "Vault unlocked.\n"
+      export BW_SESSION="$(cat $BW_SESHFILE)"
+    else
+      printf "Session already active.\n"
+    fi
+  }
+fi

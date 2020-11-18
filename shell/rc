@@ -22,4 +22,3 @@ source_if_exists "$DOTFILES"/shell/z/z.sh
 # Enable custom aliases and functions
 source_if_exists "$DOTFILES/shell/aliases"
 source_if_exists "$DOTFILES/shell/functions"
-source_if_exists "$DOTFILES/shell/secret_env"
