@@ -97,6 +97,7 @@ bind attach l view-mailcap
 
 bind generic,index j next-entry
 bind generic,index k previous-entry
+bind index ! shell-escape
 bind attach <return> view-mailcap
 bind attach l view-mailcap
 bind editor <space> noop
