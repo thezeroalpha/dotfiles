@@ -60,6 +60,7 @@ shell:
 - zshenv: ~/.config/zsh/.zshenv
 - zshrc: ~/.config/zsh/.zshrc
 - inputrc: ~/.inputrc
+mime.types: ~/.mime.types
 
 # Config: Vim
 vim:
