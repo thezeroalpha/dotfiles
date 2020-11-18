@@ -95,8 +95,8 @@ set forward_quote                    # include message in forwards
 bind attach <return> view-mailcap
 bind attach l view-mailcap
 
-bind generic j next-entry
-bind generic k previous-entry
+bind generic,index j next-entry
+bind generic,index k previous-entry
 bind attach <return> view-mailcap
 bind attach l view-mailcap
 bind editor <space> noop
