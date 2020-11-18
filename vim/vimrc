@@ -293,6 +293,8 @@ nnoremap <leader>! :Todo<CR>
 " Set a filetype
 cabbrev setf Filetypes
 
+command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
+command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
@@ -886,7 +888,7 @@ inoremap <c-r> <c-r><c-o>
 " Up/down errors on the command line search for commands starting with current
 " string. I want <c-n/p> to do the same.
 cnoremap <c-p> <up>
-cnoremap <c-d> <down>
+cnoremap <c-n> <down>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
