@@ -1,0 +1,13 @@
+#!/bin/sh
+command -v bw 1>/dev/null 2>&1 || { printf "Bitwarden CLI not installed.\n" && exit 1; }
+[ -n "$BW_SESHFILE" ] || { printf "Set BW_SESHFILE in your env.\n" && exit 1; }
+if ! [ -f "$BW_SESHFILE" ]; then
+  touch "$BW_SESHFILE"
+  chmod 600 "$BW_SESHFILE"
+  { bw unlock --raw > "$BW_SESHFILE" \
+    && printf "Vault unlocked.\n"; } \
+    || rm "$BW_SESHFILE";
+else
+  printf "Session already active.\n"
+fi
+
