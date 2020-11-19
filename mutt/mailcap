@@ -4,3 +4,4 @@ text/html; w3m -config /Users/alex/.config/w3m/config -T text/html %s
 text/plain; less
 application/pdf; open -a Skim %s
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; open -a 'Microsoft Word' %s
+application/x-tar-gz; tar tzf %s | less -R
