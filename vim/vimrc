@@ -459,7 +459,12 @@ set thesaurus=~/.vim/words/thesaurus/mthesaur.txt
 runtime macros/matchit.vim
 
 " same with :Man
-runtime ftplugin/man.vim
+" I'm lazy-loading this because it really affects my startup time.
+" I'm not the only one: https://www.reddit.com/r/vim/comments/emx856/lazy_loading_man_page_plugin/
+silent! command! -bar -nargs=* Man
+      \ delcommand Man |
+      \ runtime ftplugin/man.vim |
+      \ Man <args>
 
 " For editing binaries
 set binary
