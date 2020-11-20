@@ -28,11 +28,9 @@ keymap C-t NEW_TAB
 keymap gt NEXT_TAB
 keymap gT PREV_TAB
 keymap C-o TAB_GOTO
+keymap M-t TAB_LINK
 keymap r RELOAD
 keymap M-r REINIT
-# REINIT                Reload configuration file
-# RELOAD                Load current document anew
-
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ADD_BOOKMARK  Add current page to bookmarks
@@ -150,7 +148,6 @@ keymap M-r REINIT
 # SUSPEND       Suspend w3m to background
 # TAB_GOTO_RELATIVE     Open relative address in a new tab
 # TAB_LEFT      Move left along the tab bar
-# TAB_LINK      Follow current hyperlink in a new tab
 # TAB_MENU      Pop up tab selection menu
 # TAB_MOUSE     Select tab by mouse action
 # TAB_RIGHT     Move right along the tab bar
