@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
+# set the aspect ratio
+# 16:10 == 1440x900
 aspect_ratio="16:10"
+
 if ! command -v convert &>/dev/null; then
   echo "convert not installed." >&2
   exit 1
