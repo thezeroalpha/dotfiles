@@ -1,5 +1,6 @@
 #!/bin/sh
 # vim: foldmethod=syntax foldlevel=1
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 set_macos() {
   case "$1" in
     dark) dark="true";;
