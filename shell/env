@@ -9,8 +9,7 @@ export EDITOR
 
 export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
 
-if command -v bat 1>/dev/null 2>&1 && [ -z "$VIMRUNTIME" ]; then export PAGER="bat"
-else export PAGER="less -Ri"; fi
+export PAGER="less -FRi"
 
 [ -n "$BW_SESHFILE" ] && [ -f "$BW_SESHFILE" ] && export BW_SESSION="$(cat $BW_SESHFILE)"
 
