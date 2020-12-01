@@ -1,7 +1,7 @@
 #!/bin/sh
 [ $# -gt 0 ] || { printf "File required in argument.\n" && exit 1; }
 case $(file --mime-type "$1" -bL) in
-  text/*|application/json|inode/x-empty) $EDITOR "$1";;
+  text/*|application/json|inode/x-empty) { [ -n "$VIM_TERMINAL" ] && vimsend "$1"; } || ${EDITOR:-vim} "$1";;
   image/*) setsid -f sxiv "$@" 2>&1;;
   application/epub*) setsid -f ebook-viewer "$1" >/dev/null 2>&1;;
   application/x-sc) sc-im "$1";;
