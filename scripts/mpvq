@@ -1,16 +1,18 @@
 #!/bin/sh
-if ! [ -p "$HOME"/.cache/mpv/input ]; then
+if ! [ -S "$HOME"/.cache/mpv/input ]; then
     mkfifo "$HOME"/.cache/mpv/input
 fi
 
 # queue the video
 play() {
   if pgrep -f MPV-Q > /dev/null; then
-    printf "%s\n" "loadfile \"$1\" append-play" > "$HOME"/.cache/mpv/input
+    # TODO: unfortunate dependency on `nc`, try to find a way to send text to socket without dependencies
+    printf "loadfile \"%s\" append-play\n" "$1" | nc -U "$HOME"/.cache/mpv/input
     terminal-notifier -title "Video queued" -message "Added to queue successfully" -group "mpv" 1>/dev/null 2>&1
   else
     terminal-notifier -title "Playing video" -message "MPV is launching..." -group "mpv" 1>/dev/null 2>&1
-    mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-file="$HOME"/.cache/mpv/input --player-operation-mode=pseudo-gui "$1" &
+    # This converts FIFO to a domain socket
+    mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-ipc-server="$HOME"/.cache/mpv/input --player-operation-mode=pseudo-gui "$1" &
   fi
 }
 
