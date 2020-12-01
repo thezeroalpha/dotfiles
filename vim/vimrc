@@ -332,8 +332,8 @@ xmap ga <Plug>(LiveEasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(LiveEasyAlign)
 
-nmap <leader>ga <Plug>(EasyAlign)
-xmap <leader>ga <Plug>(EasyAlign)
+" Keep :ascii as a map
+nnoremap <leader>ga :<c-u>ascii<cr>
 " Peekaboo {{{3
 let g:peekaboo_compact=1
 " Mundo {{{3
@@ -718,6 +718,7 @@ endif
 exe 'digraphs o+ ' .. 0x2295
 exe 'digraphs O+ ' .. 0x2a01
 exe 'digraphs e$ ' .. 0x20ac
+exe 'digraphs \|> ' .. 0x21a6
 " Mappings {{{1
 " So I don't have to mash shift all the time
 nnoremap ; :
