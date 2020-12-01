@@ -18,9 +18,8 @@ EOF
 }
 
 set_iterm2() {
-  ITERM2_COOKIE=$(osascript -e 'tell application "iTerm2" to request cookie') ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/3.7.5/bin/python3 \
+  PYTHONPATH='' ITERM2_COOKIE=$(osascript -e 'tell application "iTerm2" to request cookie') ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/3.8.6/bin/python3 \
     - "$1" <<EOF
-#!/usr/bin/env python3
 import iterm2
 from sys import argv
 async def main(connection):
