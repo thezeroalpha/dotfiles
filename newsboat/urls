@@ -333,4 +333,5 @@ https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=balkanbump&type=releases&limit=5&format=Atom                            "music"    "~Balkan Bump"
 https://rss.alex.balgavy.eu/?action=display&bridge=Soundcloud&u=thegeek&t=tracks&format=Atom                                                             "music"    "~The Geek x VRV"
 https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=igorrr&type=releases&limit=5&format=Atom                                "music"    "~Igorrr"
+https://rss.alex.balgavy.eu/?action=display&bridge=Bandcamp&context=By+band&band=plini&type=releases&limit=5&format=Atom                                 "music"    "~Plini"
 "query:Music:tags # \"music\""
