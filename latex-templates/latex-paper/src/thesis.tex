@@ -1,0 +1,60 @@
+\documentclass[12pt,notitlepage,]{article}
+\usepackage[a4paper, top=0.7in, left=0.7in, right=0.7in, bottom=0.7in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{width=0.8\textwidth,font+=it}
+
+\usepackage{listings}
+\lstset{captionpos=b, frame=lines, xleftmargin=1em, framextopmargin=0.5em, framexbottommargin=0.5em, aboveskip=1em, belowskip=1em, linewidth=0.98\linewidth, basicstyle=\small}
+\captionsetup[lstlisting]{justification=centering}
+
+\usepackage{graphicx}
+\graphicspath{{images/}{diagrams/}}
+
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\result}[1]{\input{numbers/#1}\unskip}
+
+\usepackage[style=ieee]{biblatex}
+\addbibresource{references.bib}
+
+% To show overfull boxes:
+\setlength{\overfullrule}{5pt}
+
+\def\theauthor{Author}
+\def\thetitle{Title}
+\def\thedate{\today}
+\def\theinstitution{Institution Name}
+\def\thesubject{Subject}
+
+\begin{document}
+  \input{titlepage}
+
+  \begin{abstract}
+    This is the abstract.
+  \end{abstract}
+
+  \input{meta}
+  \input{introduction}
+  \input{background}
+  \input{results}
+  \input{related}
+  \input{conclusion}
+  \printbibliography
+
+\end{document}
