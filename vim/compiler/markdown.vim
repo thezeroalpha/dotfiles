@@ -5,4 +5,5 @@ let current_compiler = "markdown"
 if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
-CompilerSet makeprg=pandoc\ %:p:S\ -f\ markdown\ --filter\ pandoc-citeproc\ -o\ %:p:r:S.pdf\ \&\&\ open\ -g\ %:p:r:S.pdf
+" potentially call with --citeproc flag
+CompilerSet makeprg=pandoc\ %:p:S\ -f\ markdown\ --citeproc\ -o\ %:p:r:S.pdf\ \&\&\ open\ -g\ %:p:r:S.pdf
