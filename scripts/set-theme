@@ -63,16 +63,16 @@ set_tmux() {
 [ $# -eq 1 ] || { printf "Arguments: dark, light\n" && exit 1; }
 case "$1" in
   dark)
-    THEME="dark";;
+    theme="dark";;
   light)
-    THEME="light";;
+    theme="light";;
   toggle)
-    if [ -f "$HOME/.config/dark-theme" ]; then THEME="light"
-    else THEME="dark"; fi;;
+    if [ -f "$HOME/.config/dark-theme" ]; then theme="light"
+    else theme="dark"; fi;;
   *) printf "Arguments: dark, light\n" && exit 1;;
 esac
 
-case "$THEME" in
+case "$theme" in
   light) rm "$HOME/.config/dark-theme";;
   dark) touch "$HOME/.config/dark-theme";;
 esac
@@ -80,11 +80,11 @@ esac
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   darwin*)
-    set_macos "$THEME"
-    set_iterm2 "$THEME"
+    set_macos "$theme"
+    set_iterm2 "$theme"
     ;;
 esac
 
-set_terminal_and_wallpaper "$THEME"
-set_p10k "$THEME"
-set_tmux "$THEME"
+set_terminal_and_wallpaper "$theme"
+set_p10k "$theme"
+set_tmux "$theme"
