@@ -719,6 +719,8 @@ exe 'digraphs o+ ' .. 0x2295
 exe 'digraphs O+ ' .. 0x2a01
 exe 'digraphs e$ ' .. 0x20ac
 exe 'digraphs \|> ' .. 0x21a6
+exe 'digraphs [[ ' .. 0x27e6
+exe 'digraphs ]] ' .. 0x27e7
 " Mappings {{{1
 " So I don't have to mash shift all the time
 nnoremap ; :
