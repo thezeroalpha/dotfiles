@@ -1,46 +1,54 @@
-\documentclass[12pt,notitlepage,]{article}
-\usepackage[a4paper, top=0.7in, left=0.7in, right=0.7in, bottom=0.7in]{geometry}
+\documentclass[12pt,notitlepage]{article}
+\usepackage[a4paper, margin=0.7in]{geometry}
+
+% Set language & encoding; Babel is good for unified rules
 \usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
+\usepackage[USenglish]{babel}
+\usepackage{csquotes} % recommended with Babel
+
+% Hyperlinks, as well as automatically adding "section..." or "chapter..." with \autoref
+% Set the color of links with xcolor
 \usepackage{hyperref}
 \usepackage{xcolor}
 \hypersetup{
-    colorlinks,
-    linkcolor={red!50!black},
-    citecolor={blue!50!black},
-    urlcolor={blue!80!black}
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
 }
-\usepackage{csquotes}
-\usepackage{amsmath}
-\usepackage{amssymb}
+
+% Captions also in subfigures, and set caption style
 \usepackage{caption}
 \usepackage{subcaption}
 \captionsetup{width=0.8\textwidth,font+=it}
 
+% Code listings
 \usepackage{listings}
 \lstset{captionpos=b, frame=lines, xleftmargin=1em, framextopmargin=0.5em, framexbottommargin=0.5em, aboveskip=1em, belowskip=1em, linewidth=0.98\linewidth, basicstyle=\small}
 \captionsetup[lstlisting]{justification=centering}
 
+% Pictures & diagrams
 \usepackage{graphicx}
 \graphicspath{{images/}{diagrams/}}
 
-\usepackage{import}
-\usepackage{xifthen}
-\usepackage{pdfpages}
-\usepackage{transparent}
-\newcommand{\result}[1]{\input{numbers/#1}\unskip}
-
+% Set up the bibliography
 \usepackage[style=ieee]{biblatex}
 \addbibresource{references.bib}
 
-% To show overfull boxes:
+% Show overfull boxes in the document
 \setlength{\overfullrule}{5pt}
 
+% Metadata
 \def\theauthor{Author}
 \def\thetitle{Title}
 \def\thedate{\today}
 \def\theinstitution{Institution Name}
 \def\thesubject{Subject}
+
+
+% \result: insert numeric results from numbers/*.tex
+\newcommand{\result}[1]{\input{numbers/#1}\unskip}
+
 
 \begin{document}
   \input{titlepage}
