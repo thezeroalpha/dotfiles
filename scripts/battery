@@ -1,0 +1,54 @@
+#!/bin/sh
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  linux*)
+    printf "Linux not yet supported.\n"
+    ;;
+  darwin*)
+    battstatus="$(pmset -g batt)"
+    percent="$(printf "%s" "$battstatus" | awk '/InternalBattery/ { print $3 }' | tr -d '%;')"
+    if { printf "%s" "$battstatus" | grep -q "from 'Battery Power'"; }; then state="battery";
+    elif { printf "%s" "$battstatus" | grep -q "from 'AC Power'"; }; then state="charging";
+    else printf "Could not determine state.\n" >&2; exit 1; fi
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    printf "Windows not yet supported.\n"
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "$os"
+    ;;
+esac
+
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -p|--percent)
+      printf "%s" "$percent"
+      exit 0
+      ;;
+    -s|--state)
+      printf "%s" "$state"
+      exit 0
+      ;;
+    -h|--help)
+      echo "Usage: $0 [options]"
+      echo "Print information about the battery. Without any options, prints percent and state, on separate lines."
+      echo "Options:"
+      echo "-p      percent"
+      echo "-s      state (charging or battery)"
+      echo "-h      print this help text"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      break
+      ;;
+  esac
+done
+printf "%s\n%s" "$percent" "$state"
