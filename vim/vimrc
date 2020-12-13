@@ -36,7 +36,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'majutsushi/tagbar', { 'on': ['TagbarToggle', 'TagbarOpen'] }
 
 " Personal hypertext files
-Plug 'thezeroalpha/vimwiki' ", { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
+Plug 'vimwiki/vimwiki' ", { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
 
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
