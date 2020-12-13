@@ -10,7 +10,7 @@ set record = +Sent
 set spoolfile = +Inbox
 set mbox = +Archive
 unmailboxes *
-mailboxes +Inbox +Archive +Drafts +Tickets +Orders +Sent +Trash +Spam
+mailboxes +Inbox +Archive +Drafts +Tickets +Sent +Trash +Spam
 set header_cache = '~/.cache/mutt/$my_personal_email/headers'
 set message_cachedir = '~/.cache/mutt/$my_personal_email/bodies'
 
