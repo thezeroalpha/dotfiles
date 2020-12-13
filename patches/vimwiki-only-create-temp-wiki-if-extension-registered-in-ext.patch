@@ -1,0 +1,46 @@
+From 719a864ff237a1184649251aa18513484a64b939 Mon Sep 17 00:00:00 2001
+From: Alex Balgavy <alex@balgavy.eu>
+Date: Sun, 13 Dec 2020 15:12:07 +0100
+Subject: [PATCH] Only create temp wiki if extension registered in ext2syntax
+
+I want files with the `.txt` extension in the path in `g:vimwiki_list`
+to be treated as Vimwiki files (makes them automatically readable on any
+device). I don't want any other `.txt` files to be treated as Vimwiki
+files, but I do want this for arbitrary .wiki files. So, interpret
+`g:vimwiki_ext2syntax` also as list of valid extensions for temporary
+wikis. In my case, `g:vimwiki_ext2syntax = {'.wiki': 'default'}`.
+---
+ plugin/vimwiki.vim | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/plugin/vimwiki.vim b/plugin/vimwiki.vim
+index 05f5bdc..8fed63e 100644
+--- a/plugin/vimwiki.vim
++++ b/plugin/vimwiki.vim
+@@ -66,6 +66,14 @@ function! s:create_temporary_wiki() abort
+   call vimwiki#vars#set_bufferlocal('wiki_nr', vimwiki#base#find_wiki(expand('%:p')))
+ endfunction
+ 
++" Returns 1 if current file's extension is in keys(ext2syntax)
++function! s:extension_in_ext2syntax(ext) abort
++  let ext2syntax = vimwiki#vars#get_global('ext2syntax')
++  if index(keys(ext2syntax), ".".a:ext) >= 0
++    return 1
++  endif
++  return 0
++endfunction
+ 
+ " This function is called when Vim opens a new buffer with a known wiki
+ " extension. Both when the buffer has never been opened in this session and
+@@ -73,7 +81,7 @@ endfunction
+ function! s:setup_new_wiki_buffer() abort
+   let wiki_nr = vimwiki#vars#get_bufferlocal('wiki_nr')
+   if wiki_nr == -1    " it's not in a known wiki directory
+-    if vimwiki#vars#get_global('global_ext')
++    if vimwiki#vars#get_global('global_ext') && s:extension_in_ext2syntax(expand("%:e"))
+       call s:create_temporary_wiki()
+     else
+       " the user does not want a temporary wiki, so do nothing
+-- 
+2.29.2
+
