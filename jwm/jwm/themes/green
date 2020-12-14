@@ -1,0 +1,72 @@
+<JWM>
+
+<WindowStyle>
+	<Font>Sans-12</Font>
+    	<Width>5</Width>
+    	<Height>20</Height>     
+    	<Active>
+       		<Foreground>#3C5505</Foreground>
+       		<Background>#74A604:#FEFDF2</Background>
+       	<Outline>#3C5505</Outline>
+    	</Active>
+    	
+       		<Foreground>#517208</Foreground>
+       		<Background>#FEFDF2</Background>         
+       	<Outline>#517208</Outline>
+    	
+</WindowStyle> 
+
+<TaskListStyle>
+	<Font>-adobe-helvetica-bold-r-*-*-*-120-*-*-*-*-*-*</Font>
+	<Active>
+	<Foreground>#3C5505</Foreground>
+	<Background>#74A604:#FEFDF2</Background>
+	</Active>
+	
+	<Background>#FEFDF2</Background>
+	<Foreground>#517208</Foreground>
+	
+</TaskListStyle>
+
+<TrayStyle>
+	<Font>-adobe-helvetica-bold-r-*-*-*-120-*-*-*-*-*-*</Font>
+	<Foreground>#517208</Foreground>
+	<Background>#FEFDF2</Background>
+</TrayStyle>
+
+<ClockStyle>
+	<Font>-adobe-helvetica-bold-r-*-*-*-120-*-*-*-*-*-*</Font>
+	<Foreground>#517208</Foreground>
+	<Background>#FEFDF2</Background>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>#517208</Outline>
+	<Foreground>#517208</Foreground>
+	<Background>#FEFDF2</Background>
+	<Active>
+	<Foreground>#517208</Foreground>
+	<Background>#FEFDF2</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font>-adobe-helvetica-medium-r-*-*-*-140-*-*-*-*-*-*</Font>
+	<Foreground>#517208</Foreground>
+	<Background>#FEFDF2</Background>
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>#3C5505</Foreground>
+	<Background>#74A604:#FEFDF2</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+	
+<PopupStyle>
+	<Font>-adobe-helvetica-medium-r-*-*-*-140-*-*-*-*-*-*</Font>
+	<Outline>#517208</Outline>
+	<Foreground>#517208</Foreground>
+	<Background>#FEFDF2</Background>
+</PopupStyle>
+
+</JWM>

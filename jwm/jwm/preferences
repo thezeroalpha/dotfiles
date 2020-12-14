@@ -1,0 +1,37 @@
+<JWM>
+
+
+<!-- Virtual Desktops -->
+<!-- Desktop tags can be contained within Desktops for desktop names. -->
+<Desktops height="1" width="2">
+   <!-- Default background. Note that a Background tag can be contained within a Desktop tag to give a specific background for that desktop. -->
+</Desktops>
+
+
+<!-- Double click speed (in milliseconds) -->
+<DoubleClickSpeed>400</DoubleClickSpeed>
+<!-- Double click delta (in pixels) -->
+<DoubleClickDelta>2</DoubleClickDelta>
+
+
+<!-- The focus model (sloppy or click) -->
+<FocusModel>click</FocusModel>
+
+
+<!-- The snap mode (none, screen, or border) -->
+<SnapMode distance="10">border</SnapMode>
+
+
+<!-- The move mode (outline or opaque) -->
+<MoveMode>opaque</MoveMode>
+
+
+<!-- The resize mode (outline or opaque) -->
+<ResizeMode>opaque</ResizeMode>
+
+
+<!-- The location of icons displayed in Window-Titlebar and Tray-TaskList items -->
+<IconPath>/usr/share/pixmaps/papirus</IconPath>
+
+
+</JWM>

@@ -1,0 +1,62 @@
+<JWM>
+    <Program label="Terminal" icon="/usr/share/icons/papirus-antix/48x48/apps/terminal.png">desktop-defaults-run -t</Program>
+    <Program label="File Manager" icon="/usr/share/icons/papirus-antix/48x48/apps/file-manager.png">desktop-defaults-run -fm</Program>
+    <Separator/>
+    <Program label="Web Browser" icon="/usr/share/icons/papirus-antix/48x48/apps/web-browser.png">desktop-defaults-run -b</Program>
+    <Program label="Editor" icon="/usr/share/icons/papirus-antix/48x48/apps/text-editor.png">desktop-defaults-run -te</Program>
+    <Program label="App Select" icon="/usr/share/icons/papirus-antix/48x48/apps/gnome-searchtool.png">/usr/local/bin/app-select</Program>
+    <Separator/>
+    <Menu label="Personal" icon="/usr/share/icons/papirus-antix/48x48/apps/preferences-desktop-user.png">
+        <Include>$HOME/.jwm/personal</Include>
+    </Menu>
+    <Menu label="Applications" icon="/usr/share/icons/papirus-antix/48x48/apps/applications.png">
+        <Include>$HOME/.jwm/menu-applications</Include>
+    </Menu>
+    <Program label="Refresh Menu" icon="/usr/share/icons/papirus-antix/48x48/apps/update-manager.png">desktop-menu --write-out-global && jwm -restart</Program>
+    <Separator/>
+    <Menu label="Desktop" icon="/usr/share/icons/papirus-antix/48x48/apps/user-desktop.png">
+        <Menu label="Other Desktops" icon="/usr/share/icons/papirus-antix/48x48/apps/user-desktop.png">
+            <Include>/usr/share/desktop-session/wm-menus/jwm-wm-menu</Include>
+        </Menu>
+        <Program label="RoxPanel on/off" icon="/usr/share/icons/papirus-antix/48x48/apps/gnome-panel.png">paneltoggle.sh</Program>
+        <Program label="Conky on/off" icon="/usr/share/icons/papirus-antix/48x48/apps/utilities-system-monitor.png">conkytoggle.sh</Program>
+    </Menu>
+        <Program label="App Killer" icon="/usr/share/icons/papirus-antix/48x48/apps/appkill.png">xkill</Program>
+    <Program label="Control Centre" icon="/usr/share/icons/papirus-antix/48x48/apps/control-center2.png">antixcc.sh</Program>
+    <Separator/>
+    <Menu label="Help" icon="/usr/share/icons/papirus-antix/48x48/apps/help-browser.png">
+        <Menu label="antiX" icon="/usr/share/icons/papirus-antix/48x48/places/folder.png">
+            <Program label="antiX Video">dillo /usr/share/antiX/antix_help_videos.html</Program>
+            <Program label="antiX FAQ">dillo /usr/share/antiX/FAQ/index.html</Program>
+            <Program label="antiX-live How-To">dillo /usr/share/antiX/Boot_Menu/antiX-gfxboot.html</Program>
+            <Separator/>
+            <Program label="Rox Manual">dillo /usr/share/doc/rox-filer/html/Manual.html</Program>
+            <Program label="Announcements">dillo https://www.antixforum.com/forums/forum/news/announcements/</Program>
+            <Program label="antixforum.com">dillo https://www.antixforum.com</Program>
+            <Program label="MX/antiX Wiki">dillo https://mxlinux.org/wiki/</Program>
+        </Menu>
+        <Separator/>
+        <Menu label="JWM" icon="/usr/share/icons/papirus-antix/48x48/places/folder.png">
+            <Program label="Homepage">dillo http://joewing.net/projects/jwm/</Program>
+            <Program label="Arch Wiki">dillo https://wiki.archlinux.org/index.php/JWM</Program>
+        </Menu>
+        <Separator/>
+        <Menu label="Applications" icon="/usr/share/icons/papirus-antix/48x48/places/folder.png">
+            <Program label="Firewall">dillo https://help.ubuntu.com/community/Gufw</Program>
+            <Program label="Partimage">dillo http://www.partimage.org/Partimage-manual_Usage</Program>
+        </Menu>
+        <Menu label="Man Pages" icon="/usr/share/icons/papirus-antix/48x48/places/folder.png">
+            <Program label="Irssi">desktop-defaults-run -t man irssi</Program>
+            <Program label="mc">desktop-defaults-run -t man mc</Program>
+            <Program label="mocp">desktop-defaults-run -t man mocp</Program>
+            <Program label="Nano">desktop-defaults-run -t man nano</Program>
+            <Program label="Rss/Atom">desktop-defaults-run -t man newsboat</Program>
+            <Program label="Terminal">desktop-defaults-run -t man urxvt</Program>
+            <Program label="Torrent">desktop-defaults-run -t man rtorrent</Program>
+        </Menu>
+    </Menu>
+    <Program label="Run" icon="/usr/share/icons/papirus-antix/48x48/apps/gnome-run.png">gexec</Program>
+    <Separator/>
+    <Include>$HOME/.jwm/themes-list</Include>
+    <Program label="antiX Installer" icon="/usr/share/icons/msystem.png">sudo minstall</Program>
+</JWM>

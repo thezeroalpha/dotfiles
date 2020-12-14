@@ -1,0 +1,24 @@
+<JWM>
+<Menu label="Themes">
+<Program label="Update themes list" confirm="false">update-jwm-themes.sh</Program>
+<Program label="black" confirm="false">cp -a .jwm/themes/black .jwm/theme</Program>
+<Program label="BlueDay" confirm="false">cp -a .jwm/themes/BlueDay .jwm/theme</Program>
+<Program label="brown" confirm="false">cp -a .jwm/themes/brown .jwm/theme</Program>
+<Program label="cappuccino" confirm="false">cp -a .jwm/themes/cappuccino .jwm/theme</Program>
+<Program label="clearlooks" confirm="false">cp -a .jwm/themes/clearlooks .jwm/theme</Program>
+<Program label="coffee_cream" confirm="false">cp -a .jwm/themes/coffee_cream .jwm/theme</Program>
+<Program label="coper" confirm="false">cp -a .jwm/themes/coper .jwm/theme</Program>
+<Program label="default" confirm="false">cp -a .jwm/themes/default .jwm/theme</Program>
+<Program label="gold" confirm="false">cp -a .jwm/themes/gold .jwm/theme</Program>
+<Program label="green" confirm="false">cp -a .jwm/themes/green .jwm/theme</Program>
+<Program label="ice" confirm="false">cp -a .jwm/themes/ice .jwm/theme</Program>
+<Program label="military" confirm="false">cp -a .jwm/themes/military .jwm/theme</Program>
+<Program label="pastel" confirm="false">cp -a .jwm/themes/pastel .jwm/theme</Program>
+<Program label="PrettyPink" confirm="false">cp -a .jwm/themes/PrettyPink .jwm/theme</Program>
+<Program label="red" confirm="false">cp -a .jwm/themes/red .jwm/theme</Program>
+<Program label="shades_of_grey" confirm="false">cp -a .jwm/themes/shades_of_grey .jwm/theme</Program>
+<Program label="SunnyDay" confirm="false">cp -a .jwm/themes/SunnyDay .jwm/theme</Program>
+<Program label="white" confirm="false">cp -a .jwm/themes/white .jwm/theme</Program>
+<Program label="Restart" confirm="false">jwm -restart</Program>
+</Menu>
+</JWM>

@@ -1,0 +1,37 @@
+<JWM>
+
+<!-- Additional tray attributes: autohide, width, border, layer, layout, valign -->
+<Tray x="0" y="-1" height="28" layer="above" valign="bottom">
+
+   <!-- Additional TrayButton attributes: label, icon, popup -->
+   <TrayButton label=" Menu  ">root:1</TrayButton>
+   <TrayButton label="" icon="/usr/share/icons/papirus-antix/48x48/apps/packageinstaller.png" popup="Software Installer">exec: su-to-root -X -c packageinstaller</TrayButton>
+   <TrayButton label="" icon="/usr/share/icons/papirus-antix/48x48/devices/drive-removable-media-usb.png" popup="Unplug Removable Device">exec: unplugdrive.sh</TrayButton>
+   <TrayButton label="" icon="/usr/share/icons/papirus-antix/48x48/apps/file-manager.png" popup="File Manager">exec: desktop-defaults-run -fm</TrayButton>
+  <TrayButton label="" icon="/usr/share/icons/papirus-antix/48x48/places/folder-red.png" popup="File Manager as root">exec: su-to-root -X -c rox</TrayButton>
+   <TrayButton label="" icon="/usr/share/icons/papirus-antix/48x48/apps/web-browser.png" popup="Web Browser">exec: desktop-defaults-run -b</TrayButton>
+   
+   <!-- Additional TaskList attribute: maxwidth -->
+   <TaskList maxwidth="125"/>
+
+   <!-- Additional Pager attributes; width, height -->
+   <Pager/>
+
+   <!-- Additional Dock attribute: none -->
+   <Dock/>
+
+   <!-- Additional Swallow attribute: height, width -->
+   <!-- <Swallow name="xload" height="28" width="30"> xload -update 2 -jumpscroll 1 -nolabel -bg black -fg green -hl black </Swallow> -->
+
+  <!-- CLOCK -->
+   <!-- Additional Clock attributes: format, height, width, zone -->
+   <Clock format="%H:%M">
+   <Text>white</Text>
+   <Button mask="123">exec:yad --calendar --width=400 --no-buttons --title=Calendar --mouse</Button></>
+	
+   <!-- TRAY BUTTONS - icons to the right of the clock- Exit-->
+   <TrayButton label="" popup="Exit Session" icon="/usr/share/icons/papirus-antix/48x48/apps/application-exit.png">exec:desktop-session-exit</TrayButton>
+
+</Tray>
+
+</JWM>

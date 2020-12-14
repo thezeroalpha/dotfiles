@@ -1,0 +1,75 @@
+<JWM>
+
+<!-- new for jwm 2.0, replaces borderstyle above -->
+
+<WindowStyle>
+	<Font>DejaVu Sans 9:bold</Font>
+	<Width>4</Width
+	<Height>20</Height>
+	<Active>
+		<Foreground>gold</Foreground>
+		<Background>gray50:lightsteelblue</Background>
+	<Outline>black</Outline>
+	</Active>
+	
+		<Foreground>gray60</Foreground>
+		<Background>gray50:black</Background>
+	<Outline>black</Outline>
+	
+</WindowStyle>
+
+<TaskListStyle>
+	<Font>DejaVu Sans 12:bold</Font>
+	<Active>
+	<Foreground>black</Foreground>
+	<Background>orange:yellow</Background>
+	</Active>
+	
+	<Foreground>gray60</Foreground>
+	<Background>gray50:black</Background>
+	
+</TaskListStyle>
+
+<!-- Additional TrayStyle attribute: insert -->
+<TrayStyle>
+	<Font>DejaVu Sans 12:bold</Font>
+	<Background>gray10</Background>
+	<Foreground>white</Foreground>
+</TrayStyle>
+
+<ClockStyle>
+	<Font>DejaVu Sans 16:bold</Font>
+	<Foreground>white</Foreground>
+	<Background>gray10</Background>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>black</Outline>
+	<Foreground>gray</Foreground>
+	<Background>gray20</Background>
+	<Active>
+	<Foreground>#0E58B3</Foreground>
+	<Background>gray20</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font>DejaVu Sans 12:bold</Font>
+	<Foreground>white</Foreground>
+	<Background>gray20</Background>
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>black</Foreground>
+	<Background>yellow:orange</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+
+<PopupStyle>
+	<Font>DejaVu Sans 10</Font>
+	<Outline>black</Outline>
+	<Foreground>black</Foreground>
+	<Background>ivory</Background>
+</PopupStyle> 
+
+</JWM>

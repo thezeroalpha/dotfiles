@@ -1,0 +1,10 @@
+<JWM>
+
+<!-- Applications used in conjunction with JWM -->
+<StartupCommand> 
+/usr/bin/setxkbmap -option ctrl:nocaps
+/usr/bin/xcape &amp;
+/usr/bin/conky &amp;
+</StartupCommand>
+</JWM>
+

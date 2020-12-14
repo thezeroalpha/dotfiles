@@ -1,0 +1,75 @@
+<!-- Title: Jwm-Vista Author: Tom new for jwm 2.0, replaces borderstyle above --> 
+<!-- Modified by missTell for antiX 19 --> 
+
+<JWM>
+
+<WindowStyle> 
+	<Font>Ubuntu Regular 10</Font> 
+	<Width>2</Width 
+	<Height>20</Height> 
+	<Active> 
+		<Foreground>gray20</Foreground> 
+		<Background>gray70</Background> 
+	<Outline>black</Outline> 
+	</Active> 
+	 
+		<Foreground>gray70</Foreground> 
+		<Background>gray20</Background> 
+	<Outline>black</Outline> 
+	 
+</WindowStyle> 
+
+<TaskListStyle> 
+	<Font>Ubuntu Regular 12</Font> 
+	<Active>
+	<Foreground>gray90</Foreground> 
+	<Background>gray30</Background> 
+	</Active>
+	
+	<Foreground>gray90</Foreground> 
+	<Background>gray50</Background> 
+	
+</TaskListStyle> 
+
+<TrayStyle> 
+	<Font>Ubuntu Regular 12</Font> 
+	<Background>gray20</Background> 
+	<Foreground>gray90</Foreground> 
+</TrayStyle> 
+
+<ClockStyle>
+	<Font>Ubuntu Regular 12</Font>
+	<Foreground>gray90</Foreground>
+	<Background>gray20</Background>
+</ClockStyle>
+
+<PagerStyle> 
+	<Outline>black</Outline> 
+	<Foreground>gray80</Foreground> 
+	<Background>gray50</Background> 
+	<Active>
+	<Foreground>#2196F3</Foreground> 
+	<Background>gray50</Background> 
+	</Active>
+</PagerStyle> 
+
+<MenuStyle> 
+	<Font>Ubuntu Regular 10</Font> 
+	<Foreground>gray90</Foreground> 
+	<Background>gray20</Background> 
+        <Outline>black</Outline>
+       <Active>
+	<Foreground>white</Foreground> 
+	<Background>#2196F3</Background> 
+	</Active>
+        <Opacity>0</Opacity>
+</MenuStyle> 
+
+<PopupStyle enabled="true">
+	<Font>Ubuntu Regular 10</Font> 
+	<Outline>black</Outline> 
+	<Foreground>black</Foreground> 
+	<Background>gray80</Background> 
+</PopupStyle>
+
+</JWM>

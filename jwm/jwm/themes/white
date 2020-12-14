@@ -1,0 +1,74 @@
+<!-- Bluelight by Tman -->
+
+<JWM>
+
+<WindowStyle>
+	<Font>DejaVu Sans-13</Font>
+	<Width>2</Width>
+	<Height>25</Height>
+	<Active>
+		<Foreground>#ffffff</Foreground>
+		<Background>#004283:#74A2D0</Background>
+       	<Outline>black</Outline>
+	</Active>
+	
+		<Foreground>#000000</Foreground>
+		<Background>#A2C6E7:#4B82B7</Background>
+       	<Outline>black</Outline>
+	
+</WindowStyle>
+
+<TaskListStyle>
+	<Font>DejaVu Sans 12</Font>
+	<Active>
+	<Foreground>#000000</Foreground>
+	<Background>#ffffff:#bfbfbf</Background>
+	</Active>
+	
+	<Foreground>#ffffff</Foreground>
+	<Background>#75b8f7:#3578b7</Background>
+	
+</TaskListStyle>
+
+<TrayStyle>
+	<Font>DejaVu Sans 13:bold</Font>
+	<Foreground>#000000</Foreground>
+	<Background>#f1efeb</Background>
+</TrayStyle>
+
+<ClockStyle>
+	<Font>DejaVu Sans 15:bold</Font>
+	<Foreground>#ffffff</Foreground>
+	<Background>#5598d7</Background>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>black</Outline>
+	<Foreground>#f1efeb</Foreground>
+	<Background>#d7d3ca</Background>
+	<Active>
+	<Foreground>#ffffff</Foreground>
+	<Background>#5598d7</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font>DejaVu Sans 12</Font>
+	<Foreground>#000000</Foreground>
+	<Background>#f1efeb</Background>
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>#ffffff</Foreground>
+	<Background>#004283:#74A2D0</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+
+<PopupStyle enabled="true">
+	<Font>DejaVu Sans 10</Font>
+	<Outline>black</Outline>
+	<Foreground>white</Foreground>
+	<Background>olive drab</Background>
+</PopupStyle>
+
+</JWM>

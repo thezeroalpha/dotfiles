@@ -1,0 +1,41 @@
+<JWM>
+<!-- Key bindings -->
+<Key key="Up">up</Key>
+<Key key="Down">down</Key>
+<Key key="Right">right</Key>
+<Key key="Left">left</Key>
+<Key key="h">left</Key>
+<Key key="j">down</Key>
+<Key key="k">up</Key>
+<Key key="l">right</Key>
+<Key key="Return">select</Key>
+<Key key="Escape">escape</Key>
+<Key mask="A" key="Tab">nextstacked</Key>
+<Key mask="A" key="F4">close</Key>
+<Key mask="A" key="#">desktop#</Key>
+<Key mask="A" key="F1">root:1</Key>
+<Key mask="A" key="F2">window</Key>
+<Key mask="CA" key="KP_Divide">exec: amixer -c 0 set Master 5-</Key>
+<Key mask="CA" key="KP_Multiply">exec: amixer -c 0 set Master 5+</Key>
+<Key mask="CA" key="KP_Add">exec: amixer sset Master toggle</Key>
+<Key mask="4" key="Return">exec: roxterm</Key>
+<Key mask="C4" key="R">exec: jwm -restart</Key>
+<Key mask="C4" key="BackSpace">exec: xlock</Key>
+
+<Key mask="C4" key="3">exec: antixscreenshot.sh</Key>
+<Key mask="4" key="Escape">exec: desktop-session-exit</Key>
+<Key mask="4" key="comma">exec: antixcc.sh</Key>
+<Key mask="4" key="r">exec: gexec</Key>
+
+<!--Wingrid-->
+<Key mask="C4" key="h">exec:wingrid-left.sh</Key>
+<Key mask="C4" key="l">exec:wingrid-right.sh</Key>
+<Key mask="C4" key="k">exec:wingrid-top.sh</Key>
+<Key mask="C4" key="j">exec:wingrid-bottom.sh</Key>
+<Key mask="C4" key="u">exec:wingrid-topleft.sh</Key>
+<Key mask="C4" key="o">exec:wingrid-topright.sh</Key>
+<Key mask="C4" key="n">exec:wingrid-bottomleft.sh</Key>
+<Key mask="C4" key="m">exec:wingrid-bottomright.sh</Key>
+<Key mask="C4" key="f">exec:wingrid-maximize.sh</Key>
+<Key mask="4" key="q">exec:wingrid-close.sh</Key>
+</JWM>

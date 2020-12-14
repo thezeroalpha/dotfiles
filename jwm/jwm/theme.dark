@@ -1,0 +1,74 @@
+<!-- Title: Jwm-Vista Author: Tom new for jwm 2.0, replaces borderstyle above --> 
+
+<JWM>
+
+<WindowStyle> 
+	<Font>DejaVu Sans 9</Font> 
+	<Width>4</Width 
+	<Height>20</Height> 
+	<Active> 
+		<Foreground>black</Foreground> 
+		<Background>white:#dce2f2</Background> 
+	<Outline>black</Outline> 
+	</Active> 
+	 
+		<Foreground>#aaaaaa</Foreground> 
+		<Background>:black</Background> 
+	<Outline>black</Outline> 
+	 
+</WindowStyle> 
+
+<TaskListStyle> 
+	<Font>DejaVu Sans 12</Font> 
+	<Active>
+	<Foreground>white</Foreground> 
+	<Background>black:#9dbbdb</Background> 
+	</Active>
+	
+	<Foreground>white</Foreground> 
+	<Background>gray50:black</Background> 
+	
+</TaskListStyle> 
+
+<TrayStyle> 
+	<Font>DejaVu Sans 12</Font> 
+	<Background>gray10</Background> 
+	<Foreground>white</Foreground> 
+</TrayStyle> 
+
+<ClockStyle>
+	<Font>DejaVu Sans 12</Font>
+	<Foreground>white</Foreground>
+	<Background>gray10</Background>
+</ClockStyle>
+
+<PagerStyle> 
+	<Outline>black</Outline> 
+	<Foreground>white</Foreground> 
+	<Background>gray20</Background> 
+	<Active>
+	<Foreground>#9dbbdb</Foreground> 
+	<Background>gray20</Background> 
+	</Active>
+</PagerStyle> 
+
+<MenuStyle> 
+	<Font>DejaVu Sans 10</Font> 
+	<Foreground>white</Foreground> 
+	<Background>gray20</Background> 
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>white</Foreground> 
+	<Background>#9dbbdb:black</Background> 
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle> 
+
+<PopupStyle enabled="true">
+	<Font>DejaVu Sans 10</Font> 
+	<Outline>black</Outline> 
+	<Foreground>black</Foreground> 
+	<Background>ivory</Background> 
+</PopupStyle>
+
+</JWM>

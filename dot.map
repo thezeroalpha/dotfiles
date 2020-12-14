@@ -12,6 +12,9 @@ gdb:
 git:
 - gitconfig: ~/.config/git/config
 i3: ~/.config/regolith/i3
+jwm:
+- jwmrc: ~/.jwmrc
+- jwm: ~/.jwm
 irssi: ~/.config/irssi
 karabiner: ~/.config/karabiner
 lf: ~/.config/lf

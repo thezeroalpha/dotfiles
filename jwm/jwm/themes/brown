@@ -1,0 +1,69 @@
+<JWM>
+
+<WindowStyle>
+	<Font>DejaVu Sans 12:bold</Font>
+	<Width>5</Width>
+	<Height>22</Height>
+	<Active>
+		<Foreground>white</Foreground>
+		<Background>#222222:#777777</Background>
+		<Outline>#444444</Outline>
+	</Active>
+	
+		<Foreground>#555555</Foreground>
+		<Background>#777777:#bbbbbb</Background>
+		<Outline>#bbbbbb</Outline>
+	
+</WindowStyle>
+
+<TaskListStyle>
+	<Font>DejaVu Sans 12</Font>
+	<Active>
+	<Foreground>#EDEADE</Foreground>
+	<Background>#888888:#000000</Background>
+	</Active>
+	
+	<Foreground>gray20</Foreground>
+	<Background>gray80:gray40</Background>
+	
+</TaskListStyle>
+
+<TrayStyle>
+	<Background>#939191</Background>
+</TrayStyle>
+
+<ClockStyle>
+	<Font>Ionic Charge-12</Font>
+	<Foreground>#44512E</Foreground>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>black</Outline>
+	<Foreground>#CCCCCC</Foreground>
+	<Background>gray40</Background>
+	<Active>
+	<Foreground>gray30</Foreground>
+	<Background>gray60</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font>DejaVu Sans 12</Font>
+	<Foreground>#DBD4C1</Foreground>
+	<Background>gray30</Background>
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>gray20</Foreground>
+	<Background>#FCE08A:#AC510B</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+
+<PopupStyle>
+	<Font>DejaVu Sans 12</Font>
+	<Outline>gray10</Outline>
+	<Foreground>gray10</Foreground>
+	<Background>#A3A3A3</Background>
+</PopupStyle>
+
+</JWM>

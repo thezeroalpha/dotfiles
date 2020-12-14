@@ -1,0 +1,74 @@
+<!-- Tmix by Tman - Gold color is from LightLook9x-gold -->
+
+<JWM>
+
+<WindowStyle>
+	<Font>DejaVu Sans-12:bold</Font>
+	<Width>2</Width>
+	<Height>25</Height>
+	<Active>
+		<Foreground>#ffffff</Foreground>
+		<Background>#621314:#DD1D16</Background>
+       	<Outline>black</Outline>
+	</Active>
+	
+		<Foreground>black</Foreground>
+		<Background>#b6a767:#ffefad</Background>
+       	<Outline>black</Outline>
+	
+</WindowStyle>
+
+<TaskListStyle>
+	<Font>DejaVu Sans-13</Font>
+	<Active>
+	<Foreground>#000000</Foreground>
+	<Background>#f6e7a7:#b6a767</Background>
+	</Active>
+	
+	<Foreground>#ffffff</Foreground>
+	<Background>#94a974:#d4e9b4</Background>
+	
+</TaskListStyle>
+
+<TrayStyle>
+	<Font>DejaVu Sans-13:bold</Font>
+	<Foreground>#000000</Foreground>
+	<Background>#D6CEC5</Background>
+</TrayStyle>
+
+<ClockStyle>
+	<Font>DejaVu Sans-16:bold</Font>
+	<Foreground>#000000</Foreground>
+	<Background>#D6CEC5</Background>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>black</Outline>
+	<Foreground>#D6CEC5</Foreground>
+	<Background>#d6c787</Background>
+	<Active>
+	<Foreground>#C2BBB2</Foreground>
+	<Background>#E6DFD6</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font>tahoma-13</Font>
+	<Foreground>black</Foreground>
+	<Background>#ABB5C9</Background>
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>#ffffff</Foreground>
+	<Background>#1D35B1:#A1C5FF</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+
+<PopupStyle>
+	<Font>tahoma-13</Font>
+	<Outline>black</Outline>
+	<Foreground>black</Foreground>
+	<Background>#EFEBDE</Background>
+</PopupStyle>
+
+</JWM>

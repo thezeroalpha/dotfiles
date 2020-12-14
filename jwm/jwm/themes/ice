@@ -1,0 +1,73 @@
+<JWM>
+<!-- dsl4ice -->
+
+<WindowStyle>
+	<Font antialias="false">smoothansi</Font>
+	<Width>4</Width>
+	<Height>20</Height>
+	<Active>
+		<Foreground>dodgerblue3</Foreground>
+		<Background>grey77:white</Background>
+	<Outline>grey66</Outline>
+	</Active>
+	
+		<Foreground>grey38</Foreground>
+		<Background>grey44:grey66</Background>
+	<Outline>black</Outline>
+	
+</WindowStyle>
+
+<TaskListStyle>
+	<Font antialias="false">smoothansi</Font>
+	<Active>
+	<Foreground>dodgerblue3</Foreground>
+	<Background>grey77:white</Background>
+	</Active>
+	
+	<Foreground>grey38</Foreground>
+	<Background>grey44:grey66</Background>
+	
+</TaskListStyle>
+
+<TrayStyle>
+	<Font antialias="false">smoothansi</Font>
+	<Background>lightsteelblue</Background>
+	<Foreground>dodgerblue3</Foreground>
+</TrayStyle>
+
+<ClockStyle>
+	<Font antialias="false">smoothansi</Font>
+	<Foreground>dodgerblue3</Foreground>
+	<Background>white</Background>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>black</Outline>
+	<Foreground>grey66</Foreground>
+	<Background>grey33</Background>
+	<Active>
+	<Foreground>dodgerblue3</Foreground>
+	<Background>white</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font antialias="false">smoothansi</Font>
+	<Foreground>grey55</Foreground>
+	<Background>white</Background>
+        <Outline>#000000</Outline>
+       <Active>
+	<Foreground>dodgerblue3</Foreground>
+	<Background>grey77:white</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+
+<PopupStyle>
+	<Font antialias="false">smoothansi</Font>
+	<Outline>black</Outline>
+	<Foreground>black</Foreground>
+	<Background>darkorange</Background>
+</PopupStyle>
+
+</JWM>

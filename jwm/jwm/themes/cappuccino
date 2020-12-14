@@ -1,0 +1,72 @@
+<JWM>
+
+<!-- coffee.cream -->
+<WindowStyle>
+	<Font>Ubuntu Regular 14</Font>
+	<Width>3</Width>
+	<Height>24</Height>
+	<Active>
+		<Foreground>white</Foreground>
+		<Background>#6F4E37:#DEB887</Background>
+	<Outline>#7B3F00</Outline>
+	</Active>
+	
+		<Foreground>white</Foreground>
+		<Background>#DEB887:#6F4E37</Background>
+	<Outline>#DEB887</Outline>
+	
+</WindowStyle>
+
+<TaskListStyle>
+	<Font>Ubuntu Regular 12</Font>
+	<Active>
+	<Foreground>white</Foreground>
+	<Background>#6F4E37:#DEB887</Background>
+	</Active>
+	
+	<Foreground>#202020</Foreground>
+	<Background>#DEB887:#6F4E37</Background>
+	
+</TaskListStyle>
+
+<TrayStyle>
+	<Font>Ubuntu Regular 16</Font>
+	<Background>#DEB887</Background>
+	<Foreground>#202020</Foreground>
+</TrayStyle>
+
+<ClockStyle>
+	<Font>Ubuntu Regular 16</Font>
+	<Foreground>#202020</Foreground>
+</ClockStyle>
+
+<PagerStyle>
+	<Outline>#202020</Outline>
+	<Foreground>#D9B383</Foreground>
+	<Background>#6F4E37</Background>
+	<Active>
+	<Foreground>#886649</Foreground>
+	<Background>#CD9449</Background>
+	</Active>
+</PagerStyle>
+
+<MenuStyle>
+	<Font>Ubuntu Regular 14</Font>
+	<Foreground>#202020</Foreground>
+	<Background>#DEB887</Background>
+        <Outline>#886649</Outline>
+       <Active>
+	<Foreground>white</Foreground>
+	<Background>#DEB887:#6F4E37</Background>
+	</Active>
+        <Opacity>0.85</Opacity>
+</MenuStyle>
+
+<PopupStyle enabled="true">
+	<Font>Ubuntu Regular 11</Font>
+	<Outline>#202020</Outline>
+	<Foreground>#202020</Foreground>
+	<Background>wheat</Background>
+</PopupStyle>
+
+</JWM>
