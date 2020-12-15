@@ -2,7 +2,14 @@
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   linux*)
-    printf "Linux not yet supported.\n"
+    if [ -f /sys/class/power_supply/BAT0/uevent ]; then
+      state="$(awk -F '=' '/POWER_SUPPLY_STATUS/ {print $2}' /sys/class/power_supply/BAT0/uevent)"
+      percent="$(awk -F '=' '/POWER_SUPPLY_CAPACITY=/ {print $2}' /sys/class/power_supply/BAT0/uevent)"
+      printf "%s\n%s" "$percent" "$state"
+    else
+      printf "No such file: /sys/class/power_supply/BAT0/uevent.\nNo other methods to find battery charge implemented.\n" >&2
+      exit 1
+    fi
     ;;
   darwin*)
     battstatus="$(pmset -g batt)"
@@ -12,10 +19,12 @@ case "$os" in
     else printf "Could not determine state.\n" >&2; exit 1; fi
     ;;
   msys*|cygwin*|mingw*|nt|win*)
-    printf "Windows not yet supported.\n"
+    printf "Windows not yet supported.\n" >&2
+    exit 1
     ;;
   *)
-    printf "Operating system %s is unknown.\n" "$os"
+    printf "Operating system %s is unknown.\n" "$os" >&2
+    exit 1
     ;;
 esac
 
