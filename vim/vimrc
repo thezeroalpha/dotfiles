@@ -893,10 +893,16 @@ nnoremap <silent><Leader>gw :call setbufvar(winbufnr(popup_atcursor(systemlist("
 " Avoid paste hijacking in insert mode
 inoremap <c-r> <c-r><c-o>
 
-" Up/down errors on the command line search for commands starting with current
+" Up/down arrows on the command line search for commands starting with current
 " string. I want <c-n/p> to do the same.
 cnoremap <c-p> <up>
 cnoremap <c-n> <down>
+
+" Use <Tab> and <S-Tab> to jump to next search result,
+" while keeping <Tab>'s wildmenu function.
+set wildcharm=<c-z>
+cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
+cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
