@@ -82,6 +82,8 @@ https://garfieldminusgarfield.net/rss                                           
 https://www.real.discount/feed/?post_type=product                                                       "blogs" "~Real.Discount Udemy Coupons"
 https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=personalfinance&format=Atom  "blogs" "~Reddit Personal Finance"
 https://feeds2.feedburner.com/typepad/krisdedecker/lowtechmagazineenglish                               "blogs" "~Low-Tech Magazine"
+http://www.itchyfeetcomic.com/feeds/posts/default                                                       "blogs" "~Itchy Feet Comics"
+https://xkcd.com/atom.xml                                                                               "blogs" "~XKCD"
 
 # Software releases (these are all hidden except for the query feed)
 https://github.com/gokcehan/lf/releases.atom                                "software-releases"  "!"    "~lf"
