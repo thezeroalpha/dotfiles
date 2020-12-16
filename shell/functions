@@ -83,7 +83,7 @@ if command -v virtualenv &> /dev/null; then
   }
 fi
 # fzf-reliant functions
-if [ -f ~/.fzf.zsh  ] || [ -f ~/.fzf.bash ]; then
+if [ -d ~/.config/fzf ]; then
   export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -500'"
   export FZF_DEFAULT_COMMAND="ag -l -g \"\""
   # script edit
