@@ -704,10 +704,10 @@ cnoreabbrev hg helpgrep
 cnoreabbrev gitr system("git root")
 
 if has('terminal')
-  cnoreabbrev tt tab terminal
   " ++close means close when process ends
   "   (so that I don't get a hanging term buffer)
   cnoreabbrev wt terminal ++close
+  cnoreabbrev tt tab terminal ++close
   cnoreabbrev tm terminal ++close man
   cnoreabbrev tf terminal ++close lf
   cnoreabbrev tn terminal ++close joplin
