@@ -185,6 +185,7 @@ ex=:\
 *.nix=:\
 "
 # Force use of XDG Base Directory {{{1
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 alias irssi='irssi --home=$HOME/.config/irssi'
 alias tmux='tmux -f $HOME/.config/tmux/tmux.conf'
 alias w3m='w3m -config $HOME/.config/w3m/config'
