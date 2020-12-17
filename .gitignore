@@ -27,5 +27,4 @@ gnupg/*
 *.pyc
 vim/autoload/plug.vim*
 irssi/*.log
-mpv/scripts/shared/sponsorblock.db*
 karabiner/automatic_backups/
