@@ -23,6 +23,9 @@ w3m/*
 gnupg/*
 !gnupg/gpg.conf
 
+# ncmpcpp
+ncmpcpp/error.log
+
 # Misc
 *.pyc
 vim/autoload/plug.vim*

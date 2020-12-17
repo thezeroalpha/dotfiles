@@ -46,6 +46,8 @@ mutt: ~/.config/mutt
 mbsync: ~/.config/mbsync
 urlview/urlview: ~/.urlview
 gnupg: ~/.config/gnupg
+mpd: ~/.config/mpd
+ncmpcpp: ~/.config/ncmpcpp
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
