@@ -77,3 +77,7 @@ def_key "?"
 def_key "*"
   select_item
 
+def_key "J"
+  move_selected_items_down
+def_key "K"
+  move_selected_items_up
