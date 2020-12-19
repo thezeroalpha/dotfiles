@@ -104,20 +104,18 @@ cmd paste &{{
 
 # paste as a symbolic link to original
 cmd paste_link %{{
-for file in $(lf -remote 'load'); do
+  for file in $(lf -remote 'load'); do
     if [ ! -n "${mode+1}" ]; then
       mode="$file"
       continue
     fi
     files+=("$file")
   done
-  if [ "${#files[@]}" -lt 1 ]; then
+  if [ -z "$files" ] || [ "${#files[@]}" -lt 1 ]; then
     lf -remote "send $id echo no files to link files: ${files}"
     exit 0
   fi
-    ln -sr $files -t .
-  fi
-done
+  ln -sr $files -t .
 }}
 
 # preview the highlighted file with quicklook
