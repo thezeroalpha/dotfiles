@@ -9,7 +9,7 @@ author:
 
 fontsize: 12pt
 
-csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+csl: https://www.zotero.org/styles/ieee
 bibliography:
 - references.bib
 
