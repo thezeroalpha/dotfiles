@@ -262,7 +262,7 @@ map gdp cd ~/Documents/Personal\ documents/
 map gD cd ~/Desktop
 map gl cd ~/Downloads
 map gw cd ~/Dropbox/vimwiki
-map gm cd ~/Music/iTunes/iTunes\ Media/Music
+map gm cd ~/Music/Libraries/Mine
 map g/ cd /
 map g. cd ~/.dotfiles
 map gv cd /Volumes

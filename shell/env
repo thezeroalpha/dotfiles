@@ -7,7 +7,7 @@ if [ -n "$VIM_TERMINAL" ]; then EDITOR="vimsend"
 else EDITOR="$(command -v vim)"; fi
 export EDITOR
 
-export MUSIC_DIR="/Volumes/HDD/Music/iTunes/iTunes Media/Music"
+export MUSIC_DIR="/Volumes/HDD/Music/Libraries/Mine"
 
 export PAGER="less -FRi"
 
