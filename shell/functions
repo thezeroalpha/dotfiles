@@ -51,11 +51,12 @@ fi
 if command -v osascript &> /dev/null; then
   # cd to current Finder directory
   cdf() {
-    local target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
-    if [ "$target" != "" ]; then
-      cd "$target" || return; pwd
+    target="$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')"
+    if [ -n "$target" ]; then
+      cd "$target" || printf "Could not cd to %s.\n" >&2
+      pwd
     else
-      echo 'No Finder window found' >&2
+      printf 'No Finder window found.\n' >&2
     fi
   }
 
