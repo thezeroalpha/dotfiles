@@ -1,0 +1,18 @@
+#!/bin/sh
+die() { printf "%s\n" "$1" >&2; exit 1; }
+command -v ffprobe 1>/dev/null 2>&1 || die "ffprobe not installed."
+[ $# -eq 1 ] || die "Argument required: path to music directory"
+[ -d "$1" ] || die "Path $1 is not a directory."
+set -x
+cd "$1" || die "Could not cd to $1"
+mkdir -p _failed || die "Directory ./_failed already exists"
+find . -name "*.mp3" 2>/dev/null | \
+  while read -r i; do
+    artist="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$i")"
+    [ $? -eq 0 ] || { mv "$i" _failed/ && continue; }
+    album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i")"
+    [ $? -eq 0 ] || { mv "$i" _failed/ && continue; }
+    mkdir -p "$artist/$album"
+    mv "$i" "$artist/$album"
+  done
+rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
