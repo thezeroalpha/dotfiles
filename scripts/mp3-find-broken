@@ -1,0 +1,15 @@
+#!/bin/sh
+die() { printf "%s\n" "$1" >&2; exit 1; }
+command -v mp3val 1>/dev/null 2>&1 || die "mp3val not installed."
+[ $# -eq 1 ] || die "Argument required: path to music directory"
+[ -d "$1" ] || die "Path $1 is not a directory."
+set -x
+cd "$1" || die "Could not cd to $1"
+
+outfile=/tmp/mp3-find-broken-$RANDOM.log
+find . -name "*.mp3" | \
+  while read -r fil; do
+    mp3val "$fil" | grep '^WARNING' >/dev/null && printf "%s" "$fil" | tee -a "$fil"
+  done
+
+printf "Log saved in %s.\n" "$outfile"
