@@ -10,9 +10,8 @@ mpd_port = "6601"
 mpd_connection_timeout = "5"
 message_delay_time = "1"
 
-visualizer_fifo_path = "/tmp/oldiesmpd.fifo"
+visualizer_data_source = "/tmp/oldiesmpd.fifo"
 visualizer_output_name = "oldies_fifo"
-visualizer_sync_interval = "30"
 visualizer_type = "spectrum"
 
 song_list_format = {$4%a - }{%t}|{$8%f$9}$R{$3(%l)$9}

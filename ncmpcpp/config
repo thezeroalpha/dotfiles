@@ -10,10 +10,11 @@ mpd_port = "6600"
 mpd_connection_timeout = "5"
 message_delay_time = "1"
 
-visualizer_fifo_path = "/tmp/mpd.fifo"
+visualizer_data_source = "/tmp/mpd.fifo"
 visualizer_output_name = "my_fifo"
-visualizer_sync_interval = "30"
 visualizer_type = "spectrum"
+visualizer_spectrum_smooth_look = yes
+visualizer_autoscale = yes
 
 song_list_format = {$4%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
 song_status_format = $b{{$8"%t"}} $3by {$4%a{ $3in $7%b{ (%y)}} $3}|{$8%f}
