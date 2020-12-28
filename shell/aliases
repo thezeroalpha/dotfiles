@@ -29,3 +29,4 @@ alias mbsync='mbsync -c $HOME/.config/mbsync/mbsyncrc'
 alias mutt='{ [ -f "$BW_SESHFILE" ] && BW_SESSION="$(cat $BW_SESHFILE)" neomutt; } || BW_SESSION="$(bw unlock --raw)" neomutt;'
 [ -n "$VIM_TERMINAL" ] && alias vim=vimsend
 { [ -f ~/.config/dark-theme ] && alias bat="bat --theme=1337 --color=always"; } || alias bat="bat --theme=GitHub --color=always"
+[ -f "$DOTFILES"/docs/pbib/README.md ] && alias pbib='vim +$(nl -b a '$DOTFILES"/docs/pbib/README.md | fzf --with-nth 2.. -e -q '^# ' | sed 's/[^0-9]//g') "$DOTFILES"/docs/pbib/README.md"

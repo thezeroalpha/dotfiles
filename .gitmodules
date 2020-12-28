@@ -44,3 +44,12 @@
 [submodule "tools/LocalCDN"]
 	path = tools/LocalCDN
 	url = https://codeberg.org/nobody/LocalCDN.git
+[submodule "tools/shfm"]
+	path = tools/shfm
+	url = https://github.com/dylanaraps/shfm
+[submodule "tools/pfetch"]
+	path = tools/pfetch
+	url = https://github.com/dylanaraps/pfetch
+[submodule "docs/pbib"]
+	path = docs/pbib
+	url = https://github.com/dylanaraps/pure-sh-bible.git
