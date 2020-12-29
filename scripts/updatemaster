@@ -98,13 +98,13 @@ if command -v brew &> /dev/null; then
    brew update;
    brew update > /dev/null;
    outdated="$(brew outdated)"
-   outdated_c="$(brew cask outdated --greedy)"
+   outdated_c="$(brew outdated --cask --greedy)"
    if [ "${#outdated_c}" -eq 0 ]; then
       echo_succ "No casks to update."
     else
       notify "Cask: Finished reading updates" "Click to view outdated casks."
       echo -e "Casks to update:"
-      brew cask outdated --greedy
+      brew outdated --cask --greedy
 
       if [ "$select_casks" -eq 1 ]; then
         read -rp "Casks to upgrade (empty string cancels upgrade of casks): " -a CASKS;
