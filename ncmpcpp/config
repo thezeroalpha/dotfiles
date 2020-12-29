@@ -5,8 +5,9 @@ lyrics_directory = "~/.local/share/lyrics"
 mpd_music_dir = "~/Music/Libraries/Mine/"
 system_encoding = "utf-8"
 
-mpd_host = "localhost"
-mpd_port = "6600"
+mpd_host = "~/.local/share/mpd/socket"
+# mpd_host = "localhost"
+# mpd_port = "6600"
 mpd_connection_timeout = "5"
 message_delay_time = "1"
 
