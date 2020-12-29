@@ -44,6 +44,18 @@ cmd open $opener $fx
 # define a custom 'rename' command without prompt for overwrite
 cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
 
+# queue an audio file in mpd
+cmd queue %{{
+  for i in $fx; do
+    case "$i" in
+      *.wav|*.flac|*.mp3|*.m4a)
+        mpc -h ~/.local/share/mpd/socket insert "file://$i"
+        printf "Queued: %s\n" "$i"
+        ;;
+    esac
+  done
+}}
+
 # extract the current file with the right command
 # (xkcd link: https://xkcd.com/1168/)
 cmd extract ${{
@@ -245,6 +257,7 @@ map D trash
 map <enter> open $fx
 map S shell
 map Y copy_path
+map Q queue
 
 map p
 map pp paste
