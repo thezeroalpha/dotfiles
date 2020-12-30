@@ -417,6 +417,9 @@ let g:ada_begin_preproc = 1
 let g:ada_omni_with_keywords = 1
 " }}}1
 " General {{{1
+" Put viminfo in ~/.cache
+set viminfofile=~/.cache/vim/viminfo
+
 " Set the colors
 " Use true color
 " Set Vim-specific sequences for RGB colors
