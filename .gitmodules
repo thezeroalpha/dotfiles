@@ -53,3 +53,6 @@
 [submodule "docs/pbib"]
 	path = docs/pbib
 	url = https://github.com/dylanaraps/pure-sh-bible.git
+[submodule "tools/pipe-viewer"]
+	path = tools/pipe-viewer
+	url = https://github.com/trizen/pipe-viewer.git
