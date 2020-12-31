@@ -48,6 +48,7 @@ urlview/urlview: ~/.urlview
 gnupg: ~/.config/gnupg
 mpd: ~/.config/mpd
 ncmpcpp: ~/.config/ncmpcpp
+pipe-viewer: ~/.config/pipe-viewer
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
