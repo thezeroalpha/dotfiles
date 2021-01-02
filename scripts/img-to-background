@@ -15,4 +15,6 @@ die() {
 [ $# -eq 1 ] || die "Filename argument needed."
 [ -e "$1" ] || die "$1 does not exist."
 [ -f "$1" ] || die "$1 is not a file."
-convert "$1" -resize "$aspect_ratio" "${1/#/siz-}"
+newname="${1/#/siz-}"
+convert "$1" -resize "$aspect_ratio" "$newname"
+printf "Resized image written to %s\n" "$newname"
