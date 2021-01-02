@@ -43,6 +43,7 @@ https://feeds.transistor.fm/the-digital-privacy-show                            
 https://groups.google.com/forum/feed/pagedout-notifications/msgs/rss.xml?num=15                           "tech"    "~Paged Out"
 https://eseth.org/rss.xml                                                                                 "tech"    "~Seth House"
 https://secret.club/feed.xml                                                                              "tech"    "~Secret Club"
+http://matt.might.net/articles/feed.rss                                                                   "tech"    "~Matt Might"
 
 # Deep web
 https://pirate.london/feed                 "deep web"   "~pirate dot london"
