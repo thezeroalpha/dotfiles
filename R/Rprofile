@@ -1,0 +1,2 @@
+# vim: syntax=r
+makeActiveBinding(".", function() .Last.value, env = globalenv())

@@ -49,6 +49,7 @@ gnupg: ~/.config/gnupg
 mpd: ~/.config/mpd
 ncmpcpp: ~/.config/ncmpcpp
 pipe-viewer: ~/.config/pipe-viewer
+R: ~/.config/R
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
