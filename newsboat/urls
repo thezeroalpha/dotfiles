@@ -86,6 +86,7 @@ https://rss.alex.balgavy.eu/?action=display&bridge=Reddit&context=single&r=perso
 https://feeds2.feedburner.com/typepad/krisdedecker/lowtechmagazineenglish                               "blogs" "~Low-Tech Magazine"
 http://www.itchyfeetcomic.com/feeds/posts/default                                                       "blogs" "~Itchy Feet Comics"
 https://xkcd.com/atom.xml                                                                               "blogs" "~XKCD"
+https://old.reddit.com/user/saturnfiftyone/submitted.rss                                                "blogs" "~/u/saturnfiftyone"
 
 # Software releases
 https://github.com/gokcehan/lf/releases.atom                             "software"  "~lf"
