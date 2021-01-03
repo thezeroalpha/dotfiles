@@ -11,6 +11,9 @@ case "$1" in
     curl -sL "$1" > "/tmp/$(printf "%s" "$1" | sed "s/.*\///")" \
       && sxiv -a "/tmp/$(printf "%s" "$1" | sed "s/.*\///")"  1>/dev/null 2>&1 &
     ;;
+  *gifv)
+    setsid -f mpv -loop "$1" 1>/dev/null 2>&1
+    ;;
   *mp3|*flac|*opus|*mp3?source*)
     setsid -f mpv --volume=50 "$1" 1>/dev/null 2>&1
     ;;
