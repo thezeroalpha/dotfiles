@@ -88,6 +88,7 @@ https://feeds2.feedburner.com/typepad/krisdedecker/lowtechmagazineenglish       
 http://www.itchyfeetcomic.com/feeds/posts/default                                                       "blogs" "~Itchy Feet Comics"
 https://xkcd.com/atom.xml                                                                               "blogs" "~XKCD"
 https://old.reddit.com/user/saturnfiftyone/submitted.rss                                                "blogs" "~/u/saturnfiftyone"
+https://briankoberlein.com/index.xml                                                                    "blogs" "~Brian Koberlein"
 
 # Software releases
 https://github.com/gokcehan/lf/releases.atom                             "software"  "~lf"
