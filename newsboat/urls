@@ -89,6 +89,7 @@ http://www.itchyfeetcomic.com/feeds/posts/default                               
 https://xkcd.com/atom.xml                                                                               "blogs" "~XKCD"
 https://old.reddit.com/user/saturnfiftyone/submitted.rss                                                "blogs" "~/u/saturnfiftyone"
 https://briankoberlein.com/index.xml                                                                    "blogs" "~Brian Koberlein"
+https://www.milujuprahu.cz/feed/                                                                        "blogs" "~Miluju Prahu"
 
 # Software releases
 https://github.com/gokcehan/lf/releases.atom                             "software"  "~lf"
