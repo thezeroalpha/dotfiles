@@ -19,6 +19,11 @@ genres,styles=[],[]
 # Search for the query
 search=wrapper.search("#{query}")
 
+if search.results.empty?
+  STDERR.puts 'discogs: no search results'
+  exit 1
+end
+
 # Add the genres of the first result
 search.results.each do |result|
   if result.genre? && !result.genre.empty?
@@ -47,6 +52,11 @@ url = "http://discogs.com#{search.results[0].uri}".split(" ")
 # Join everything together into a 2d array
 # 2 different separators ("~", ",") because bash
 result = [genres.join("~"), styles.join("~"), url]
+
+# Unless only asking for genre, also add title
+if !(ARGV.include?('-g') || ARGV.include?('--genre'))
+  result = [search.results.first.title] + result
+end
 
 # Send result to stdout
 p result
