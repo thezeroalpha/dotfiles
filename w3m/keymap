@@ -32,6 +32,8 @@ keymap M-t TAB_LINK
 keymap r RELOAD
 keymap M-r REINIT
 keymap U LIST
+keymap u PEEK
+keymap I INFO
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ADD_BOOKMARK  Add current page to bookmarks
