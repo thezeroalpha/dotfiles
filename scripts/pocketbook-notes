@@ -1,0 +1,21 @@
+#!/bin/sh
+die() { printf "%s\n" "$1" >&2 && exit 1; }
+
+for dep in 'sqlite3' 'sed' 'jq'; do
+  command -v "$dep" >/dev/null 2>&1 || die "Error: $dep not installed."
+done
+[ $# -eq 2 ] || die "Usage: pocketbook-notes /path/to/books.db '%wildcarded%book%title%'"
+books_db="$1"
+[ -f "$books_db" ] || die "Couldn't read $books_db."
+title_wild="$2"
+
+# to grep a whole DB, do: `sqlite3 <filename> .dump | grep -i 'whatever'`
+sqlite3 "$books_db" \
+  "select Tags.Val
+  from items join tags on (Items.OID = Tags.ItemID)
+  where Items.ParentID = (select OID from Books where Title like '$title_wild')
+  and TypeId = (select OID from TypeNames where TypeName = 'obj.book_mark')
+  and TagId = (select OID from TagNames where TagName = 'bm.quotation');" \
+    | sed '$!s/$/,/; 1s/^/[/; $s/$/]/' \
+    | jq -r '.[].text' \
+    | sed 's/^/* /'
