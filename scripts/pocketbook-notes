@@ -10,6 +10,7 @@ books_db="$1"
 title_wild="$2"
 
 # to grep a whole DB, do: `sqlite3 <filename> .dump | grep -i 'whatever'`
+# TODO: maybe do some explicit ordering?
 sqlite3 "$books_db" \
   "select Tags.Val
   from items join tags on (Items.OID = Tags.ItemID)
@@ -18,4 +19,4 @@ sqlite3 "$books_db" \
   and TagId = (select OID from TagNames where TagName = 'bm.quotation');" \
     | sed '$!s/$/,/; 1s/^/[/; $s/$/]/' \
     | jq -r '.[].text' \
-    | sed 's/^/* /'
+    | sed '/^$/d; s/^/* /'
