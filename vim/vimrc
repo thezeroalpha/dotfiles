@@ -907,6 +907,10 @@ cnoremap <c-n> <down>
 set wildcharm=<c-z>
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
+
+" Easier pasting
+nnoremap <leader>p "0p
+nnoremap <leader>P "0P
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
