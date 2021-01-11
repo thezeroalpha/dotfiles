@@ -8,6 +8,8 @@ keymap j MOVE_DOWN
 keymap k MOVE_UP
 keymap H BACK
 keymap gg BEGIN
+keymap w NEXT_WORD
+keymap b PREV_WORD
 keymap G END
 keymap C-e UP
 keymap C-y DOWN
