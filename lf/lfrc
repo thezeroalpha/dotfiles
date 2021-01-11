@@ -1,4 +1,4 @@
-# vim: foldmethod=marker foldlevel=0
+# vim: foldmethod=marker foldlevel=0 filetype=lfrc
 # General settings {{{
 # interpreter for shell commands (needs to be POSIX compatible)
 set shell bash
@@ -43,6 +43,12 @@ cmd open $opener $fx
 
 # define a custom 'rename' command without prompt for overwrite
 cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+
+cmd change %{{
+  printf "Substitute: "
+  read -r sedcmd
+  mv "$f" "$(dirname "$f")/$(printf '%s' "$(basename "$f")" | sed "s$sedcmd")"
+}}
 
 # queue an audio file in mpd
 cmd queue %{{
@@ -251,6 +257,7 @@ map g?
 map g? $lf -doc | $PAGER; clear
 
 map R push :rename<space>
+map C change
 map cw push :rename<space>
 map E $$EDITOR $fx
 map D trash
