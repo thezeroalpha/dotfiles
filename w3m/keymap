@@ -15,7 +15,7 @@ keymap C-f NEXT_PAGE
 keymap C-b PREV_PAGE
 keymap C-d NEXT_HALF_PAGE
 keymap C-u PREV_HALF_PAGE
-keymap SPCr PIPE_SHELL 'python3 -W ignore -m readability.readability -u $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))'
+keymap SPCr PIPE_SHELL 'go-readability $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))'
 keymap SPCo SHELL 'open "$W3M_URL"'
 keymap SPCt SHELL 'open "$W3M_CURRENT_LINK"'
 keymap SPCy EXEC_SHELL 'printf "%s" $W3M_CURRENT_LINK | clc'
@@ -28,12 +28,14 @@ keymap C-t NEW_TAB
 keymap gt NEXT_TAB
 keymap gT PREV_TAB
 keymap C-o TAB_GOTO
-keymap M-t TAB_LINK
+keymap o GOTO
+keymap O TAB_LINK
 keymap r RELOAD
 keymap M-r REINIT
 keymap U LIST
 keymap u PEEK
 keymap I INFO
+keymap ~ GOTO_HOME
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ADD_BOOKMARK  Add current page to bookmarks
@@ -63,8 +65,6 @@ keymap I INFO
 # EXTERN                Display using an external browser
 # EXTERN_LINK   Display target using an external browser
 # FRAME         Toggle rendering HTML frames
-# GOTO          Open specified document in a new buffer
-# GOTO_HOME     Return to the homepage (specified HTTP_HOME or WWW_HOME variable)
 # GOTO_LINE     Go to the specified line
 # GOTO_LINK     Follow current hyperlink in a new buffer
 # GOTO_RELATIVE Go to relative address

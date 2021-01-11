@@ -22,6 +22,7 @@ export LC_MONETARY="en_US.UTF-8"
 export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 
+export WWW_HOME="https://search.alex.balgavy.eu"
 # Icons for lf {{{1
 export LF_ICONS="\
 di=:\
@@ -186,18 +187,21 @@ ex=:\
 "
 # Force use of XDG Base Directory {{{1
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-alias irssi='irssi --home=$HOME/.config/irssi'
-alias tmux='tmux -f $HOME/.config/tmux/tmux.conf'
-alias w3m='w3m -config $HOME/.config/w3m/config'
-export JUPYTER_CONFIG_DIR="$HOME/.config/jupyter"
-export BUNDLE_USER_HOME="$HOME/.config/bundle"
-export BUNDLE_USER_CACHE="$HOME/.cache/bundle"
-export _Z_DATA="$HOME/.cache/z/z-data"
-export HTTPIE_CONFIG_DIR="$HOME/.config/httpie"
-export CABAL_DIR="$HOME/.config/cabal"
-export GHCUP_INSTALL_BASE_PREFIX="$HOME/.config"
-export ZDOTDIR="$HOME/.config/zsh"
-export GEM_HOME="$HOME/.local/share/gems"
-export NOTMUCH_CONFIG="$HOME/.config/notmuch/config"
-export GNUPGHOME="$HOME/.config/gnupg"
-export R_PROFILE_USER="$HOME/.config/R/Rprofile"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+alias irssi='irssi --home=$XDG_CONFIG_HOME/irssi'
+alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
+alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config'
+export GOPATH="$XDG_DATA_HOME"/go
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
+export _Z_DATA="$XDG_CACHE_HOME/z/z-data"
+export HTTPIE_CONFIG_DIR="$XDG_CONFIG_HOME/httpie"
+export CABAL_DIR="$XDG_CONFIG_HOME/cabal"
+export GHCUP_INSTALL_BASE_PREFIX="$XDG_CONFIG_HOME"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export GEM_HOME="$XDG_DATA_HOME/gems"
+export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch/config"
+export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export R_PROFILE_USER="$XDG_CONFIG_HOME/R/Rprofile"

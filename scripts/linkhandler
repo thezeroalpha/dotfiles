@@ -24,7 +24,7 @@ case "$1" in
     w3m -config ~/.config/w3m/config "$1"
     ;;
   http://*|https://*)   # everything else gets filtered through readability
-    python3 -W ignore -m readability.readability -u "$1" | w3m -config ~/.config/w3m/config -T text/html
+    go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
     ;;
   *)
     if [ -f "$1" ]; then "$EDITOR" "$1"
