@@ -828,8 +828,8 @@ vnoremap <leader>d "+d
 nnoremap <leader>D "+D
 nnoremap <leader>y "+y
 vnoremap <leader>y "+y
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
+nnoremap <leader><leader>p "+p
+nnoremap <leader><leader>P "+P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
 nnoremap <leader>yy "+yg_
@@ -910,7 +910,9 @@ cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 
 " Easier pasting
 nnoremap <leader>p "0p
+vnoremap <leader>p "0p
 nnoremap <leader>P "0P
+vnoremap <leader>P "0P
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
