@@ -1,22 +1,77 @@
 #!/bin/sh
 die() { printf "%s\n" "$1" >&2 && exit 1; }
 
+usage() {
+  cat <<EOF
+Usage:
+pocketbook-notes command /path/to/books.db '%wildcarded%book%title%'
+
+Commands:
+  get
+  clear
+  prune
+  help
+EOF
+}
 for dep in 'sqlite3' 'sed' 'jq'; do
   command -v "$dep" >/dev/null 2>&1 || die "Error: $dep not installed."
 done
-[ $# -eq 2 ] || die "Usage: pocketbook-notes /path/to/books.db '%wildcarded%book%title%'"
-books_db="$1"
-[ -f "$books_db" ] || die "Couldn't read $books_db."
-title_wild="$2"
 
-# to grep a whole DB, do: `sqlite3 <filename> .dump | grep -i 'whatever'`
-# TODO: maybe do some explicit ordering?
-sqlite3 "$books_db" \
-  "select Tags.Val
-  from items join tags on (Items.OID = Tags.ItemID)
-  where Items.ParentID = (select OID from Books where Title like '$title_wild')
-  and TypeId = (select OID from TypeNames where TypeName = 'obj.book_mark')
-  and TagId = (select OID from TagNames where TagName = 'bm.quotation');" \
-    | sed '$!s/$/,/; 1s/^/[/; $s/$/]/' \
-    | jq -r '.[].text' \
-    | sed '/^$/d; s/^/* /'
+case "$1" in
+  get)
+    [ $# -eq 3 ] || { usage; die "Three arguments required."; }
+    books_db="$2"
+    [ -f "$books_db" ] || die "Couldn't read $books_db."
+    title_wild="$3"
+    # to grep a whole DB, do: `sqlite3 <filename> .dump | grep -i 'whatever'`
+    # don't judge me on that jq script. I know that double-capture sucks.
+    sqlite3 "$books_db" \
+      "pragma foreign_keys = on;
+        select Tags.Val
+        from items join tags on (Items.OID = Tags.ItemID)
+        where Items.ParentID in (select OID from Books where Title like \"$title_wild\")
+        and TypeId = (select OID from TypeNames where TypeName = \"obj.book_mark\")
+        and TagId = (select OID from TagNames where TagName = \"bm.quotation\");" \
+      | sed '$!s/$/,/; 1s/^/[/; $s/$/]/' \
+      | jq -r '[to_entries | .[] | select(.value | has("begin")) | .value]
+                | map({
+                    text: (.text | gsub("\n"; "")),
+                    page: (.begin | capture("(?<page>(?<=word\\?page=)[0-9]+)") | .page | tonumber),
+                    offset: (.begin | capture("(?<offs>(?<=offs=)[0-9]+(?=##))") | .offs | tonumber)
+                  }) | sort_by(.page, .offset) | .[].text' \
+      | sed '/^$/d; s/^/* /'
+    ;;
+  clear)
+    [ $# -eq 3 ] || { usage; die "Three arguments required."; }
+    books_db="$2"
+    [ -f "$books_db" ] || die "Couldn't read $books_db."
+    title_wild="$3"
+    printf "Clear all notes from %s? " "$title_wild"
+    read -r conf
+    case $conf in
+      Y*|y*)
+        sqlite3 "$books_db" \
+          "pragma foreign_keys = on;
+            delete from Items
+              where OID in (select Tags.ItemID from Tags where Tags.TagId = (select OID from TagNames where TagName = 'bm.quotation'))
+              and Items.ParentId = (select OID from Books where Title like '$title_wild')
+              and Items.TypeId = (select OID from TypeNames where TypeName = 'obj.book_mark');"
+        printf "Notes cleared.\n"
+        ;;
+      *)
+        printf "Cancelled.\n"
+        exit 0
+        ;;
+    esac
+    ;;
+  prune)
+    printf "TODO: remove all notes from books not present on device.\n"
+    ;;
+  help)
+    usage
+    exit 0
+    ;;
+  *)
+    printf "Unsupported command.\n"
+    ;;
+esac
