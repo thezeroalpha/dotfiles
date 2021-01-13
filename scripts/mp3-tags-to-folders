@@ -8,9 +8,9 @@ cd "$2" || die "Could not cd to $1"
 mkdir -p _failed || die "Directory ./_failed already exists"
 find "$1" -name "*.mp3" 2>/dev/null | \
   while read -r i; do
-    artist="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?"' '_')"
+    artist="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?"' '_' | sed 's/\.\.*$//')"
     [ $? -eq 0 ] || { mv "$i" _failed/ && continue; }
-    album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?"' '_')"
+    album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?"' '_' | sed 's/\.\.*$//')"
     [ $? -eq 0 ] || { mv "$i" _failed/ && continue; }
     mkdir -p "$artist/$album"
     mv "$i" "$artist/$album"
