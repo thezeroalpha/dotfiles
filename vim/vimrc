@@ -830,6 +830,8 @@ nnoremap <leader>y "+y
 vnoremap <leader>y "+y
 nnoremap <leader><leader>p "+p
 nnoremap <leader><leader>P "+P
+vnoremap <leader><leader>p "+p
+vnoremap <leader><leader>P "+P
 nnoremap <leader>n "_
 vnoremap <leader>n "_
 nnoremap <leader>yy "+yg_
