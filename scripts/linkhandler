@@ -26,6 +26,23 @@ case "$1" in
   http://*|https://*)   # everything else gets filtered through readability
     go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
     ;;
+  '!http'*)
+    os=$(uname -s | tr '[:upper:]' '[:lower:]')
+    case "$os" in
+      linux*)
+        setsid -f brave "${1##!}"
+        ;;
+      darwin*)
+        open -a 'Brave Browser' "${1##!}"
+        ;;
+      msys*|cygwin*|mingw*|nt|win*)
+        printf "Windows not supported.\n" >&2
+        ;;
+      *)
+        printf "Operating system %s is unknown.\n" "$os"
+        ;;
+    esac
+    ;;
   *)
     if [ -f "$1" ]; then "$EDITOR" "$1"
     else open "$1" >/dev/null 2>&1
