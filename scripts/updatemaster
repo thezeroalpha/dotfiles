@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-# TODO: check caffeinate termination
 
 def check_deps(deps)
   deps.each do |dep|
@@ -9,10 +8,6 @@ def check_deps(deps)
       exit 1
     end
   end
-end
-
-def stay_awake
-  system `caffeinate -d`
 end
 
 # The Homebrew package manager for macOS
@@ -26,36 +21,51 @@ class Homebrew
     @outdated_formulae = `brew outdated --formula`
   end
 
+  def start_sudo_cache
+    puts 'Please enter the administrator password to install cask upgrades.'
+    system 'sudo -v'
+    @sudo_cache_pid = spawn 'while :; do sudo -n true; sleep 60; done 2>/dev/null'
+  end
+
   def prompt_user
+    return if @outdated_casks.empty?
+
     puts "\nOutdated casks:"
     @outdated_casks.each_with_index { |c, i| puts "#{i} #{c}" }
     print 'Numbers of casks to upgrade (space-separated): '
     begin
-      @to_upgrade = gets.chomp.split.map { |casknum| @cask_names[Integer(casknum)] }
+      @to_upgrade = $stdin.gets.chomp.split.map { |casknum| @cask_names[Integer(casknum)] }
     rescue ArgumentError
       warn 'Only numbers allowed'
       exit 1
     end
-
-    puts "Please enter the administrator password to install cask upgrades."
-    system 'sudo -v'
-    @sudo_cache_pid = spawn "while :; do sudo -n true; sleep 60; done 2>/dev/null"
+    start_sudo_cache
   end
 
   def do_upgrade
-    puts "\nUpgrading all formulae.\nTo upgrade:"
-    puts @outdated_formulae
-    system 'brew upgrade --formula'
+    if @outdated_formulae.empty?
+      puts "\nNo formulae to upgrade."
+    else
+      puts "\nUpgrading all formulae.\nTo upgrade:"
+      puts @outdated_formulae
+      system 'brew upgrade --formula'
+    end
 
-    puts "\nUpgrading casks:"
-    puts @to_upgrade
+    return if @outdated_casks.empty?
 
-    @to_upgrade.each { |cask| system "brew upgrade --cask --greedy --verbose #{cask}" }
-    puts 'Upgrade complete.'
+    if @to_upgrade.empty?
+      puts 'Not upgrading any casks.'
+    else
+      puts "\nUpgrading casks:"
+      puts @to_upgrade
+
+      @to_upgrade.each { |cask| system "brew upgrade --cask --greedy --verbose #{cask}" }
+      puts 'Upgrade complete.'
+    end
   end
 
   def cleanup
-    Process.kill "TERM", @sudo_cache_pid
+    Process.kill('TERM', @sudo_cache_pid) if @sudo_cache_pid
     system 'brew cleanup -s --prune-prefix'
     system 'brew cleanup'
     system 'brew doctor'
@@ -79,30 +89,96 @@ class Pipx
   end
 end
 
-begin
-  caffeine_thread = Thread.new { stay_awake }
-  package_systems = [Homebrew, Pipx]
-
-  # Do all the prompting up front
-  systems_with_prompt = package_systems.select { |s| s.method_defined? 'prompt_user' }
-  unless systems_with_prompt.empty?
-    system_instances = systems_with_prompt.map(&:new)
-    system_instances.each(&:prompt_user)
-    system_instances.each do |pksys|
-      pksys.do_upgrade
-      pksys.cleanup if pksys.class.method_defined? 'cleanup'
-    end
-    package_systems -= systems_with_prompt
+# Gems for Ruby
+class RubyGems
+  def initialize
+    check_deps ['gem']
+    puts '-- GEM --'
+    puts 'To upgrade:'
+    system 'gem outdated'
   end
 
-  # Complete remaining package systems
-  package_systems.each do |pksys_class|
-    pksys = pksys_class.new
-    pksys.prompt_user if pksys_class.method_defined? 'prompt_user'
-    pksys.do_upgrade
-    pksys.cleanup if pksys.class.method_defined? 'cleanup'
+  def do_upgrade
+    system 'gem update'
   end
-rescue SystemExit, Interrupt
-  caffeine_thread.join
+
+  def cleanup
+    system 'gem cleanup'
+  end
+end
+
+# NPM for JS
+class NPM
+  def initialize
+    check_deps ['npm']
+    puts '-- NPM --'
+    puts 'To upgrade:'
+    system 'npm -g outdated'
+  end
+
+  def do_upgrade
+    outdated = `npm outdated -g --parseable | sed 's!:.*!!g; s!.*/!!'`.split
+    outdated.each { |pkg| system "npm -g install #{pkg}@latest" }
+    system 'npm -g update'
+  end
+
+  def cleanup
+    system 'npm -g dedupe'
+    system 'npm -g prune'
+  end
+end
+
+def do_prompts(systems)
+  system_instances = systems.map(&:new)
+  system_instances.each(&:prompt_user) if (['-n', '--dry-run'] & ARGV).empty?
+  system_instances
+end
+
+def split_systems_by_prompting(all_systems)
+  systems_with_prompt = all_systems.select { |s| s.method_defined? 'prompt_user' }
+  { prompting: systems_with_prompt,
+    no_prompting: all_systems - systems_with_prompt }
+end
+
+def upgrade_cleanup(system_instance)
+  system_instance.do_upgrade if (['-n', '--dry-run'] & ARGV).empty?
+  system_instance.cleanup if system_instance.class.method_defined? 'cleanup'
+end
+
+def main
+  package_systems = [Homebrew, Pipx, RubyGems, NPM]
+
+  split_systems = split_systems_by_prompting package_systems
+
+  # Do any prompts to get interactivity out of the way, then upgrade those first
+  do_prompts(split_systems[:prompting]).each { |s| upgrade_cleanup s } unless split_systems[:prompting].empty?
+
+  # Finish up by upgrading systems that don't need user input
+  split_systems[:no_prompting].each do |nonprompting_sys|
+    pksys = nonprompting_sys.new
+    upgrade_cleanup pksys
+  end
+end
+
+def handle_help
+  return if (['-h', '--help'] & ARGV).empty?
+
+  puts <<~END_HELPTEXT
+    Usage:  updatemaster [options]
+
+    Options:
+    -h, --help    display this helptext
+    -n, --dry-run   don't upgrade anything, only update & cleanup
+  END_HELPTEXT
   exit 0
 end
+
+handle_help
+begin
+  caffeinate = spawn 'caffeinate -d'
+  main
+rescue SystemExit, Interrupt
+  puts "\nInterrupted, exiting..."
+end
+Process.kill('SIGTERM', caffeinate)
+Process.detach(caffeinate)
