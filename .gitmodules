@@ -59,3 +59,6 @@
 [submodule "tools/go-readability"]
 	path = tools/go-readability
 	url = https://github.com/go-shiori/go-readability
+[submodule "shell/osx-zsh-completions"]
+	path = shell/osx-zsh-completions
+	url = https://github.com/nilsonholger/osx-zsh-completions

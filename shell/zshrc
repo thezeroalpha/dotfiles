@@ -38,7 +38,7 @@ setopt histreduceblanks    # Remove blank lines from history
 setopt histverify          # Show expansion first before executing
 
 # Enable extra completions
-fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/zsh-completions-mine/ $fpath)
+fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/osx-zsh-completions/ $DOTFILES/shell/zsh-completions-mine/ $fpath)
 autoload -Uz compinit && compinit
 source $DOTFILES/shell/oh-my-zsh-defaults/completion.zsh
 source $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
