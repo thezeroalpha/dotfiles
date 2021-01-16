@@ -13,6 +13,7 @@ setlocal formatoptions-=cat wrap
 setlocal foldmethod=indent
 setlocal foldexpr=vimtex#fold#level(v:lnum)
 setlocal foldtext=vimtex#fold#text()
+setlocal expandtab
 let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin.'|' : '')
 let b:undo_ftplugin .= 'nmapc <buffer>'
 let b:undo_ftplugin .= '|imapc <buffer>'
