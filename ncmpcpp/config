@@ -2,6 +2,9 @@
 
 ncmpcpp_directory = "~/.config/ncmpcpp"
 lyrics_directory = "~/.local/share/lyrics"
+follow_now_playing_lyrics = yes
+fetch_lyrics_for_current_song_in_background = yes
+
 mpd_music_dir = "~/Music/Libraries/Mine/"
 system_encoding = "utf-8"
 
