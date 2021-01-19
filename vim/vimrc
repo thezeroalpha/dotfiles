@@ -381,9 +381,7 @@ let g:netrw_list_hide = &wildignore                 " hide everything in &wildig
 let g:netrw_list_hide .= ',\(^\|\s\s\)\zs\.\S\+'    " as well as dotfiles
 let g:netrw_special_syntax = 1                      " use special syntax groups for certain files in browser
 " latex-unicoder {{{3
-let g:unicoder_cancel_normal = 1
-let g:unicoder_cancel_insert = 1
-let g:unicoder_cancel_visual = 1
+let g:unicoder_no_map = 1
 inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
 " colorizer {{{3
 let g:colorizer_colornames = 0
