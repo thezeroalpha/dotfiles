@@ -101,7 +101,7 @@ https://github.com/junegunn/fzf/releases.atom                            "softwa
 https://github.com/getzola/zola/releases.atom                            "software"  "~Zola"
 https://www.freelists.org/feed/regolith-linux                            "software"  "~Regolith Linux"
 https://github.com/laurent22/joplin/releases.atom                        "software"  "~Joplin"
-https://gitlab.com/ajak/tuir/-/tags?format=atom                          "software"  "~Tuir"
+https://pypi.org/rss/project/ttrv/releases.xml                           "software"  "~TTRV"
 https://newsboat.org/news.atom                                           "software"  "~Newsboat"
 https://github.com/searx/searx/releases.atom                             "software"  "~Searx"
 https://github.com/RSS-Bridge/rss-bridge/commits/master.atom             "software"  "~RSS Bridge commits"

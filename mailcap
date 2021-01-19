@@ -1,4 +1,4 @@
-image/*; sxiv -a %s
+image/*; sh -c 'case "%s" in http*) name="/tmp/$(printf "%s" | sed "s/.*\///")"; curl -sL "%s" > "$name";; *) name="%s";; esac; sxiv -a "$name"'
 video/*; mpvq %s
 text/html; w3m -config /Users/alex/.config/w3m/config -T text/html %s
 text/plain; less

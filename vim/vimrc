@@ -713,7 +713,7 @@ if has('terminal')
   cnoreabbrev tm terminal ++close man
   cnoreabbrev tf terminal ++close lf
   cnoreabbrev tn terminal ++close joplin
-  command! Tuir tab terminal tuir
+  command! Reddit tab terminal ttrv
 endif
 " }}}
 " Digraphs {{{1

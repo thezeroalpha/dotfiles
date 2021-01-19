@@ -4,6 +4,8 @@ bin: ~/.bin
 # My scripts
 scripts: ~/.scripts
 
+mailcap: ~/.config/mailcap
+
 # Config: utilities
 compton: ~/.config/compton
 ctags: ~/.config/ctags
@@ -27,7 +29,7 @@ newsboat:
 - history.cmdline: ~/.local/share/newsboat/history.cmdline
 polybar: ~/.config/polybar
 ranger: ~/.config/ranger
-tuir: ~/.config/tuir
+ttrv: ~/.config/ttrv
 screen:
 - screenrc: ~/.screenrc
 tmux:

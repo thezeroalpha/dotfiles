@@ -18,7 +18,7 @@ case "$1" in
     setsid -f mpv --volume=50 "$1" 1>/dev/null 2>&1
     ;;
   *reddit.com*)
-    tuir "$1"
+    ttrv "$1"
     ;;
   *news.ycombinator.com*|*lean-forward.github.io*) # readability whitelist
     w3m -config ~/.config/w3m/config "$1"

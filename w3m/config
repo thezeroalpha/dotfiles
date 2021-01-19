@@ -66,7 +66,7 @@ personal_document_root
 cgi_bin
 index_file
 mime_types ~/.mime.types, /usr/local/Cellar/w3m/0.5.3_6/etc/mime.types
-mailcap ~/.config/w3m/mailcap, /usr/local/Cellar/w3m/0.5.3_6/etc/w3m/mailcap
+mailcap ~/.config/mailcap, /usr/local/Cellar/w3m/0.5.3_6/etc/w3m/mailcap
 urimethodmap ~/.config/w3m/urimethodmap, /usr/local/Cellar/w3m/0.5.3_6/etc/w3m/urimethodmap
 editor /usr/local/bin/vim
 mailto_options 1

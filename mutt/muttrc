@@ -5,7 +5,7 @@ source `{ [ -f ~/.config/dark-theme ] && printf "colors-dark"; } || printf "colo
 set mbox_type = Maildir
 set mail_check=0 # minimum time between scans
 unset mark_old # it's enough to see whats unread
-set mailcap_path = ~/.config/mutt/mailcap
+set mailcap_path = ~/.config/mailcap
 
 set pgp_default_key = 0x67A9DD9A68AE0B7C
 set crypt_autosign
