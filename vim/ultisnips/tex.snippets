@@ -127,18 +127,23 @@ snippet beg "begin{} / end{}" b
 \end{$1}
 endsnippet
 
-snippet sec "section{}" b
+snippet ;1 "section{}" b
 \section{$1}
 $0
 endsnippet
 
-snippet ssec "subsection{}" b
+snippet ;2 "subsection{}" b
 \subsection{$1}
 $0
 endsnippet
 
-snippet sssec "subsection{}" b
+snippet ;3 "subsubsection{}" b
 \subsubsection{$1}
+$0
+endsnippet
+
+snippet ;4 "subsubsubsection{}" b
+\subsubsubsection{$1}
 $0
 endsnippet
 
