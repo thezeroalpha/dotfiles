@@ -15,6 +15,7 @@ https://brave.com/feed/?cc=1                                                    
 https://usesthis.com/feed.atom                                                                            "tech"    "~X Uses This"
 http://ridiculousfish.com/blog/atom.xml                                                                   "tech"    "~Ridiculous Fish"
 https://news.ycombinator.com/rss                                                                          "tech"    "~Hacker News"
+http://n-gate.com/index.rss                                                                               "tech"    "~Annotated HN Digest"
 https://gizmodo.com/rss                                                                                   "tech"    "~Gizmodo"
 https://blog.privacytools.io/rss/                                                                         "tech"    "~PrivacyTools.io"
 https://nikodoko.com/index.xml                                                                            "tech"    "~Niko doko"
