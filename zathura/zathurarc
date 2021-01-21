@@ -1,0 +1,50 @@
+set sandbox none
+
+# Spacing around pages
+set statusbar-h-padding 0
+set statusbar-v-padding 0
+set page-padding 1
+
+# Copy to clipboard
+set selection-clipboard clipboard
+
+# Font size
+set font "sans-serif normal 12"
+
+# Dark mode colors
+set recolor-keephue
+set recolor-lightcolor "#111111"
+set recolor-darkcolor "#D2D2D2"
+
+# Use synctex
+set synctex true
+
+# guioptions - Shows or hides GUI elements.
+# 'c': command line
+# 's': statusbar
+# 'h': horizontal scrollbar
+# 'v': vertical scrollbar
+set guioptions "sv"
+
+# Mappings
+map u scroll half-up
+map d scroll half-down
+map D toggle_page_mode
+map r reload
+map R rotate
+map K zoom in
+map J zoom out
+map i recolor
+map P print
+map p snap_to_page
+map w adjust_window width
+map z adjust_window best-fit
+map b toggle_statusbar
+map <C-g> abort
+map Z toggle_fullscreen
+map [fullscreen] Z toggle_fullscreen
+map ; feedkeys :
+
+# External commands
+map O exec "open -a Skim $FILE"
+map ! feedkeys ":exec ''<Left>"

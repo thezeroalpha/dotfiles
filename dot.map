@@ -52,6 +52,7 @@ mpd: ~/.config/mpd
 ncmpcpp: ~/.config/ncmpcpp
 pipe-viewer: ~/.config/pipe-viewer
 R: ~/.config/R
+zathura: ~/.config/zathura
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
