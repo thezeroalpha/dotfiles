@@ -226,6 +226,9 @@ cmd filter %{{
   lf -remote "send $id unselect"
   lf -remote "send $id glob-select $filter_expr"
 }}
+
+cmd rmempty %find .  -type d -empty -depth -delete
+cmd xld %open -a XLD $f
 # }}}
 # Mappings {{{
 # execute current file (must be executable)
@@ -262,7 +265,7 @@ map cw push :rename<space>
 map E $$EDITOR $fx
 map D trash
 map <enter> open $fx
-map S shell
+map S shell-pipe
 map Y copy_path
 map Q queue
 
