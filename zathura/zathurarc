@@ -14,7 +14,7 @@ set font "sans-serif normal 12"
 # Dark mode colors
 set recolor-keephue
 set recolor-lightcolor "#111111"
-set recolor-darkcolor "#D2D2D2"
+set recolor-darkcolor "#929292"
 
 # Use synctex
 set synctex true
