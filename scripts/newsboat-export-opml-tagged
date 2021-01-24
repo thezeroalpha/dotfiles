@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+( warn "Usage: newsboat-export-opml-tagged /path/to/urls /path/to/destination.opml"; exit 1 ) unless ARGV.length == 2
+( warn "#{ARGV[0]} is not readable."; exit 1 ) unless File.readable? ARGV[0]
+urls = File.readlines(ARGV[0])
+  .reject { |u| u.start_with?('"query:') || u =~ /^#/ || u =~ /^\s*$/}
+  .map { |line| line.chomp.split(/\s+(?=")/).map { |e| e.gsub('"', '') } }
+
+tags = urls.flatten.select { |u| u !~ /^https?/ && u !~ /^~/ }.uniq
+
+urls = urls.map do |u|
+  name=u.select { |e| e =~ /^~/ }.first.gsub("~", "")
+  url=u.select { |e| e =~ /^http/ }.first
+  {name: name, url: url, tags: u-[name]-[url]}
+end
+
+urls_by_tag = {}
+tags.each do |tag|
+  urls_by_tag[tag] = urls.select { |u| u[:tags].include? tag }
+end
+
+outlines = ""
+outlines += <<~EOF
+  <?xml version="1.0" encoding="UTF-8"?>
+  <opml version="2.0">
+  <body>
+EOF
+urls_by_tag.each do |tag,urls|
+  outlines += "<outline text=\"#{tag}\">\n"
+  urls.each do |url|
+    outlines += "<outline title=\"#{url[:name]}\" text=\"#{url[:name]}\" xmlUrl=\"#{url[:url]}\"></outline>\n"
+  end
+  outlines += "</outline>\n"
+end
+
+outlines += <<~EOF
+  </body>
+  </opml>
+EOF
+
+File.write(ARGV[1], outlines)
