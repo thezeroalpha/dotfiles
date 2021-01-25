@@ -12,6 +12,7 @@ scripts/wifi
 newsboat/history.cmdline
 newsboat/history.search
 newsboat/error.log
+newsboat/cache.db
 
 # w3m: don't want to share history, cookies, etc.
 w3m/*

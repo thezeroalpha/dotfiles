@@ -1,3 +1,8 @@
+urls-source "miniflux"
+miniflux-url "https://miniflux.alex.balgavy.eu"
+miniflux-login "admin"
+miniflux-password "a$&rv@7A6g$Ec4L^qGSXE8wkSb*^3t"
+
 auto-reload no
 reload-threads 8
 show-read-feeds no
@@ -8,6 +13,7 @@ article-sort-order date
 error-log "~/.config/newsboat/error.log"
 prepopulate-query-feeds yes
 goto-next-feed no
+scrolloff 5
 
 define-filter "read articles" "unread = \"no\""
 define-filter "downloaded" "flags # \"d\""

@@ -7,20 +7,4 @@ notidie() {
 }
 
 newsboat -x reload 2>&1 || notidie "Newsboat: error reloading" "Unable to reload"
-{ cd "${DOTFILES:-$HOME/.dotfiles}" && git commit -m "Newsboat cache" newsboat/cache.db; } || notidie "Newsboat: error committing cache" "Could not commit cache dotfile."
-previous_commit_msg="$(git log --format=%s -n 1 HEAD~)"
-if [ "$previous_commit_msg" = "Newsboat cache" ]; then
-  printf "Previous commit is also Newsboat, rolling back\n"
-  { git stash save \
-    && git reset --soft HEAD~2 \
-    && git commit -m "Newsboat cache" \
-    && git push --force-with-lease origin master \
-    && git fetch --all \
-    && git stash pop; } || notidie "Newsboat error: refreshed but unpushed" "Could not push new cache, check the state of the git repository."
-else
-  printf "Previous commit is not Newsboat\n"
-  git push origin master
-  git fetch --all
-fi
-
 newsboat -x print-unread | xargs -I{} terminal-notifier -group news -sender news -title 'Newsboat reloaded' -message "{}"
