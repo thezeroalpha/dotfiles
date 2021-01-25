@@ -231,6 +231,12 @@ cmd rmempty %find .  -type d -empty -depth -delete
 cmd xld %open -a XLD $f
 # }}}
 # Mappings {{{
+# Mouse
+map <m-down> down
+map <m-up> up
+map <m-1> open
+map <m-3> updir
+
 # execute current file (must be executable)
 map ; push :
 map x $$f
