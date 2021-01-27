@@ -6,5 +6,12 @@ notidie() {
   exit 1
 }
 
-newsboat -x reload 2>&1 || notidie "Newsboat: error reloading" "Unable to reload"
-newsboat -x print-unread | xargs -I{} terminal-notifier -group news -sender news -title 'Newsboat reloaded' -message "{}"
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  darwin*)
+    seshkey="$(printf "%s\n" "$(osascript -e 'tell application "System Events" to get text returned of (display dialog "Unlock your Bitwarden vault" default answer "" hidden answer true giving up after 0 with title "Newsboat Refresh")')" | bw unlock --raw 2>/dev/null)"
+    ;;
+esac
+
+BW_SESSION="$seshkey" newsboat -x reload 2>&1 || notidie "Newsboat: error reloading" "Unable to reload"
+BW_SESSION="$seshkey" newsboat -x print-unread | xargs -I{} terminal-notifier -group news -sender news -title 'Newsboat reloaded' -message "{}"
