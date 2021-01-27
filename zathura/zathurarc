@@ -46,5 +46,5 @@ map [fullscreen] Z toggle_fullscreen
 map ; feedkeys :
 
 # External commands
-map O exec "open -a Skim $FILE"
+map O exec "open -a Skim '$FILE'"
 map ! feedkeys ":exec ''<Left>"
