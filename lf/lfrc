@@ -56,7 +56,7 @@ cmd queue %{{
     case "$i" in
       *.wav|*.flac|*.mp3|*.m4a)
         mpc -h ~/.local/share/mpd/socket insert "file://$i"
-        printf "Queued: %s\n" "$i"
+        printf "Queued: %s" "$i"
         ;;
     esac
   done
@@ -171,9 +171,9 @@ cmd trash %{{
     printf "Trash $f? [Y/n/a] "
     read -r ans
     case "$ans" in
-      Y*|y*) trash "$f"; printf "Deleted $f.\n";;
-      A*|a*) trash $fx; printf "Deleted all files.\n"; break;;
-      *) printf "Not deleting $f\n"; sleep 1;;
+      Y*|y*) trash "$f"; printf "Deleted $f.";;
+      A*|a*) trash $fx; printf "Deleted all files."; break;;
+      *) printf "Not deleting $f"; sleep 1;;
     esac
   done
 }}
@@ -182,8 +182,8 @@ cmd trashempty %{{
   printf "Empty trash? [Y/n] "
   read -r ans
   case "$ans" in
-    Y*|y*) trash -ey; printf "Emptied.\n";;
-    *) printf "Not emptying.\n";;
+    Y*|y*) trash -ey; printf "Emptied.";;
+    *) printf "Not emptying.";;
   esac
 }}
 
@@ -191,7 +191,7 @@ cmd pgp_encrypt_recipient %{{
   printf "Recipient: "
   read -r recipient
   case "$recipient" in
-    "") printf "Cancelled.\n";;
+    "") printf "Cancelled.";;
     *) gpg --encrypt --sign --recipient "$recipient" $f;;
   esac
 }}
