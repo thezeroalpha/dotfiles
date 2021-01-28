@@ -53,6 +53,7 @@ ncmpcpp: ~/.config/ncmpcpp
 pipe-viewer: ~/.config/pipe-viewer
 R: ~/.config/R
 zathura: ~/.config/zathura
+gotop: ~/.config/gotop
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
