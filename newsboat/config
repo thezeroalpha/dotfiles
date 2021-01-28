@@ -58,7 +58,7 @@ unbind-key ,
 bind-key SPACE macro-prefix
 macro SPACE set browser "open -g %u"; open-in-browser; set browser "linkhandler %u"
 macro v set browser "linkhandler"; open-in-browser ; set browser "linkhandler %u"
-macro a set browser "mpc add \"$(youtube-dlc -f 'best[ext=mp3]/best[ext=m4a]/251/140/m4a' -g %u | tail -n 1)\" && mpc play"; open-in-browser; set browser "linkhandler %u"
+macro a set browser "mpc add \"$(youtube-dlc -x -g %u)\" && mpc play"; open-in-browser; set browser "linkhandler %u"
 macro w set browser "w3m -config ~/.config/w3m/config %u"; open-in-browser; set browser "linkhandler %u"
 macro i set browser "youtube-dlc --get-title --get-duration --get-description %u | less"; open-in-browser; set browser "linkhandler %u"
 macro c set browser "printf '%s' %u | clc" ; open-in-browser ; set browser "linkhandler %u"
