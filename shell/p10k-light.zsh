@@ -48,6 +48,7 @@
   # automatically hidden when the input line reaches it. Right prompt above the
   # last prompt line gets hidden if it would overlap with left prompt.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+    bitwarden_session_timer # how much longer until Bitwarden locks
     command_execution_time  # duration of the last command
     background_jobs         # presence of background jobs
     direnv                  # direnv status (https://direnv.net/)
@@ -1268,6 +1269,26 @@
   # Type `p10k help segment` for documentation and a more sophisticated example.
   function prompt_example() {
     p10k segment -f 2 -i '⭐' -t 'hello, %n'
+  }
+
+  function hms {
+    local T=$1
+    local D=$((T/60/60/24))
+    local H=$((T/60/60%24))
+    local M=$((T/60%60))
+    local S=$((T%60))
+    (( $D > 0 )) && printf '%d:' $D
+    (( $H > 0 )) && printf '%d:' $H
+    (( $M > 0 )) && printf '%d' $M
+    (( $D > 0 || $H > 0 || $M > 0 )) && printf ':'
+    printf '%02d' $S
+  }
+  function prompt_bitwarden_session_timer() {
+    if [ -z "$BW_SESHFILE" ] || ! [ -f "$BW_SESHFILE" ]; then
+      return
+    else
+      p10k segment -f 2 -t "[🔓 -$(hms $(($(stat -c '%Y' $BW_SESHFILE)+(30*60)-$(date +%s))))]"
+    fi
   }
 
   # shell nest level
