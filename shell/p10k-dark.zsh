@@ -1145,7 +1145,7 @@
     (( $H > 0 )) && printf '%d:' $H
     (( $M > 0 )) && printf '%d' $M
     (( $D > 0 || $H > 0 || $M > 0 )) && printf ':'
-    printf '%d' $S
+    printf '%02d' $S
   }
   function prompt_bitwarden_session_timer() {
     if [ -z "$BW_SESHFILE" ] || ! [ -f "$BW_SESHFILE" ]; then
