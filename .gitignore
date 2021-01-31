@@ -35,3 +35,5 @@ irssi/*.log
 karabiner/automatic_backups/
 /tools/solvitaire
 pipe-viewer/instances.json
+
+bin/geckodriver
