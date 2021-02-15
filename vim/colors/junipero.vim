@@ -39,7 +39,7 @@ hi MatchParen guifg=#001122 guibg=#7b5a55 ctermfg=0 ctermbg=95 cterm=NONE gui=NO
 hi ModeMsg guifg=#00AACC guibg=NONE ctermfg=38 ctermbg=NONE cterm=NONE gui=NONE
 hi MoreMsg guifg=#2e8b57 guibg=NONE ctermfg=29 ctermbg=NONE cterm=NONE gui=NONE
 hi NonText guifg=#382920 guibg=#11121A ctermfg=1 ctermbg=0 cterm=NONE gui=NONE
-hi Normal guifg=#969696 guibg=#11121A ctermfg=246 ctermbg=0 cterm=NONE gui=NONE
+hi Normal guifg=#838383 guibg=#11121A ctermfg=244 ctermbg=0 cterm=NONE gui=NONE
 hi StatusLineFile guifg=#ff8f00 guibg=NONE ctermfg=208 ctermbg=NONE cterm=NONE gui=NONE
 hi StatusLineNormMode guifg=#666fff guibg=NONE ctermfg=12 ctermbg=NONE cterm=NONE gui=NONE
 hi Number guifg=#339aff guibg=NONE ctermfg=12 ctermbg=NONE cterm=NONE gui=NONE
@@ -51,11 +51,11 @@ hi PmenuThumb guifg=NONE guibg=#000000 ctermfg=NONE ctermbg=0 cterm=NONE gui=NON
 hi PreProc guifg=#ae15eb guibg=NONE ctermfg=5 ctermbg=NONE cterm=NONE gui=NONE
 hi Question guifg=#AABBCC guibg=#130445 ctermfg=146 ctermbg=17 cterm=NONE gui=NONE
 hi Repeat guifg=#e06070 guibg=#11121A ctermfg=167 ctermbg=0 cterm=NONE gui=NONE
-hi Search guifg=#2de3e6 guibg=#6b5469 ctermfg=6 ctermbg=59 cterm=NONE gui=NONE
+hi Search guifg=#1dd3d6 guibg=#6b5469 ctermfg=6 ctermbg=59 cterm=NONE gui=NONE
 hi SpecialKey guifg=#90dcb0 guibg=NONE ctermfg=115 ctermbg=NONE cterm=NONE gui=NONE
 hi Statement guifg=#ff6c11 guibg=NONE ctermfg=202 ctermbg=NONE cterm=NONE gui=NONE
 hi StatusLine guifg=#4079a9 guibg=#101130 ctermfg=67 ctermbg=17 cterm=bold gui=bold
-hi String guifg=#2de3e6 guibg=NONE ctermfg=6 ctermbg=NONE cterm=italic gui=italic
+hi String guifg=#1dd3d6 guibg=NONE ctermfg=6 ctermbg=NONE cterm=italic gui=italic
 hi Structure guifg=#0490e8 guibg=NONE ctermfg=32 ctermbg=NONE cterm=bold gui=bold
 hi TabLineSel guifg=#6079c9 guibg=#363649 ctermfg=68 ctermbg=59 cterm=NONE gui=NONE
 hi Title guifg=#fff7fa guibg=NONE ctermfg=15 ctermbg=NONE cterm=NONE gui=NONE

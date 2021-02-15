@@ -3,10 +3,10 @@ background dark
 
 " Set the palette
 palette:
-  text #969696,
+  text #838383,
   bg #11121A,
   black #000000,
-  lightblue #2de3e6,
+  lightblue #1dd3d6,
   whitepink #bebebe,
   whiteyellow #f0e0b2,
   offwhite #f0e2e2,
