@@ -27,6 +27,12 @@ set ignorecase true
 set preview true
 set icons
 
+# Show number of files in dirs instead of single size
+set info size
+set dircounts
+
+set number
+set relativenumber
 # }}}
 # Command definitions {{{
 # the prefix shows what kind of command it is
@@ -242,8 +248,7 @@ map ; push :
 map x $$f
 map X !$f
 
-# avoid a crash
-map w
+map w %du -sh $f
 
 # dedicated keys for file opener actions
 map o
@@ -279,7 +284,7 @@ map p
 map pp paste
 map pl paste_link
 
-map i $~/.config/lf/preview $f | less -R
+map i $LESSOPEN='| ~/.config/lf/pv.sh %s' less -R $f
 
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
