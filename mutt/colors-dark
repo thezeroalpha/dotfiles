@@ -30,6 +30,7 @@ color body cyan color16 "(Good signature)"
 color body brightblack color16 "^gpg: Good signature .*"
 color body brightyellow color16 "^gpg: "
 color body brightyellow red "^gpg: BAD signature from.*"
+color signature blue color16
 color attachment color11 color16
 color quoted green color16
 color quoted1 blue color16
