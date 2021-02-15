@@ -1,2 +1,3 @@
 # vim: syntax=r
 makeActiveBinding(".", function() .Last.value, env = globalenv())
+options("width"=200)
