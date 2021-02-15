@@ -45,6 +45,14 @@ map Z toggle_fullscreen
 map [fullscreen] Z toggle_fullscreen
 map ; feedkeys :
 
+map [normal] % toggle_presentation
+map [presentation] % toggle_presentation
+map [presentation] n navigate next
+map [presentation] p navigate previous
+map [presentation] gg goto top
+map [presentation] G goto bottom
+unmap [presentation] q
+
 # External commands
 map O exec "open -a Skim '$FILE'"
 map ! feedkeys ":exec ''<Left>"
