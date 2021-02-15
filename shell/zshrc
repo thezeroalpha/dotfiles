@@ -52,12 +52,9 @@ autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
 # Auto correct commands, with exceptions (from oh-my-zsh)
-alias cp='nocorrect cp'
 alias g='nocorrect git'
 alias git='nocorrect git'
 alias man='nocorrect man'
-alias mkdir='nocorrect mkdir'
-alias mv='nocorrect mv'
 alias sudo='nocorrect sudo'
 setopt correct
 setopt correct_all
