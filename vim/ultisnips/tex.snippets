@@ -183,7 +183,7 @@ endsnippet
 snippet fig "Figure" b
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.5]{${1:/path/to/file}}
+  \includegraphics[width=\textwidth]{${1:/path/to/file}}
   \caption{${2:caption}}
   \label{fig:${3:internal reference}}
 \end{figure}
@@ -225,6 +225,10 @@ endsnippet
 
 snippet b "bold text" w
 \textbf{$1}
+endsnippet
+
+snippet pre "preformatted text" w
+\texttt{$1}
 endsnippet
 
 snippet " "quote" wA
