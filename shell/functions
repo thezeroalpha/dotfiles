@@ -109,7 +109,7 @@ if [ -d ~/.config/fzf ]; then
   # config edit
   ce() {
     local files
-    IFS=$'\n' files=($(command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    IFS=$'\n' files=($(command find ~/.dotfiles -type f ! -ipath "*/scripts/*" ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   }
 
