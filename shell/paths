@@ -1,5 +1,6 @@
 #!/bin/sh
 [ -x /usr/libexec/path_helper ] && unset PATH && eval "$(/usr/libexec/path_helper -s)"
+
 [ -d "$HOME/.local/bin" ] || [ -L "$HOME/.local/bin" ]                                               && [ -n "${PATH##*"$HOME/.local/bin"*}" ]                        && PATH="$HOME/.local/bin:$PATH"
 [ -d "$GOPATH/bin" ] || [ -L "$GOPATH/bin" ]                                                         && [ -n "${PATH##*"$GOPATH/bin"*}" ]                             && PATH="$GOPATH/bin:$PATH"
 [ -d "/usr/local/opt/util-linux/bin" ] || [ -L "/usr/local/opt/util-linux/bin" ]                     && [ -n "${PATH##*"/usr/local/opt/util-linux/bin"*}" ]           && PATH="/usr/local/opt/util-linux/bin:$PATH"
@@ -15,6 +16,8 @@
 [ -d /usr/local/opt/man-db/libexec/bin ]                                                             && [ -n "${PATH##*"/usr/local/opt/man-db/libexec/bin"*}" ]       && PATH="/usr/local/opt/man-db/libexec/bin:$PATH"
 [ -d "$DOTFILES/tools/shfm" ]                                                                        && [ -n "${PATH##*"$DOTFILES/tools/shfm"*}" ]                    && PATH="$DOTFILES/tools/shfm:$PATH"
 [ -d "$DOTFILES/tools/pfetch" ]                                                                      && [ -n "${PATH##*"$DOTFILES/tools/pfetch"*}" ]                  && PATH="$DOTFILES/tools/pfetch:$PATH"
+[ -d "$DOTFILES/tools/tuxi" ]                                                                        && [ -n "${PATH##*"$DOTFILES/tools/tuxi"*}" ]                    && PATH="$DOTFILES/tools/tuxi:$PATH"
 [ -d "/usr/local/Cellar/perl/5.32.1/bin" ]                                                           && [ -n "${PATH##*"/usr/local/Cellar/perl/5.32.1/bin"*}" ]       && PATH="/usr/local/Cellar/perl/5.32.1/bin:$PATH"
+
 command -v rbenv 1>/dev/null 2>&1 && eval "$(rbenv init -)"
 export PATH
