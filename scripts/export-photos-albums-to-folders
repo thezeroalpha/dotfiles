@@ -1,0 +1,85 @@
+#!/bin/sh
+# Export selected albums from macOS Photos to folders
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  darwin*)
+    # code for macOS
+    command -v osascript >/dev/null 2>&1 || { printf "osascript not present.\n" && exit 1; }
+    ;;
+  *)
+    printf "This script is only needed on macOS.\n"
+    exit 1
+    ;;
+esac
+
+osascript - <<EOF
+on sortList(theList)
+    set theIndexList to {}
+    set theSortedList to {}
+    try
+        repeat (length of theList) times
+            set theLowItem to ""
+            repeat with a from 1 to (length of theList)
+                if a is not in theIndexList then
+                    set theCurrentItem to item a of theList as text
+                    if theLowItem is "" then
+                        set theLowItem to theCurrentItem
+                        set theLowItemIndex to a
+                    else if theCurrentItem comes before theLowItem then
+                        set theLowItem to theCurrentItem
+                        set theLowItemIndex to a
+                    end if
+                end if
+            end repeat
+            set end of theSortedList to theLowItem
+            set end of theIndexList to theLowItemIndex
+        end repeat
+    on error errMsg number errorNumber
+        return {"An unknown error occurred:"} & theSortedList
+    end try
+    return theSortedList
+end sortList
+
+set destination to choose folder with prompt "Select a destination folder to save the albums to" default location (the path to the desktop folder as alias)
+set dest to ((the POSIX path of destination) as text) as POSIX file as text
+
+set r to display dialog "Do you want to export the originals or the edited versions?" buttons {"Originals", "Edited versions"} default button 1 with icon 2
+set orig to (button returned of r is "Originals")
+
+tell application "Photos"
+    activate
+    set unsorted to (name of albums)
+
+end tell
+
+set l to sortList(unsorted)
+
+set albNames to choose from list l with prompt "Select some albums" with multiple selections allowed
+if albNames is not false then -- not cancelled
+    set progress description to "Photos export"
+    set progress additional description to "Preparing..."
+    set progress total steps to number of albNames
+    repeat with tName in albNames
+        set tFolder to dest & tName
+        set progress additional description to "Processing: " & tFolder
+        set progress completed steps to (progress completed steps + 1)
+        my makeFolder(tFolder)
+        if orig then
+            tell application "Photos" to export (get media items of album tName) to (tFolder as alias) with using originals
+        else
+            tell application "Photos" to export (get media items of album tName) to (tFolder as alias) without using originals
+        end if
+    end repeat
+    display dialog "Done" buttons {"Finish"} default button 1
+end if
+
+
+tell application "Finder"
+    open (tFolder as alias)
+    return {"Done: "} & albNames
+end tell
+
+on makeFolder(tPath)
+    do shell script "mkdir -p " & quoted form of POSIX path of tPath
+end makeFolder
+EOF
