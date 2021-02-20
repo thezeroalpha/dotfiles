@@ -368,3 +368,17 @@ ivdep
 Ofast
 unvectorized
 Balgavý
+iff
+Cosets
+coset
+cosets
+MLD
+SDA
+IMLD
+ints
+MDS
+gcd
+RREF
+env
+OpenMP
+proc
