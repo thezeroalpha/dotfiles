@@ -98,7 +98,7 @@ retry_http 1
 default_url 1
 follow_redirection 10
 meta_refresh 0
-dns_order 0
+dns_order 4
 nntpserver
 nntpmode
 max_news 50
