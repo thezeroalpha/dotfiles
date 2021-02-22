@@ -781,8 +781,8 @@ nnoremap zh mzzt10<c-u>`z
 nnoremap <leader>= mlgg=G`lzz
 
 " Tab mappings
-nnoremap <C-t> :tabnew<CR>
-nnoremap <C-c> :tabclose<CR>
+nnoremap <leader>tn :tabnew<CR>
+nnoremap <leader>tc :tabclose<CR>
 nnoremap <leader>th :tabmove -1<CR>
 nnoremap <leader>tl :tabmove +1<CR>
 
