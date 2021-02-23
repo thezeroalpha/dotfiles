@@ -411,6 +411,7 @@ augroup zepl
   autocmd FileType javascript let b:repl_config = { 'cmd': 'node' }
   autocmd FileType haskell      let b:repl_config = { 'cmd': 'ghci' }
   autocmd FileType ruby      let b:repl_config = { 'cmd': 'irb' }
+  autocmd FileType r        let b:repl_config = { 'cmd': 'R' }
 augroup END
 nnoremap gzr :Repl<CR>
 " Medieval {{{3
