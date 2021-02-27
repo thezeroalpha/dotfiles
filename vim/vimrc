@@ -10,7 +10,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'junegunn/vader.vim'
+" Vim tester
+Plug 'junegunn/vader.vim', { 'on': 'Vader', 'for': 'vader'}
 
 " A color table with xterm color codes
 Plug 'guns/xterm-color-table.vim', { 'on': 'Colors' }
@@ -30,6 +31,7 @@ Plug 'machakann/vim-sandwich'
 " Eunuch - shell commands but in vim
 Plug 'tpope/vim-eunuch'
 
+" Project management
 Plug 'tpope/vim-projectionist'
 
 " A tag overview on the right side
@@ -72,9 +74,6 @@ Plug 'SirVer/ultisnips'
 " Improve K
 Plug 'gastonsimone/vim-dokumentary'
 
-" Open devdocs for a keyword
-Plug 'romainl/vim-devdocs', { 'on': 'DD' }
-
 " Fuzzy finder in vim
 Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish'}
 Plug 'junegunn/fzf.vim'
@@ -87,9 +86,6 @@ Plug 'chrisbra/colorizer', { 'on': ['ColorHighlight', 'ColorToggle'] }
 
 " Pywal scheme in vim
 Plug 'dylanaraps/wal.vim'
-
-" Documentation skeleton generator
-Plug 'kkoomen/vim-doge'
 
 " Show git changes in the sign column
 Plug 'airblade/vim-gitgutter'
@@ -133,16 +129,9 @@ Plug 'thezeroalpha/vim-relatively-complete'
 " Select files with LF
 Plug 'thezeroalpha/vim-lf'
 
-" Unicode black magic
-Plug 'segeljakt/vim-isotope'
-
-" Lightweight REPL (my fork)
-" upstream: https://github.com/axvr/zepl.vim.git
+" Lightweight REPL
 Plug 'axvr/zepl.vim', { 'on': ['Repl', 'ReplSend'] }
 autocmd! User zepl.vim runtime! zepl/contrib/control_characters.vim
-
-" Evaluate markdown code blocks
-Plug 'gpanders/vim-medieval', { 'for': 'markdown' }
 
 " Center the window vertically (like Goyo but keeps statusline/whatever)
 Plug 'jmckiern/vim-venter', { 'on': 'Venter' }
@@ -152,6 +141,9 @@ Plug 'wellle/targets.vim'
 
 " Edit files directly in quickfix window
 Plug 'stefandtw/quickfix-reflector.vim'
+
+" Browse github repositories
+Plug 'skanehira/gh.vim'
 call plug#end()
 " }}}2
 " Config {{{2
@@ -425,6 +417,8 @@ let g:ada_standard_types = 1
 let g:ada_space_errors = 1
 let g:ada_begin_preproc = 1
 let g:ada_omni_with_keywords = 1
+" gh.vim {{{3
+let g:gh_token = getenv("GITHUB_AUTH_TOKEN")
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
