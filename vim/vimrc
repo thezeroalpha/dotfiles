@@ -823,6 +823,8 @@ nnoremap zs :exe "set foldlevel=".foldlevel(line('.'))<CR>
 
 " Config edit mappings
 " Why :drop? It uses the file if it's already open.
+" Also have to map c-c to no-op first, otherwise doesn't work
+nnoremap <C-c> <nop>
 nnoremap <leader><C-E><C-V> :DropToFoldedVimrc<CR>zXgg
 nnoremap <leader><C-E><C-A> :DropToFoldedVimrc<CR>zXgg/^" Autocommands {{<CR>:noh<CR>za
 nnoremap <leader><C-E><C-C> :DropToFoldedVimrc<CR>zXgg/Commands {{<CR>:noh<CR>za
