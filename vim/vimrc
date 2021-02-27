@@ -138,7 +138,8 @@ Plug 'segeljakt/vim-isotope'
 
 " Lightweight REPL (my fork)
 " upstream: https://github.com/axvr/zepl.vim.git
-Plug 'thezeroalpha/zepl.vim', { 'on': ['Repl', 'ReplSend'], 'do': 'git remote add upstream https://github.com/axvr/zepl.vim.git' }
+Plug 'axvr/zepl.vim', { 'on': ['Repl', 'ReplSend'] }
+autocmd! User zepl.vim runtime! zepl/contrib/control_characters.vim
 
 " Evaluate markdown code blocks
 Plug 'gpanders/vim-medieval', { 'for': 'markdown' }
