@@ -37,7 +37,7 @@ Folded                whitepink, #171235.       NONE
 Function              #f9c60e, bg.              bold
 Identifier            #5094c4, NONE.            NONE
 Ignore                #666666, NONE.            NONE
-IncSearch             #babeaa, #3a4520.         bold,underline
+IncSearch             #babeaa, #cc4545.         bold,underline
 Include               #ba75cf, NONE.            NONE
 Keyword               whitepink, bg.            bold
 LineNr                #2069a9, darkblue.        NONE

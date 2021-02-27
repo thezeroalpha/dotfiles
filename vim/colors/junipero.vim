@@ -31,7 +31,7 @@ hi Folded guifg=#bebebe guibg=#171235 ctermfg=250 ctermbg=17 cterm=NONE gui=NONE
 hi Function guifg=#f9c60e guibg=#11121A ctermfg=220 ctermbg=0 cterm=bold gui=bold
 hi Identifier guifg=#5094c4 guibg=NONE ctermfg=68 ctermbg=NONE cterm=NONE gui=NONE
 hi Ignore guifg=#666666 guibg=NONE ctermfg=241 ctermbg=NONE cterm=NONE gui=NONE
-hi IncSearch guifg=#babeaa guibg=#3a4520 ctermfg=145 ctermbg=58 cterm=bold,underline gui=bold,underline
+hi IncSearch guifg=#babeaa guibg=#cc4545 ctermfg=145 ctermbg=167 cterm=bold,underline gui=bold,underline
 hi Include guifg=#ba75cf guibg=NONE ctermfg=140 ctermbg=NONE cterm=NONE gui=NONE
 hi Keyword guifg=#bebebe guibg=#11121A ctermfg=250 ctermbg=0 cterm=bold gui=bold
 hi LineNr guifg=#2069a9 guibg=#101124 ctermfg=25 ctermbg=0 cterm=NONE gui=NONE
