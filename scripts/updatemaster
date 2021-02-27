@@ -39,7 +39,7 @@ class Homebrew
       warn 'Only numbers allowed'
       exit 1
     end
-    start_sudo_cache
+    start_sudo_cache unless @to_upgrade.empty?
   end
 
   def do_upgrade
@@ -119,12 +119,7 @@ class NPM
   def do_upgrade
     outdated = `npm outdated -g --parseable | sed 's!:.*!!g; s!.*/!!'`.split
     outdated.each { |pkg| system "npm -g install #{pkg}@latest" }
-    system 'npm -g update'
-  end
-
-  def cleanup
-    system 'npm -g dedupe'
-    system 'npm -g prune'
+    system 'npm -g upgrade'
   end
 end
 
