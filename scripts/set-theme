@@ -44,6 +44,10 @@ except Exception as exception:
 EOF
 }
 
+macos_alacritty_load_colors() {
+  [ -x "$DOTFILES"/tools/alacritty-color-export/script.sh ] && "$DOTFILES"/tools/alacritty-color-export/script.sh
+}
+
 set_terminal_and_wallpaper() {
   if [ "$1" = "light" ]; then
     /Users/alex/.local/bin/wal --saturate 0.8 -i "$(realpath ~/Pictures/Backgrounds/light.jpg)" -l;
@@ -78,13 +82,15 @@ case "$theme" in
 esac
 
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
+set_terminal_and_wallpaper "$theme"
 case "$os" in
   darwin*)
     set_macos "$theme"
-    set_iterm2 "$theme"
+    # I don't use iterm2
+    # set_iterm2 "$theme"
+    macos_alacritty_load_colors
     ;;
 esac
 
-set_terminal_and_wallpaper "$theme"
 set_p10k "$theme"
 set_tmux "$theme"

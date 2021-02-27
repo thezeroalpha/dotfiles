@@ -2,7 +2,7 @@
 [ $# -ge 2 ] || { printf "Arguments: title, message\n" && exit 1; }
 group=${3:-$TERM}
 if type terminal-notifier 1> /dev/null 2>&1; then
-  terminal-notifier -title "$1" -message "$2" -activate com.googlecode.iterm2 -group "$group"
+  terminal-notifier -title "$1" -message "$2" -activate io.alacritty -group "$group"
 else
   printf '\a'
 fi
