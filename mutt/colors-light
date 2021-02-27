@@ -3,4 +3,4 @@ color index color12 default '.*'
 color index bold color2 default '~N'
 color index_author color16 default '.*'
 color index_author bold color16 default '~N'
-color indicator color5 color13
+color indicator color16 color8
