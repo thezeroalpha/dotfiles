@@ -73,15 +73,16 @@ hi! link preproc include
 hi! link number delimiter
 hi! link define include
 hi! link typedef structure
-hi! link storageclass structure
+hi! link repeat statement
 hi! link specialcomment delimiter
 hi! link pmenu statuslinenc
+hi! link storageclass structure
 hi! link gitcommitOverflow errormsg
 hi! link macro include
 hi! link pmenusel statusline
 hi! link modemsg string
 hi! link character constant
-hi! link repeat statement
+hi! link structure type
 hi! link debug delimiter
 hi! link special delimiter
 hi! link label structure
@@ -89,7 +90,7 @@ hi! link operator statement
 hi! link vimwikilink type
 hi! link specialchar delimiter
 " Code to clear any groups that are not defined
-let s:DefinedColors=['precondit', 'tag', 'spellbad', 'spellocal', 'conditional', 'markdowncode', 'netrwdir', 'gitcommitsummary', 'netrwexe', 'tabline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'preproc', 'number', 'define', 'typedef', 'storageclass', 'specialcomment', 'pmenu', 'gitcommitoverflow', 'macro', 'pmenusel', 'modemsg', 'character', 'repeat', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
+let s:DefinedColors=['precondit', 'tag', 'spellbad', 'spellocal', 'conditional', 'markdowncode', 'netrwdir', 'gitcommitsummary', 'netrwexe', 'tabline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'preproc', 'number', 'define', 'typedef', 'repeat', 'specialcomment', 'pmenu', 'storageclass', 'gitcommitoverflow', 'macro', 'pmenusel', 'modemsg', 'character', 'structure', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
 function! s:ClearUndefinedColors(colors)
   let undefined_groups = filter(a:colors->keys()->map('tolower(v:val)'), 'index(s:DefinedColors, tolower(v:val)) < 0')
   call map(undefined_groups, "execute('highlight' . ' ' . v:val . ' ' . 'NONE')")

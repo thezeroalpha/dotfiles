@@ -98,6 +98,7 @@ GitGutterChangeDelete  offlightred, bg
 
 
 " link    group1,group2,...                                                 target group
+link     structure                                                          type
 link     tabline                                                            tablinefill
 link     repeat,conditional,operator                                        statement
 link     define,macro,precondit,preproc                                     include
