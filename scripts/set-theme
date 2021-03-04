@@ -45,7 +45,7 @@ EOF
 }
 
 macos_alacritty_load_colors() {
-  [ -x "$DOTFILES"/tools/alacritty-color-export/script.sh ] && "$DOTFILES"/tools/alacritty-color-export/script.sh
+  [ -x "$HOME"/.dotfiles/tools/alacritty-color-export/script.sh ] && "$HOME"/.dotfiles/tools/alacritty-color-export/script.sh
 }
 
 set_terminal_and_wallpaper() {
