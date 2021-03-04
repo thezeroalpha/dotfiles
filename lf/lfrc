@@ -248,7 +248,7 @@ map ; push :
 map x $$f
 map X !$f
 
-map w %du -sh $f
+map ug %du -sh $f
 
 # dedicated keys for file opener actions
 map o
@@ -284,7 +284,7 @@ map p
 map pp paste
 map pl paste_link
 
-map i $LESSOPEN='| ~/.config/lf/pv.sh %s' less -R $f
+map i $LESSOPEN='| ~/.config/lf/preview %s' less -R $f
 
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
