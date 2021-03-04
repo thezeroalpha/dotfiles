@@ -24,9 +24,6 @@ newsboat:
 - config: ~/.config/newsboat/config
 - urls: ~/.config/newsboat/urls
 - notify-wrapper: ~/.config/newsboat/notify-wrapper
-- cache.db: ~/.local/share/newsboat/cache.db
-- history.search: ~/.local/share/newsboat/history.search
-- history.cmdline: ~/.local/share/newsboat/history.cmdline
 polybar: ~/.config/polybar
 ranger: ~/.config/ranger
 ttrv: ~/.config/ttrv
@@ -54,6 +51,7 @@ pipe-viewer: ~/.config/pipe-viewer
 R: ~/.config/R
 zathura: ~/.config/zathura
 gotop: ~/.config/gotop
+paru: ~/.config/paru
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
