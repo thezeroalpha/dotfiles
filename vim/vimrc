@@ -739,6 +739,7 @@ endif
 
 " To keep the old functionality of ;
 nnoremap : ;
+vnoremap : ;
 
 " Disable q: cuz I hate it
 " (also C-F does the same)
