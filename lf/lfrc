@@ -50,6 +50,30 @@ cmd open $opener $fx
 # define a custom 'rename' command without prompt for overwrite
 cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
 
+# rename multiple files the way nnn does it
+cmd batch_rename !{{
+  contentsfile=$(mktemp)
+  trap 'rm $contentsfile' INT TERM EXIT
+  dircontents="$(command ls -1p)"
+  printf "%s" "$dircontents" | nl -n ln > "$contentsfile";
+  $EDITOR "$contentsfile"
+  printf "%s" "$dircontents" | paste "$contentsfile" -d'\t' - \
+  | while read -r line; do
+    orig="$(printf "%s" "$line" | cut -f3 | sed 's!/$!!')"
+    new="$(printf "%s" "$line" | cut -f2 | sed 's!/$!!')"
+    if [ "$new" != "$orig" ]; then
+      if [ -e "$new" ]; then
+        printf "%s already exists, not overwriting.\n" "$new"
+      else
+        printf "./%s -> ./%s\n" "$orig" "$new"
+        command mv -i ./"$orig" ./"$new"
+      fi
+    fi
+  done
+  rm "$contentsfile"
+  trap - INT TERM EXIT
+}}
+
 cmd change %{{
   printf "Substitute: "
   read -r sedcmd
@@ -271,6 +295,7 @@ map g?
 map g? $lf -doc | $PAGER; clear
 
 map R push :rename<space>
+map <c-r> batch_rename
 map C change
 map cw push :rename<space>
 map E $$EDITOR $fx
