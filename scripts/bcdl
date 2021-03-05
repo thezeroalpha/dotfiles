@@ -1,7 +1,7 @@
 #!/bin/sh
 DOWNLOAD_DIR="$HOME"/Downloads/songs/listen\ to
 cd "$DOWNLOAD_DIR" || { printf "Couldn't cd into download directory %s\n" "$DOWNLOAD_DIR"; exit 1; }
-command -v youtube-dlc 1>/dev/null 2>&1 || { printf "Youtube-dlc required.\n"; exit 1; }
+command -v youtube-dl 1>/dev/null 2>&1 || { printf "Youtube-dl required.\n"; exit 1; }
 [ $# -eq 1 ] || { printf "One argument required: album url\n"; exit 1; }
 
 url="$1"
@@ -12,7 +12,7 @@ artist="$(printf "%s" "$url" | sed 's|https*://||;s:\.bandcamp\.com.*::')"
 cd "$artist" || { printf "Couldn't cd into directory %s\n" "$(pwd)/$artist"; exit 1; }
 [ -d "$name" ] || mkdir -p "$name"
 cd "$name" || { printf "Couldn't cd into directory %s\n" "$(pwd)/$name"; exit 1; }
-youtube-dlc -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url"
+youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url"
 printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u
-youtube-dlc -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url" >> "$name".m3u
+youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url" >> "$name".m3u
 notify "Downloaded $artist - $name" "$url" bcdl
