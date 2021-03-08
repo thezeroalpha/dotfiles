@@ -84,7 +84,7 @@ cmd change %{{
 cmd queue %{{
   for i in $fx; do
     case "$i" in
-      *.wav|*.flac|*.mp3|*.m4a)
+      *.wav|*.flac|*.mp3|*.m4a|*.opus)
         mpc -h ~/.local/share/mpd/socket insert "file://$i"
         printf "Queued: %s" "$i"
         ;;
