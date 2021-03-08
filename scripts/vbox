@@ -15,6 +15,11 @@ stop() {
   VBoxManage controlvm "$1" acpipowerbutton
 }
 
+open() {
+  [ $# -eq 1 ] || die "Only one argument: VM name"
+  VBoxManage startvm "$1" --type separate
+}
+
 pause() {
   [ $# -eq 1 ] || die "Only one argument: VM name"
   VBoxManage controlvm "$1" pause
@@ -89,6 +94,7 @@ while (( "$#" )); do
       echo "Usage:"
       echo "start vmname                                  start a VM"
       echo "stop vmname                                   stop a VM"
+      echo "open vmname                                   open a VM, starting it if necessary"
       echo "list, ls                                      ls VMs"
       echo "running                                       list running VMs"
       echo "share /local/path vmname /mount/point         share a local folder"
@@ -127,6 +133,10 @@ case "$1" in
   "stop")
     shift;
     stop "$@";
+    ;;
+  "open")
+    shift;
+    open "$@";
     ;;
   "ls"|"list")
     ls;
