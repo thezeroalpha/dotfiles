@@ -136,9 +136,6 @@ autocmd! User zepl.vim runtime! zepl/contrib/control_characters.vim
 " Center the window vertically (like Goyo but keeps statusline/whatever)
 Plug 'jmckiern/vim-venter', { 'on': 'Venter' }
 
-" More text objects, seeking behavior, 'next' objects
-Plug 'wellle/targets.vim'
-
 " Edit files directly in quickfix window
 Plug 'stefandtw/quickfix-reflector.vim'
 
@@ -154,74 +151,74 @@ nnoremap <leader>to :TagbarOpen fj<CR>
 
 " tagbar language definitions
 let g:tagbar_type_vimwiki = {
-          \   'ctagstype':'vimwiki'
-          \ , 'kinds':['h:header']
-          \ , 'sro':'&&&'
-          \ , 'kind2scope':{'h':'header'}
-          \ , 'sort':0
-          \ , 'ctagsbin':'vwtags.py'
-          \ , 'ctagsargs': 'default'
-          \ }
+      \   'ctagstype':'vimwiki'
+      \ , 'kinds':['h:header']
+      \ , 'sro':'&&&'
+      \ , 'kind2scope':{'h':'header'}
+      \ , 'sort':0
+      \ , 'ctagsbin':'vwtags.py'
+      \ , 'ctagsargs': 'default'
+      \ }
 
 let g:tagbar_type_go = {
       \ 'ctagstype' : 'go',
       \ 'kinds'     : [
-      \ 'p:package',
-      \ 'i:imports:1',
-      \ 'c:constants',
-      \ 'v:variables',
-      \ 't:types',
-      \ 'n:interfaces',
-      \ 'w:fields',
-      \ 'e:embedded',
-      \ 'm:methods',
-      \ 'r:constructor',
-      \ 'f:functions'
-      \ ],
-      \ 'sro' : '.',
-      \ 'kind2scope' : {
-      \ 't' : 'ctype',
-      \ 'n' : 'ntype'
-      \ },
-      \ 'scope2kind' : {
-      \ 'ctype' : 't',
-      \ 'ntype' : 'n'
-      \ },
-      \ 'ctagsbin'  : 'gotags',
-      \ 'ctagsargs' : '-sort -silent'
-      \ }
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+        \ ],
+        \ 'sro' : '.',
+        \ 'kind2scope' : {
+          \ 't' : 'ctype',
+          \ 'n' : 'ntype'
+          \ },
+          \ 'scope2kind' : {
+          \ 'ctype' : 't',
+          \ 'ntype' : 'n'
+          \ },
+          \ 'ctagsbin'  : 'gotags',
+          \ 'ctagsargs' : '-sort -silent'
+          \ }
 let g:tagbar_type_scss = {
       \ 'ctagstype' : 'scss',
       \ 'kinds' : [
-      \ 'm:Mixins',
-      \ 'f:Functions',
-      \ 'v:Variables',
-      \ 'c:Classes',
-      \ 'i:IDs',
-      \ 't:Tags',
-      \ 'd:Media',
-      \ 'p:Placeholders'
-      \ ],
-      \ 'sort': 0
-      \ }
+        \ 'm:Mixins',
+        \ 'f:Functions',
+        \ 'v:Variables',
+        \ 'c:Classes',
+        \ 'i:IDs',
+        \ 't:Tags',
+        \ 'd:Media',
+        \ 'p:Placeholders'
+        \ ],
+        \ 'sort': 0
+        \ }
 let g:tagbar_type_conf = {
       \ 'ctagstype' : 'lfrc',
       \ 'kinds' : [
-      \ 'c:Commands',
-      \ 'm:Maps'
-      \ ],
-      \ 'sort': 0
-      \ }
+        \ 'c:Commands',
+        \ 'm:Maps'
+        \ ],
+        \ 'sort': 0
+        \ }
 let g:tagbar_type_zsh = {
       \ 'ctagstype' : 'zsh',
       \ 'kinds' : [
-      \ 's:Source scripts',
-      \ 'e:Environment variables',
-      \ 'f:Functions',
-      \ 'm:Mappings'
-      \ ],
-      \ 'sort': 0
-      \ }
+        \ 's:Source scripts',
+        \ 'e:Environment variables',
+        \ 'f:Functions',
+        \ 'm:Mappings'
+        \ ],
+        \ 'sort': 0
+        \ }
 " Doge {{{3
 let g:doge_mapping = '<leader>gd'
 " Goyo {{{3
@@ -356,13 +353,8 @@ let g:dispatch_no_maps = 1
 nnoremap `<CR> :Dispatch<CR>
 nnoremap '<CR> :Start<CR>
 " Sandwich {{{3
-" Use mappings from surround.vim
-runtime macros/sandwich/keymap/surround.vim
-
-" Copy the default recipes
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-
 " And add bracket-with-space from surround.vim
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 let g:sandwich#recipes += [
       \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['}']},
       \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['}']},
@@ -696,6 +688,7 @@ command! Softwrap setlocal wrap formatoptions-=cat
 command! Hardwrap setlocal nowrap formatoptions+=cat
 command! Syncwin windo set scrollbind! cursorbind!
 command! EF exe "split $HOME/.vim/after/ftplugin/".&filetype.".vim"
+command! FD filetype detect
 command! -nargs=? Browser exe 'terminal ++close w3m -config '.getenv("XDG_CONFIG_HOME").'/w3m/config '.<q-args>
 command! -nargs=1 Img
       \ exe "r! find ".shellescape(expand("%:p:h"))." -maxdepth ".<args>." -type f -exec file --mime-type '{}' \\+"
