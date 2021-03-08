@@ -1,0 +1,136 @@
+# All imports must either be absolute paths starting with `/`, or paths relative
+# to the user's home directory starting with `~/`.
+import:
+  - ~/.config/alacritty/macos-altfix.yml
+
+# Any items in the `env` entry below will be added as
+# environment variables. Some entries may override variables
+# set by alacritty itself.
+window:
+  # Window padding (changes require restart)
+  padding:
+    x: 5
+    y: 5
+
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: true
+
+  decorations: buttonless
+
+  # Window title
+  title: Alacritty
+
+  # Allow terminal applications to change Alacritty's window title.
+  dynamic_title: true
+
+  # Window class (Linux/BSD only):
+  class:
+    # Application instance name
+    instance: Alacritty
+    # General application class
+    general: Alacritty
+
+#scrolling:
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+  history: 10000
+
+  # Scrolling distance multiplier.
+  multiplier: 3
+
+# Font configuration
+font:
+  # Normal (roman) font face
+  normal:
+    # Font family
+    #
+    # Default:
+    #   - (macOS) Menlo
+    #   - (Linux/BSD) monospace
+    #   - (Windows) Consolas
+    family: MesloLGS NF
+
+    # The `style` can be specified to pick a specific face.
+
+  # Bold font face
+  bold:
+    style: Bold
+
+  # Italic font face
+  italic:
+    style: Italic
+
+  # Bold italic font face
+  bold_italic:
+    style: Bold Italic
+
+  # Point size
+  size: 12.0
+
+  # Offset is the extra space around each character. `offset.y` can be thought
+  # of as modifying the line spacing, and `offset.x` as modifying the letter
+  # spacing.
+  #offset:
+  #  x: 0
+  #  y: 0
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increasing `x` moves the glyph to the
+  # right, increasing `y` moves the glyph upward.
+  #glyph_offset:
+  #  x: 0
+  #  y: 0
+
+  # Thin stroke font rendering (macOS only)
+  #
+  # Thin strokes are suitable for retina displays, but for non-retina screens
+  # it is recommended to set `use_thin_strokes` to `false`.
+  use_thin_strokes: false
+
+# Background opacity
+# Window opacity as a floating point number from `0.0` to `1.0`.
+# The value `0.0` is completely transparent and `1.0` is opaque.
+background_opacity: 0.7
+
+cursor:
+  # If this is `true`, the cursor will be rendered as a hollow box when the
+  # window is not focused.
+  unfocused_hollow: true
+
+# Live config reload (changes require restart)
+live_config_reload: true
+
+mouse:
+   url:
+    launcher:
+      program: open
+      args: []
+    modifiers: Command
+
+# BEGIN ACE
+colors:
+  primary:
+    background: '#f9f4f5'
+    foreground: '#181924'
+  cursor:
+    text:       '#f9f4f5'
+    cursor:     '#181924'
+  normal:
+    black:      '#f9f4f5'
+    red:        '#1647c9'
+    green:      '#1930e2'
+    yellow:     '#1d3fe6'
+    blue:       '#9a24e6'
+    magenta:    '#3559e8'
+    cyan:       '#4b4bea'
+    white:      '#181924'
+  bright:
+    black:      '#847071'
+    red:        '#1647c9'
+    green:      '#1930e2'
+    yellow:     '#1d3fe6'
+    blue:       '#9a24e6'
+    magenta:    '#3559e8'
+    cyan:       '#4b4bea'
+    white:      '#181924'
+# END ACE

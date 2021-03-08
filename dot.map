@@ -52,6 +52,7 @@ R: ~/.config/R
 zathura: ~/.config/zathura
 gotop: ~/.config/gotop
 paru: ~/.config/paru
+alacritty: ~/.config/alacritty
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
