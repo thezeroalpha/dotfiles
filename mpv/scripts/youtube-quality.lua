@@ -45,7 +45,7 @@ local opts = {
     --other
     menu_timeout = 10,
 
-    --use youtube-dlc to fetch a list of available formats (overrides quality_strings)
+    --use youtube-dl to fetch a list of available formats (overrides quality_strings)
     fetch_formats = true,
 
     --default menu entries
@@ -163,7 +163,7 @@ function show_menu()
 end
 
 local ytdl = {
-    path = "youtube-dlc",
+    path = "youtube-dl",
     searched = false,
     blacklisted = {}
 }
@@ -192,12 +192,12 @@ function download_formats()
         local res = format_cache[url]
         return res, table_size(res)
     end
-    mp.osd_message("fetching available formats with youtube-dlc...", 60)
+    mp.osd_message("fetching available formats with youtube-dl...", 60)
 
     if not (ytdl.searched) then
-        local ytdl_mcd = mp.find_config_file("youtube-dlc")
+        local ytdl_mcd = mp.find_config_file("youtube-dl")
         if not (ytdl_mcd == nil) then
-            msg.verbose("found youtube-dlc at: " .. ytdl_mcd)
+            msg.verbose("found youtube-dl at: " .. ytdl_mcd)
             ytdl.path = ytdl_mcd
         end
         ytdl.searched = true
@@ -222,7 +222,7 @@ function download_formats()
     end
 
     res = {}
-    msg.verbose("youtube-dlc succeeded!")
+    msg.verbose("youtube-dl succeeded!")
     for i,v in ipairs(json.formats) do
         if v.vcodec ~= "none" then
             local fps = v.fps and v.fps.."fps" or ""
