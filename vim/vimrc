@@ -915,6 +915,13 @@ nnoremap <leader>p "0p
 vnoremap <leader>p "0p
 nnoremap <leader>P "0P
 vnoremap <leader>P "0P
+
+" Highlight one or more lines
+highlight LineHighlight ctermbg=darkgray guibg=darkgray cterm=bold
+nnoremap <silent> <leader>hl :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
+vnoremap <silent> <leader>hl :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
+nnoremap <silent> <leader>hc :call clearmatches()<CR>
+vnoremap <silent> <leader>hc :call clearmatches()<CR>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
