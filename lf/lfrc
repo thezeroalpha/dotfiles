@@ -88,6 +88,10 @@ cmd queue %{{
         mpc -h ~/.local/share/mpd/socket insert "file://$i"
         printf "Queued: %s" "$i"
         ;;
+      *.m3u)
+        mpc -h ~/.local/share/mpd/socket load "file://$i"
+        printf "Loaded playlist: %s" "$i"
+        ;;
     esac
   done
 }}
