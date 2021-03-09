@@ -380,6 +380,8 @@ let g:unicoder_no_map = 1
 inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
 " colorizer {{{3
 let g:colorizer_colornames = 0
+command! CH ColorHighlight
+command! CC ColorClear
 " Schemer {{{3
 " List color group
 nmap <C-P> <Plug>SchemerSynstack
