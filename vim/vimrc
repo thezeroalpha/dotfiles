@@ -126,6 +126,9 @@ Plug 'thezeroalpha/vim-schemer', { 'for': 'schemer', 'on': ['<Plug>SchemerSynsta
 " Make ins-completion relative to current file
 Plug 'thezeroalpha/vim-relatively-complete'
 
+" Run visually selected lines as Vim commands
+Plug 'thezeroalpha/vim-visualrun'
+
 " Select files with LF
 Plug 'thezeroalpha/vim-lf'
 
@@ -389,8 +392,9 @@ nmap <leader><C-E><C-L> <Plug>SchemerEdit
 " Relatively complete {{{3
 " Replace default file completion with 'smart' relative complete
 imap <C-x><C-f> <Plug>RelativelyCompleteFile
-" Isotope {{{3
-let g:isotope_use_default_mappings = 0
+" Visualrun {{{3
+" Run selected commands (silent)
+vmap <silent> <leader><cr> <Plug>VisualRunCommands
 " Zepl {{{3
 augroup zepl
   autocmd!
@@ -855,9 +859,6 @@ nnoremap <leader>f  :Lexplore<CR>
 
 " Strip trailing whitespace (silent makes it so nothing is echoed)
 nmap <silent> <leader>$ <Plug>StripTrailingWhitespace
-
-" Run selected commands (again, silent)
-vmap <silent> <leader><CR> <Plug>VisualRunCommands
 
 " Buffer switching
 nnoremap H :bprevious<CR>
