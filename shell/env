@@ -9,7 +9,7 @@ export EDITOR
 
 export MUSIC_DIR="/Volumes/HDD/Music/Libraries/Mine"
 
-export PAGER="less -FRi"
+export PAGER="less -XFRi"
 
 [ -n "$BW_SESHFILE" ] && [ -f "$BW_SESHFILE" ] && export BW_SESSION="$(cat $BW_SESHFILE)"
 
