@@ -28,7 +28,7 @@ set ssl_starttls = yes
 account-hook $folder "set imap_user=$my_personal_email imap_pass=$my_personal_pass_cmd"
 
 macro index O "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_personal_email<enter>" "run mbsync to sync $my_personal_email"
-macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_personal_email:Inbox,Sent<enter>" "run mbsync to sync all mail"
+macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_personal_email:INBOX,Sent<enter>" "run mbsync to sync all mail"
 macro index,pager A "<save-message>=Archive<enter>" "move mail to Archive"
 macro index,pager gi "<change-folder>=Inbox<enter>" "go to Inbox"
 macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
