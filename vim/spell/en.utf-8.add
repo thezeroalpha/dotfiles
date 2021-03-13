@@ -394,3 +394,13 @@ params
 pred
 mutexes
 GFLOP
+SMs
+GigaThread
+OpenACC
+CUDA
+nvcc
+NVLink
+SIMT
+OpenCL
+NVIDIA
+init
