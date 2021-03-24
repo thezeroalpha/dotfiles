@@ -1,12 +1,12 @@
 # vim: filetype=neomuttrc foldmethod=marker
 source `{ [ -f ~/.config/dark-theme ] && printf "colors-dark"; } || printf "colors-light";`
 
-# Personal account
 set mbox_type = Maildir
 set mail_check=0 # minimum time between scans
 unset mark_old # it's enough to see whats unread
 set mailcap_path = ~/.config/mailcap
 
+# PGP options
 set pgp_default_key = 0x67A9DD9A68AE0B7C
 set crypt_autosign
 set crypt_verify_sig
@@ -15,19 +15,13 @@ set crypt_opportunistic_encrypt
 set pgp_self_encrypt
 set postpone_encrypt
 
-bind index,pager S sync-mailbox
-bind compose p postpone-message
-bind compose l view-attach
-bind compose h exit
-bind index p recall-message
-bind index g noop
-bind index gg       first-entry
-bind index G        last-entry
-bind index R        group-reply
-bind index <space>  collapse-thread
 set delete               # don't ask, just do
 unset confirmappend      # don't ask, just do!
 set quit                 # don't ask, just do!!
+
+# Abort when I forget an attachment
+set abort_noattach = yes
+set abort_noattach_regex = "attach|attached|attachments?"
 
 # Sidebar
 set sidebar_visible = yes
@@ -53,9 +47,12 @@ bind generic : tag-prefix
 set date_format = "%d/%m"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
 set sort = threads                         # like gmail
-set sort_aux = reverse-last-date-received  # like gmail
+set sort_aux = reverse-last-date-received  # like gmail.
+# there's an issue with sorting where messages in threads should be sorted by date, top-to-bottom.
+# but at the moment it's a "wontfix". hopefully that changes soon.
+# https://github.com/neomutt/neomutt/issues/2342,
 set uncollapse_jump                        # don't collapse on an unread message
-set sort_re                                # thread based on regex
+set sort_re                                # thread based also on regex
 set reply_regex = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
 # Pager
@@ -73,6 +70,7 @@ bind pager g noop
 bind pager gg top
 bind pager G  bottom
 bind pager R  group-reply
+
 bind attach <return> view-mailcap
 macro index,pager,attach,compose u "\
 <enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
@@ -95,6 +93,17 @@ set forward_quote                    # include message in forwards
 bind attach <return> view-mailcap
 bind attach l view-mailcap
 
+# General mappings
+bind index,pager S sync-mailbox
+bind compose p postpone-message
+bind compose l view-attach
+bind compose h exit
+bind index p recall-message
+bind index g noop
+bind index gg       first-entry
+bind index G        last-entry
+bind index R        group-reply
+bind index <space>  collapse-thread
 bind generic,index j next-entry
 bind generic,index k previous-entry
 bind index ! shell-escape
@@ -130,7 +139,10 @@ bind index,pager / search
 bind index,pager n search-next
 bind index,pager N search-opposite
 macro index a "<limit>all<enter>"
-macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
+
+set nm_default_url = "notmuch://`notmuch config get database.path`"
+bind index,pager + entire-thread
+bind index,pager \Cf vfolder-from-query
 
 bind index,pager i noop
 source school
@@ -140,4 +152,3 @@ macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<
 source personal
 folder-hook $folder 'source ~/.config/mutt/personal'
 macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-folder>!<enter><check-stats>' "switch to personal"
-

@@ -4,3 +4,4 @@ color index bold color2 default '~N'
 color index_author color16 default '.*'
 color index_author bold color16 default '~N'
 color indicator color16 color8
+color progress color16 color8
