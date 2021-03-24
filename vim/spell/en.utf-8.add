@@ -404,3 +404,12 @@ SIMT
 OpenCL
 NVIDIA
 init
+autovectorization
+fopenmp
+firstprivate
+lastprivate
+async
+joinable
+composability
+ccNUMA
+param
