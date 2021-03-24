@@ -106,7 +106,7 @@ link     debug,special,specialchar,specialcomment,tag,number                deli
 link     label,storageclass,typedef                                         structure
 link     character                                                          constant
 link     signcolumn                                                         linenr
-link     netrwdir                                                           function
+link     netrwdir,gh_files_dir                                              function
 link     netrwexe                                                           title
 link     netrwMarkFile                                                      incsearch
 link     spellbad                                                           todo
