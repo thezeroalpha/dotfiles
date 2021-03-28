@@ -18,9 +18,14 @@ set crypt_opportunistic_encrypt
 set pgp_self_encrypt
 set postpone_encrypt
 
+# We want weed
+set weed
+# (weed headers when displaying, forwarding, printing, or replying)
+
 set delete               # don't ask, just do
 unset confirmappend      # don't ask, just do!
 set quit                 # don't ask, just do!!
+auto_view text/*
 
 # Abort when I forget an attachment
 set abort_noattach = yes
