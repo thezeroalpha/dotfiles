@@ -1,6 +1,9 @@
 # vim: filetype=neomuttrc foldmethod=marker
 source `{ [ -f ~/.config/dark-theme ] && printf "colors-dark"; } || printf "colors-light";`
 
+# Don't ask to press key on shell commands
+unset wait_key
+
 set mbox_type = Maildir
 set mail_check=0 # minimum time between scans
 unset mark_old # it's enough to see whats unread
