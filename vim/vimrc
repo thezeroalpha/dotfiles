@@ -144,6 +144,9 @@ Plug 'stefandtw/quickfix-reflector.vim'
 
 " Browse github repositories
 Plug 'skanehira/gh.vim'
+
+" Minesweeper
+Plug 'iqxd/vim-mine-sweeping', { 'on': 'MineSweep' }
 call plug#end()
 " }}}2
 " Config {{{2
