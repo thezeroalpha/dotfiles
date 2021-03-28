@@ -172,7 +172,7 @@ cmd paste_link %{{
 
 # preview the highlighted file with quicklook
 cmd ql_preview &{{
-  qlmanage -p "$fx" &> /dev/null;
+  qlmanage -p $fx &> /dev/null;
 }}
 
 # open the lfrc, and source after saving
@@ -321,10 +321,10 @@ map gdw cd ~/Documents/Programming/alex.balgavy.eu/
 map gdb cd ~/Documents/Programming/blog.alex.balgavy.eu/
 map gdl cd ~/Documents/Programming/lectures.alex.balgavy.eu/
 map gb cd ~/Documents/Calibre\ Library/
-map gdp cd ~/Documents/Personal\ documents/
+map gdp cd ~/Documents/Syncthing/Personal\ documents/
 map gD cd ~/Desktop
 map gl cd ~/Downloads
-map gw cd ~/Dropbox/vimwiki
+map gw cd ~/Documents/Syncthing/vimwiki
 map gm cd ~/Music/Libraries/Mine
 map g/ cd /
 map g. cd ~/.dotfiles
