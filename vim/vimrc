@@ -306,9 +306,9 @@ let tlist_vimwiki_settings = 'wiki;h:Headers'
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
 
 let wiki = {}
-let wiki.path = '/Users/alex/Dropbox/vimwiki/'
-let wiki.path_html = '/Users/alex/Dropbox/vimwiki_html'
-let wiki.template_path = '/Users/alex/Dropbox/vimwiki/templates'
+let wiki.path = '/Users/alex/Documents/Syncthing/vimwiki/'
+let wiki.path_html = '/Users/alex/Documents/Syncthing/vimwiki_html'
+let wiki.template_path = '/Users/alex/Documents/Syncthing/vimwiki/templates'
 let wiki.template_ext = '.tpl'
 let wiki.syntax = 'default'
 let wiki.ext = '.txt'
