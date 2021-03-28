@@ -94,7 +94,7 @@ bind attach <return> view-mailcap
 bind attach l view-mailcap
 
 # General mappings
-bind index,pager S sync-mailbox
+macro index,pager S '<sync-mailbox><shell-escape>notmuch new<enter>'
 bind compose p postpone-message
 bind compose l view-attach
 bind compose h exit
