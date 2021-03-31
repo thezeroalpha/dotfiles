@@ -18,26 +18,26 @@
 	url = https://github.com/girst/solvitaire.git
 [submodule "tools/conf"]
 	path = tools/conf
-	url = git@github.com:thezeroalpha/conf
+	url = https://github.com/thezeroalpha/conf
 [submodule "tools/tmpmail"]
 	path = tools/tmpmail
 	url = https://github.com/sdushantha/tmpmail.git
 [submodule "tools/radio"]
 	path = tools/radio
-	url = git@github.com:thezeroalpha/radio
+	url = https://github.com/thezeroalpha/radio
 [submodule "tools/sc-im"]
 	path = tools/sc-im
 	url = https://github.com/andmarti1424/sc-im.git
 [submodule "tools/hpanot"]
 	path = tools/hpanot
-	url = git@git.alex.balgavy.eu:hpanot.git
+	url = https://github.com/thezeroalpha/hpanot.git
 [submodule "radio"]
-	url = git@git.alex.balgavy.eu:radio.git
+	url = https://github.com/thezeroalpha/radio.git
 [submodule "conf"]
-	url = git@git.alex.balgavy.eu:conf.git
+	url = https://github.com/thezeroalpha/conf.git
 [submodule "tools/anotools-chrome"]
 	path = tools/anotools-chrome
-	url = git@git.alex.balgavy.eu:anotools-chrome.git
+	url = https://github.com/thezeroalpha/anotools-chrome.git
 [submodule "tools/fzf"]
 	path = tools/fzf
 	url = https://github.com/junegunn/fzf.git
