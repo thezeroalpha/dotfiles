@@ -1,0 +1,27 @@
+#!/bin/sh
+die() {
+  echo "$1" >&2
+  exit 1
+}
+
+command -v curl >/dev/null 2>&1 || die "curl not installed"
+command -v jq >/dev/null 2>&1 || die "jq not installed"
+
+if [ $# -gt 0 ]; then
+  [ -f "$1" ] || die "$1 is not a file."
+  f="$1"
+  fname="$1: "
+else
+  f='-'
+  fname=""
+fi
+
+data="$(curl -sLX POST 'https://api.typely.com/analyze' \
+  -H 'accept: */*' \
+  -F "text=<${f}" \
+  -F checks='{"hyperbolic.yelling":true,"misc.illogic.phrase_coin":true,"verb_forms.default":true,"misc.waxed":true,"consistency.default":true,"misc.apologizing":true,"misc.not_guilty":true,"dates_times.dash_from":true,"spelling.em_im_en_in":true,"typography.exclamation":true,"misc.repetition":true,"misc.scare_quotes":true,"skunked_terms.default":true,"typography.symbols.sentence_spacing":true,"misc.obviously":true,"dates_times.year_comma":true,"oxymorons.default":true,"spelling.in_un":true,"terms.eponymous_adjective":true,"misc.bureaucratese":true,"dates_times.apostrophes_long":true,"hedging.default":true,"misc.whence":true,"misc.illogic.collusion":true,"misc.preferred_forms":true,"readability.long_sentence":true,"dates_times.am_pm.spacing":true,"security.credit_card":true,"sexism.gender_bias":true,"terms.denizen_labels":true,"misc.currency":true,"double_negatives.default":true,"needless_variants.default":true,"misc.narcissism":true,"misc.dead_url":true,"misc.could_care_less":true,"cliche.default":true,"cursing.filth":true,"dates_times.apostrophes_short":true,"dates_times.month_year":true,"spelling.able_atable":true,"mixed_metaphors.default":true,"uncomparables.default":true,"comparisons.than":true,"spelling.athletes":true,"misc.false_plurals.kudos":true,"misc.starts_with_me":true,"misc.tense_present":true,"misc.back_formations":true,"dates_times.am_pm.midnight_noon":true,"glaad.offensive_terms":true,"redundancy.ras":true,"misc.composition":true,"misc.phrasal_adjectives":true,"readability.hard_sentence":true,"jargon.default":true,"mixed_metaphors.bottleneck":true,"psychology.lie_detector":true,"terms.denizen_norris":true,"misc.captalization.days":true,"dates_times.am_pm.lowercase_periods":true,"spelling.er_or":true,"terms.animal_labels":true,"terms.venery":true,"typography.exclamation_ppm":true,"security.password":true,"misc.utilize":true,"malapropisms.default":true,"hyperbolic.default":true,"typography.symbols.curly_quotes":true,"misc.false_plurals":true,"misc.metadiscourse":true,"misc.hyphenate":true,"archaism.default":true,"annotation.default":true,"typography.symbols.ellipsis":true,"corporate_speak.default":true,"psychology.mental_telepathy":true,"typo.default":true,"misc.pretension":true,"misc.many_a":true,"misc.captalization.incorrect":true,"misc.commercialese":true,"misc.starts_with_conjunction":true,"airlinese.default":true,"consistency.word_pairs":true,"spelling.able_ible":true,"typography.diacritical_marks":true,"typography.symbols.multiplication_symbol":true,"misc.inferior_superior":true,"weasel_words.very":true,"cursing.nword":true,"mondegreens.default":true,"nonwords.default":true,"misc.phrasal_adjectives.ly":true,"misc.captalization.months":true,"misc.suddenly":true,"psychology.p_equals_zero":true,"redundancy.default":true,"sexism.misc":true,"spelling.default":true,"typography.symbols.trademark":true,"misc.latin":true,"glaad.terms":true,"misc.debased":true,"misc.illogic":true,"misc.less_vs_few":true,"typography.symbols.copyright":true,"weasel_words.starts_with_well":true,"misc.professions":true,"dates_times.am_pm.redundancy":true,"lexical_illusions.default":true,"typography.symbols.registered_trademark":true,"misc.chatspeak":true,"misc.punctuation":true}' \
+  -F useMarkdown='false' \
+  -F generatePdf='false')"
+
+printf "%s" "$data" | jq -r --arg FNAME "$fname" '.linter_results[] | "\($FNAME)Line \(.position.row_number+1), column \(.position.row_offset+1): Error: \"\(.match)\" => \"\(.replacement)\" (\(.error.class)) \(.error.message)"'
+printf "%s" "$data" | jq -r --arg FNAME "$fname" '.metrics.readability | "\($FNAME)Info: Readability: \(.reading_ease_title) (\(.grade_title)), \(.vocabulary_title)"'
