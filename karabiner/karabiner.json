@@ -250,22 +250,6 @@
             "simple_modifications": [
                 {
                     "from": {
-                        "key_code": "f3"
-                    },
-                    "to": {
-                        "key_code": "mission_control"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f4"
-                    },
-                    "to": {
-                        "key_code": "launchpad"
-                    }
-                },
-                {
-                    "from": {
                         "key_code": "f10"
                     },
                     "to": {
