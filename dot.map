@@ -61,8 +61,8 @@ Xresources: ~/.Xresources
 
 # Config: Emacs
 emacs:
-- emacs.d/config.org: ~/.emacs.d/config.org
-- emacs: ~/.emacs
+- config.org: ~/.emacs.d/config.org
+- init.el: ~/.emacs.d/init.el
 
 # Config: shell
 shell:

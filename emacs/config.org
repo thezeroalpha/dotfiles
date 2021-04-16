@@ -1,0 +1,192 @@
+* Garbage collection
+  Garbage-collect on focus-out, Emacs /should/ feel snappier.
+
+  #+begin_src emacs-lisp
+  (add-hook 'focus-out-hook #'garbage-collect)
+  #+end_src
+
+* Package management
+** Repositories (MELPA & Org)
+   #+begin_src emacs-lisp
+     (require 'package)
+     (add-to-list 'package-archives
+		  '("melpa" . "https://melpa.org/packages/"))
+     (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
+     (package-refresh-contents)
+     (package-initialize)
+   #+end_src
+   
+** use-package
+   #+begin_src emacs-lisp
+     (unless (package-installed-p 'use-package)
+       (package-install 'use-package))
+     (eval-when-compile (require 'use-package))
+   #+end_src
+
+   Always auto-install packages:
+
+   #+begin_src emacs-lisp
+     (require 'use-package-ensure)
+     (setq use-package-always-ensure t)
+   #+end_src
+
+* Packages
+** exec-path-from-shell (macOS)
+   
+   In macOS, the path is not set correctly in the GUI app. This fixes it.
+   #+begin_src emacs-lisp
+     (when (memq window-system '(mac ns x))
+       (use-package exec-path-from-shell
+	 :config
+	 (exec-path-from-shell-initialize)))
+   #+end_src
+
+** emacs-which-key
+   Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package which-key
+       :config
+       (which-key-mode))
+   #+end_src
+   
+** helm
+   Better incremental completion and selection narrowing.
+   Generally makes for nicer interactivity.
+   
+   #+begin_src emacs-lisp
+     (use-package helm
+       :defer nil
+       :custom
+       (helm-M-x-always-save-history t)
+       (helm-display-function 'pop-to-buffer)
+       (savehist-additional-variables '(extended-command-history))
+       (history-delete-duplicates t)
+       :custom-face
+       (helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
+       (helm-ff-file-extension ((t (:inherit default))))
+       (helm-buffer-file ((t (:inherit default))))
+       :bind
+       (("M-x" . helm-M-x)
+	("C-x C-f" . helm-find-files)
+	("C-x C-b" . helm-buffers-list)
+	("C-x b" . helm-buffers-list)
+	("C-x C-r" . helm-recentf)
+	("C-x C-i" . helm-imenu)
+	("M-y" . helm-show-kill-ring))
+       :config
+       (helm-mode)
+       (savehist-mode))
+   #+end_src
+   
+** org
+   In org mode, I want to use bullets instead of stars.
+   Also, I add a few expansions
+   
+   #+begin_src emacs-lisp
+     (use-package org
+       :config
+       (unless (package-installed-p 'org-bullets)
+	 (package-refresh-contents)
+	 (package-install 'org-bullets))
+       (require 'org-bullets)
+       (require 'org-tempo)
+
+       :hook
+       (org-mode . (lambda () (org-bullets-mode 1))))
+   #+end_src
+   
+** lean-mode
+   Shift completion for lean-mode and company-lean:
+
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "S-SPC") #'company-complete)
+   #+end_src  
+
+* Interface
+** GUI elements
+   Get rid of all bars.
+   
+   #+begin_src emacs-lisp
+     (setq org-src-tab-acts-natively t)
+     (when window-system
+       (menu-bar-mode -1)
+       (tool-bar-mode -1)
+       (scroll-bar-mode -1)
+       (tooltip-mode -1))
+   #+end_src
+   
+** Messages
+   Hide some messages I don't need.
+   
+   #+begin_src emacs-lisp
+     (setq inhibit-startup-message t)
+     (setq initial-scratch-message "")
+   #+end_src
+
+** Appearance
+   Highlight the current line:
+
+   #+begin_src emacs-lisp
+     (global-hl-line-mode)
+     (show-paren-mode 1)
+   #+end_src
+
+   Line numbers:
+   
+   #+begin_src emacs-lisp
+     (global-linum-mode 1)
+   #+end_src
+
+* Theme
+  Icons required for some parts of the doom theme:
+
+  #+begin_src emacs-lisp
+    (use-package all-the-icons)
+  #+end_src
+
+  Load Doom emacs themes:
+
+  #+begin_src emacs-lisp
+    (use-package doom-themes
+      :config
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
+
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      (doom-themes-neotree-config)
+      ;; or for treemacs users
+      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      (doom-themes-treemacs-config)
+
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config))
+  #+end_src
+
+  Change theme depending on the current system theme (I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set):
+
+  #+begin_src emacs-lisp
+    (if (file-exists-p "~/.config/dark-theme")
+	(load-theme 'doom-one t)
+      (load-theme 'doom-one-light t))
+  #+end_src
+  
+* Follow symlinks
+  Make sure to follow symlinks without prompting:
+
+  #+begin_src emacs-lisp
+    (setq vc-follow-symlinks t)
+  #+end_src
+
+* Backup files
+  By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
+  This setting puts them in ~/.local/share/emacs/saves.
+
+  #+begin_src emacs-lisp
+    (setq backup-directory-alist '(("." . "~/.local/share/emacs/saves")))
+    (setq backup-by-copying t)
+  #+end_src
