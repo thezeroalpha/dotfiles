@@ -5,7 +5,6 @@ case "$os" in
     if [ -f /sys/class/power_supply/BAT0/uevent ]; then
       state="$(awk -F '=' '/POWER_SUPPLY_STATUS/ {print $2}' /sys/class/power_supply/BAT0/uevent)"
       percent="$(awk -F '=' '/POWER_SUPPLY_CAPACITY=/ {print $2}' /sys/class/power_supply/BAT0/uevent)"
-      printf "%s\n%s" "$percent" "$state"
     else
       printf "No such file: /sys/class/power_supply/BAT0/uevent.\nNo other methods to find battery charge implemented.\n" >&2
       exit 1
