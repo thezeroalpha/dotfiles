@@ -67,7 +67,8 @@ source_if_exists ~/.p10k.zsh
 source_if_exists $DOTFILES/shell/powerlevel10k/powerlevel10k.zsh-theme
 
 # FZF for fuzzy finding
-source_if_exists "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
+source_if_exists "$DOTFILES"/tools/fzf/shell/completion.zsh
+source_if_exists "$DOTFILES"/tools/fzf/shell/key-bindings.zsh
 
 # Ruby bundler plugin, automatically runs binstub in .bin or `bundle exec`s
 source_if_exists $DOTFILES/shell/zsh-plugins/bundler.plugin.zsh
