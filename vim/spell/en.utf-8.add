@@ -426,3 +426,7 @@ execve
 strcmp
 ret
 noninitiators
+bool
+parentless
+preinstalled
+GDB
