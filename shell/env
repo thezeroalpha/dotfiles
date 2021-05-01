@@ -216,3 +216,4 @@ export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export R_PROFILE_USER="$XDG_CONFIG_HOME/R/Rprofile"
 export MAILCAPS="$XDG_CONFIG_HOME/mailcap"
 eval "$(perl -I$XDG_DATA_HOME/perl5/lib/perl5 -Mlocal::lib=$XDG_DATA_HOME/perl5)"
+alias glow='glow --config "$XDG_CONFIG_HOME/glow/glow.yml"'
