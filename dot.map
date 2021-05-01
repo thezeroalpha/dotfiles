@@ -4,6 +4,7 @@ bin: ~/.bin
 # My scripts
 scripts: ~/.scripts
 
+# Mailcap (Mutt and other programs)
 mailcap: ~/.config/mailcap
 
 # Config: utilities
@@ -53,6 +54,7 @@ zathura: ~/.config/zathura
 gotop: ~/.config/gotop
 paru: ~/.config/paru
 alacritty: ~/.config/alacritty
+glow: ~/.config/glow
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
