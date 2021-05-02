@@ -20,6 +20,7 @@
 [ -d "$DOTFILES/tools/fzf/bin" ]                                                                     && [ -n "${PATH##*"$DOTFILES/tools/fzf/bin"*}" ]                 && PATH="$DOTFILES/tools/fzf/bin:$PATH"
 [ -d "$XDG_DATA_HOME/perl5/bin" ]                                                                    && [ -n "${PATH##*"$XDG_DATA_HOME/perl5/bin"*}" ]                && PATH="$XDG_DATA_HOME/perl5/bin:$PATH"
 [ -d "$HOME/.jenv/bin" ]                                                                             && [ -n "${PATH##*"$HOME/.jenv/bin"*}" ]                         && PATH="$HOME/.jenv/bin:$PATH"
+[ -d "$XDG_DATA_HOME/cargo/bin" ]                                                                    && [ -n "${PATH##*"$XDG_DATA_HOME/cargo/bin"*}" ]                && PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 
 command -v rbenv 1>/dev/null 2>&1 && eval "$(rbenv init -)"
 command -v jenv 1>/dev/null 2>&1 && eval "$(jenv init -)"
