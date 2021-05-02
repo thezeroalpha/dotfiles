@@ -2,7 +2,7 @@
 [ -z "$1" ] && { "$BROWSER"; exit; }
 
 case "$1" in
-  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*)
+  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*)
     notify 'Starting mpv' "Opening $1..." 'linkhandler'
     setsid -f mpvq "$1" 1>/dev/null 2>&1
     ;;
