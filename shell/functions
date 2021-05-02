@@ -143,15 +143,3 @@ if [ -d ~/.config/fzf ]; then
     fzf --preview "cat $1 | jq {q}"
   }
 fi
-
-# bitwarden functions
-if command -v bw 1>/dev/null 2>&1; then
-  bwl() {
-    command bwl
-    unset BW_SESSION
-  }
-  bwu() {
-    command bwu
-    [ -f "$BW_SESHFILE" ] && export BW_SESSION="$(cat $BW_SESHFILE)"
-  }
-fi

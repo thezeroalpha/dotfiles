@@ -12,8 +12,6 @@ export MUSIC_DIR="/Volumes/HDD/Music/Libraries/Mine"
 export PAGER="less"
 export LESS="-FRiX"
 
-[ -n "$BW_SESHFILE" ] && [ -f "$BW_SESHFILE" ] && export BW_SESSION="$(cat $BW_SESHFILE)"
-
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"

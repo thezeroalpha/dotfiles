@@ -1,5 +1,0 @@
-#!/bin/sh
-command -v bw 1>/dev/null 2>&1 || { printf "Bitwarden CLI not installed.\n" && exit 1; }
-[ -n "$BW_SESHFILE" ] || { printf "Set BW_SESHFILE in your env.\n" && exit 1; }
-[ -f "$BW_SESHFILE" ] && rm "$BW_SESHFILE"
-bw lock

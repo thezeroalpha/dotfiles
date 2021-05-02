@@ -25,7 +25,9 @@ alias mpva="mpv --no-audio-display --no-video --volume=50"
 alias irrsi="irssi --home=~/.config/irssi"
 alias scim="sc-im"
 alias mbsync='mbsync -c $HOME/.config/mbsync/mbsyncrc'
-alias mutt='{ [ -f "$BW_SESHFILE" ] && BW_SESSION="$(cat $BW_SESHFILE)" neomutt; } || BW_SESSION="$(bw unlock --raw)" neomutt;'
+alias mutt="neomutt"
+alias bwu="rbw unlock"
+alias bwl="rbw lock"
 alias yt="pipe-viewer"
 alias gotop='sudo gotop -C $XDG_CONFIG_HOME/gotop/gotop.conf'
 [ -n "$VIM_TERMINAL" ] && alias vim=vimsend

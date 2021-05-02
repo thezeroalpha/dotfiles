@@ -48,7 +48,7 @@
   # automatically hidden when the input line reaches it. Right prompt above the
   # last prompt line gets hidden if it would overlap with left prompt.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-    bitwarden_session_timer # how much longer until Bitwarden locks
+    bitwarden_session_status # how much longer until Bitwarden locks
     command_execution_time  # duration of the last command
     background_jobs         # presence of background jobs
     direnv                  # direnv status (https://direnv.net/)
@@ -1283,11 +1283,9 @@
     (( $D > 0 || $H > 0 || $M > 0 )) && printf ':'
     printf '%02d' $S
   }
-  function prompt_bitwarden_session_timer() {
-    if [ -z "$BW_SESHFILE" ] || ! [ -f "$BW_SESHFILE" ]; then
-      return
-    else
-      p10k segment -f 2 -t "[🔓 -$(hms $(($(stat -c '%Y' $BW_SESHFILE)+(30*60)-$(date +%s))))]"
+  function prompt_bitwarden_session_status() {
+    if rbw unlocked >/dev/null 2>&1; then
+      p10k segment -f 2 -t "[🔓]"
     fi
   }
 
