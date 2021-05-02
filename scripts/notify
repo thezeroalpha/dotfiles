@@ -1,8 +1,26 @@
 #!/bin/sh
 [ $# -ge 2 ] || { printf "Arguments: title, message\n" && exit 1; }
 group=${3:-$TERM}
-if type terminal-notifier 1> /dev/null 2>&1; then
-  terminal-notifier -title "$1" -message "$2" -activate io.alacritty -group "$group"
-else
-  printf '\a'
-fi
+
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  linux*)
+    # code for Linux
+    if command -v notify-send >/dev/null 2>&1; then
+      notify-send -c "$group" -u "${4:-normal}" "$1" "$2"
+    fi
+    ;;
+  darwin*)
+    if command -v terminal-notifier >/dev/null 2>&1; then
+      terminal-notifier -title "$1" -message "$2" -activate io.alacritty -group "$group"
+    else
+      printf '\a'
+    fi
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    printf "Windows not supported.\n"
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "$os"
+    ;;
+esac
