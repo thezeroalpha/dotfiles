@@ -1,14 +1,15 @@
 #!/bin/sh
-WIDTH="$2"
-[ -z "$2" ] && WIDTH="$(tput cols)"
+HEIGHT="$2"
+[ -z "$2" ] && HEIGHT="$(tput lines)"
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   linux*)
-    printf "Haven't chosen a previewer for Linux yet.\n"
+    command -v chafa 1>/dev/null 2>&1 || { printf "Please install chafa\n" && exit 1; }
+    chafa --fill=block --symbols=block -c 256 -s 80x"$HEIGHT" "$1"
     ;;
   darwin*)
     command -v chafa 1>/dev/null 2>&1 || { printf "Please install chafa\n" && exit 1; }
-    chafa -c 256 -s 80x"$WIDTH" "$1"
+    chafa -c 256 -s 80x"$HEIGHT" "$1"
     ;;
   msys*|cygwin*|mingw*|nt|win*)
     printf "Windows not supported.\n"
