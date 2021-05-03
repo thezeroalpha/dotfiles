@@ -22,17 +22,19 @@ set ifs "\n"
 # leave some space at the top and the bottom of the screen
 set scrolloff 10
 
+# Set a previewer, but don't preview by default (performance)
 set previewer ~/.config/lf/preview
-set ignorecase true
-set preview true
+set nopreview
+
+# General options
+set ignorecase
 set icons
+set number
+set relativenumber
 
 # Show number of files in dirs instead of single size
 set info size
 set dircounts
-
-set number
-set relativenumber
 # }}}
 # Command definitions {{{
 # the prefix shows what kind of command it is
@@ -41,7 +43,7 @@ set relativenumber
 #   !: runs as interactive shell command (puts lf in the bg)
 #   :: runs as lf command
 #
-# commands run in the shell, you can use $f, $fs, $fx vars.
+# commands run in the shell defined above, you can use $f, $fs, $fx vars.
 # you can also send remote commands.
 
 # define a custom 'open' command
@@ -50,7 +52,7 @@ cmd open $opener $fx
 # define a custom 'rename' command without prompt for overwrite
 cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
 
-# rename multiple files the way nnn does it
+# rename multiple files the way nnn does it (open in editable buffer)
 cmd batch_rename !{{
   contentsfile=$(mktemp)
   trap 'rm $contentsfile' INT TERM EXIT
@@ -74,13 +76,14 @@ cmd batch_rename !{{
   trap - INT TERM EXIT
 }}
 
+# change part of a filename using sed
 cmd change %{{
   printf "Substitute: "
   read -r sedcmd
   mv "$f" "$(dirname "$f")/$(printf '%s' "$(basename "$f")" | sed "s$sedcmd")"
 }}
 
-# queue an audio file in mpd
+# load audio files/playlists in mpd
 cmd queue %{{
   for i in $fx; do
     case "$i" in
@@ -111,16 +114,12 @@ cmd extract ${{
 }}
 
 # copy the path of the highlighted file
+# relies on my `clc` script
 cmd copy_path ${{
-  set -f
-  if command -v pbcopy > /dev/null 2> /dev/null; then
-    echo "$f" | tr -d '\n' | pbcopy
-  elif command -v xclip > /dev/null 2> /dev/null; then
-    echo "$f" | tr -d '\n' | xclip -sel clip
-  fi
+  echo "$f" | tr -d '\n' | clc
 }}
 
-# zip a directory/file
+# zip directories/files
 cmd zip ${{
   set -f
   mkdir $f-zip
@@ -129,6 +128,7 @@ cmd zip ${{
   rm -rf $f-zip/
 }}
 
+# tar directories/files
 cmd tar ${{
   set -f
   mkdir $f-tgz
@@ -137,6 +137,7 @@ cmd tar ${{
   rm -rf $f-tgz
 }}
 
+# custom paste command using rsync/mv
 cmd paste &{{
     load=$(lf -remote 'load')
     mode=$(echo "$load" | sed -n '1p')
@@ -170,12 +171,12 @@ cmd paste_link %{{
   ln -sr $files -t .
 }}
 
-# preview the highlighted file with quicklook
+# preview the highlighted file with quicklook (macOS)
 cmd ql_preview &{{
   qlmanage -p $fx &> /dev/null;
 }}
 
-# open the lfrc, and source after saving
+# open the lfrc, and reload it after saving
 cmd edit_config :{{
   $$EDITOR ~/.config/lf/lfrc
   source ~/.config/lf/lfrc
@@ -183,20 +184,20 @@ cmd edit_config :{{
 
 # quickly cd into frecent directories using github.com/rupa/z
 cmd z ${{
-    set +u
-    if [ $# -gt 0 ]; then
-      dest=''
-      # See: https://github.com/skywind3000/z.lua or https://github.com/rupa/z
-      if [ -f "$DOTFILES/shell/z/z.sh" ]; then
-          export _Z_NO_PROMPT_COMMAND=1
-          source "$DOTFILES/shell/z/z.sh"
-          dest="$(_z "$@" && pwd)"
-      fi
-
-      if test -n "${dest}"; then
-          lf -remote "send $id cd '${dest}'"
-      fi
+  set +u
+  if [ $# -gt 0 ]; then
+    dest=''
+    # See: https://github.com/skywind3000/z.lua or https://github.com/rupa/z
+    if [ -f "$DOTFILES/shell/z/z.sh" ]; then
+        export _Z_NO_PROMPT_COMMAND=1
+        source "$DOTFILES/shell/z/z.sh"
+        dest="$(_z "$@" && pwd)"
     fi
+
+    if test -n "${dest}"; then
+        lf -remote "send $id cd '${dest}'"
+    fi
+  fi
 }}
 
 # trash command with confirmation
@@ -212,6 +213,7 @@ cmd trash %{{
   done
 }}
 
+# empty the trash
 cmd trashempty %{{
   printf "Empty trash? [Y/n] "
   read -r ans
@@ -221,6 +223,7 @@ cmd trashempty %{{
   esac
 }}
 
+# PGP functions
 cmd pgp_encrypt_recipient %{{
   printf "Recipient: "
   read -r recipient
@@ -253,7 +256,7 @@ cmd pgp_sign_detach ${{
   gpg --detach-sign $f
 }}
 
-# Select based on glob filter
+# Select files based on glob filter
 cmd filter %{{
   printf "Filter: "
   read -r filter_expr
@@ -261,8 +264,20 @@ cmd filter %{{
   lf -remote "send $id glob-select $filter_expr"
 }}
 
+# Remove empty directories in current tree
 cmd rmempty %find .  -type d -empty -depth -delete
+
+# Use xld to transcode audio
 cmd xld %open -a XLD $f
+
+# fzf files
+cmd fuzzy_select $lf -remote "send $id select \"$(fzf)\""
+
+# Show file info with exiftool
+cmd file_info !LESSOPEN='| exiftool %s' LESS='-cRiX' less $f
+
+# Preview a file
+cmd file_preview $LESSOPEN='| ~/.config/lf/preview %s' LESS='-cRiX' less $f
 # }}}
 # Mappings {{{
 # Mouse
@@ -271,50 +286,67 @@ map <m-up> up
 map <m-1> open
 map <m-3> updir
 
-# execute current file (must be executable)
+# Enter commands
 map ; push :
+map S shell-pipe
+
+# execute current file (must be executable)
 map x $$f
 map X !$f
 
+# Disk usage
 map ug %du -sh $f
 
-# dedicated keys for file opener actions
-map o
-map O
+# Open (uses the above-defined command)
 map o open $fx
+map <enter> open $fx
+# Open containing dir
 map O $open $(dirname $f)
-map v ql_preview
+
+# Listing
 map r reload
-
-map f
-map f $lf -remote "send $id select \"$(fzf)\""
-
-map .
 map . set hidden!
+map U redraw
 
-map <esc>
+# Selecting
+map f fuzzy_select
 map <esc> unselect; clear
+map <space> :toggle; down
+map F filter
+map u
+map uu unselect
+map uy clear
+map ud clear
+map a :unselect; invert
 
-map g?
+# Show help
 map g? $lf -doc | $PAGER; clear
 
+# Renaming
 map R push :rename<space>
 map <c-r> batch_rename
 map C change
 map cw push :rename<space>
-map E $$EDITOR $fx
-map D trash
-map <enter> open $fx
-map S shell-pipe
-map Y copy_path
-map Q queue
 
+# Delete
+map D trash
+
+# Copy (others are defined by default)
+map Y copy_path
+
+# Paste
 map p
 map pp paste
 map pl paste_link
 
-map i $LESSOPEN='| ~/.config/lf/preview %s' less -R $f
+# Viewing
+map i file_info
+map P file_preview
+map v ql_preview
+map <c-v> :set preview!; reload
 
+# Navigation
+map z push :z
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
 map gdw cd ~/Documents/Programming/alex.balgavy.eu/
@@ -331,33 +363,29 @@ map g. cd ~/.dotfiles
 map gv cd /Volumes
 map gt cd ~/.Trash/
 
-map <space> :toggle; down
-map F filter
-
-map u
-map uu unselect
-map uy clear
-map ud clear
-map a :unselect; invert
-map U redraw
-map U redraw
-
+# Creating
 map c
 map cf push %touch<space>
 map cd push %mkdir<space>
+
+# Editing
 map e
+map E $$EDITOR $fx
 map ee $$EDITOR $f
 map ec edit_config
 map ce edit_config
 
+map Q queue
+
+# Compressing
 map tz zip
 map tt tar
 map tu extract
+
+# PGP
 map te pgp_encrypt_recipient
 map tp pgp_encrypt_pass
 map td pgp_decrypt
 map ts. pgp_sign
 map tsc pgp_sign_clear
 map tsd pgp_sign_detach
-
-map z push :z
