@@ -1,0 +1,21 @@
+#!/bin/sh
+die() {
+  echo "$1" >&2
+  exit 1
+}
+
+# Preliminary checks
+command -v convert >/dev/null 2>&1 || die "imagemagick not found."
+[ $# -ge 2 ] || die "Usage: $0 input.ext output.ext"
+[ -f "$1" ] || die "File $1 not found."
+[ -f "$2" ] && {
+  printf "File %s exists, overwrite? [y/N] " "$2"
+  read -r conf; case "$conf" in
+    Y*|y*) ;;
+    *) exit 0 ;;
+  esac
+}
+
+fuzz="${3:-15%}"
+convert -trim -transparent white -fuzz "$fuzz" "$1" "$2"
+printf "Saved as %s\nIf the result looks bad, pass a fuzz percentage as the last argument." "$2"
