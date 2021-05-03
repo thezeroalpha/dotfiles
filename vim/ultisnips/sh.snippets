@@ -51,8 +51,14 @@ while [ \$((\$#)) -ne 0 ]; do
 done
 eval set -- "\$PARAMS"
 endsnippet
+
 snippet !bash "Bash shebang" b
 #!/usr/bin/env bash
+$0
+endsnippet
+
+snippet !sh "Sh shebang" b
+#!/bin/sh
 $0
 endsnippet
 
@@ -87,8 +93,8 @@ trap - INT TERM EXIT
 endsnippet
 
 snippet confirm "Ask for confirmation" b
-read -rp "${1:prompt}" -n 1 -s conf
-case "$conf" in
+printf "${1:prompt}"
+read -r conf; case "$conf"
   Y|y)
     ${2:# code if yes}
     ;;
