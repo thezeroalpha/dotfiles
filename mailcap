@@ -2,6 +2,6 @@ image/*; sh -c 'case "%s" in http*) name="/tmp/$(printf "%s" | sed "s/.*\///")";
 video/*; mpvq %s
 text/html; w3m -config /Users/alex/.config/w3m/config -T text/html %s; copiousoutput
 text/plain; less
-application/pdf; open -a Skim %s
+application/pdf; setsid -f zathura %s
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; open -a 'Microsoft Word' %s
 application/x-tar-gz; tar tzf %s | less -R
