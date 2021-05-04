@@ -2,13 +2,8 @@
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   linux*)
-    if [ -f /sys/class/power_supply/BAT0/uevent ]; then
-      state="$(awk -F '=' '/POWER_SUPPLY_STATUS/ {print $2}' /sys/class/power_supply/BAT0/uevent)"
-      percent="$(awk -F '=' '/POWER_SUPPLY_CAPACITY=/ {print $2}' /sys/class/power_supply/BAT0/uevent)"
-    else
-      printf "No such file: /sys/class/power_supply/BAT0/uevent.\nNo other methods to find battery charge implemented.\n" >&2
-      exit 1
-    fi
+    state="$(cat /sys/class/power_supply/BAT0/status)"
+    percent="$(cat /sys/class/power_supply/BAT0/capacity)"
     ;;
   darwin*)
     battstatus="$(pmset -g batt)"
