@@ -55,6 +55,8 @@ gotop: ~/.config/gotop
 paru: ~/.config/paru
 alacritty: ~/.config/alacritty
 glow: ~/.config/glow
+dunst: ~/.config/dunst
+sxhkd: ~/.config/sxhkd
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
