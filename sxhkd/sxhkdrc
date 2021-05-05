@@ -1,0 +1,6 @@
+super + shift + q
+  desktop-session-exit
+super + o
+  "$TERMINAL" -e lf "$HOME"
+ctrl + shift + r
+  pkill -SIGUSR1 sxhkd; notify "sxhkd reloaded" ""
