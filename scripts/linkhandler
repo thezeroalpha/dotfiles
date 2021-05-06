@@ -24,7 +24,11 @@ case "$1" in
     w3m -config ~/.config/w3m/config "$1"
     ;;
   http://*|https://*)   # everything else gets filtered through readability
-    go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
+    if command -v go-readability >/dev/null 2>&1; then
+      go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
+    else
+      w3m -config ~/.config/w3m/config -T text/html "$1"
+    fi
     ;;
   '!http'*)
     os=$(uname -s | tr '[:upper:]' '[:lower:]')
