@@ -1,4 +1,11 @@
 #!/bin/sh
+if command -v bat >/dev/null 2>&1; then
+  { [ -f ~/.config/dark-theme ] && theme=1337; } || theme=GitHub
+  pagercmd="bat --color=always --theme=$theme"
+else
+  pagercmd="less -FRiX"
+fi
+
 case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   *.tgz|*.tar.gz) tar tzf "$1";;
   *.tar.bz2|*.tbz2) tar tjf "$1";;
@@ -12,9 +19,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   # *.torrent) transmission-show "$1";;
   # *.iso) iso-info --no-header -l "$1";;
   *.epub|*.rtf|*.doc|*.docx|*.otd|*.ods|*.odp|*.sxw)
-    { [ -f ~/.config/dark-theme ] && theme=1337; } || theme=GitHub
-    bat --color=always --theme="$theme" "$1"
-    pandoc -s -t markdown -- "$1" | bat --color=always --theme="$theme"
+    pandoc -s -t markdown -- "$1" | $pagercmd
     exit 1
     ;;
   *.csv) sed s/,/\\n/g "$1";;
@@ -40,8 +45,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
     case $(file --mime-type "$1" -bL) in
       application/x-executable) readelf -h "$1" ;;
       *)
-        { [ -f ~/.config/dark-theme ] && theme=1337; } || theme=GitHub
-        bat --color=always --theme="$theme" "$1"
+        $pagercmd "$1"
         ;;
     esac
     ;;
