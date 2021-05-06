@@ -71,3 +71,6 @@
 [submodule "tools/translate-shell"]
 	path = tools/translate-shell
 	url = https://github.com/soimort/translate-shell
+[submodule "tools/speedread"]
+	path = tools/speedread
+	url = https://github.com/pasky/speedread.git
