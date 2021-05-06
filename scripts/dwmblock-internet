@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Show wifi 📶 and percent strength or 📡 if none.
+# Show 🌐 if connected to ethernet or ❎ if none.
+# Show 🔒 if a vpn connection is active
+
+# Interfaces:
+wired=eth0
+wireless=eth1
+# there's probably a way to change these but I'd have to know all files to update...
+
+case "$BUTTON" in
+  1)
+    pgrep -f nmtui || "$TERMINAL" -e nmtui
+    pkill -RTMIN+5 dwmblocks ;;
+  6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+case "$(cat /sys/class/net/$wireless/operstate 2>/dev/null)" in
+  down) wifiicon="📡 " ;;
+  up) wifiicon="$(awk '/^\s*e/ { print "📶", int($3) "% " }' /proc/net/wireless)" ;;
+  # might need to do some calculations if this doesn't match up with `iwconfig` link quality
+  # up) wifiicon="$(awk '/^\s*e/ { print "📶", int($3 * 100 / 70) "% " }' /proc/net/wireless)" ;;
+esac
+
+ethicon="$(sed 's/down/❎/;s/up/🌐/' /sys/class/net/$wired/operstate 2>/dev/null)"
+vpnicon="$(sed 's/.*/🔒/' /sys/class/net/tun*/operstate 2>/dev/null)"
+
+printf "%s%s%s\n" "$wifiicon" "$ethicon" "$vpnicon"
