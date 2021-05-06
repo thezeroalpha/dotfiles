@@ -18,6 +18,7 @@
 [ -d "$DOTFILES/tools/pfetch" ]                                                                      && [ -n "${PATH##*"$DOTFILES/tools/pfetch"*}" ]                  && PATH="$DOTFILES/tools/pfetch:$PATH"
 [ -d "$DOTFILES/tools/tuxi" ]                                                                        && [ -n "${PATH##*"$DOTFILES/tools/tuxi"*}" ]                    && PATH="$DOTFILES/tools/tuxi:$PATH"
 [ -d "$DOTFILES/tools/fzf/bin" ]                                                                     && [ -n "${PATH##*"$DOTFILES/tools/fzf/bin"*}" ]                 && PATH="$DOTFILES/tools/fzf/bin:$PATH"
+[ -d "$DOTFILES/tools/solvitaire" ]                                                                  && [ -n "${PATH##*"$DOTFILES/tools/solvitaire"*}" ]              && PATH="$DOTFILES/tools/solvitaire:$PATH"
 [ -d "$XDG_DATA_HOME/perl5/bin" ]                                                                    && [ -n "${PATH##*"$XDG_DATA_HOME/perl5/bin"*}" ]                && PATH="$XDG_DATA_HOME/perl5/bin:$PATH"
 [ -d "$HOME/.jenv/bin" ]                                                                             && [ -n "${PATH##*"$HOME/.jenv/bin"*}" ]                         && PATH="$HOME/.jenv/bin:$PATH"
 [ -d "$XDG_DATA_HOME/cargo/bin" ]                                                                    && [ -n "${PATH##*"$XDG_DATA_HOME/cargo/bin"*}" ]                && PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
