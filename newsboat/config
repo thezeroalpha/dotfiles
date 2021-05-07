@@ -48,9 +48,9 @@ bind-key S rev-sort
 
 color background white default
 color listnormal white default
-color listfocus white blue standout
-color info blue default standout
-color listfocus_unread white blue standout
+color listfocus blue default underline bold
+color listfocus_unread blue default underline bold
+color info blue default standout bold
 color listnormal_unread white default
 
 browser "linkhandler %u"
