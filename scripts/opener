@@ -1,6 +1,9 @@
 #!/bin/sh
+# Opener: given a local file, decide which program to use to open it
+
 [ $# -gt 0 ] || { printf "File required in argument.\n" && exit 1; }
 case "$1" in
+  # Handling links is another script's job
   http*) linkhandler "$@";;
   *)
     case $(file --mime-type "$1" -bL) in

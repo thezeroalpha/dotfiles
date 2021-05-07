@@ -1,4 +1,5 @@
 #!/bin/sh
+# Linkhandler: handles links. Like `opener` but for URLs
 [ -z "$1" ] && { "$BROWSER"; exit; }
 
 case "$1" in

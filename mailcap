@@ -1,7 +1,17 @@
-image/*; sh -c 'case "%s" in http*) name="/tmp/$(printf "%s" | sed "s/.*\///")"; curl -sL "%s" > "$name";; *) name="%s";; esac; sxiv -a "$name"'
-video/*; mpvq %s
+# Mailcap: mainly used for viewing attachments in (Neo)Mutt
+# So that HTML can render automatically in email
 text/html; w3m -config /Users/alex/.config/w3m/config -T text/html %s; copiousoutput
-text/plain; less
-application/pdf; setsid -f zathura %s
-application/vnd.openxmlformats-officedocument.wordprocessingml.document; open -a 'Microsoft Word' %s
+
+# Need a pager that doesn't quit automatically for plaintext
+text/plain; LESS="-Ric" less
+
+# Preview contents of tgz files
 application/x-tar-gz; tar tzf %s | less -R
+
+# Open pgp signatures as text
+application/pgp-signature; LESS="-Ric" less
+
+# Use the `opener` script for everything else
+image; setsid -f opener %s >/dev/null 2>&1
+video; setsid -f opener %s >/dev/null 2>&1
+application; setsid -f opener %s >/dev/null 2>&1
