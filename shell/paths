@@ -17,6 +17,7 @@
 [ -d "$DOTFILES/tools/shfm" ]                                                                        && [ -n "${PATH##*"$DOTFILES/tools/shfm"*}" ]                    && PATH="$DOTFILES/tools/shfm:$PATH"
 [ -d "$DOTFILES/tools/pfetch" ]                                                                      && [ -n "${PATH##*"$DOTFILES/tools/pfetch"*}" ]                  && PATH="$DOTFILES/tools/pfetch:$PATH"
 [ -d "$DOTFILES/tools/tuxi" ]                                                                        && [ -n "${PATH##*"$DOTFILES/tools/tuxi"*}" ]                    && PATH="$DOTFILES/tools/tuxi:$PATH"
+[ -d "$DOTFILES/tools/speedread" ]                                                                   && [ -n "${PATH##*"$DOTFILES/tools/speedread"*}" ]               && PATH="$DOTFILES/tools/speedread:$PATH"
 [ -d "$DOTFILES/tools/fzf/bin" ]                                                                     && [ -n "${PATH##*"$DOTFILES/tools/fzf/bin"*}" ]                 && PATH="$DOTFILES/tools/fzf/bin:$PATH"
 [ -d "$DOTFILES/tools/solvitaire" ]                                                                  && [ -n "${PATH##*"$DOTFILES/tools/solvitaire"*}" ]              && PATH="$DOTFILES/tools/solvitaire:$PATH"
 [ -d "$XDG_DATA_HOME/perl5/bin" ]                                                                    && [ -n "${PATH##*"$XDG_DATA_HOME/perl5/bin"*}" ]                && PATH="$XDG_DATA_HOME/perl5/bin:$PATH"
