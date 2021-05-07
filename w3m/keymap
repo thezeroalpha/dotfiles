@@ -25,6 +25,8 @@ keymap SPCc EXEC_SHELL 'printf "%s" $W3M_URL | clc'
 keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
 keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
 keymap SPCv EXEC_SHELL 'linkhandler "$W3M_CURRENT_LINK"'
+keymap s PRINT
+keymap S DOWNLOAD
 keymap C-w CLOSE_TAB
 keymap C-t NEW_TAB
 keymap gt NEXT_TAB
@@ -130,7 +132,6 @@ keymap ~ GOTO_HOME
 # REG_MARK      Mark all occurences of a pattern
 # RESHAPE       Re-render document
 # RIGHT         Shift screen one column right
-# SAVE          Save document source
 # SAVE_IMAGE    Save inline image
 # SAVE_LINK     Save hyperlink target
 # SAVE_SCREEN   Save rendered document
