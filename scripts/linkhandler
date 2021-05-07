@@ -47,6 +47,9 @@ case "$1" in
         ;;
     esac
     ;;
+  '@http'*)
+    printf "${1##@}" | clc
+    ;;
   *)
     if [ -f "$1" ]; then "${EDITOR:-vim}" "$1"
     else open "$1" >/dev/null 2>&1
