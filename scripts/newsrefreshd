@@ -9,7 +9,9 @@ notidie() {
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   darwin*)
+    while pgrep RotMG; do sleep 60; done
     /usr/local/bin/alacritty -e /Users/alex/.local/share/cargo/bin/rbw unlock
+    /Users/alex/.local/share/cargo/bin/rbw unlocked || notidie "Newsboat: error reloading" "Vault is locked"
     ;;
 esac
 
