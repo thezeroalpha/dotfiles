@@ -71,10 +71,7 @@ $0
 endsnippet
 
 snippet die "Die function" b
-die() {
-  echo "\$1" >&2
-  exit 1
-}
+die() { printf '%s\n' "\$1" >&2 && exit 1; }
 $0
 endsnippet
 
@@ -90,6 +87,16 @@ endsnippet
 
 snippet untrap "Disable exit trap" b
 trap - INT TERM EXIT
+endsnippet
+
+snippet for "POSIX for loop" b
+: \$((${1:var}=0))
+while [ \$(($1 ${2:test})) -ne 0 ]; do
+  ${3:# code}
+
+  i=\$(($1+1))
+done
+$0
 endsnippet
 
 snippet confirm "Ask for confirmation" b
