@@ -21,6 +21,7 @@ export LC_MONETARY="en_US.UTF-8"
 export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 
+export TTRV_BROWSER=linkhandler
 export WWW_HOME="https://search.alex.balgavy.eu"
 # Icons for lf {{{1
 export LF_ICONS="\
