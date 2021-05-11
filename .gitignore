@@ -5,6 +5,11 @@
 shell/secret_env
 mutt/secret
 
+# Email stuff
+notmuch/
+mbsync/
+msmtp/
+
 # CLI for my router
 scripts/wifi
 
