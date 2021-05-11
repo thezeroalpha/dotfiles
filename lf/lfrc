@@ -347,6 +347,8 @@ map <c-v> :set preview!; reload
 
 # Navigation
 map z push :z
+map [ push hkl
+map ] push hjl
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
 map gdw cd ~/Documents/Programming/alex.balgavy.eu/
