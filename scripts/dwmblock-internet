@@ -13,6 +13,7 @@ case "$BUTTON" in
   1)
     pgrep -f nmtui || "$TERMINAL" -e nmtui
     pkill -RTMIN+5 dwmblocks ;;
+  3) notify "Connected to $(/sbin/iwgetid -r)" '' ;;
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
