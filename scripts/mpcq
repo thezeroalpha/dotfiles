@@ -1,0 +1,40 @@
+#!/bin/sh
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps mpc
+
+pgrep mpd >/dev/null 2>&1 || die "mpd is not running."
+[ -S ~/.local/share/mpd/socket ] || die "$HOME/.local/share/mpd/socket does not exist or is not a socket."
+
+queue() {
+  case "$1" in
+    *.wav|*.flac|*.mp3|*.m4a|*.opus)
+      mpc -h ~/.local/share/mpd/socket insert "file://$1"
+      printf "Queued: %s\n" "$1"
+      ;;
+    *.m3u)
+      mpc -h ~/.local/share/mpd/socket load "file://$1"
+      printf "Loaded playlist: %s\n" "$1"
+      ;;
+  esac
+}
+
+if ! [ -t 0 ]; then
+  while read -r line; do
+    fpath="$(realpath "$line")"
+    [ -f "$fpath" ] && queue "$fpath"
+  done
+elif [ $# -gt 0 ]; then
+  for f in "$@"; do
+    fpath="$(realpath "$f")"
+    [ -f "$fpath" ] && queue "$fpath"
+  done
+else
+  die "Files expected as arguments or on stdin."
+fi
