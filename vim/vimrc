@@ -481,8 +481,19 @@ silent! command! -bar -nargs=* Man
 " For editing binaries
 set binary
 
-" No swp please, I save all the time
-set noswapfile
+" Save swapfiles to ~/.local/share/vim/swap
+if !isdirectory($HOME.'/.local/share/vim/swap')
+  silent call mkdir($HOME.'/.local/share/vim/swap', 'p')
+endif
+set directory=~/.local/share/vim/swap//
+set swapfile
+
+" Save backups to ~/.local/share/vim/backup
+if !isdirectory($HOME.'/.local/share/vim/backup')
+  silent call mkdir($HOME.'/.local/share/vim/backup', 'p')
+endif
+set backupdir=~/.local/share/vim/backup//
+set nobackup writebackup
 
 " make regexes consistent with other programs (extended)
 set magic
@@ -502,7 +513,7 @@ set wildignorecase
 
 " Persistent undos (useful for plugins too){{{
 if has('persistent_undo')
-  let myUndoDir = expand('$HOME/.vim' . '/undo')
+  let myUndoDir = $HOME . '/.local/share/vim/undo'
   silent! call mkdir(myUndoDir, 'p')
   let &undodir = myUndoDir
   set undofile
