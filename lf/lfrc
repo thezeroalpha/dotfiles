@@ -208,7 +208,6 @@ cmd trash %{{
     case "$ans" in
       Y*|y*) trash "$f"; printf "Deleted $f.";;
       A*|a*) trash $fx; printf "Deleted all files."; break;;
-      *) printf "Not deleting $f"; sleep 1;;
     esac
   done
 }}
@@ -238,7 +237,12 @@ cmd pgp_encrypt_pass ${{
 }}
 
 cmd pgp_decrypt ${{
-  gpg --output ${f%.gpg} --decrypt $f
+  case "$f" in
+    *.gpg) outfile="${f%.gpg}";;
+    *.pgp) outfile="${f%.pgp}";;
+    *) outfile="decrypted-${f}";;
+  esac
+  gpg --output "$outfile" --decrypt "$f"
 }}
 
 # Encode input into binary or ASCII-armored output with an integrated signature
