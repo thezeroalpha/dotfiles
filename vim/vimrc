@@ -120,6 +120,10 @@ Plug 'tpope/vim-dispatch', { 'on': ['Dispatch', 'Make', 'Maketab', 'Start', 'Spa
 " Vimscript testing
 Plug 'tpope/vim-scriptease', { 'for': 'vim' }
 
+" Set 'path', 'suffixesadd', 'include', 'includeexpr', 'define'
+"   automatically for selected filetypes.
+Plug 'tpope/vim-apathy'
+
 " Schemer - colorscheme creator
 Plug 'thezeroalpha/vim-schemer', { 'for': 'schemer', 'on': ['<Plug>SchemerSynstack', '<Plug>SchemerEdit']}
 
