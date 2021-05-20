@@ -43,7 +43,6 @@ sxiv: ~/.config/sxiv
 w3m: ~/.config/w3m
 scim/scimrc: ~/.config/scimrc
 mutt: ~/.config/mutt
-mbsync: ~/.config/mbsync
 urlview/urlview: ~/.urlview
 gnupg: ~/.config/gnupg
 mpd: ~/.config/mpd
@@ -57,6 +56,11 @@ alacritty: ~/.config/alacritty
 glow: ~/.config/glow
 dunst: ~/.config/dunst
 sxhkd: ~/.config/sxhkd
+
+# Email: these won't exist when you clone the repo
+mbsync: ~/.config/mbsync
+msmtp: ~/.config/msmtp
+notmuch: ~/.config/notmuch
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
