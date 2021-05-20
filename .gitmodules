@@ -22,17 +22,12 @@
 [submodule "tools/tmpmail"]
 	path = tools/tmpmail
 	url = https://github.com/sdushantha/tmpmail.git
-[submodule "tools/radio"]
-	path = tools/radio
-	url = https://github.com/thezeroalpha/radio
 [submodule "tools/sc-im"]
 	path = tools/sc-im
 	url = https://github.com/andmarti1424/sc-im.git
 [submodule "tools/hpanot"]
 	path = tools/hpanot
 	url = https://github.com/thezeroalpha/hpanot.git
-[submodule "radio"]
-	url = https://github.com/thezeroalpha/radio.git
 [submodule "conf"]
 	url = https://github.com/thezeroalpha/conf.git
 [submodule "tools/anotools-chrome"]
@@ -74,3 +69,6 @@
 [submodule "tools/speedread"]
 	path = tools/speedread
 	url = https://github.com/pasky/speedread.git
+[submodule "tools/radio"]
+	path = tools/radio
+	url = https://github.com/thezeroalpha/radio
