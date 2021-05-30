@@ -644,7 +644,7 @@ filetype plugin indent on
 syntax on
 
 " Enable fenced code highlighting in markdown (tpope's plugin, ships with vim)
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map', 'vim', 'c']
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map', 'vim', 'c', 'cpp', 'make']
 " Enable markdown folding
 let g:markdown_folding = 1
 
