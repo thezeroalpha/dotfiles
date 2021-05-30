@@ -24,7 +24,7 @@ set scrolloff 10
 
 # Set a previewer, but don't preview by default (performance)
 set previewer ~/.config/lf/preview
-set nopreview
+set preview
 
 # General options
 set ignorecase
@@ -282,6 +282,17 @@ cmd file_info !LESSOPEN='| exiftool %s' LESS='-cRiX' less $f
 
 # Preview a file
 cmd file_preview $LESSOPEN='| ~/.config/lf/preview %s' LESS='-cRiX' less $f
+
+# Scroll parent up/down
+cmd scroll_parent_up :{{
+  updir; up
+  %[ -d "$f" ] && lf -remote "send $id open"
+}}
+
+cmd scroll_parent_down :{{
+  updir; down
+  %[ -d "$f" ] && lf -remote "send $id open"
+}}
 # }}}
 # Mappings {{{
 # Mouse
@@ -351,8 +362,8 @@ map <c-v> :set preview!; reload
 
 # Navigation
 map z push :z
-map [ push hkl
-map ] push hjl
+map [ scroll_parent_up
+map ] scroll_parent_down
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
 map gdw cd ~/Documents/Programming/alex.balgavy.eu/
