@@ -1,7 +1,5 @@
 #!/bin/sh
 # Linkhandler: handles links. Like `opener` but for URLs
-[ -z "$1" ] && { "$BROWSER"; exit; }
-
 case "$1" in
   *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*)
     notify 'Starting mpv' "Opening $1..." 'linkhandler'
@@ -21,15 +19,12 @@ case "$1" in
   *reddit.com*)
     ttrv "$1"
     ;;
-  *news.ycombinator.com*|*lean-forward.github.io*) # readability whitelist
-    w3m -config ~/.config/w3m/config "$1"
-    ;;
-  http://*|https://*)   # everything else gets filtered through readability
-    if command -v go-readability >/dev/null 2>&1; then
-      go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
-    else
-      w3m -config ~/.config/w3m/config -T text/html "$1"
-    fi
+  http://*|https://*)   # everything else opens in w3m, can use go-readability within
+    # if command -v go-readability >/dev/null 2>&1; then
+    #   go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
+    # else
+    w3m -config ~/.config/w3m/config -T text/html "$1"
+    # fi
     ;;
   '!http'*)
     os=$(uname -s | tr '[:upper:]' '[:lower:]')
