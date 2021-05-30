@@ -21,8 +21,8 @@ export LC_MONETARY="en_US.UTF-8"
 export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 
-export TTRV_BROWSER=linkhandler
-export WWW_HOME="https://search.alex.balgavy.eu"
+export TTRV_BROWSER=~/.scripts/linkhandler
+export WWW_HOME="https://tab.alex.balgavy.eu"
 # Icons for lf {{{1
 export LF_ICONS="\
 bd=:\
@@ -200,7 +200,7 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 alias irssi='irssi --home=$XDG_CONFIG_HOME/irssi'
 alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
-alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config'
+alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config -bookmark $XDG_CONFIG_HOME/w3m/bookmark.html'
 export GOPATH="$XDG_DATA_HOME"/go
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"

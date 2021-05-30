@@ -1,4 +1,6 @@
 # Reference: http://epistulus.com/w3m/MANUAL.html
+
+# Text navigation
 keymap 0 LINE_BEGIN
 keymap $ LINE_END
 keymap C-g LINE_INFO
@@ -6,27 +8,38 @@ keymap h MOVE_LEFT
 keymap l MOVE_RIGHT
 keymap j MOVE_DOWN
 keymap k MOVE_UP
-keymap H BACK
 keymap gg BEGIN
 keymap w NEXT_WORD
 keymap b PREV_WORD
 keymap G END
+
+# Scrolling
 keymap C-e UP
 keymap C-y DOWN
 keymap C-f NEXT_PAGE
 keymap C-b PREV_PAGE
 keymap C-d NEXT_HALF_PAGE
 keymap C-u PREV_HALF_PAGE
-keymap SPCr PIPE_SHELL 'go-readability $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))'
-keymap SPCo SHELL 'open "$W3M_URL"'
-keymap SPCt SHELL 'open "$W3M_CURRENT_LINK"'
-keymap SPCy EXEC_SHELL 'printf "%s" $W3M_CURRENT_LINK | clc'
-keymap SPCc EXEC_SHELL 'printf "%s" $W3M_URL | clc'
-keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
-keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
-keymap SPCv EXEC_SHELL 'linkhandler "$W3M_CURRENT_LINK"'
+
+# Misc
+keymap H BACK
+keymap ~ GOTO_HOME # specified in $WWW_HOME
+keymap M-f GOTO https://search.alex.balgavy.eu
+keymap C-l REDRAW
 keymap s PRINT
 keymap S DOWNLOAD
+keymap ";" COMMAND
+keymap e EXTERN_LINK
+keymap ] EXTERN
+
+# Link info
+keymap U LIST
+keymap C-g PEEK
+keymap I INFO
+keymap u PEEK_LINK
+keymap i PEEK_IMG
+
+# Tabs
 keymap C-w CLOSE_TAB
 keymap C-t NEW_TAB
 keymap gt NEXT_TAB
@@ -36,12 +49,17 @@ keymap o GOTO
 keymap O TAB_LINK
 keymap r RELOAD
 keymap M-r REINIT
-keymap U LIST
-keymap C-g PEEK
-keymap I INFO
-keymap u PEEK_LINK
-keymap i PEEK_IMG
-keymap ~ GOTO_HOME
+
+# Macros
+keymap SPCr PIPE_SHELL 'go-readability $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))'
+keymap SPCo SHELL 'open "$W3M_URL"'
+keymap SPCt SHELL 'open "$W3M_CURRENT_LINK"'
+keymap SPCy EXEC_SHELL 'printf "%s" $W3M_CURRENT_LINK | clc'
+keymap SPCc EXEC_SHELL 'printf "%s" $W3M_URL | clc'
+keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
+keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
+keymap SPCv EXEC_SHELL 'linkhandler "$W3M_CURRENT_LINK"'
+
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ADD_BOOKMARK  Add current page to bookmarks
@@ -51,7 +69,6 @@ keymap ~ GOTO_HOME
 # CENTER_V      Center on cursor line
 # CHARSET       Change the character encoding for the current document
 # CLOSE_TAB_MOUSE Close tab at mouse pointer
-# COMMAND       Invoke w3m function(s)
 # COOKIE                View cookie list
 # CURSOR_TOP    Move cursor to the top line on the screen
 # CURSOR_MIDDLE Move cursor to the middle line on the screen
