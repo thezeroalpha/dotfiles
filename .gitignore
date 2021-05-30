@@ -29,6 +29,10 @@ w3m/*
 gnupg/*
 !gnupg/gpg.conf
 
+# pipe-viewer
+pipe-viewer/*
+!pipe-viewer/pipe-viewer.conf
+
 # ncmpcpp
 ncmpcpp/error.log
 ncmpcpp/patterns.list
@@ -39,7 +43,5 @@ vim/autoload/plug.vim*
 irssi/*.log
 karabiner/automatic_backups/
 /tools/solvitaire
-pipe-viewer/instances.json
-pipe-viewer/playlists/
 
 bin/geckodriver
