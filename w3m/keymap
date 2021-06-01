@@ -32,6 +32,14 @@ keymap ";" COMMAND
 keymap e EXTERN_LINK
 keymap ] EXTERN
 
+# Menus
+keymap M-h HISTORY
+keymap M-b BOOKMARK
+keymap M-a ADD_BOOKMARK
+keymap M-t SELECT_MENU
+keymap M-o LIST_MENU
+keymap M-l LINK_MENU
+
 # Link info
 keymap U LIST
 keymap C-g PEEK
