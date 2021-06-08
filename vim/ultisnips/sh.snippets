@@ -31,7 +31,7 @@ while [ \$((\$#)) -ne 0 ]; do
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="\$PARAMS \$1"
+      PARAMS="\$PARAMS $(printf '%q' "\$1")"
       shift
       ;;
   esac
