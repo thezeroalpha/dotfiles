@@ -137,11 +137,10 @@ Plug 'thezeroalpha/vim-visualrun'
 Plug 'thezeroalpha/vim-lf'
 
 " Lightweight REPL
-Plug 'axvr/zepl.vim', { 'on': ['Repl', 'ReplSend'] }
-autocmd! User zepl.vim runtime! zepl/contrib/control_characters.vim
+Plug 'axvr/zepl.vim'
 
 " Center the window vertically (like Goyo but keeps statusline/whatever)
-Plug 'jmckiern/vim-venter', { 'on': 'Venter' }
+Plug 'jmckiern/vim-venter'
 
 " Edit files directly in quickfix window
 Plug 'stefandtw/quickfix-reflector.vim'
@@ -403,14 +402,19 @@ imap <C-x><C-f> <Plug>RelativelyCompleteFile
 " Run selected commands (silent)
 vmap <silent> <leader><cr> <Plug>VisualRunCommands
 " Zepl {{{3
-augroup zepl
-  autocmd!
-  autocmd FileType python     let b:repl_config = { 'cmd': 'python3' }
-  autocmd FileType javascript let b:repl_config = { 'cmd': 'node' }
-  autocmd FileType haskell      let b:repl_config = { 'cmd': 'ghci' }
-  autocmd FileType ruby      let b:repl_config = { 'cmd': 'irb' }
-  autocmd FileType r        let b:repl_config = { 'cmd': 'R' }
-augroup END
+runtime! zepl/contrib/control_characters.vim
+      \ zepl/contrib/load_files.vim
+      \ zepl/contrib/python.vim
+let g:repl_config = {
+      \ 'python': {
+        \ 'cmd': 'python3',
+        \ 'formatter': function('zepl#contrib#python#formatter'),
+        \ 'load_file': 'from %s import *'
+      \ },
+      \ 'javascript': { 'cmd': 'node' },
+      \ 'ruby': { 'cmd': 'irb' },
+      \ 'r': { 'cmd': 'R' }
+\ }
 nnoremap gzr :Repl<CR>
 " Medieval {{{3
 let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'bash', 'haskell=ghci', 'javascript=node']
