@@ -15,5 +15,7 @@ case "$os" in
     ;;
 esac
 
+unreadbefore="$(newsboat -x print-unread | cut -d' ' -f1)"
 newsboat -x reload 2>&1 || notidie "Newsboat: error reloading" "Unable to reload"
-newsboat -x print-unread | xargs -I{} notify 'Newsboat reloaded' "{}" news
+unreadafter="$(newsboat -x print-unread | cut -d' ' -f1)"
+notify 'Newsboat reloaded' "$((unreadafter-unreadbefore)) new articles ($unreadafter total)" news
