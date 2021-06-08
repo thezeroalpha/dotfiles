@@ -1,0 +1,109 @@
+#!/bin/sh
+set -x
+# script to find and download wallpapers from wallhaven
+
+walldir="$HOME/.local/share/wallhaven"
+cachedir="$HOME/.cache/wallhaven"
+mkdir -p "$walldir"
+rm -rf "$cachedir"
+mkdir -p "$cachedir"
+
+sxiv_otps=" -tfpo -z 200" # o is needed
+max_pages=4
+# sorting : date_added, relevance, random, views, favorites, toplist
+sorting=relevance
+# quality : large original small
+quality=large
+# atleast : least res
+atleast=1920x1080
+
+
+sh_info () {
+  printf "%s\n" "$*" >&2
+  notify "wallhaven" "$*"
+}
+
+dep_ck () {
+  for pr; do
+    if ! command -v $pr >/dev/null 2>&1; then
+      sh_info "command $pr not found, install: $pr"
+      exit 1
+    fi
+  done
+}
+dep_ck "sxiv"
+
+
+query=$*
+if [ -z "$query" ]; then
+  printf "Search wallhaven: "
+  read -r query
+  [ -z "$query" ] && exit 1
+fi
+
+datafile=$(mktemp --tmpdir wald.XXXX)
+
+# clean up if killed
+trap "exit" INT TERM
+trap "clean_up" EXIT
+
+clean_up () {
+  printf "%s\n" "cleaning up..." >&2
+  rm "$datafile"
+  rm -r "$cachedir"
+}
+
+get_ids () {
+  for page_no in $(seq $max_pages)
+  do
+    {
+      curl -s -G "https://wallhaven.cc/api/v1/search" \
+        -d "q=$1" \
+        -d "page=$page_no" \
+        -d "sorting=$sorting" >> "$datafile"
+      } &
+    sleep 0.001
+  done
+  wait
+}
+
+# search wallpapers
+sh_info "getting data..."
+get_ids "$query"
+
+{
+  read t < "$datafile"
+  [ -z "$t" ] && { sh_info "no images found"; exit 1; }
+}
+
+thumbnails=$( jq -r '.data[]?|.thumbs.'"$quality" < "$datafile")
+
+if [ -z "$thumbnails" ]; then
+  notify "wallhaven" "no-results found"
+  exit 1
+fi
+
+# download the thumbnails
+sh_info "caching thumbnails..."
+for url in $thumbnails
+do
+  printf "url = %s\n" "$url"
+  printf "output = %s\n" "$cachedir/${url##*/}"
+done | curl -K -
+#sh_info "downloaded thumbnails..."
+
+image_ids=$(sxiv $sxiv_otps "$cachedir" | rev | cut -c5-10 | rev )
+
+[ -z "$image_ids" ] && exit
+
+# download the selected wall papers
+cd "$walldir"
+sh_info "downloading wallpapers..."
+for ids in $image_ids
+do
+  url=$( jq -r '.data[]?|select( .id == "'$ids'" )|.path' < "$datafile" )
+  printf "url = %s\n" "$url"
+  printf -- "-O\n"
+done | curl -K -
+
+sh_info "downloaded wallpapers..."
