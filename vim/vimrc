@@ -11,16 +11,16 @@ endif
 
 call plug#begin('~/.vim/plugged')
 " Vim tester
-Plug 'junegunn/vader.vim', { 'on': 'Vader', 'for': 'vader'}
+Plug 'junegunn/vader.vim'
 
 " A color table with xterm color codes
-Plug 'guns/xterm-color-table.vim', { 'on': 'Colors' }
+Plug 'guns/xterm-color-table.vim'
 
 " Simple commenting
 Plug 'tpope/vim-commentary'
 
 " Emmet but simpler
-Plug 'rstacruz/sparkup', { 'for': ['html', 'javascript'] }
+Plug 'rstacruz/sparkup'
 
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
@@ -35,16 +35,16 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-projectionist'
 
 " A tag overview on the right side
-Plug 'majutsushi/tagbar', { 'on': ['TagbarToggle', 'TagbarOpen'] }
+Plug 'majutsushi/tagbar'
 
 " Personal hypertext files
-Plug 'vimwiki/vimwiki' ", { 'on': '<Plug>VimwikiIndex', 'for': 'vimwiki' }
+Plug 'vimwiki/vimwiki'
 
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
 
 " Undo tree visualiser
-Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
+Plug 'simnalamburt/vim-mundo'
 
 " Quickfix window mappings
 Plug 'romainl/vim-qf'
@@ -53,20 +53,20 @@ Plug 'romainl/vim-qf'
 Plug 'tpope/vim-repeat'
 
 " Distraction-free editing
-Plug 'junegunn/goyo.vim', { 'for': 'markdown', 'on': 'Goyo' }
-Plug 'junegunn/limelight.vim', { 'for': 'markdown', 'on': 'Limelight' }
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 
 " Better CSV editing
-Plug 'chrisbra/csv.vim', { 'for': 'csv' }
+Plug 'chrisbra/csv.vim'
 
 " Display ANSI color codes
-Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc' }
+Plug 'vim-scripts/AnsiEsc.vim'
 
 " Disable hlsearch after finished searching
 Plug 'romainl/vim-cool'
 
 " Vim + latex
-Plug 'lervag/vimtex', { 'for': ['latex', 'tex'] }
+Plug 'lervag/vimtex'
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -82,7 +82,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-abolish'
 
 " Highlight hex colors
-Plug 'chrisbra/colorizer', { 'on': ['ColorHighlight', 'ColorToggle'] }
+Plug 'chrisbra/colorizer'
 
 " Pywal scheme in vim
 Plug 'dylanaraps/wal.vim'
@@ -97,13 +97,13 @@ Plug 'arp242/jumpy.vim'
 Plug 'markonm/traces.vim'
 
 " Omnifuncs
-Plug 'myhere/vim-nodejs-complete', { 'for': 'javascript' }
-Plug 'othree/html5.vim', { 'for': 'html' }
-Plug 'vim-scripts/OmniCppComplete', { 'for': 'cpp' }
-Plug 'vim-scripts/pythoncomplete', { 'for': 'python' }
+Plug 'myhere/vim-nodejs-complete'
+Plug 'othree/html5.vim'
+Plug 'vim-scripts/OmniCppComplete'
+Plug 'vim-scripts/pythoncomplete'
 
 " Alignment
-Plug 'junegunn/vim-easy-align', { 'on': ['EasyAlign', 'LiveEasyAlign', '<Plug>(LiveEasyAlign)'] }
+Plug 'junegunn/vim-easy-align'
 "
 " Peek contents of registers
 Plug 'junegunn/vim-peekaboo'
@@ -115,17 +115,17 @@ Plug 'joom/latex-unicoder.vim'
 Plug 'psliwka/vim-smoothie'
 
 " Asynchronous popery
-Plug 'tpope/vim-dispatch', { 'on': ['Dispatch', 'Make', 'Maketab', 'Start', 'Spawn'] }
+Plug 'tpope/vim-dispatch'
 
 " Vimscript testing
-Plug 'tpope/vim-scriptease', { 'for': 'vim' }
+Plug 'tpope/vim-scriptease'
 
 " Set 'path', 'suffixesadd', 'include', 'includeexpr', 'define'
 "   automatically for selected filetypes.
 Plug 'tpope/vim-apathy'
 
 " Schemer - colorscheme creator
-Plug 'thezeroalpha/vim-schemer', { 'for': 'schemer', 'on': ['<Plug>SchemerSynstack', '<Plug>SchemerEdit']}
+Plug 'thezeroalpha/vim-schemer'
 
 " Make ins-completion relative to current file
 Plug 'thezeroalpha/vim-relatively-complete'
@@ -149,7 +149,7 @@ Plug 'stefandtw/quickfix-reflector.vim'
 Plug 'skanehira/gh.vim'
 
 " Minesweeper
-Plug 'iqxd/vim-mine-sweeping', { 'on': 'MineSweep' }
+Plug 'iqxd/vim-mine-sweeping'
 call plug#end()
 " }}}2
 " Config {{{2
