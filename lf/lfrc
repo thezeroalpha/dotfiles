@@ -153,7 +153,7 @@ cmd tar ${{
 
 # custom paste command using rsync/mv
 cmd paste &{{
-    load=$(lf -remote 'load')
+    load=$(cat ~/.local/share/lf/files)
     mode=$(echo "$load" | sed -n '1p')
     list=$(echo "$load" | sed '1d')
     if [ $mode = 'copy' ]; then
@@ -171,7 +171,7 @@ cmd paste &{{
 
 # paste as a symbolic link to original
 cmd paste_link %{{
-  for file in $(lf -remote 'load'); do
+  for file in $(cat ~/.local/share/lf/files); do
     if [ ! -n "${mode+1}" ]; then
       mode="$file"
       continue
