@@ -136,6 +136,9 @@ Plug 'thezeroalpha/vim-visualrun'
 " Select files with LF
 Plug 'thezeroalpha/vim-lf'
 
+" Literate programming in Markdown
+Plug 'thezeroalpha/vim-literate-markdown'
+
 " Lightweight REPL
 Plug 'axvr/zepl.vim'
 
@@ -412,7 +415,7 @@ let g:repl_config = {
         \ 'load_file': 'from %s import *'
       \ },
       \ 'javascript': { 'cmd': 'node' },
-      \ 'ruby': { 'cmd': 'irb' },
+      \ 'ruby': { 'cmd': 'irb', 'load_file': 'load "%s"' },
       \ 'r': { 'cmd': 'R' }
 \ }
 nnoremap gzr :Repl<CR>
