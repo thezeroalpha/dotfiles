@@ -92,6 +92,7 @@ key_bindings:
   - { key: Key5,        mods: Alt|Shift,       chars: "\x1B%"           }
   - { key: Key6,        mods: Alt,             chars: "\x1B6"           }
   - { key: Key6,        mods: Alt|Shift,       chars: "\x1B^"           }
+  - { key: Key6,        mods: Control,         chars: "\x1e"            }
   - { key: Key7,        mods: Alt,             chars: "\x1B7"           }
   - { key: Key7,        mods: Alt|Shift,       chars: "\x1B&"           }
   - { key: Key8,        mods: Alt,             chars: "\x1B8"           }
@@ -121,6 +122,7 @@ key_bindings:
   - { key: Period,      mods: Alt|Shift,       chars: "\x1B>"           }
   - { key: Slash,       mods: Alt,             chars: "\x1B/"           }
   - { key: Slash,       mods: Alt|Shift,       chars: "\x1B?"           }
+  - { key: Slash,       mods: Control,         chars: "\x1f"            }
   - { key: Grave,       mods: Alt,             chars: "\x1B`"           }
   - { key: Grave,       mods: Alt|Shift,       chars: "\x1B~"           }
 alt_send_esc: false
