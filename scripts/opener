@@ -19,6 +19,7 @@ case "$1" in
         case "$1" in
           *.mp3) mpv --no-audio-display --no-video --volume=50 "$1";;
           *.dmg) setsid -f open "$@" > /dev/null 2>&1;;
+          *.webm) mpvq "$@";;
         esac
         ;;
       *) setsid -f open "$@" > /dev/null 2>&1;;
