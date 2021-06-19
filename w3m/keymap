@@ -24,13 +24,14 @@ keymap C-u PREV_HALF_PAGE
 # Misc
 keymap H BACK
 keymap ~ GOTO_HOME # specified in $WWW_HOME
-keymap M-f GOTO https://search.alex.balgavy.eu
 keymap C-l REDRAW
 keymap s PRINT
 keymap S DOWNLOAD
 keymap ";" COMMAND
 keymap e EXTERN_LINK
 keymap ] EXTERN
+keymap M-e COMMAND 'SET_OPTION default_url=1 ; GOTO ; SET_OPTION default_url=0'
+keymap M-f COMMAND 'SHELL ~/.config/w3m/cgi-bin/get-query.cgi ; GOTO /cgi-bin/searx-query.cgi'
 
 # Menus
 keymap M-h HISTORY
@@ -67,6 +68,7 @@ keymap SPCc EXEC_SHELL 'printf "%s" $W3M_URL | clc'
 keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
 keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
 keymap SPCv EXEC_SHELL 'linkhandler "$W3M_CURRENT_LINK"'
+keymap xs COMMAND 'EXEC_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/goto-target-url.cgi'
 
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
