@@ -18,24 +18,8 @@ inoremap <buffer> - -<c-g>u
 nnoremap <buffer> <leader><CR> :silent !open "%<.pdf"<CR>:redraw!<CR>
 nnoremap <buffer> <leader>` :<C-u>EvalBlock<CR>
 
-" Autocommands
-" if g:loaded_dispatch
-"   augroup markdown_autocmds
-"     au! * <buffer>
-"     au BufWrite <buffer> Dispatch proselint %
-"   augroup END
-" else
-"   function! s:proselint_buffer()
-"     compiler proselint
-"     make
-"     copen
-"     compiler markdown
-"   endfunction
-"   augroup markdown_autocmds
-"     au! * <buffer>
-"     au BufWrite <buffer> call s:proselint_buffer()
-"   augroup END
-" endif
+nmap <buffer> <leader>ce <Plug>LitMdExecPrevBlock
+nmap <buffer> <leader>ct <Plug>LitMdTangle
 
 " Settings
 compiler markdown
