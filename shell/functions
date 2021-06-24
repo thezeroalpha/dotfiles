@@ -142,4 +142,21 @@ if [ -d ~/.config/fzf ]; then
   rj() {
     fzf --preview "cat $1 | jq {q}"
   }
+
+  # list man pages
+  mans() {
+    sec="${1:-1|4}"
+    # (sorry, couldn't be arsed to deal with escaping parentheses for variable passing in awk)
+    manlist=$(man -k . 2>/dev/null | awk "$(printf 'BEGIN {FS=OFS="- "} /\([%s]\)/ {gsub(/\([0-9]\)/, "", $1); if (!seen[$0]++) { print }}' "$sec")" | fzf) \
+      && man "$(echo "$manlist" | awk -F' |,' '{print $1}')" \
+      && unset manlist
+  }
+
+  # list env variables
+  envs() {
+    var=$(printenv | cut -d= -f1 | fzf) \
+      && echo "$var=$(printenv "$var")" \
+      && unset var
+  }
+
 fi
