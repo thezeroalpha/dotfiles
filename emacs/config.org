@@ -4,7 +4,7 @@
   #+begin_src emacs-lisp
   (add-hook 'focus-out-hook #'garbage-collect)
   #+end_src
-
+  
 * Package management
 ** Repositories (MELPA & Org)
    #+begin_src emacs-lisp
@@ -132,10 +132,11 @@
      (show-paren-mode 1)
    #+end_src
 
-   Line numbers:
+   Relative line numbers:
    
    #+begin_src emacs-lisp
-     (global-linum-mode 1)
+     (setq display-line-numbers-type 'relative)
+     (global-display-line-numbers-mode)
    #+end_src
 
 * Theme
@@ -175,13 +176,6 @@
       (load-theme 'doom-one-light t))
   #+end_src
   
-* Follow symlinks
-  Make sure to follow symlinks without prompting:
-
-  #+begin_src emacs-lisp
-    (setq vc-follow-symlinks t)
-  #+end_src
-
 * Backup files
   By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
   This setting puts them in ~/.local/share/emacs/saves.
