@@ -26,3 +26,12 @@ hi def link markdownAbbrev Define
 hi def link markdownCite Comment
 hi def link markdownCiteInline Comment
 hi def link markdownLatex Identifier
+
+if has('conceal')
+  setl conceallevel=2 " Use concealchar and highlight with Conceal group
+  syn match concealOperator "<=" conceal cchar=≤
+  syn match concealOperator ">=" conceal cchar=≥
+  syn keyword concealKeyword lambda conceal cchar=λ
+  hi! link concealOperator Conceal
+  hi! link concealKeyword Conceal
+endif
