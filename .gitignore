@@ -24,6 +24,7 @@ w3m/*
 !w3m/config
 !w3m/mailcap
 !w3m/keymap
+!w3m/cgi-bin/
 
 # GNUPG: Don't want to share my keys, but I want the config in git
 gnupg/*
