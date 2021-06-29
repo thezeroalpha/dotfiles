@@ -195,12 +195,21 @@
      (global-display-line-numbers-mode)
    #+end_src
 
-* Backup files
-  By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
-  This setting puts them in ~/.local/share/emacs/saves.
+* Auto-Save files
+  By default, auto-save files ("#file#") are placed in the same directory as the file itself.
+  I want to put this all in some unified place:
 
   #+begin_src emacs-lisp
-    (setq backup-directory-alist '(("." . "~/.local/share/emacs/saves")))
+    (setq auto-save-file-name-transforms
+	  `((".*" "~/.local/share/emacs/saves/" t)))
+  #+end_src
+
+* Backup files
+  By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
+  This setting puts them in ~/.local/share/emacs/backups.
+
+  #+begin_src emacs-lisp
+    (setq backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
     (setq backup-by-copying t)
   #+end_src
 
