@@ -159,6 +159,11 @@
        (lean-mode . (lambda () (define-key lean-mode-map (kbd "S-SPC") #'company-complete))))
    #+end_src
 
+** magit
+   #+begin_src emacs-lisp
+     (use-package magit)
+   #+end_src
+
 * Interface
 ** GUI elements
    Get rid of all bars.
@@ -181,19 +186,26 @@
    #+end_src
 
 ** Appearance
-   Highlight the current line:
+*** Cursor line
+    Highlight the current line:
 
-   #+begin_src emacs-lisp
-     (global-hl-line-mode)
-     (show-paren-mode 1)
-   #+end_src
+    #+begin_src emacs-lisp
+      (global-hl-line-mode)
+      (show-paren-mode 1)
+    #+end_src
+*** Line numbers
+    Relative line numbers:
 
-   Relative line numbers:
+    #+begin_src emacs-lisp
+      (setq display-line-numbers-type 'relative)
+      (global-display-line-numbers-mode)
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (setq display-line-numbers-type 'relative)
-     (global-display-line-numbers-mode)
-   #+end_src
+    Don't display them in specific modes:
+
+    #+begin_src emacs-lisp
+      (add-hook 'doc-view-mode-hook (lambda () (display-line-numbers-mode 0)))
+    #+end_src
 
 * Auto-Save files
   By default, auto-save files ("#file#") are placed in the same directory as the file itself.
