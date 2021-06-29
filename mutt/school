@@ -10,7 +10,7 @@ set record = +"Sent Items"
 set spoolfile = +Inbox
 set mbox = +Archive
 unmailboxes *
-mailboxes +Inbox +Archive +Drafts +"Sent Items" +"Deleted Items" +"Junk E-Mail"
+mailboxes +Inbox +Archive +Drafts +"Sent Items" +"Deleted Items" +"Junk Email"
 set header_cache = ~/.cache/mutt/$my_school_email/headers
 set message_cachedir = ~/.cache/mutt/$my_school_email/bodies
 
@@ -33,7 +33,7 @@ macro index,pager A "<save-message>=Archive<enter>" "move mail to Archive"
 macro index,pager gi "<change-folder>=Inbox<enter>" "go to Inbox"
 macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to Drafts"
-macro index,pager gj "<change-folder>=Junk E-Mail<enter>" "go to Junk E-Mail"
+macro index,pager gj "<change-folder>=Junk Email<enter>" "go to Junk Email"
 macro index,pager gt "<change-folder>=Deleted Items<enter>" "go to Deleted Items"
 macro index,pager gs "<change-folder>=Sent Items<enter>" "go to Sent Items"
 macro index,pager MI "<save-message>=Inbox<enter>" "move mail to Inbox"
