@@ -31,7 +31,7 @@
 
   Define the themes I want:
 
-  #+begin_src elisp
+  #+begin_src emacs-lisp
     (setq dark-theme 'doom-one)
     (setq light-theme 'doom-acario-light)
   #+end_src
@@ -39,14 +39,17 @@
   Change theme depending on the current system theme.
   The way I check for dark mode is defined in 'dark-mode-p'; currently I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set.
   A function ending in '-p' is a predicate, i.e. returns true or false.
+  If calling a function that's in a variable, you have to use 'funcall'.
 
   #+begin_src emacs-lisp
     (let ((dark-mode-p (lambda () (file-exists-p "~/.config/dark-theme"))))
-
-      (if (dark-mode-p)
+      (if (funcall dark-mode-p)
 	  (load-theme dark-theme t)
 	(load-theme light-theme t)))
   #+end_src
+
+  #+RESULTS:
+  : t
 
 * Garbage collection
   Garbage-collect on focus-out, Emacs /should/ feel snappier.
