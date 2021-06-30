@@ -260,6 +260,13 @@
    #+begin_src emacs-lisp
      (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+end_src
+** Auto-formatting
+   Disable fill mode in Markdown
+
+   #+begin_src elisp
+     (add-hook 'markdown-mode-hook (lambda () (auto-fill-mode 0) (flyspell-mode 1)))
+   #+end_src
+
 * Misc settings
 ** Enable all commands
    By default, Emacs disables some commands.
