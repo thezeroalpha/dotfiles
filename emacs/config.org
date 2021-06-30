@@ -29,12 +29,23 @@
       (doom-themes-org-config))
   #+end_src
 
-  Change theme depending on the current system theme (I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set):
+  Define the themes I want:
+
+  #+begin_src elisp
+    (setq dark-theme 'doom-one)
+    (setq light-theme 'doom-acario-light)
+  #+end_src
+
+  Change theme depending on the current system theme.
+  The way I check for dark mode is defined in 'dark-mode-p'; currently I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set.
+  A function ending in '-p' is a predicate, i.e. returns true or false.
 
   #+begin_src emacs-lisp
-    (if (file-exists-p "~/.config/dark-theme")
-	(load-theme 'doom-one t)
-      (load-theme 'doom-acario-light t))
+    (let ((dark-mode-p (lambda () (file-exists-p "~/.config/dark-theme"))))
+
+      (if (dark-mode-p)
+	  (load-theme dark-theme t)
+	(load-theme light-theme t)))
   #+end_src
 
 * Garbage collection
@@ -164,6 +175,15 @@
      (use-package magit)
    #+end_src
 
+** vterm
+   Emacs has a bunch of built-in terminal emulators.
+   And they all suck.
+   (OK not really, eshell is good, but not for interactive terminal programs like newsboat/neomutt)
+
+   #+begin_src emacs-lisp
+     (use-package vterm)
+   #+end_src
+
 * Interface
 ** GUI elements
    Get rid of all bars.
@@ -201,10 +221,16 @@
       (global-display-line-numbers-mode)
     #+end_src
 
-    Don't display them in specific modes:
+    Don't display them in specific modes.  For each of the modes in
+    'mode-hooks', add a function to hide line numbers when the mode
+    activates (which triggers the 'mode'-hook).
 
     #+begin_src emacs-lisp
-      (add-hook 'doc-view-mode-hook (lambda () (display-line-numbers-mode 0)))
+      (let ((mode-hooks '(doc-view-mode-hook vterm-mode-hook)))
+	(mapc
+	 (lambda (mode-name)
+	   (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
+	 mode-hooks))
     #+end_src
 
 * Auto-Save files
