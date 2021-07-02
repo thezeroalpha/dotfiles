@@ -4,6 +4,7 @@ export DOTFILES="$HOME/.dotfiles"
 [ -f "$DOTFILES/shell/secret_env" ] && . "$DOTFILES/shell/secret_env"
 
 if [ -n "$VIM_TERMINAL" ]; then EDITOR="vimsend"
+elif [ -n "$INSIDE_EMACS" ]; then EDITOR="emacsclient"
 else EDITOR="$(command -v vim)"; fi
 export EDITOR
 

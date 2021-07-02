@@ -7,7 +7,7 @@
     (use-package all-the-icons)
   #+end_src
 
-  Load Doom emacs themes:
+  Load Doom Emacs themes:
 
   #+begin_src emacs-lisp
     (use-package doom-themes
@@ -47,7 +47,6 @@
 	  (load-theme dark-theme t)
 	(load-theme light-theme t)))
   #+end_src
-
 
 * Garbage collection
   Garbage-collect on focus-out, Emacs /should/ feel snappier.
@@ -180,10 +179,15 @@
 ** vterm
    Emacs has a bunch of built-in terminal emulators.
    And they all suck.
-   (OK not really, eshell is good, but not for interactive terminal programs like newsboat/neomutt)
+   (OK not really, eshell is alright, but not for interactive terminal programs like newsboat/neomutt)
+
+   Also use emacsclient inside vterm as an editor, because that'll open documents in the existing Emacs session.
+   And I'm not gonna be a heretic and open Vim inside of Emacs.
 
    #+begin_src emacs-lisp
-     (use-package vterm)
+     (use-package vterm
+       :config
+       (setq vterm-environment '("EDITOR=emacsclient")))
    #+end_src
 
 * Interface
@@ -234,6 +238,14 @@
 	   (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
 	 mode-hooks))
     #+end_src
+*** Modeline
+    I want to show the time in the modeline:
+
+    #+begin_src emacs-lisp
+      (display-time-mode 1)
+    #+end_src
+
+    Maybe at some point I'll customize the modeline too.
 
 * Auto-Save files
   By default, auto-save files ("#file#") are placed in the same directory as the file itself.
@@ -299,6 +311,13 @@
 
    #+begin_src emacs-lisp
      (setq view-read-only t)
+   #+end_src
+** Mail mode for neomutt
+   When editing a message from neomutt, I want to use mail mode.
+   Even though I won't be sending the email from there, I like the syntax highlighting :)
+
+   #+begin_src emacs-lisp
+     (add-to-list 'auto-mode-alist '("/neomutt-" . mail-mode))
    #+end_src
 
 * Misc settings
