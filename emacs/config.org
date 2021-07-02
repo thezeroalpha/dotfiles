@@ -48,8 +48,6 @@
 	(load-theme light-theme t)))
   #+end_src
 
-  #+RESULTS:
-  : t
 
 * Garbage collection
   Garbage-collect on focus-out, Emacs /should/ feel snappier.
@@ -108,7 +106,8 @@
 
 ** helm
    Better incremental completion and selection narrowing.
-   Generally makes for nicer interactivity.
+   And a bunch more.
+   Generally makes for nicer interactivity, like ido mode on steroids.
 
    #+begin_src emacs-lisp
      (use-package helm
@@ -270,6 +269,38 @@
      (add-hook 'markdown-mode-hook (lambda () (auto-fill-mode 0) (flyspell-mode 1)))
    #+end_src
 
+** Pulse line
+   Set some options for pulsing:
+
+   #+begin_src emacs-lisp
+     (setq pulse-iterations 10)
+     (setq pulse-delay 0.05)
+   #+end_src
+
+   Define the pulse function:
+
+   #+begin_src emacs-lisp
+     (defun pulse-line (&rest _)
+       "Pulse the current line."
+       (pulse-momentary-highlight-one-line (point)))
+   #+end_src
+
+   Run it in certain cases: scrolling up/down, recentering, switching windows.
+   'dolist' binds 'command' to each value in the list in turn, and runs the body.
+   'advice-add' makes the pulse-line function run after 'command'.
+
+   #+begin_src emacs-lisp
+     (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
+       (advice-add command :after #'pulse-line))
+   #+end_src
+** Pager mode
+   M-x view-mode enables pager behavior.
+   I want read-only files to automatically use pager mode:
+
+   #+begin_src emacs-lisp
+     (setq view-read-only t)
+   #+end_src
+
 * Misc settings
 ** Enable all commands
    By default, Emacs disables some commands.
@@ -278,3 +309,8 @@
    #+begin_src emacs-lisp
      (setq disabled-command-function nil)
    #+end_src
+
+* References
+  Here's a list of good articles I encountered about configging emacs:
+  - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
+  - [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs]]

@@ -20,4 +20,5 @@
  ;; If there is more than one, they won't work right.
  '(helm-buffer-file ((t (:inherit default))))
  '(helm-ff-file-extension ((t (:inherit default))))
- '(helm-non-file-buffer ((t (:inherit font-lock-comment-face)))))
+ '(helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
+ '(pulse-highlight-start-face ((t (:background "CadetBlue2")))))
