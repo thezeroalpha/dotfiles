@@ -7,10 +7,24 @@ set folder = ~/.local/share/mail/$my_school_email/
 set postponed = +Drafts
 set trash = +"Deleted Items"
 set record = +"Sent Items"
-set spoolfile = +Inbox
 set mbox = +Archive
+
+
+# unmailboxes *
+# mailboxes +Inbox +Archive +Drafts +"Sent Items" +"Deleted Items" +"Junk Email"
+# set spoolfile = +Inbox
+# For notmuch:
 unmailboxes *
-mailboxes +Inbox +Archive +Drafts +"Sent Items" +"Deleted Items" +"Junk Email"
+unvirtual-mailboxes *
+virtual-mailboxes \
+  "Inbox (S)" "notmuch://?query=folder:$my_school_email/Inbox" \
+  "Archive (S)" "notmuch://?query=folder:$my_school_email/Archive" \
+  "Drafts (S)" "notmuch://?query=folder:$my_school_email/Drafts" \
+  "Tickets (S)" "notmuch://?query=folder:$my_school_email/Sent Items" \
+  "Trash (S)" "notmuch://?query=folder:$my_school_email/Deleted Items" \
+  "Spam (S)" "notmuch://?query=folder:$my_school_email/Junk Email"
+set spoolfile = "Inbox (S)"
+
 set header_cache = ~/.cache/mutt/$my_school_email/headers
 set message_cachedir = ~/.cache/mutt/$my_school_email/bodies
 
@@ -27,26 +41,37 @@ set ssl_starttls = yes
 # Hook -- IMPORTANT!
 account-hook $folder "set imap_user=$my_school_email imap_pass=$my_school_pass_cmd"
 
+# Retrieve new email
 macro index O "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email && notmuch new<enter>" "run mbsync to sync $my_school_email"
 macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email:INBOX,'Sent Items' && notmuch new<enter>" "run mbsync to sync all mail"
-macro index,pager A "<save-message>=Archive<enter>" "move mail to Archive"
-macro index,pager gi "<change-folder>=Inbox<enter>" "go to Inbox"
-macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
-macro index,pager gd "<change-folder>=Drafts<enter>" "go to Drafts"
-macro index,pager gj "<change-folder>=Junk Email<enter>" "go to Junk Email"
-macro index,pager gt "<change-folder>=Deleted Items<enter>" "go to Deleted Items"
-macro index,pager gs "<change-folder>=Sent Items<enter>" "go to Sent Items"
-macro index,pager MI "<save-message>=Inbox<enter>" "move mail to Inbox"
-macro index,pager MA "<save-message>=Archive<enter>" "move mail to Archive"
-macro index,pager MD "<save-message>=Drafts<enter>" "move mail to Drafts"
-macro index,pager MJ "<save-message>=Junk E-Mail<enter>" "move mail to Junk E-Mail"
-macro index,pager MT "<save-message>=Deleted Items<enter>" "move mail to Deleted Items"
-macro index,pager MS "<save-message>=Sent Items<enter>" "move mail to Sent Items"
-macro index,pager MM "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
-macro index,pager CI "<copy-message>=Inbox<enter>" "copy mail to Inbox"
-macro index,pager CA "<copy-message>=Archive<enter>" "copy mail to Archive"
-macro index,pager CD "<copy-message>=Drafts<enter>" "copy mail to Drafts"
-macro index,pager CJ "<copy-message>=Junk E-Mail<enter>" "copy mail to Junk E-Mail"
-macro index,pager CT "<copy-message>=Deleted Items<enter>" "copy mail to Deleted Items"
-macro index,pager CS "<copy-message>=Sent Items<enter>" "copy mail to Sent Items"
-macro index,pager CC "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+
+# Delete
+macro index,pager d "\
+<delete-message>\
+<modify-labels-then-hide>-inbox -archive -drafts -spam +trash -sent -unread<enter>"
+
+# Actually delete
+bind index,pager D purge-message
+
+# Undelete
+macro index,pager u "\
+<undelete-message>\
+<modify-labels-then-hide>-trash<enter>"
+
+# Changing folders
+macro index,pager gi "<change-vfolder>Inbox (S)<enter>" "go to Inbox"
+macro index,pager ga "<change-vfolder>Archive (S)<enter>" "go to Archive"
+macro index,pager gd "<change-vfolder>Drafts (S)<enter>" "go to Drafts"
+macro index,pager gj "<change-vfolder>Junk Email (S)<enter>" "go to Junk Email"
+macro index,pager gt "<change-vfolder>Deleted Items (S)<enter>" "go to Deleted Items"
+macro index,pager gs "<change-vfolder>Sent Items (S)<enter>" "go to Sent Items"
+
+# Moving emails
+macro index,pager MI "<modify-labels>+inbox -archive -drafts -spam -trash -sent -unread<enter><save-message>=Inbox<enter>" "move mail to Inbox"
+macro index,pager MA "<modify-labels>-inbox +archive -drafts -spam -trash -sent -unread<enter><save-message>=Archive<enter>" "move mail to Archive"
+macro index,pager a "<modify-labels>-inbox +archive -drafts -spam -trash -sent -unread<enter><save-message>=Archive<enter>" "move mail to Archive"
+macro index,pager MD "<modify-labels>-inbox -archive +drafts -spam -trash -sent -unread<enter><save-message>=Drafts<enter>" "move mail to Drafts"
+macro index,pager MJ "<modify-labels>-inbox -archive -drafts +spam -trash -sent -unread<enter><save-message>=Junk Email<enter>" "move mail to Junk Email"
+macro index,pager MT "<modify-labels>-inbox -archive -drafts -spam +trash -sent -unread<enter><save-message>=Deleted Items<enter>" "move mail to Deleted Items"
+macro index,pager MS "<modify-labels>-inbox -archive -drafts -spam -trash +sent -unread<enter><save-message>=Sent Items<enter>" "move mail to Sent Items"
+

@@ -4,6 +4,9 @@ source `{ [ -f ~/.config/dark-theme ] && printf "colors-dark"; } || printf "colo
 # Don't ask to press key on shell commands
 unset wait_key
 
+# Don't move to next message when modifying -- this breaks notmuch macros
+set resolve = no
+
 set mbox_type = Maildir
 set mail_check=0 # minimum time between scans
 unset mark_old # it's enough to see whats unread
@@ -80,7 +83,7 @@ bind pager G  bottom
 bind pager R  group-reply
 
 bind attach <return> view-mailcap
-macro index,pager,attach,compose u "\
+macro index,pager,attach,compose U "\
 <enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
 <pipe-message> urlview<Enter>\
 <enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
@@ -122,8 +125,6 @@ bind index G last-entry
 bind index gg first-entry
 bind pager,attach h exit
 bind pager l view-attachments
-bind index D delete-message
-bind index U undelete-message
 bind index L limit
 bind index h noop
 bind index l display-message
@@ -142,11 +143,10 @@ set query_command = "khard email --parsable %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 bind index,pager M noop
-bind index,pager C noop
 bind index,pager / search
 bind index,pager n search-next
 bind index,pager N search-opposite
-macro index a "<limit>all<enter>"
+macro index A "<limit>all<enter>"
 
 set nm_default_url = "notmuch://`notmuch config get database.path`"
 bind index,pager + entire-thread
@@ -155,8 +155,8 @@ bind index,pager \Cf vfolder-from-query
 bind index,pager i noop
 source school
 folder-hook $folder 'source ~/.config/mutt/school'
-macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<enter><change-folder>!<enter><check-stats>' "switch to school"
+macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<enter><change-vfolder>Inbox (S)<enter><check-stats>' "switch to school"
 
 source personal
 folder-hook $folder 'source ~/.config/mutt/personal'
-macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-folder>!<enter><check-stats>' "switch to personal"
+macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-vfolder>Inbox (P)<enter><check-stats>' "switch to personal"
