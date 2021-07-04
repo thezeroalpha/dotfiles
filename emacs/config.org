@@ -90,8 +90,9 @@
    #+begin_src emacs-lisp
      (when (memq window-system '(mac ns x))
        (use-package exec-path-from-shell
-	 :config
-	 (exec-path-from-shell-initialize)))
+         :config
+         (add-to-list 'exec-path-from-shell-variables "NOTMUCH_CONFIG")
+         (exec-path-from-shell-initialize)))
    #+end_src
 
 ** emacs-which-key
@@ -374,6 +375,28 @@ Use hippie expand instead of dabbrev-expand:
 ** More extensive apropos
 #+begin_src emacs-lisp
 (setq apropos-do-all t)
+#+end_src
+* Notmuch
+Define some saved searches (i.e. mailboxes):
+
+#+begin_src emacs-lisp
+  (setq notmuch-saved-searches
+      `((:name "inbox: personal" :query "folder:/alex@balgavy.eu/ tag:inbox" :key ,(kbd "ip"))
+        (:name "inbox: school" :query "folder:/a.balgavy@student.vu.nl/ tag:inbox" :key ,(kbd "is"))
+        (:name "archive: personal" :query "folder:/alex@balgavy.eu/ tag:archive" :key ,(kbd "ap"))
+        (:name "archive: school" :query "folder:/a.balgavy@student.vu.nl/ tag:archive" :key ,(kbd "as"))))
+#+end_src
+
+Global keybindings:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c m") #'notmuch)
+#+end_src
+
+Show newest mail first:
+
+#+begin_src emacs-lisp
+  (setq notmuch-search-oldest-first nil)
 #+end_src
 
 * References
