@@ -34,6 +34,8 @@ auto_view text/*
 set abort_noattach = yes
 set abort_noattach_regex = "attach|attached|attachments?"
 
+# For key bindings, do :exec what-key
+
 # Sidebar
 set sidebar_visible = yes
 set sidebar_width = 20
@@ -41,22 +43,20 @@ set sidebar_short_path = yes
 set sidebar_next_new_wrap = yes
 set mail_check_stats
 set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
-bind index,pager \Ck sidebar-prev
-bind index,pager \Cj sidebar-next
+bind index,pager \Cp sidebar-prev
+bind index,pager \Cn sidebar-next
 bind index,pager \Cl sidebar-open
-bind index,pager \Cp sidebar-prev-new
-bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
 bind index t tag-entry
 
 # Switch ; and : keys
-unbind generic :
-unbind generic ;
-bind generic \; enter-command
+unbind generic,pager :
+unbind generic,pager ;
+bind generic,pager \; enter-command
 bind generic : tag-prefix
 
 set date_format = "%d/%m"
-set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
+set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c) %> [%g]"
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail.
 # there's an issue with sorting where messages in threads should be sorted by date, top-to-bottom.
@@ -75,6 +75,7 @@ set tilde                  # show tildes like in vim
 unset markers              # no ugly plus signs
 set quote_regex = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 alternative_order text/plain text/enriched text/html
+
 bind pager k  previous-line
 bind pager j  next-line
 bind pager g noop
@@ -105,7 +106,7 @@ bind attach <return> view-mailcap
 bind attach l view-mailcap
 
 # General mappings
-macro index,pager S '<sync-mailbox><shell-escape>notmuch new<enter>'
+macro index,pager S '<sync-mailbox><shell-escape>notmuch-hook<enter>'
 bind compose p postpone-message
 bind compose l view-attach
 bind compose h exit
@@ -135,6 +136,8 @@ bind pager,browser gg top-page
 bind pager,browser G bottom-page
 bind index,pager,browser \Cd half-down
 bind index,pager,browser \Cu half-up
+bind pager <space> half-down
+bind pager \C? half-up # backspace key
 bind index \031 previous-undeleted	# Mouse wheel
 bind index \005 next-undeleted		# Mouse wheel
 bind pager \031 previous-line		# Mouse wheel

@@ -1,0 +1,5 @@
+#!/bin/sh
+notmuch new
+notmuch tag --remove-all +sent -- from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl
+notmuch tag --remove-all +drafts -- folder:/Drafts/
+notmuch tag -inbox +spam -- folder:/Spam/ or folder:/Junk/

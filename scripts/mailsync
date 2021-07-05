@@ -1,7 +1,7 @@
 #!/bin/sh
 rbw unlock
 mbsync -c /Users/alex/.config/mbsync/mbsyncrc -Va
-notmuch new
+notmuch-hook
 notification_str=""
 for i in ~/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new; do
   mailbox_name="$(printf "%s" "$i" | sed 's:^.*mail/::; s:/[Ii][Nn][Bb][Oo][Xx]/new.*$::')"

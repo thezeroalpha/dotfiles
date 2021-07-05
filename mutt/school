@@ -20,9 +20,9 @@ virtual-mailboxes \
   "Inbox (S)" "notmuch://?query=folder:$my_school_email/Inbox" \
   "Archive (S)" "notmuch://?query=folder:$my_school_email/Archive" \
   "Drafts (S)" "notmuch://?query=folder:$my_school_email/Drafts" \
-  "Tickets (S)" "notmuch://?query=folder:$my_school_email/Sent Items" \
-  "Trash (S)" "notmuch://?query=folder:$my_school_email/Deleted Items" \
-  "Spam (S)" "notmuch://?query=folder:$my_school_email/Junk Email"
+  "Sent (S)" "notmuch://?query='folder:\"$my_school_email/Sent Items\"'" \
+  "Trash (S)" "notmuch://?query='folder:\"$my_school_email/Deleted Items\"'" \
+  "Spam (S)" "notmuch://?query='folder:\"$my_school_email/Junk Email\"'"
 set spoolfile = "Inbox (S)"
 
 set header_cache = ~/.cache/mutt/$my_school_email/headers
@@ -42,8 +42,8 @@ set ssl_starttls = yes
 account-hook $folder "set imap_user=$my_school_email imap_pass=$my_school_pass_cmd"
 
 # Retrieve new email
-macro index O "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email && notmuch new<enter>" "run mbsync to sync $my_school_email"
-macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email:INBOX,'Sent Items' && notmuch new<enter>" "run mbsync to sync all mail"
+macro index O "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email && notmuch-hook<enter>" "run mbsync to sync $my_school_email"
+macro index o "<shell-escape>mbsync -c ~/.config/mbsync/mbsyncrc $my_school_email:INBOX,'Sent Items' && notmuch-hook<enter>" "run mbsync to sync all mail"
 
 # Delete
 macro index,pager d "\
@@ -62,9 +62,9 @@ macro index,pager u "\
 macro index,pager gi "<change-vfolder>Inbox (S)<enter>" "go to Inbox"
 macro index,pager ga "<change-vfolder>Archive (S)<enter>" "go to Archive"
 macro index,pager gd "<change-vfolder>Drafts (S)<enter>" "go to Drafts"
-macro index,pager gj "<change-vfolder>Junk Email (S)<enter>" "go to Junk Email"
-macro index,pager gt "<change-vfolder>Deleted Items (S)<enter>" "go to Deleted Items"
-macro index,pager gs "<change-vfolder>Sent Items (S)<enter>" "go to Sent Items"
+macro index,pager gj "<change-vfolder>Spam (S)<enter>" "go to Spam"
+macro index,pager gt "<change-vfolder>Trash (S)<enter>" "go to Trash"
+macro index,pager gs "<change-vfolder>Sent (S)<enter>" "go to Sent"
 
 # Moving emails
 macro index,pager MI "<modify-labels>+inbox -archive -drafts -spam -trash -sent -unread<enter><save-message>=Inbox<enter>" "move mail to Inbox"
