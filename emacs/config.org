@@ -262,7 +262,7 @@ Maybe at some point I'll customize the modeline too.
 
 So, this is a bit hard to grok. But basically the alist contains a
 regular expression to match a buffer name, then a list of functions to
-use in order for displaying the list, and then options for those functions.
+use in order for displaying the list, and then options for those functions (each of which is an alist).
 
 #+begin_src emacs-lisp
   (setq
@@ -272,8 +272,9 @@ use in order for displaying the list, and then options for those functions.
                         3   ;; right
                         1 ) ;; bottom
 
-   display-buffer-alist
-   '(("\\*Help\\*"
+   display-buffer-alist '(
+     ;; Right side
+     ("\\*Help\\*"
       (display-buffer-reuse-window display-buffer-in-side-window)
       (side . right)
       (slot . -1)
@@ -283,6 +284,13 @@ use in order for displaying the list, and then options for those functions.
       (side . right)
       (slot . 0)
       (inhibit-same-window . t))
+     ("magit-process: .*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (side . right)
+      (slot . 0)
+      (inhibit-same-window . t))
+
+     ;; Top side
      ("\\*Info\\*"
       (display-buffer-reuse-window display-buffer-in-side-window)
       (side . top)
@@ -296,7 +304,7 @@ use in order for displaying the list, and then options for those functions.
 And a way to toggle those side windows:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c w") (lambda () (interactive (window-toggle-side-windows))))
+  (global-set-key (kbd "C-c w") (lambda () (interactive) (window-toggle-side-windows)))
 #+end_src
 
 * File locations
