@@ -258,8 +258,47 @@ I want to show the current function:
 #+end_src
 
 Maybe at some point I'll customize the modeline too.
+** Buffer displaying
 
-    Maybe at some point I'll customize the modeline too.
+So, this is a bit hard to grok. But basically the alist contains a
+regular expression to match a buffer name, then a list of functions to
+use in order for displaying the list, and then options for those functions.
+
+#+begin_src emacs-lisp
+  (setq
+   ;; Maximum number of side-windows to create on (left top right bottom)
+   window-sides-slots '(0   ;; left
+                        1   ;; top
+                        3   ;; right
+                        1 ) ;; bottom
+
+   display-buffer-alist
+   '(("\\*Help\\*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (side . right)
+      (slot . -1)
+      (inhibit-same-window . t))
+     ("\\*Async Shell Command\\*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (side . right)
+      (slot . 0)
+      (inhibit-same-window . t))
+     ("\\*Info\\*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (side . top)
+      (slot . 0))
+     ("\\*Man .*\\*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (side . top)
+      (slot . 0))))
+#+end_src
+
+And a way to toggle those side windows:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c w") (lambda () (interactive (window-toggle-side-windows))))
+#+end_src
+
 * File locations
 ** Auto-Save files
   By default, auto-save files ("#file#") are placed in the same directory as the file itself.
