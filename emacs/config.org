@@ -123,12 +123,12 @@
        (helm-buffer-file ((t (:inherit default))))
        :bind
        (("M-x" . helm-M-x)
-	("C-x C-f" . helm-find-files)
-	("C-x C-b" . helm-buffers-list)
-	("C-x b" . helm-buffers-list)
-	("C-x C-r" . helm-recentf)
-	("C-x C-i" . helm-imenu)
-	("M-y" . helm-show-kill-ring))
+        ("C-x C-f" . helm-find-files)
+        ("C-x C-b" . helm-buffers-list)
+        ("C-x b" . helm-buffers-list)
+        ("C-x C-r" . helm-recentf)
+        ("C-x C-i" . helm-imenu)
+        ("M-y" . helm-show-kill-ring))
        :config
        (helm-mode)
        (savehist-mode))
@@ -178,18 +178,20 @@
    #+end_src
 
 ** vterm
-   Emacs has a bunch of built-in terminal emulators.
-   And they all suck.
-   (OK not really, eshell is alright, but not for interactive terminal programs like newsboat/neomutt)
+Emacs has a bunch of built-in terminal emulators.
+And they all suck.
+(OK not really, eshell is alright, but not for interactive terminal programs like newsboat/neomutt)
 
-   Also use emacsclient inside vterm as an editor, because that'll open documents in the existing Emacs session.
-   And I'm not gonna be a heretic and open Vim inside of Emacs.
+Also use emacsclient inside vterm as an editor, because that'll open documents in the existing Emacs session.
+And I'm not gonna be a heretic and open Vim inside of Emacs.
 
-   #+begin_src emacs-lisp
-     (use-package vterm
-       :config
-       (setq vterm-environment '("EDITOR=emacsclient")))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package vterm
+    :config
+    (setq vterm-environment '("EDITOR=emacsclient"))
+    :hook
+    (vterm-mode . (lambda () (unless server-process (server-start)))))
+#+end_src
 
 * Interface
 ** GUI elements
