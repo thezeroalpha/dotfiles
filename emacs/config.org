@@ -459,6 +459,19 @@ Show newest mail first:
   (setq notmuch-search-oldest-first nil)
 #+end_src
 
+Set tags:
+
+#+begin_src emacs-lisp
+  (setq notmuch-archive-tags '("-inbox" "+archive"))
+  (setq notmuch-show-mark-unread-tags '("+unread"))
+  (setq notmuch-delete-tags '("-inbox" "+trash"))
+
+  (setq notmuch-tagging-keys '(("a" notmuch-archive-tags "Archive")
+                               ("r" notmuch-show-mark-read-tags "Mark read")
+                               ("u" notmuch-show-mark-unread-tags "Mark unread")
+                               ("d" notmuch-delete-tags "Delete")))
+#+end_src
+
 * References
   Here's a list of good articles I encountered about configging emacs:
   - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
