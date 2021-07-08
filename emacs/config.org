@@ -428,6 +428,14 @@ Use hippie expand instead of dabbrev-expand:
 #+begin_src emacs-lisp
 (setq apropos-do-all t)
 #+end_src
+** Easily edit my config
+Bind a keyboard shortcut to open my config.
+The "(interactive)" means that it can be called from a keybinding or from M-x (though since it's a lambda, it can't be called from M-x).
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c E") (lambda () (interactive) (find-file (expand-file-name "config.org" user-emacs-directory))))
+#+end_src
+
 * Notmuch
 Define some saved searches (i.e. mailboxes):
 
