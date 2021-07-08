@@ -455,6 +455,17 @@ Define some saved searches (i.e. mailboxes):
         (:name "archive: school" :query "folder:/a.balgavy@student.vu.nl/ tag:archive" :key ,(kbd "as"))))
 #+end_src
 
+Define the main screen sections:
+
+#+begin_src emacs-lisp
+  (setq notmuch-hello-sections
+      '(notmuch-hello-insert-header
+        notmuch-hello-insert-saved-searches
+        notmuch-hello-insert-search
+        notmuch-hello-insert-alltags
+        notmuch-hello-insert-footer))
+#+end_src
+
 Global keybindings:
 
 #+begin_src emacs-lisp
