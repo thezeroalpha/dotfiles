@@ -242,11 +242,22 @@ And I'm not gonna be a heretic and open Vim inside of Emacs.
 	 mode-hooks))
     #+end_src
 *** Modeline
-    I want to show the time in the modeline:
+I want to show the time and date in the modeline:
 
-    #+begin_src emacs-lisp
-      (display-time-mode 1)
-    #+end_src
+#+begin_src emacs-lisp
+  (setq display-time-day-and-date t           ; also the date
+        display-time-default-load-average nil ; don't show load average
+        display-time-format "%I:%M%p%e %b"    ; "HR:MIN(AM/PM) day-of-month Month"
+        display-time-mode 1)                  ; enable time mode
+#+end_src
+
+I want to show the current function:
+
+#+begin_src emacs-lisp
+  (which-function-mode 1)
+#+end_src
+
+Maybe at some point I'll customize the modeline too.
 
     Maybe at some point I'll customize the modeline too.
 * File locations
