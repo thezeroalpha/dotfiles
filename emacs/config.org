@@ -236,10 +236,10 @@ And I'm not gonna be a heretic and open Vim inside of Emacs.
 
     #+begin_src emacs-lisp
       (let ((mode-hooks '(doc-view-mode-hook vterm-mode-hook)))
-	(mapc
-	 (lambda (mode-name)
-	   (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
-	 mode-hooks))
+        (mapc
+         (lambda (mode-name)
+           (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
+         mode-hooks))
     #+end_src
 *** Modeline
 I want to show the time and date in the modeline:
@@ -422,6 +422,40 @@ Use hippie expand instead of dabbrev-expand:
 ** Prefer newer file loading
 #+begin_src emacs-lisp
 (setq load-prefer-newer t)
+#+end_src
+
+** Automatically find tags file
+When opening a file in a git repo, try to discover the etags file:
+
+#+begin_src emacs-lisp
+  (add-hook 'find-file-hook
+            (lambda () (let* ((tagspath ".git/etags")
+                              (git-root (locate-dominating-file (buffer-file-name) tagspath)))
+                         (if git-root
+                             (visit-tags-table (expand-file-name tagspath git-root) 1)))))
+#+end_src
+
+There's probably a better way to write this. I need to ask Reddit for feedback at some point.
+
+** Semantic mode
+Set default submodes:
+
+#+begin_src emacs-lisp
+  (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode ; reparse buffer when idle
+                                   global-semanticdb-minor-mode ; maintain database
+                                   global-semantic-idle-summary-mode ; show information (e.g. types) about tag at point
+                                   global-semantic-stickyfunc-mode)) ; show current funt in header line
+#+end_src
+
+SemanticDB is written into ~/.emacs.d/semanticdb/.
+
+Enable semantic mode for major modes:
+
+#+begin_src emacs-lisp
+  (let ((mode-hooks '(c-mode-common-hook)))
+         (mapc (lambda (mode-name)
+                 (add-hook mode-name (lambda () (semantic-mode 1))))
+          mode-hooks))
 #+end_src
 
 * Misc settings
