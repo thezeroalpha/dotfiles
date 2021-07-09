@@ -491,6 +491,27 @@ Set tags:
                                ("d" notmuch-delete-tags "Delete")))
 #+end_src
 
+* MPC
+Set the windows I want to show:
+
+#+begin_src emacs-lisp
+  (setq mpc-browser-tags '(Artist Album Genre))
+#+end_src
+
+Define some keybindings:
+
+#+begin_src emacs-lisp
+  (add-hook 'mpc-mode-hook
+            (lambda ()
+              (define-key mpc-mode-map "a" #'mpc-playlist-add)
+              (define-key mpc-mode-map "P" #'mpc-playlist)
+              (define-key mpc-mode-map "x" #'mpc-playlist-delete)
+              (define-key mpc-mode-map "f" (lambda () "Seek forward 20 seconds" (interactive) (mpc-seek-current "+20")))
+              (define-key mpc-mode-map "b" (lambda () "Seek backward 20 seconds" (interactive) (mpc-seek-current "-20")))))
+#+end_src
+
+Unfortunately the lambda keybindings don't show up documented properly, but oh well. That's a minor problem.
+
 * References
   Here's a list of good articles I encountered about configging emacs:
   - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
