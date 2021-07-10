@@ -477,6 +477,20 @@ The "(interactive)" means that it can be called from a keybinding or from M-x (t
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c E") (lambda () (interactive) (find-file (expand-file-name "config.org" user-emacs-directory))))
 #+end_src
+** Org notification
+macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
+
+#+begin_src emacs-lisp
+  (if (and (eq system-type 'darwin)
+           (executable-find "terminal-notifier"))
+      (setq org-show-notification-handler
+            (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
+                                         "-title" "Timer done"
+                                         "-message" str
+                                         "-group" "org.gnu.Emacs"
+                                         "-sender" "org.gnu.Emacs"))))
+#+end_src
+
 
 * Notmuch
 Define some saved searches (i.e. mailboxes):
