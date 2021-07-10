@@ -235,7 +235,7 @@ And I'm not gonna be a heretic and open Vim inside of Emacs.
     activates (which triggers the 'mode'-hook).
 
     #+begin_src emacs-lisp
-      (let ((mode-hooks '(doc-view-mode-hook vterm-mode-hook)))
+      (let ((mode-hooks '(doc-view-mode-hook vterm-mode-hook mpc-status-mode-hook mpc-tagbrowser-mode-hook)))
         (mapc
          (lambda (mode-name)
            (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
@@ -490,7 +490,6 @@ macOS doesn't have dbus. So I use terminal-notifier for functions like org-notif
                                          "-group" "org.gnu.Emacs"
                                          "-sender" "org.gnu.Emacs"))))
 #+end_src
-
 
 * Notmuch
 Define some saved searches (i.e. mailboxes):
