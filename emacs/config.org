@@ -1,70 +1,78 @@
 * Theme
-  I want this to load first because otherwise it'll blind me during the night while it's trying to refresh packages.
+I want this to load first because otherwise it'll blind me during the night while it's trying to refresh packages.
 
-  Icons required for some parts of the doom theme:
+Icons required for some parts of the doom theme:
 
-  #+begin_src emacs-lisp
-    (use-package all-the-icons)
-  #+end_src
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+#+end_src
 
-  Load Doom Emacs themes:
+Load Doom Emacs themes:
 
-  #+begin_src emacs-lisp
-    (use-package doom-themes
-      :config
-      ;; Global settings (defaults)
-      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-      ;; Enable flashing mode-line on errors
-      (doom-themes-visual-bell-config)
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
 
-      ;; Enable custom neotree theme (all-the-icons must be installed!)
-      (doom-themes-neotree-config)
-      ;; or for treemacs users
-      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-      (doom-themes-treemacs-config)
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    (doom-themes-neotree-config)
+    ;; or for treemacs users
+    (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+    (doom-themes-treemacs-config)
 
-      ;; Corrects (and improves) org-mode's native fontification.
-      (doom-themes-org-config))
-  #+end_src
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+#+end_src
 
-  Define the themes I want:
+Define the themes I want:
 
-  #+begin_src emacs-lisp
-    (setq dark-theme 'doom-one)
-    (setq light-theme 'doom-acario-light)
-  #+end_src
+#+begin_src emacs-lisp
+  (setq dark-theme 'doom-one)
+  (setq light-theme 'doom-acario-light)
+  (defun dark-theme () "Switch to dark theme" (interactive) (load-theme dark-theme))
+  (defun light-theme () "Switch to light theme" (interactive) (load-theme light-theme))
+#+end_src
 
-  Change theme depending on the current system theme.
-  The way I check for dark mode is defined in 'dark-mode-p'; currently I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set.
-  A function ending in '-p' is a predicate, i.e. returns true or false.
-  If calling a function that's in a variable, you have to use 'funcall'.
+Change theme depending on the current system theme.
+The way I check for dark mode is defined in 'dark-mode-p'; currently I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set.
+A function ending in '-p' is a predicate, i.e. returns true or false.
+If calling a function that's in a variable, you have to use 'funcall'.
 
-  #+begin_src emacs-lisp
-    (let ((dark-mode-p (lambda () (file-exists-p "~/.config/dark-theme"))))
-      (if (funcall dark-mode-p)
-	  (load-theme dark-theme t)
-	(load-theme light-theme t)))
-  #+end_src
+#+begin_src emacs-lisp
+  (let ((dark-mode-p (lambda () (file-exists-p "~/.config/dark-theme"))))
+    (if (funcall dark-mode-p)
+        (load-theme dark-theme t)
+      (load-theme light-theme t)))
+#+end_src
 
 * Garbage collection
-  Garbage-collect on focus-out, Emacs /should/ feel snappier.
+Garbage-collect on focus-out, Emacs /should/ feel snappier.
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'focus-out-hook #'garbage-collect)
-  #+end_src
+#+end_src
 
 * Package management
 ** Repositories (MELPA & Org)
-   #+begin_src emacs-lisp
-     (require 'package)
-     (add-to-list 'package-archives
-		  '("melpa" . "https://melpa.org/packages/"))
-     (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
-     (package-refresh-contents)
-     (package-initialize)
-   #+end_src
+Set up packages:
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
+#+end_src
+
+Refresh packages async:
+
+#+begin_src emacs-lisp
+  (package-refresh-contents t)
+  (package-initialize)
+#+end_src
 
 ** use-package
    Install and load use-package.
