@@ -10,5 +10,5 @@ mv "$dir/$$.tags" "$dir/tags"
 
 # emacs etags
 git ls-files | \
-    ctags --tag-relative=yes -L - -f "$dir/$$.tags"
+    ctags -e --tag-relative=yes -L - -f "$dir/$$.tags"
 mv "$dir/$$.tags" "$dir/etags"
