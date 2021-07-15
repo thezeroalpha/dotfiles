@@ -193,19 +193,26 @@ And I'm not gonna be a heretic and open Vim inside of Emacs.
     (vterm-mode . (lambda () (unless server-process (server-start)))))
 #+end_src
 
+** sr-speedbar
+Make speed bar show in the current frame.
+
+#+begin_src emacs-lisp
+  (use-package sr-speedbar
+    :config
+    (setq sr-speedbar-right-side nil)
+    :bind
+    (("C-c F" . sr-speedbar-toggle)))
+
+#+end_src
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c f") (lambda () (interactive)
+                                  (unless (sr-speedbar-exist-p)
+                                    (sr-speedbar-open))
+                                  (sr-speedbar-select-window)))
+#+end_src
+
 * Interface
-** GUI elements
-   Get rid of all bars.
-
-   #+begin_src emacs-lisp
-     (setq org-src-tab-acts-natively t)
-     (when window-system
-       (menu-bar-mode -1)
-       (tool-bar-mode -1)
-       (scroll-bar-mode -1)
-       (tooltip-mode -1))
-   #+end_src
-
 ** Messages
    Hide some messages I don't need.
 
