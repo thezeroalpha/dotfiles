@@ -208,16 +208,22 @@ Make speed bar show in the current frame.
   (use-package sr-speedbar
     :config
     (setq sr-speedbar-right-side nil)
+    (define-key speedbar-mode-map (kbd "q") 'sr-speedbar-close)
     :bind
     (("C-c F" . sr-speedbar-toggle)))
 
 #+end_src
 
+Jump to speedbar. sr-speedbar-exist-p can be void, so I check if it's bound first.
+If it's not bound, or if it's false, first open the speedbar.
+Then, select it.
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c f") (lambda () (interactive)
-                                  (unless (sr-speedbar-exist-p)
+                                (if (or (not (boundp 'sr-speedbar-exist-p))
+                                        (not (sr-speedbar-exist-p)))
                                     (sr-speedbar-open))
-                                  (sr-speedbar-select-window)))
+                                (sr-speedbar-select-window)))
 #+end_src
 
 * Interface
