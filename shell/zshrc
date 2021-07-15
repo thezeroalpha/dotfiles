@@ -1,3 +1,4 @@
+# -*- mode: shell-script; -*-
 # ZSH-specific inits
 . "$DOTFILES"/shell/rc
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -74,6 +75,7 @@ source_if_exists "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 # Ruby bundler plugin, automatically runs binstub in .bin or `bundle exec`s
 source_if_exists $DOTFILES/shell/zsh-plugins/bundler.plugin.zsh
 source_if_exists $DOTFILES/shell/zsh-plugins/gitignore.plugin.zsh
+source_if_exists $DOTFILES/shell/zsh-plugins/insulter.plugin.zsh
 
 insert-arg-of-prev-cmd() {
 : ${NUMERIC:-1}
