@@ -201,6 +201,17 @@ And I'm not gonna be a heretic and open Vim inside of Emacs.
     (vterm-mode . (lambda () (unless server-process (server-start)))))
 #+end_src
 
+I'll bind a key to start a vterm or switch to the running vterm:
+
+#+begin_src emacs-lisp
+  (defun switch-to-vterm () "Switch to a running vterm, or start one and switch to it."
+         (interactive)
+         (if (get-buffer vterm-buffer-name)
+             (switch-to-buffer vterm-buffer-name)
+           (vterm)))
+  (global-set-key (kbd "C-c t") 'switch-to-vterm)
+#+end_src
+
 ** sr-speedbar
 Make speed bar show in the current frame.
 
