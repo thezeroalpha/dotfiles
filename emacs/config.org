@@ -458,6 +458,33 @@ Enable semantic mode for major modes:
           mode-hooks))
 #+end_src
 
+** Forward-word and forward-to-word
+Change M-f to stop at the start of the word:
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "M-f") 'forward-to-word)
+#+end_src
+
+Bind M-F to the old functionality of M-f (stop at end of word)
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "M-F") 'forward-word)
+#+end_src
+
+** Rectangle insert string
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x r I") 'string-insert-rectangle)
+#+end_src
+
+** Org mode - yank URL
+#+begin_src emacs-lisp
+  (defun org-yank-link-url ()
+    (interactive)
+    (kill-new (org-element-property :raw-link (org-element-context))))
+
+  (define-key org-mode-map (kbd "C-c M-y") 'org-yank-link-url)
+#+end_src
+
 * Misc settings
 ** Enable all commands
    By default, Emacs disables some commands.
