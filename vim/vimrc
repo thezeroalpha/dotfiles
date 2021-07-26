@@ -26,7 +26,7 @@ Plug 'rstacruz/sparkup'
 Plug 'tpope/vim-endwise'
 
 " Sandwich - super useful plugin for surrounding stuff with quotes/brackets/tags
-Plug 'machakann/vim-sandwich'
+Plug 'tpope/vim-surround'
 
 " Eunuch - shell commands but in vim
 Plug 'tpope/vim-eunuch'
@@ -364,19 +364,6 @@ let g:dispatch_no_maps = 1
 " Only enable those I'll actually use
 nnoremap `<CR> :Dispatch<CR>
 nnoremap '<CR> :Start<CR>
-" Sandwich {{{3
-" And add bracket-with-space from surround.vim
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-let g:sandwich#recipes += [
-      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['}']},
-      \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['}']},
-      \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': [']']},
-      \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [']']},
-      \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': [')']},
-      \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': [')']},
-      \   {'buns': ['(', ')'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(', 'b']},
-      \   {'buns': ['(', ')'], 'nesting': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(', 'b']}
-      \ ]
 " netrw {{{3
 let g:netrw_banner = 0                              " hide the banner
 let g:netrw_fastbrowse = 2                          " only get dir list if not seen, or manually refreshed
