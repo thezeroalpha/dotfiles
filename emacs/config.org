@@ -237,6 +237,14 @@ Then, select it.
                                 (sr-speedbar-select-window)))
 #+end_src
 
+** expand-region
+Expand the selected region semantically.
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind ("C-=" . er/expand-region))
+#+end_src
+
 * Interface
 ** Messages
    Hide some messages I don't need.
