@@ -287,8 +287,8 @@ I want to show the time and date in the modeline:
 #+begin_src emacs-lisp
   (setq display-time-day-and-date t           ; also the date
         display-time-default-load-average nil ; don't show load average
-        display-time-format "%I:%M%p%e %b"    ; "HR:MIN(AM/PM) day-of-month Month"
-        display-time-mode 1)                  ; enable time mode
+        display-time-format "%I:%M%p %e %b")   ; "HR:MIN(AM/PM) day-of-month Month"
+  (display-time-mode 1)                  ; enable time mode
 #+end_src
 
 I want to show the current function:
