@@ -153,6 +153,18 @@ Plug 'skanehira/gh.vim'
 
 " Minesweeper
 Plug 'iqxd/vim-mine-sweeping'
+
+" Easier text object definition
+Plug 'kana/vim-textobj-user'
+let installed_textobjs = {
+      \ 'deathlyfrantic/vim-textobj-blanklines': 'a<Space>/i<Space> for groups of blank (only whitespace) lines',
+      \ 'kana/vim-textobj-entire': 'ae/ie for the entire region of the current buffer',
+      \ 'somini/vim-textobj-fold': 'az/iz for a block of folded lines; iz does not include fold marker lines',
+      \ 'kana/vim-textobj-function': 'af/if and aF/iF for a function / extensible for any language',
+      \ 'kana/vim-textobj-lastpat': 'a//i/ for a region matched to the last search pattern',
+      \ 'kana/vim-textobj-line': 'al/il for the current line' }
+for reponame in keys(installed_textobjs) | Plug reponame | endfor
+
 call plug#end()
 " }}}2
 " Config {{{2
