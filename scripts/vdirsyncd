@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+notidie() {
+  notify "$1" "$2" vdirsyncd
+  exit 1
+}
+
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  darwin*)
+    while pgrep RotMG; do sleep 60; done
+    while pgrep pinentry; do sleep 60; done
+    /usr/local/bin/alacritty -e /Users/alex/.local/share/cargo/bin/rbw unlock
+    /Users/alex/.local/share/cargo/bin/rbw unlocked || notidie "Vdirsyncer: error syncing" "Vault is locked"
+    ;;
+esac
+
+vdirsyncer sync || notify 'Error in vdirsyncer' 'Did not sync properly, check /tmp/vdirsyncd.std{out,err}' vdirsyncd
