@@ -70,8 +70,8 @@ Set up packages:
 Refresh packages async:
 
 #+begin_src emacs-lisp
-  (package-refresh-contents t)
   (package-initialize)
+  (package-refresh-contents t)
 #+end_src
 
 ** use-package
@@ -485,9 +485,15 @@ Set default submodes:
 
 #+begin_src emacs-lisp
   (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode ; reparse buffer when idle
-                                   global-semanticdb-minor-mode ; maintain database
-                                   global-semantic-idle-summary-mode ; show information (e.g. types) about tag at point
-                                   global-semantic-stickyfunc-mode)) ; show current funt in header line
+                                    global-semanticdb-minor-mode ; maintain database
+                                    global-semantic-idle-summary-mode ; show information (e.g. types) about tag at point
+                                    global-semantic-stickyfunc-mode)) ; show current func in header line
+#+end_src
+
+Add some keybindings:
+
+#+begin_src emacs-
+  (define-key semantic-mode-map (kbd "C-c , .") #'semantic-ia-show-summary)
 #+end_src
 
 SemanticDB is written into ~/.emacs.d/semanticdb/.
@@ -623,6 +629,7 @@ Define some keybindings:
               (define-key mpc-mode-map "a" #'mpc-playlist-add)
               (define-key mpc-mode-map "P" #'mpc-playlist)
               (define-key mpc-mode-map "x" #'mpc-playlist-delete)
+              (define-key mpc-mode-map "p" #'mpc-toggle-play)
               (define-key mpc-mode-map "f" (lambda () "Seek forward 20 seconds" (interactive) (mpc-seek-current "+20")))
               (define-key mpc-mode-map "b" (lambda () "Seek backward 20 seconds" (interactive) (mpc-seek-current "-20")))))
 #+end_src
