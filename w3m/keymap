@@ -32,12 +32,14 @@ keymap e EXTERN_LINK
 keymap ] EXTERN
 keymap M-e COMMAND 'SET_OPTION default_url=1 ; GOTO ; SET_OPTION default_url=0'
 keymap M-f COMMAND 'SHELL ~/.config/w3m/cgi-bin/get-query.cgi ; GOTO /cgi-bin/searx-query.cgi'
+keymap M-k DEFINE_KEY
+keymap C-h HELP
 
 # Menus
 keymap M-h HISTORY
 keymap M-b BOOKMARK
 keymap M-a ADD_BOOKMARK
-keymap M-t SELECT_MENU
+keymap M-g SELECT_MENU
 keymap M-o LIST_MENU
 keymap M-l LINK_MENU
 
@@ -72,9 +74,7 @@ keymap xs COMMAND 'EXEC_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
-# ADD_BOOKMARK  Add current page to bookmarks
 # ALARM         Set alarm
-# BOOKMARK      View bookmarks
 # CENTER_H      Center on cursor column
 # CENTER_V      Center on cursor line
 # CHARSET       Change the character encoding for the current document
@@ -84,7 +84,6 @@ keymap xs COMMAND 'EXEC_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 # CURSOR_MIDDLE Move cursor to the middle line on the screen
 # CURSOR_BOTTOM Move cursor to the bottom line on the screen
 # DEFAULT_CHARSET Change the default character encoding
-# DEFINE_KEY    Define a binding between a key stroke combination and a command
 # DELETE_PREVBUF        Delete previous buffer (mainly for local CGI-scripts)
 # DICT_WORD     Execute dictionary command (see README.dict)
 # DICT_WORD_AT  Execute dictionary command for word at cursor
@@ -102,7 +101,6 @@ keymap xs COMMAND 'EXEC_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 # GOTO_LINK     Follow current hyperlink in a new buffer
 # GOTO_RELATIVE Go to relative address
 # HELP          Show help panel
-# HISTORY       Show browsing history
 # INFO          Display information about the current document
 # INTERRUPT     Suspend w3m to background
 # ISEARCH       Incremental search forward
