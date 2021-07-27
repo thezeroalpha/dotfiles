@@ -412,6 +412,12 @@ Never insert tabs with indentation:
   (setq-default indent-tabs-mode nil)
 #+end_src
 
+Indentation for various modes:
+
+#+begin_src emacs-lisp
+  (setq sh-basic-offset 2)
+#+end_src
+
 ** Wrapping
    I want to wrap text at window boundary for some modes:
 
@@ -515,9 +521,9 @@ SemanticDB is written into ~/.emacs.d/semanticdb/.
 Enable semantic mode for major modes:
 
 #+begin_src emacs-lisp
-  (let ((mode-hooks '(c-mode-common-hook)))
-         (mapc (lambda (mode-name)
-                 (add-hook mode-name (lambda () (semantic-mode 1))))
+  (let ((mode-hooks [c-mode-common-hook]))
+    (mapc (lambda (mode-name)
+            (add-hook mode-name (lambda () (semantic-mode 1))))
           mode-hooks))
 #+end_src
 
