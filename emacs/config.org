@@ -245,6 +245,14 @@ Expand the selected region semantically.
     :bind ("C-=" . er/expand-region))
 #+end_src
 
+** flycheck
+Install flycheck, and enable it in certain major modes:
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :hook (sh-mode . flycheck-mode))
+#+end_src
+
 * Interface
 ** Messages
    Hide some messages I don't need.
@@ -338,7 +346,13 @@ use in order for displaying the list, and then options for those functions (each
      ("\\*Man .*\\*"
       (display-buffer-reuse-window display-buffer-in-side-window)
       (side . top)
-      (slot . 0))))
+      (slot . 0))
+
+     ;; Bottom
+   ("\\*Flycheck errors\\*"
+    (display-buffer-reuse-window display-buffer-in-side-window)
+    (side . bottom)
+    (slot . 0))))
 #+end_src
 
 And a way to toggle those side windows:
