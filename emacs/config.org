@@ -117,30 +117,40 @@ Refresh packages async:
    And a bunch more.
    Generally makes for nicer interactivity, like ido mode on steroids.
 
-   #+begin_src emacs-lisp
-     (use-package helm
-       :defer nil
-       :custom
-       (helm-M-x-always-save-history t)
-       (helm-display-function 'pop-to-buffer)
-       (savehist-additional-variables '(extended-command-history))
-       (history-delete-duplicates t)
-       :custom-face
-       (helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
-       (helm-ff-file-extension ((t (:inherit default))))
-       (helm-buffer-file ((t (:inherit default))))
-       :bind
-       (("M-x" . helm-M-x)
-        ("C-x C-f" . helm-find-files)
-        ("C-x C-b" . helm-buffers-list)
-        ("C-x b" . helm-buffers-list)
-        ("C-x C-r" . helm-recentf)
-        ("C-x C-i" . helm-imenu)
-        ("M-y" . helm-show-kill-ring))
-       :config
-       (helm-mode)
-       (savehist-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package helm
+    :defer nil
+    :custom
+    (helm-M-x-always-save-history t)
+    (helm-display-function 'pop-to-buffer)
+    (savehist-additional-variables '(extended-command-history))
+    (history-delete-duplicates t)
+    :custom-face
+    (helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
+    (helm-ff-file-extension ((t (:inherit default))))
+    (helm-buffer-file ((t (:inherit default))))
+    :bind
+    (("M-x" . helm-M-x)
+     ("C-x C-f" . helm-find-files)
+     ("C-x C-b" . helm-buffers-list)
+     ("C-x b" . helm-buffers-list)
+     ("C-x C-r" . helm-recentf)
+     ("C-x C-i" . helm-imenu)
+     ("M-y" . helm-show-kill-ring))
+    :config
+    (helm-mode)
+    (savehist-mode)
+    (defun edit-script ()
+      "Edit a file in ~/.scripts/"
+      (interactive)
+      (let ((default-directory "~/.scripts/"))
+        (call-interactively #'helm-find-files)))
+    (defun edit-config ()
+      "Edit a file in ~/.dotfiles/"
+      (interactive)
+      (let ((default-directory "~/.dotfiles/"))
+        (call-interactively #'helm-find-files))))
+#+end_src
 
 ** org
    In org mode, I want to use bullets instead of stars.
