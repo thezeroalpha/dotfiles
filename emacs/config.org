@@ -113,9 +113,9 @@ Refresh packages async:
    #+end_src
 
 ** helm
-   Better incremental completion and selection narrowing.
-   And a bunch more.
-   Generally makes for nicer interactivity, like ido mode on steroids.
+Better incremental completion and selection narrowing.
+And a bunch more.
+Generally makes for nicer interactivity, like ido mode on steroids.
 
 #+begin_src emacs-lisp
   (use-package helm
@@ -150,6 +150,13 @@ Refresh packages async:
       (interactive)
       (let ((default-directory "~/.dotfiles/"))
         (call-interactively #'helm-find-files))))
+#+end_src
+
+Ag (silver searcher) support:
+
+#+begin_src emacs-lisp
+(use-package helm-ag)
+
 #+end_src
 
 ** org
