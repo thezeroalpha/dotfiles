@@ -666,6 +666,16 @@ Define some keybindings:
 
 Unfortunately the lambda keybindings don't show up documented properly, but oh well. That's a minor problem.
 
+* Radio
+Just a wrapper function to my radio script:
+
+#+begin_src emacs-lisp
+  (defun radio ()
+    "Play an internet radio"
+    (interactive)
+    (ansi-term "radio" "*radio*"))
+#+end_src
+
 * References
   Here's a list of good articles I encountered about configging emacs:
   - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
