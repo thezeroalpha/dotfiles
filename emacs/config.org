@@ -522,8 +522,9 @@ Set default submodes:
 
 Add some keybindings:
 
-#+begin_src emacs-
-  (define-key semantic-mode-map (kbd "C-c , .") #'semantic-ia-show-summary)
+#+begin_src emacs-lisp
+  (with-eval-after-load 'semantic
+    (define-key semantic-mode-map (kbd "C-c , .") #'semantic-ia-show-summary))
 #+end_src
 
 SemanticDB is written into ~/.emacs.d/semanticdb/.
