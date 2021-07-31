@@ -1,0 +1,26 @@
+#!/bin/sh
+# AUTHOR: thezeroalpha
+#
+# DATE: 2021-07-31
+#
+# DESC: Elvi to search Gemini space
+# elvis: geminispace		-- Search Geminispace (geminispace.info)
+. surfraw || exit 1
+
+w3_usage_hook () {
+    cat <<EOF
+Usage: $w3_argv0 [options] [search words]...
+Description:
+  Search Geminispace (geminispace.info)
+EOF
+    w3_global_usage
+}
+
+w3_config
+w3_parse_args "$@"
+if test -z "$w3_args"; then
+    w3_browse_url "gemini://geminispace.info"
+else
+    escaped_args=`w3_url_of_arg $w3_args`
+    w3_browse_url "gemini://geminispace.info/search?${escaped_args}"
+fi
