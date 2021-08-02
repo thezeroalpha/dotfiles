@@ -684,6 +684,13 @@ Just a wrapper function to my radio script:
     (ansi-term "radio" "*radio*"))
 #+end_src
 
+* Dired
+'i' expands subdirs, so I want to be able to close them too.
+
+#+begin_src emacs-lisp
+  (define-key dired-mode-map (kbd "M-k") #'dired-kill-subdir)
+#+end_src
+
 * References
   Here's a list of good articles I encountered about configging emacs:
   - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
