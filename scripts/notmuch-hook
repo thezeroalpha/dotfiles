@@ -1,5 +1,50 @@
 #!/bin/sh
 notmuch new
-notmuch tag --remove-all +sent -- from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl
-notmuch tag --remove-all +drafts -- folder:/Drafts/
-notmuch tag -inbox +spam -- folder:/Spam/ or folder:/Junk/
+
+# Change tags according to folders
+folders2tags() {
+  # Retag according to folders
+
+  notmuch tag --remove-all --batch <<EOF
+# This will always be read mail
++archive -- folder:/Archive/
++draft -- folder:/Drafts/
++sent -- from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl
++trash -- folder:/Trash/ or folder:/Deleted/
++tickets -- folder:/Tickets/
+
++spam +unread -- (folder:/Spam/ or folder:/Junk/) and tag:unread
++spam -- (folder:/Spam/ or folder:/Junk/) and not tag:unread
+
++inbox +unread -- folder:/Inbox/ and tag:unread
++inbox -- folder:/Inbox/ and not tag:unread
+EOF
+
+}
+safeMove() { s=${1##*/}; s=${s%%,*}; mv -f "$1" "$2"/"$s"; }
+alias nms="notmuch search --exclude=false --output=files"
+
+# Move to folders according to tags
+tags2folders() {
+  # Move a message file while removing its UID-part
+  maildir="$HOME/.local/share/mail"
+
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:archive and not folder:/Archive/); do safeMove "$i" "$maildir/alex@balgavy.eu/Archive/cur"; done
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:draft and not folder:/Drafts/); do safeMove "$i" "$maildir/alex@balgavy.eu/Drafts/cur"; done
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:inbox and not folder:/Inbox/); do safeMove "$i" "$maildir/alex@balgavy.eu/Inbox/cur"; done
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:spam and not folder:/Spam/); do safeMove "$i" "$maildir/alex@balgavy.eu/Spam/cur"; done
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:tickets and not folder:/Tickets/); do safeMove "$i" "$maildir/alex@balgavy.eu/Tickets/cur"; done
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:trash and not folder:/Trash/); do safeMove "$i" "$maildir/alex@balgavy.eu/Trash/cur"; done
+  for i in $(nms folder:/alex@balgavy.eu/ and tag:sent and not folder:/Sent/); do safeMove "$i" "$maildir/alex@balgavy.eu/Sent/cur"; done
+
+  for i in $(nms folder:/a.balgavy@student.vu.nl/ and tag:archive and not folder:/Archive/); do safeMove "$i" "$maildir/a.balgavy@student.vu.nl/Archive/cur"; done
+  for i in $(nms folder:/a.balgavy@student.vu.nl/ and tag:trash and not folder:/Deleted/); do safeMove "$i" "$maildir/a.balgavy@student.vu.nl/Deleted Items/cur"; done
+  for i in $(nms folder:/a.balgavy@student.vu.nl/ and tag:draft and not folder:/Drafts/); do safeMove "$i" "$maildir/a.balgavy@student.vu.nl/Drafts/cur"; done
+  for i in $(nms folder:/a.balgavy@student.vu.nl/ and tag:spam and not folder:/Junk/); do safeMove "$i" "$maildir/a.balgavy@student.vu.nl/Junk Email/cur"; done
+  for i in $(nms folder:/a.balgavy@student.vu.nl/ and tag:sent and not folder:/Sent/); do safeMove "$i" "$maildir/a.balgavy@student.vu.nl/Sent Items/cur"; done
+}
+
+# When using notmuch, we set tags, so specify to move messages to folders based on tags
+if [ $# -gt 0 ] && [ "$1" = "tags2folders" ]; then tags2folders
+# Otherwise, in mutt or while retrieving new messages, want to set notmuch tags from folders
+else folders2tags; fi

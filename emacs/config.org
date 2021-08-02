@@ -652,6 +652,11 @@ Set tags:
                                ("d" notmuch-delete-tags "Delete")))
 #+end_src
 
+Run notmuch-hook script on hello refresh, to move messages to folders according to their tags:
+
+#+begin_src emacs-lisp
+  (add-hook 'notmuch-hello-refresh-hook (lambda () (start-process "notmuch-hook" nil "notmuch-hook" "tags2folders")))
+#+end_src
 * MPC
 Set the windows I want to show:
 

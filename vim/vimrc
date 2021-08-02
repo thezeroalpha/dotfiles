@@ -25,7 +25,7 @@ Plug 'rstacruz/sparkup'
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
 
-" Sandwich - super useful plugin for surrounding stuff with quotes/brackets/tags
+" Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
 Plug 'tpope/vim-surround'
 
 " Eunuch - shell commands but in vim
