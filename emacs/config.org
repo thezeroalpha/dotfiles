@@ -270,6 +270,22 @@ Install flycheck, and enable it in certain major modes:
     :hook (sh-mode . flycheck-mode))
 #+end_src
 
+** anki-editor
+Some extra keybindings that are not set up by default.
+anki-editor doesn't provide a keymap so I have to set one up here:
+
+#+begin_src emacs-lisp
+    (use-package anki-editor
+      :init
+      (defvar anki-editor-mode-map (make-sparse-keymap))
+      (add-to-list 'minor-mode-map-alist (cons 'anki-editor-mode
+                                               anki-editor-mode-map))
+      :bind (:map anki-editor-mode-map
+                  ("C-c i" . anki-editor-insert-note)
+                  ("C-c p" . anki-editor-push-notes)
+                  ("C-c c" . anki-editor-cloze-dwim)))
+#+end_src
+
 * Interface
 ** Messages
    Hide some messages I don't need.
