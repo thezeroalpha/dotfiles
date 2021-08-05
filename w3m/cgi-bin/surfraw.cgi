@@ -3,7 +3,5 @@
 elvi="$(surfraw -elvi | sed '1,/LOCAL/d' | fzf | cut -f1)"
 [ -z "$elvi" ] && exit
 
-clear
-printf "%s >> Search: " "$elvi"
-read -r query
+query="$(fzf --print-query --prompt="$elvi >> Search: " --info=hidden --layout=reverse </dev/null)"
 surfraw -p "$elvi" "$query" > /tmp/w3m_target_url
