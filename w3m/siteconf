@@ -1,0 +1,4 @@
+# Redirect reddit to its old domain
+url m@https?://(www\.)*reddit\.com/@
+substitute_url "https://old.reddit.com/"
+no_referer_from on
