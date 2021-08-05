@@ -1,5 +1,5 @@
 # Reference: http://epistulus.com/w3m/MANUAL.html
-
+# More: http://www.w3m.rocks/
 # Text navigation
 keymap 0 LINE_BEGIN
 keymap $ LINE_END

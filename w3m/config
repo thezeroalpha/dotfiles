@@ -71,9 +71,9 @@ urimethodmap ~/.config/w3m/urimethodmap, /usr/local/Cellar/w3m/0.5.3_6/etc/w3m/u
 editor /usr/local/bin/vim
 mailto_options 1
 mailer
-extbrowser linkhandler
-extbrowser2
-extbrowser3
+extbrowser open
+extbrowser2 url=%s && printf %s "$url" | clc
+extbrowser3 url=%s && pocket save "$url" && notify "Saved to pocket" "URL: $url" w3m
 extbrowser4
 extbrowser5
 extbrowser6
@@ -87,6 +87,7 @@ disable_secret_security_check 0
 ftppasswd
 ftppass_hostnamegen 1
 pre_form_file ~/.config/w3m/pre_form
+# Domain substitutions
 siteconf_file ~/.config/w3m/siteconf
 user_agent
 no_referer 0
