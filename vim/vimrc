@@ -937,8 +937,8 @@ inoremap <c-r> <c-r><c-o>
 
 " Up/down arrows on the command line search for commands starting with current
 " string. I want <c-n/p> to do the same.
-cnoremap <c-p> <up>
-cnoremap <c-n> <down>
+cnoremap <expr> <c-n> wildmenumode() ? "\<c-n>" : "\<down>"
+cnoremap <expr> <c-p> wildmenumode() ? "\<c-p>" : "\<up>"
 
 " Use <Tab> and <S-Tab> to jump to next search result,
 " while keeping <Tab>'s wildmenu function.
@@ -958,6 +958,17 @@ nnoremap <silent> <leader>hl :call matchadd('LineHighlight', '\%'.line('.').'l')
 vnoremap <silent> <leader>hl :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
 nnoremap <silent> <leader>hc :call clearmatches()<CR>
 vnoremap <silent> <leader>hc :call clearmatches()<CR>
+
+" have n always search forward
+noremap <expr> <SID>(search-forward) 'Nn'[v:searchforward]
+" and N always search backward
+noremap <expr> <SID>(search-backward) 'nN'[v:searchforward]
+" and center search results on the screen
+nmap n <SID>(search-forward)zzzv
+xmap n <SID>(search-forward)zzzv
+nmap N <SID>(search-backward)zzzv
+xmap N <SID>(search-backward)zzzv
+
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
