@@ -31,7 +31,7 @@ keymap ";" COMMAND
 keymap e EXTERN_LINK
 keymap ] EXTERN
 keymap M-e COMMAND 'SET_OPTION default_url=1 ; GOTO ; SET_OPTION default_url=0'
-keymap M-f COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw-searx.cgi ; GOTO /cgi-bin/goto-target-url.cgi'
+keymap M-f COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw-searx.cgi; GOTO /cgi-bin/goto-target-url.cgi'
 keymap M-k DEFINE_KEY
 keymap C-h HELP
 
@@ -41,10 +41,10 @@ keymap M-b BOOKMARK
 keymap M-a ADD_BOOKMARK
 keymap M-g SELECT_MENU
 keymap M-o LIST_MENU
+keymap U LIST
 keymap M-l LINK_MENU
 
 # Link info
-keymap U LIST
 keymap C-g PEEK
 keymap I INFO
 keymap u PEEK_LINK
@@ -66,6 +66,7 @@ keymap SPCr PIPE_SHELL 'go-readability $W3M_URL | w3m -config ~/.config/w3m/conf
 keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
 keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
 keymap SPCv EXEC_SHELL 'linkhandler "$W3M_CURRENT_LINK"'
+keymap SPCu COMMAND 'DOWNLOAD /tmp/w3m_source.html; READ_SHELL ~/.config/w3m/cgi-bin/fzf-urls.cgi; GOTO /cgi-bin/goto-target-url.cgi'
 keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/goto-target-url.cgi'
 
 # ABORT         Quit at once
