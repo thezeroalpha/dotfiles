@@ -22,6 +22,12 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
     pandoc -s -t markdown -- "$1" | $pagercmd
     exit 1
     ;;
+  *.json)
+    if command -v jq >/dev/null; then
+      if command -v bat >/dev/null; then jq < "$1" | $pagercmd --file-name "$1"
+      else jq < "$1" | $pagercmd; fi
+    else $pagercmd "$1"; fi
+    ;;
   *.csv) sed s/,/\\n/g "$1";;
   *.pdf)
     CACHE=$(mktemp)
