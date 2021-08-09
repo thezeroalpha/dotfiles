@@ -1,0 +1,172 @@
+#!/usr/bin/env ruby
+require 'selenium-webdriver'
+require 'json'
+
+# Check for username
+if ARGV.length != 2
+  warn 'Please pass the email and server as arguments'
+  exit 1
+end
+
+# Check if vault unlocked
+puts "Retrieving auth info"
+unless system('rbw unlocked')
+  warn 'Unlock bitwarden to continue'
+  exit 1
+end
+
+# Get auth details
+user, server_name = ARGV
+pass = `rbw get discord.com #{user}`
+
+# Start the browser & load discord
+puts "Starting Discord"
+driver = Selenium::WebDriver.for :firefox
+driver.manage.timeouts.implicit_wait = 10 # seconds
+driver.get "https://discord.com/login"
+
+# Sign in
+puts "Logging in"
+email_input = driver.find_element(name: "email", type: "text")
+email_input.send_keys user
+password_input = driver.find_element(name: "password", type: "password")
+password_input.send_keys pass
+email_input.submit
+
+# Find the server and open it
+puts "Loading server"
+discord_server = driver.find_element(:xpath, "//div[contains(@aria-label, '#{server_name}')]")
+3.times { driver.find_element(tag_name: 'body').send_keys :escape; sleep 1 }
+discord_server.click
+
+# Close all of the MOTHERFUCKING CUTESY popups that discord loves
+puts "Closing all popups because fuck you Discord"
+blocking_elements = driver.find_elements(:xpath, "//div[contains(@class, 'focusLock') and @aria-modal='true']")
+unless blocking_elements.nil?
+  blocking_elements.each { |e| e.find_element(:xpath, ".//button").click; sleep 2 }
+end
+popouts = driver.find_elements(:xpath, "//div[contains(@id, 'popout_')]")
+unless popouts.nil?
+  popouts.each { |e| e.find_element(:xpath, ".//button").click; sleep 2 }
+end
+
+# Grab the channel list and select only unread channels
+puts "Retrieving unread channels"
+channel_list = driver.find_element(tag_name: "div", id: "channels")
+unread_channels = channel_list.find_elements(:xpath, ".//a[contains(@aria-label, 'unread')]")
+puts "#{unread_channels.length} unread channels: #{unread_channels.map(&:text).to_s}"
+
+
+fname = "new-music-#{Time.now.to_i}.json"
+
+begin
+  all_new_messages = {}
+  unread_channels.each do |chan|
+    puts "Processing #{chan.text}"
+    # Select the channel
+    chan.click
+
+    # Find the new message separator and all following (new) messages
+    puts "|- finding new messages"
+    begin
+      new_messages_bar = driver.find_element(:xpath, "//div[contains(@id, 'new-messages-bar')]")
+    rescue Selenium::WebDriver::Error::NoSuchElementError
+      warn '|- could not find new messages bar'
+      next
+    end
+
+    begin
+      new_messages = new_messages_bar.find_elements(:xpath, "following-sibling::div[contains(@id, 'chat-messages')]")
+    rescue Selenium::WebDriver::Error::NoSuchElementError
+      warn '|- could not find new messages'
+      next
+    end
+
+    # This will be all music sent in the channel
+    music_sent = []
+
+    # Go through new messages
+    puts "|- looping through new messages"
+    new_messages.each do |m|
+      # Try to find links in the message
+      begin
+        sent_links_elements = m.find_elements(:xpath, ".//div[contains(@class, 'messageContent')]/a")
+        links = sent_links_elements.map { |l| l.attribute('href') }
+      rescue Selenium::WebDriver::Error::NoSuchElementError
+        links = []
+      end
+
+      # If there's at least one link
+      unless links.empty?
+        # Try to see who sent it
+        begin
+          author_name_element = m.find_element(:xpath, ".//span[contains(@class, 'username')]")
+          author_name = author_name_element.text
+        rescue Selenium::WebDriver::Error::NoSuchElementError
+          author_name = ''
+        end
+        # Add the link
+        music_sent << { from: author_name, links: links }
+      end
+    end
+
+    # If music was sent
+    unless music_sent.empty?
+      # Find the channel name
+      puts "|- links found"
+      begin
+        channel_name = chan.find_element(:xpath, ".//div[contains(@class, 'channelName')]").text
+      rescue Selenium::WebDriver::Error::NoSuchElementError
+        channel_name = Time.now.to_i.to_s
+        warn "|- could not find channel name, saving as #{channel_name}"
+      end
+
+      # Save the sent music under the channel name
+      all_new_messages[channel_name] = music_sent
+
+      # Mark the channel as read
+      puts "|- marking as read"
+      begin
+        button_mark_as_read = driver.find_element(:xpath, "//main[contains(@class, 'chatContent')]//button[@type='button' and contains(text(), 'Mark as read')]")
+        button_mark_as_read.click
+        sleep 3
+      rescue Selenium::WebDriver::Error::NoSuchElementError
+        warn "|- could not mark #{channel_name} as read"
+      end
+    end
+  end
+
+  if all_new_messages.empty?
+    puts "No new music!"
+  else
+    puts "Writing result to #{fname}"
+    File.write(fname, JSON.dump(all_new_messages))
+  end
+rescue => e
+  puts e.message
+end
+
+driver.quit
+
+if File.exists? fname
+  print "Download all with youtube-dl? "
+  conf = $stdin.gets.chomp
+  if conf[0].downcase == "y"
+    if system("command -v youtube-dl >/dev/null 2>&1")
+      new_music = JSON.parse File.read(fname)
+      new_music.each do |channel_name, messages|
+        chan = channel_name.chars.select { |c| c =~ /[a-z]/ }.join
+        Dir.mkdir(chan) unless Dir.exists? chan
+        messages.each do |m|
+          m['links'].each do |l|
+            system(%Q{cd "#{chan}" && youtube-dl -ciw -f bestaudio -x "#{l}"})
+          end
+        end
+      end
+    else
+      warn 'No youtube-dl present, not downloading'
+    end
+  else
+    puts "Not downloading"
+  end
+end
