@@ -72,3 +72,6 @@
 [submodule "tools/radio"]
 	path = tools/radio
 	url = https://github.com/thezeroalpha/radio
+[submodule "tools/choice"]
+	path = tools/choice
+	url = https://pedantic.software/git/choice/
