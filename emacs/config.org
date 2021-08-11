@@ -293,6 +293,14 @@ anki-editor doesn't provide a keymap so I have to set one up here:
                 ("C-c c" . anki-editor-cloze-dwim)))
 #+end_src
 
+** rainbow-mode
+'rainbow-mode' lets you visualise hex colors:
+
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :hook (emacs-lisp-mode . rainbow-mode))
+#+end_src
+
 * Interface
 ** Messages
    Hide some messages I don't need.
