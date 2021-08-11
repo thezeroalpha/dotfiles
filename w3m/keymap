@@ -55,6 +55,8 @@ keymap C-w CLOSE_TAB
 keymap C-t NEW_TAB
 keymap gt NEXT_TAB
 keymap gT PREV_TAB
+keymap << TAB_LEFT
+keymap >> TAB_RIGHT
 keymap C-o TAB_GOTO
 keymap o GOTO
 keymap O TAB_LINK
