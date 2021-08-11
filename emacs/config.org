@@ -623,6 +623,13 @@ The "(interactive)" means that it can be called from a keybinding or from M-x (t
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c E") (lambda () (interactive) (find-file (expand-file-name "config.org" user-emacs-directory))))
 #+end_src
+** Fast access to view-mode (pager)
+I want to bind view-mode to a key for easy access:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c v") 'view-mode)
+#+end_src
+
 ** Org notification
 macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
 
