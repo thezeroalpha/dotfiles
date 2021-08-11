@@ -33,7 +33,9 @@ Define the themes I want:
 
 #+begin_src emacs-lisp
   (setq dark-theme 'doom-one)
-  (setq light-theme 'doom-acario-light)
+  ;; (setq light-theme 'doom-acario-light)
+  ;; I used to use doom-acario-light before writing my own theme
+  (setq light-theme 'jokull)
   (defun dark-theme () "Switch to dark theme" (interactive) (load-theme dark-theme))
   (defun light-theme () "Switch to light theme" (interactive) (load-theme light-theme))
 #+end_src

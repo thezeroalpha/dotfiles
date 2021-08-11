@@ -74,6 +74,7 @@ emacs:
 - config.org: ~/.emacs.d/config.org
 - init.el: ~/.emacs.d/init.el
 - custom.el: ~/.emacs.d/custom.el
+- jokull-theme.el: ~/.emacs.d/jokull-theme.el
 
 # Config: shell
 shell:
