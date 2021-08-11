@@ -799,7 +799,9 @@ xnoremap D :m '>+1<CR>gv=gv
 xnoremap U :m '<-2<CR>gv=gv
 
 " and don't break my colours (U for 'unfuck my screen please')
-nnoremap <leader>U :syntax sync fromstart<CR>:redraw!<CR>
+nnoremap <leader><c-l> :syntax sync fromstart<CR>:redraw!<CR>:diffupdate<CR><c-l>
+
+" urlview
 nnoremap <silent> U :w !urlview<CR>
 
 " 'zoom to head level'
