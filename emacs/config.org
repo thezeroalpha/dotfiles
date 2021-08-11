@@ -282,6 +282,10 @@ anki-editor doesn't provide a keymap so I have to set one up here:
     (defvar anki-editor-mode-map (make-sparse-keymap))
     (add-to-list 'minor-mode-map-alist (cons 'anki-editor-mode
                                              anki-editor-mode-map))
+
+    :config
+    (setq anki-editor-use-math-jax t)
+
     :bind (:map anki-editor-mode-map
                 ("C-c t" . org-property-next-allowed-value)
                 ("C-c i" . anki-editor-insert-note)
