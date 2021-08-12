@@ -592,10 +592,10 @@ Change M-f to stop at the start of the word:
 (global-set-key (kbd "M-f") 'forward-to-word)
 #+end_src
 
-Bind M-F to the old functionality of M-f (stop at end of word)
+Bind C-M-S-F to the old functionality of M-f (stop at end of word)
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "M-F") 'forward-word)
+(global-set-key (kbd "C-M-S-F") 'forward-word)
 #+end_src
 
 ** Rectangle insert string
