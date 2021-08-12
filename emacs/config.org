@@ -653,6 +653,20 @@ macOS doesn't have dbus. So I use terminal-notifier for functions like org-notif
                                          "-sender" "org.gnu.Emacs"))))
 #+end_src
 
+** Kill this buffer
+I like to be able to kill a buffer instantly:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-<backspace>") 'kill-current-buffer)
+#+end_src
+
+** Toggle fullscreen
+I'll use the keybinding that's standard on macOS:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-s-f") #'toggle-frame-fullscreen)
+#+end_src
+
 * Notmuch
 Define some saved searches (i.e. mailboxes):
 
