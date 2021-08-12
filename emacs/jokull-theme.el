@@ -81,7 +81,7 @@
         `(minibuffer-prompt ((,class (:bold t :foreground ,keyword))))
         `(default-italic ((,class (:italic t))))
 	`(link ((,class (:foreground ,const :underline t))))
-	`(org-code ((,class (:foreground ,fg2))))
+	`(org-code ((,class (:foreground ,olive ))))
 	`(org-hide ((,class (:foreground ,bg1))))
         `(org-level-1 ((,class (:bold t :foreground ,fg2 :height 1.1))))
         `(org-level-2 ((,class (:bold nil :foreground ,fg3))))
