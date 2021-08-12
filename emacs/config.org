@@ -157,8 +157,7 @@ Generally makes for nicer interactivity, like ido mode on steroids.
 Ag (silver searcher) support:
 
 #+begin_src emacs-lisp
-(use-package helm-ag)
-
+  (use-package helm-ag)
 #+end_src
 
 ** org
@@ -318,6 +317,16 @@ anki-editor doesn't provide a keymap so I have to set one up here:
       (global-hl-line-mode)
       (show-paren-mode 1)
     #+end_src
+*** Cursor
+The default box cursor isn't really accurate, because the cursor is actually between letters, not on a letter.
+So, I want a bar instead of a box:
+
+#+begin_src emacs-lisp
+  (setq-default cursor-type '(bar . 4))
+#+end_src
+
+(I use ~setq-default~ here because cursor-type is automatically buffer-local when it's set)
+
 *** Line numbers
     Relative line numbers:
 
