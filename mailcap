@@ -11,6 +11,7 @@ application/x-tar-gz; tar tzf %s | less -R
 # Open pgp signatures as text
 application/pgp-signature; LESS="-Ric" less
 
+application/pdf; setsid -f zathura "%s" >/dev/null 2>&1
 # Use the `opener` script for everything else
 image; setsid -f opener %s >/dev/null 2>&1
 video; setsid -f opener %s >/dev/null 2>&1
