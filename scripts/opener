@@ -1,6 +1,5 @@
 #!/bin/sh
 # Opener: given a local file, decide which program to use to open it
-
 [ $# -gt 0 ] || { printf "File required in argument.\n" && exit 1; }
 case "$1" in
   # Handling links is another script's job
@@ -19,7 +18,7 @@ case "$1" in
         case "$1" in
           *.mp3) mpv --no-audio-display --no-video --volume=50 "$1";;
           *.dmg) setsid -f open "$@" > /dev/null 2>&1;;
-          *.webm) mpvq "$@";;
+          *.webm|*.mp4) mpvq "$@";;
         esac
         ;;
       *) setsid -f open "$@" > /dev/null 2>&1;;
