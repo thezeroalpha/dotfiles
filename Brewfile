@@ -175,11 +175,8 @@ brew "tzvetkoff/extras/im2a"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "vitorgalvao/tiny-scripts/cask-repair"
 brew "zegervdv/zathura/girara", args: ["HEAD"]
-brew "zegervdv/zathura/zathura", args: ["HEAD"]
-brew "zegervdv/zathura/zathura-cb"
-brew "zegervdv/zathura/zathura-djvu"
-brew "zegervdv/zathura/zathura-pdf-mupdf"
-brew "zegervdv/zathura/zathura-ps"
+brew "zegervdv/zathura/zathura"
+brew "zegervdv/zathura/zathura-pdf-poppler"
 cask "adobe-digital-editions"
 cask "adoptopenjdk11"
 cask "alacritty"
