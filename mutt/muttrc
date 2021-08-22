@@ -85,7 +85,6 @@ bind pager gg top
 bind pager G  bottom
 bind pager R  group-reply
 
-bind attach <return> view-mailcap
 macro index,pager,attach,compose U "\
 <enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
 <pipe-message> urlview<Enter>\
@@ -104,8 +103,7 @@ set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-bind attach <return> view-mailcap
-bind attach l view-mailcap
+set attach_format = "%u%D%I %t%4n %T%.40d (%.40F)%> [%.7m/%.10M, %.6e%?C?, %C?, %s]"
 
 # General mappings
 macro index,pager S '<sync-mailbox><shell-escape>notmuch-hook<enter>'
@@ -123,6 +121,8 @@ bind generic,index k previous-entry
 bind index ! shell-escape
 bind attach <return> view-mailcap
 bind attach l view-mailcap
+bind compose \Cr rename-attachment
+bind compose d edit-description
 bind editor <space> noop
 bind index G last-entry
 bind index gg first-entry
@@ -148,9 +148,9 @@ set query_command = "khard email --parsable %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 bind index,pager M noop
-bind index,pager / search
-bind index,pager n search-next
-bind index,pager N search-opposite
+bind index,pager,browser / search
+bind index,pager,browser n search-next
+bind index,pager,browser N search-opposite
 macro index A "<limit>all<enter>"
 
 set nm_default_url = "notmuch://`notmuch config get database.path`"
