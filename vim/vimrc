@@ -165,6 +165,8 @@ let installed_textobjs = {
       \ 'kana/vim-textobj-line': 'al/il for the current line' }
 for reponame in keys(installed_textobjs) | Plug reponame | endfor
 
+Plug 'dense-analysis/ale'
+
 call plug#end()
 " }}}2
 " Config {{{2
@@ -363,9 +365,15 @@ let g:peekaboo_compact=1
 " Mundo {{{3
 nnoremap <leader>u :MundoToggle<CR>
 " Vim-qf {{{3
+" quickfix
 nmap <leader>qn <Plug>(qf_qf_next)
 nmap <leader>qp <Plug>(qf_qf_previous)
 nmap <leader>qf <Plug>(qf_qf_toggle)
+
+" location
+nmap <leader>ln <Plug>(qf_loc_next)
+nmap <leader>lp <Plug>(qf_loc_previous)
+nmap <leader>ll <Plug>(qf_loc_toggle)
 " Disable auto-open because it interferes with Dispatch reverting makeprg
 " See here https://github.com/tpope/vim-dispatch/issues/254
 let g:qf_auto_open_quickfix = 0
@@ -430,6 +438,9 @@ let g:ada_begin_preproc = 1
 let g:ada_omni_with_keywords = 1
 " gh.vim {{{3
 let g:gh_token = getenv("GITHUB_AUTH_TOKEN")
+" ALE {{{3
+let g:airline#extensions#ale#enabled = 0
+let g:ale_enabled = 0
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
@@ -970,7 +981,6 @@ nmap n <SID>(search-forward)zzzv
 xmap n <SID>(search-forward)zzzv
 nmap N <SID>(search-backward)zzzv
 xmap N <SID>(search-backward)zzzv
-
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets

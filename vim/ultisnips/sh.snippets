@@ -53,7 +53,7 @@ snippet checkdeps "Check script dependencies" b
 checkdeps() {
   for com in "$@"; do
     command -v "$com" >/dev/null 2>&1 \
-      || { printf '%s not found.\n' "$com" >&2 && exit 1; }
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
   done
 }
 checkdeps "${1:command name}"
