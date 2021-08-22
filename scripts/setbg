@@ -1,0 +1,128 @@
+#!/bin/sh
+# Set some variables
+BACKGROUNDS_LIGHT="/Volumes/HDD/Pictures/Backgrounds/light"
+BACKGROUNDS_DARK="/Volumes/HDD/Pictures/Backgrounds/dark"
+BACKGROUNDS_DEST_DIR="$HOME/Pictures/Backgrounds"
+ORIGINALS_DIR_NAME="originals" # where originals are stored after resizing
+SCREEN_RESOLUTION='1440/900'
+SCREEN_ASPECT_RATIO='16:10' # == 1440x900
+SCREEN_ASPECT_RATIO_FLOAT="$(printf '%s\n' "$SCREEN_RESOLUTION" | bc -l)"
+
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps sxiv wal identify convert
+
+# Parse command line flags
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -d|--dark)
+      dark=1
+      break
+      ;;
+    -l|--light)
+      light=1
+      break
+      ;;
+    -h|--help)
+      echo "Usage:"
+      echo "setbg [-d | -l | -h]"
+      exit 0
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Set variables/flags for light/dark image
+if [ -n "$light" ]; then
+  img_dir="$BACKGROUNDS_LIGHT"
+  walflags='-l --saturate 0.8'
+elif [ -n "$dark" ]; then
+  img_dir="$BACKGROUNDS_DARK"
+  walflags=''
+else
+  die 'Need to choose light (-l) or dark (-d)'
+fi
+
+# Choose an image
+imgpath="$(sxiv -o "$img_dir" | head -n 1)"
+[ -z "$imgpath" ] && die 'Nothing selected, quitting.'
+[ -f "$imgpath" ] || die "$imgpath does not exist or is not readable."
+
+printf 'Using %s\n' "$imgpath"
+
+# Get just the image name
+imgname="${imgpath##*/}"
+
+# Get the format, width, height
+fwh="$(identify -format "%m:%w:%h" "$imgpath")"
+printf 'Identified as %s\n' "$fwh"
+w="$(printf %s "$fwh" | cut -d: -f2)"
+h="$(printf %s "$fwh" | cut -d: -f3)"
+
+# Calculate the aspect ratio
+img_aspect_ratio="$(printf '%s/%s\n' "$w" "$h" | bc -l)"
+printf 'Aspect ratio %s\n' "$img_aspect_ratio"
+
+# Set the extension according to the format
+fmt="$(printf %s "$fwh" | cut -d: -f1)"
+case "$fmt" in
+  JPEG) imgext='jpg';;
+  PNG) imgext='png';;
+  *) die "Unsupported image extension in $imgpath!"
+esac
+
+# Compare two aspect ratios (floats) via bc(1)
+# will be 1 if equal, 0 if not
+is_equal_aspect_ratio="$(printf '%s == %s\n' "$img_aspect_ratio" "$SCREEN_ASPECT_RATIO_FLOAT" | bc -l)"
+
+# If the aspect ratio is different, change the aspect ratio of the image and
+# back up the original
+if [ "$is_equal_aspect_ratio" -eq 0 ]; then
+  printf 'Resizing to %s aspect ratio\n' "$SCREEN_ASPECT_RATIO"
+  mkdir -p "$img_dir/$ORIGINALS_DIR_NAME" 2>/dev/null
+  [ -f "$img_dir/$ORIGINALS_DIR_NAME/$imgname" ] && die "Could not back up $imgpath, already exists in originals folder."
+  printf 'convert %s -> %s/%s.%s\n' "$imgpath" "$img_dir" "$imgname" "$$"
+  convert "$imgpath" -resize "$SCREEN_ASPECT_RATIO" "$img_dir/$imgname.$$"
+  printf '%s -> %s/%s/\n' "$imgpath" "$img_dir" "$ORIGINALS_DIR_NAME"
+  mv "$imgpath" "$img_dir/$ORIGINALS_DIR_NAME/"
+  printf '%s/%s.%s -> %s/%s\n' "$img_dir" "$imgname" "$$" "$img_dir" "$imgname"
+  mv "$img_dir/$imgname.$$" "$img_dir/$imgname"
+fi
+
+# Copy the image to some pre-defined location
+if [ -n "$light" ]; then
+  targetname="$BACKGROUNDS_DEST_DIR/light.$imgext"
+else
+  targetname="$BACKGROUNDS_DEST_DIR/dark.$imgext"
+fi
+
+mkdir -p "$(dirname "$targetname")" 2>/dev/null
+printf "copying %s -> %s\n" "$imgpath" "$targetname"
+cp -f "$imgpath" "$targetname"
+
+# Set the background
+# I want to word split here
+# shellcheck disable=SC2086
+wal -c
+wal $walflags -i "$(realpath "$targetname")"
+
+set -x
+
+# If on macOS and using Alacritty, gotta do something extra to set terminal colors
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  darwin*)
+    [ -n "$ALACRITTY_LOG" ] \
+      && [ -x "$HOME"/.dotfiles/tools/alacritty-color-export/script.sh ] \
+      && "$HOME"/.dotfiles/tools/alacritty-color-export/script.sh
+    ;;
+esac
