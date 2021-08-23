@@ -1,0 +1,141 @@
+{
+  "title": "Mouse keys",
+  "rules": [
+    {
+      "description": "Mouse keys",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "tab", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "set_variable": { "name": "mouse_keys_full", "value": 1 } } ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "left_option", "modifiers": { "optional": [ "any" ] } },
+          "to": [ { "key_code": "left_option" } ],
+          "to_after_key_up": [ { "set_variable": { "name": "mouse_keys_full", "value": 0 } } ]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "h", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "set_variable": { "name": "mouse_keys_full_scroll", "value": 1 } } ],
+          "to_after_key_up": [ { "set_variable": { "name": "mouse_keys_full_scroll", "value": 0 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "left_shift", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "speed_multiplier": 2.0 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "semicolon", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "speed_multiplier": 0.5 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "j", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "pointing_button": "button1" } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "k", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "pointing_button": "button3" } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+        { "type": "basic",
+          "from": { "key_code": "l", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "pointing_button": "button2" } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "a", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "horizontal_wheel": 32 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 },
+            { "type": "variable_if", "name": "mouse_keys_full_scroll", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "a", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "x": -3072 } } ],
+          "conditions": [ { "type": "variable_if", "name": "mouse_keys_full", "value": 1 } ]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "s", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "vertical_wheel": 32 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 },
+            { "type": "variable_if", "name": "mouse_keys_full_scroll", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "s", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "y": 3072 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "d", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "horizontal_wheel": -32 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 },
+            { "type": "variable_if", "name": "mouse_keys_full_scroll", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "d", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "x": 3072 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "w", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "vertical_wheel": -32 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 },
+            { "type": "variable_if", "name": "mouse_keys_full_scroll", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "w", "modifiers": { "mandatory": [ "left_option" ], "optional": [ "any" ] } },
+          "to": [ { "mouse_key": { "y": -3072 } } ],
+          "conditions": [
+            { "type": "variable_if", "name": "mouse_keys_full", "value": 1 }
+          ]
+        }
+      ]
+    }
+  ]
+}
