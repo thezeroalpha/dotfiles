@@ -83,7 +83,6 @@ bind pager K previous-entry
 bind pager g noop
 bind pager gg top
 bind pager G  bottom
-bind pager R  group-reply
 
 macro index,pager,attach,compose U "\
 <enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
@@ -114,7 +113,8 @@ bind index p recall-message
 bind index g noop
 bind index gg       first-entry
 bind index G        last-entry
-bind index R        group-reply
+bind index,pager R        group-reply
+bind index,pager r reply
 bind index <space>  collapse-thread
 bind generic,index j next-entry
 bind generic,index k previous-entry
