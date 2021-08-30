@@ -6,7 +6,7 @@ set imap_pass=$my_school_pass_id
 set folder = ~/.local/share/mail/$my_school_email/
 set postponed = +Drafts
 set trash = +"Deleted Items"
-set record = +"Sent Items"
+set record = ""     # office365 automatically saves sent mail
 set mbox = +Archive
 
 
