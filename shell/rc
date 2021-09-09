@@ -1,5 +1,8 @@
 #!/bin/sh
 # shellcheck disable=SC2016
+if command -v startx >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ]; then
+  pgrep dwm || startx
+fi
 [ -n "$DOTFILES" ] || { printf '$DOTFILES not set, press enter to quit' && read -r && exit 1; }
 
 source_if_exists() { [ -f "$1" ] && . "$1"; }
