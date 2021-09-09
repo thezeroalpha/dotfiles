@@ -1,12 +1,13 @@
 # -*- mode: shell-script; -*-
-# ZSH-specific inits
-. "$DOTFILES"/shell/rc
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+# ZSH-specific inits
+. "$DOTFILES"/shell/rc
 
 source_if_exists() { [ -f "$1" ] && . "$1"; }
 
@@ -118,5 +119,4 @@ zle -N _zsh_cli_fg
 bindkey '^Z' _zsh_cli_fg
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 source_if_exists $DOTFILES/shell/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
