@@ -1,0 +1,4 @@
+#!/bin/sh
+while true; do
+  SHLVL=0 dwm 2>/var/log/dwm/dwm.log
+done
