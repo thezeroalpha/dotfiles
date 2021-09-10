@@ -441,6 +441,31 @@ let g:gh_token = getenv("GITHUB_AUTH_TOKEN")
 " ALE {{{3
 let g:airline#extensions#ale#enabled = 0
 let g:ale_enabled = 0
+" textobj-user {{{3
+call textobj#user#plugin('asterisks', {
+\      '-': {
+\        '*sfile*': expand('<sfile>:p'),
+\        'select-a': 'a*',  '*select-a-function*': 'SelectAAsterisks',
+\        'select-i': 'i*',  '*select-i-function*': 'SelectIAsterisks'
+\      }
+\    })
+
+function! SelectAAsterisks()
+  normal! F*
+  let end_pos = getpos('.')
+  normal! f*
+  let start_pos = getpos('.')
+  return ['v', start_pos, end_pos]
+endfunction
+
+function! SelectIAsterisks()
+  normal! T*
+  let end_pos = getpos('.')
+  normal! t*
+  let start_pos = getpos('.')
+  return ['v', start_pos, end_pos]
+endfunction
+
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
