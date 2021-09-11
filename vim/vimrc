@@ -729,6 +729,9 @@ set nrformats=hex,bin
 
 " We write posix shell scripts
 let g:is_posix = 1
+
+" Show where lines were wrapped
+set showbreak=≻
 " }}}
 " Commands {{{1
 command! NoteP vimgrep /NOTE\C/ **/*.* | copen
@@ -790,7 +793,7 @@ let digraphs = {
       \ 'as': 0x2090, 'es': 0x2091, 'is': 0x1D62, 'os': 0x2092, 'rs': 0x1D63, 'us': 0x1D64, 'vs': 0x1D65, 'xs': 0x2093, 'ys': 0x1D67,
       \ '0S': 0x2070, '1S': 0x00B9, '2S': 0x00B2, '3S': 0x00B3, '4S': 0x2074, '5S': 0x2075, '6S': 0x2076, '7S': 0x2077, '8S': 0x2078, '9S': 0x2079, '+S': 0x207A, '-S': 0x207B, '=S': 0x207C, '(S': 0x207D, ')S': 0x207E,
       \ '0s': 0x2080, '1s': 0x2081, '2s': 0x2082, '3s': 0x2083, '4s': 0x2084, '5s': 0x2085, '6s': 0x2086, '7s': 0x2087, '8s': 0x2088, '9s': 0x2089, '+s': 0x208A, '-s': 0x208B, '=s': 0x208C, '(s': 0x208D, ')s': 0x208E,
-      \ '-<':  0x227a,
+      \ '-<':  0x227a, '>-': 0x227b,
       \ 'n#': 0x2115, 'r#': 0x211d, 'z#': 0x2124 }
 
 for [dg, code] in items(digraphs)
@@ -1006,6 +1009,9 @@ nmap n <SID>(search-forward)zzzv
 xmap n <SID>(search-forward)zzzv
 nmap N <SID>(search-backward)zzzv
 xmap N <SID>(search-backward)zzzv
+
+" backspace to switch to alternate buffer
+nnoremap <backspace> <c-^>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
