@@ -8,7 +8,7 @@ function! statusline#StatuslineTabWarning()
 
   if !exists("b:statusline_tab_warning")
     let tabs = search('^\t', 'nw') != 0
-    let spaces = search('^ ', 'nw') != 0
+    let spaces = search('^ \{' . &ts . ',}[^\t]', 'nw') != 0
 
     if tabs && spaces
       let b:statusline_tab_warning =  '[mixed-indenting]'
