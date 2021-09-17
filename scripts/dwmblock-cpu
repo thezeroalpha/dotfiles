@@ -3,7 +3,7 @@
 cache=/tmp/cpubarscache
 
 case "$BUTTON" in
-  1) pgrep -f htop || setsid -f "$TERMINAL" -e htop ;;
+  1) pgrep -f top || setsid -f "$TERMINAL" -e top ;;
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
