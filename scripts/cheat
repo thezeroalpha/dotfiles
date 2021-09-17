@@ -5,4 +5,6 @@ if ! command -v curl &>/dev/null; then
 fi
 
 ! [ $# -ge 1 ] && echo "Argument required." && exit 1
-curl -Ls cheat.sh/"$1" | less -iR
+if [ -f ~/.config/dark-theme ]; then query=''
+else query='?style=trac'; fi
+curl -Ls cheat.sh/"$1$query" | less -iR
