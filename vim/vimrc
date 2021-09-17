@@ -280,7 +280,7 @@ cabbrev USE UltiSnipsEdit
 set completefunc=ultisnips_complete#ListSnippets
 " Dokumentary {{{3
 " Improve what K does
-let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b'}
+let g:dokumentary_docprgs = {'ruby': 'ri {0} | col -b', 'c': ':Man {0}'}
 " Abolish {{{3
 " Work with variants of words easily
 let g:abolish_save_file = '"$HOME"/.dotfiles/vim/abolish_save_file.vim'
