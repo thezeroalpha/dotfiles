@@ -1,6 +1,8 @@
-super + shift + q
-  desktop-session-exit
 super + o
   "$TERMINAL" -e lf "$HOME"
 ctrl + shift + r
   pkill -SIGUSR1 sxhkd; notify "sxhkd reloaded" ""
+alt + shift + 3
+  scrot -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
+alt + shift + 4
+  scrot -s -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
