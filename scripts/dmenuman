@@ -1,0 +1,11 @@
+#!/bin/sh
+term="${TERMINAL:-st}"
+
+manual="$(man -k . | dmenu -p "Manual:" -l 10 | awk '{print $1}')"
+
+# open selected manual with terminal
+[ -n "$manual" ] && $term man $manual
+
+exit 0
+
+
