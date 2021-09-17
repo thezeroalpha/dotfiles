@@ -445,6 +445,11 @@ let g:gh_token = getenv("GITHUB_AUTH_TOKEN")
 " ALE {{{3
 let g:airline#extensions#ale#enabled = 0
 let g:ale_enabled = 0
+let g:ale_c_cc_options = '-std=gnu99 -Wall'
+let g:ale_c_clangd_options = '-std=gnu99 -Wall'
+let g:ale_c_clangformat_options = '-std=gnu99 -Wall'
+let g:ale_c_clangtidy_options = '-std=gnu99 -Wall'
+let g:ale_c_clangtidy_extra_options = '-std=gnu99 -Wall'
 " textobj-user {{{3
 call textobj#user#plugin('asterisks', {
 \      '-': {
