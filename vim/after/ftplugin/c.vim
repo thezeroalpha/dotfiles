@@ -9,5 +9,6 @@ let &l:include='^\s*#\s*include\s*["<]\zs.*\ze[>"]'
 setlocal includeexpr=
 let &l:define='\v^\s*(#\s*define)|((const )?(int|char|void|s?size_t) \*? ?)|(struct \ze\k+ \{)|(struct \k+ \ze\k+;)'
 let &l:iskeyword='a-z,A-Z,48-57,_,.'
+let &l:commentstring='// %s'
 
 set foldmethod=syntax
