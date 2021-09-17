@@ -32,5 +32,10 @@ wal -R && xdotool key "super+shift+r"
 export SHLVL=1
 eval $(ssh-agent)
 command -v VBoxClient-all >/dev/null 2>&1 && VBoxClient-all
+xset r rate 300 50 &
 dwmblocks 2>/var/log/dwm/dwmblocks.log &
+dunst 2>/var/log/dunst/dunst.log &
+unclutter &
+xcompmgr -f -c -C -D 2 &
+sxhkd 2>/var/log/sxhkd/sxhkd.log &
 exec $HOME/.scripts/startdwm
