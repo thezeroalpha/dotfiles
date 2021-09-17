@@ -17,7 +17,7 @@ set statusline+=%(\ %m%r%w\ %)                                        " Flags (m
 set statusline+=%#error#                                              " Start error highlighting
 set statusline+=%(%{statusline#StatuslineTabWarning()}%)              " Inconsistent indentation warning
 set statusline+=%*                                                    " Clear highlighting
-set statusline+=%{statusline#StatuslineRemoteFile()}
+set statusline+=%{statusline#StatuslineRemoteFile()}                  " If editing remote file via netrw, show filename
 set statusline+=%=                                                    " Move everything after this to the right
 set statusline+=%<                                                    " Start truncating here
 set statusline+=\ %{statusline#StatuslineBuildCwd()}\                 " Current working directory, replacing home with ~
