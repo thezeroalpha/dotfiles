@@ -374,6 +374,10 @@ nmap <leader>qf <Plug>(qf_qf_toggle)
 nmap <leader>ln <Plug>(qf_loc_next)
 nmap <leader>lp <Plug>(qf_loc_previous)
 nmap <leader>ll <Plug>(qf_loc_toggle)
+nnoremap <leader>lb :lbefore<CR>
+nnoremap <leader>la :lafter<CR>
+nnoremap <leader>lf :lfirst<CR>
+
 " Disable auto-open because it interferes with Dispatch reverting makeprg
 " See here https://github.com/tpope/vim-dispatch/issues/254
 let g:qf_auto_open_quickfix = 0
