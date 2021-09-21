@@ -68,7 +68,8 @@
     open = "!f(){ open $(git home \"$1\"); }; f"
     dad = "!curl https://icanhazdadjoke.com/ && echo && git add"
     reignore = "!git rm -r --cached .; git add ."
-    rb = "rebase --committer-date-is-author-date"
+    rebase = "rebase --committer-date-is-author-date"
+    rc = "rebase --continue"
     lfs-refs = "!git fetch --all && git log -p --all -S"
     chp = cherry-pick
     chpn = cherry-pick --no-commit
