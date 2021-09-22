@@ -60,9 +60,6 @@
 [submodule "tools/tuxi"]
 	path = tools/tuxi
 	url = https://github.com/Bugswriter/tuxi/
-[submodule "tools/alacritty-color-export"]
-	path = tools/alacritty-color-export
-	url = https://github.com/egeesin/alacritty-color-export
 [submodule "tools/translate-shell"]
 	path = tools/translate-shell
 	url = https://github.com/soimort/translate-shell
