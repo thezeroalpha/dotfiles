@@ -44,8 +44,24 @@ except Exception as exception:
 EOF
 }
 
-macos_alacritty_load_colors() {
-  [ -x "$HOME"/.dotfiles/tools/alacritty-color-export/script.sh ] && "$HOME"/.dotfiles/tools/alacritty-color-export/script.sh
+# Change the 'colors' setting in the Alacritty config
+alacritty_change_theme() {
+  # Look up the config file
+  DEFAULT_MACOS_CONFIG="$HOME"/.config/alacritty/alacritty.yml
+  CFG="$DEFAULT_MACOS_CONFIG"
+  [ -L "$DEFAULT_MACOS_CONFIG" ] && {
+    printf "Following symlink to config...\n"
+      CFG=$($READLINK -f "$DEFAULT_MACOS_CONFIG")
+    }
+
+  # Replace 'colors: ...' with 'colors: *(dark|light)' depending on theme
+  tmpfile=$(mktemp)
+  trap 'rm $tmpfile' INT TERM EXIT
+  sed "/^colors: /c\\
+colors: *${1}" "$CFG" > "$tmpfile" \
+    && cat "$tmpfile" > "$CFG" \
+    && rm "$tmpfile"
+  trap - INT TERM EXIT
 }
 
 set_terminal_and_wallpaper() {
@@ -88,7 +104,7 @@ case "$os" in
     set_macos "$theme"
     # I don't use iterm2
     # set_iterm2 "$theme"
-    macos_alacritty_load_colors
+    alacritty_change_theme "$theme"
     ;;
 esac
 
