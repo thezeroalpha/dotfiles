@@ -1,3 +1,6 @@
+# vim: expandtab shiftwidth=4 softtabstop=4 tabstop=8
+# ^ need this because the setbg script uses indentation to find color scheme definitions
+#
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
 import:
@@ -144,9 +147,9 @@ schemes:
           red:        '#e75127'
           green:      '#e83076'
           yellow:     '#ed64ed'
-          blue:       '#f399a3'
+          blue:       '#da8992'
           magenta:    '#f4a2cc'
-          cyan:       '#f6b7de'
+          cyan:       '#dda4c7'
           white:      '#1A1923'
         bright:
           black:      '#8b7f89'
