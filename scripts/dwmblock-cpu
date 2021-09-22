@@ -1,4 +1,5 @@
 #!/bin/sh
+# dwmblocks script for CPU information
 # Cache in tmpfs to improve speed and reduce SSD load
 cache=/tmp/cpubarscache
 

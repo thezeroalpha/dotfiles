@@ -1,4 +1,5 @@
 #!/bin/sh
+# Queue one or more files in mpd via mpc
 printfq() { printf "'%s'\\n" "$(printf '%s' "$1" | sed -e "s/'/'\\\\''/g")"; }
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 

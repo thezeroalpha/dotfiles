@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ffmpeg wrapper with various presets.
+
 if ! command -v ffmpeg &> /dev/null; then echo "ffmpeg not found" && exit 1; fi
 main() {
   case "$1" in

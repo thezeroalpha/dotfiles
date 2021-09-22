@@ -1,4 +1,7 @@
 #!/bin/sh
+# Wrapper for youtube-dl, configured specifically for Bandcamp
+# $1 is the URL
+
 DOWNLOAD_DIR="$HOME"/Downloads/songs/listen\ to
 cd "$DOWNLOAD_DIR" || { printf "Couldn't cd into download directory %s\n" "$DOWNLOAD_DIR"; exit 1; }
 command -v youtube-dl 1>/dev/null 2>&1 || { printf "Youtube-dl required.\n"; exit 1; }

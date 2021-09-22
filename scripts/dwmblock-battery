@@ -1,4 +1,5 @@
 #!/bin/sh
+# dwmblocks script for battery information
 case "$BUTTON" in
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac

@@ -1,4 +1,5 @@
 #!/bin/sh
+# Finds broken MP3s, via mp3val.
 die() { printf "%s\n" "$1" >&2; exit 1; }
 command -v mp3val 1>/dev/null 2>&1 || die "mp3val not installed."
 [ $# -eq 1 ] || die "Argument required: path to music directory"

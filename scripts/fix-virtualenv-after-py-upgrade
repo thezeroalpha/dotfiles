@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# Upgrading python on macOS sometimes breaks virtualenvs. This fixes them again.
 [ -z "$WORKON_HOME" ] && { echo '$WORKON_HOME not set'; exit 1; }
 if ! command -v gfind &>/dev/null; then
   echo "gfind not installed." >&2

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Parses a Hangouts.json file downloaded from Google Hangouts
 require 'json'
 File.open("Hangouts.json") do |f|
   t=JSON.parse(f.read)

@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# dwmblocks script for internet information
 # Show wifi 📶 and percent strength or 📡 if none.
 # Show 🌐 if connected to ethernet or ❎ if none.
 # Show 🔒 if a vpn connection is active

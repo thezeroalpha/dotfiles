@@ -1,4 +1,6 @@
 #!/bin/sh
+# Places all MP3 files in a directory into folders based on the artist and album.
+# If you want to make changes in the current dir, run `mp3-tags-to-folders . .`
 die() { printf "%s\n" "$1" >&2; exit 1; }
 command -v ffprobe 1>/dev/null 2>&1 || die "ffprobe not installed."
 [ $# -eq 2 ] || die "Arguments required: path to music directory, path to destination"

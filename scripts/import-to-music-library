@@ -1,4 +1,7 @@
 #!/bin/sh
+# Meant to be used with mpd and mpc.
+# Import everything in the current folder to $MUSIC_DIR. Then update the
+# recently added playlist in $MUSIC_DIR, and run an mpd database update.
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 checkdeps() {
   for com in "$@"; do

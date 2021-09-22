@@ -1,7 +1,5 @@
 #!/bin/sh
-# clp - "Paste" data from clipboard to stdout
-#
-# Usage:
+# clp - Cross-platform (cl)ipboard (p)aste
 #
 #   clp   - writes clipboard's contents to stdout
 #

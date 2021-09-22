@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
+# Download audio/video from newsboat. This script generally isn't executed manually, but via newsboat macros.
 [ $# -eq 2 ] || { terminal-notifier -title "Not enough arguments" -message "Need exactly 2 arguments." && exit 1; }
 what="$1"
 where="$2"
@@ -12,10 +13,10 @@ terminal-notifier -title "Started $what download" -message "Downloading \"$title
 case "$what" in
   "aonly")
     mkdir -p "$audiodir"
-    youtube-dl --add-metadata -xic -f bestaudio/best -o "$audiodir/%(title)s-%(creator)s.%(ext)s" "$where" 2>&1 >> "$logfile"
+    youtube-dl --add-metadata -xic -f bestaudio/best -o "$audiodir/%(title)s-%(creator)s.%(ext)s" "$where" >>"$logfile" 2>&1
     ;;
   "av")
-    youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$videodir/%(title)s-%(creator)s.%(ext)s" "$where" 2>&1 >> "$logfile"
+    youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$videodir/%(title)s-%(creator)s.%(ext)s" "$where" >>"$logfile" 2>&1
     ;;
   *)
     terminal-notifier -title "Error" -message "Download option not valid" -group "$where"

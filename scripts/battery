@@ -1,4 +1,7 @@
 #!/bin/sh
+# Cross-platform battery information script
+# With no arguments, prints battery percentage and power source, separated by newline
+
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   linux*)

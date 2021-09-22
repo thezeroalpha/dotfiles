@@ -1,4 +1,5 @@
 #!/bin/sh
+# Cross-platform notification script.
 [ $# -ge 2 ] || { printf "Arguments: title, message\n" && exit 1; }
 group=${3:-$TERM}
 

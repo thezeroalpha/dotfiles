@@ -1,4 +1,5 @@
 #!/bin/sh
+# Use dmenu to open manpages.
 term="${TERMINAL:-st}"
 
 manual="$(man -k . | dmenu -p "Manual:" -l 10 | awk '{print $1}')"

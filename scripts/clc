@@ -1,7 +1,5 @@
 #!/bin/sh
-# clc - Copy data to clipboard
-#
-# Usage:
+# clc - Cross-platform (cl)ipboard (c)opy
 #
 #  <command> | clc    - copies stdin to clipboard
 #

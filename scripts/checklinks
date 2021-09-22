@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh
+# Script that crawls a URL and checks broken links
 set -x
-if ! command -v wget &> /dev/null; then
+if ! command -v wget 1>/dev/null 2>&1; then
   echo "Please install wget."
   exit 1
 elif [ $# -ne 2 ]; then
@@ -9,9 +10,10 @@ elif [ $# -ne 2 ]; then
   exit 1
 fi
 
-flags=(--spider --recursive --no-directories --no-verbose --page-requisites --level inf --wait 2 -e robots=off)
+# params: LOGFILE, URL
+wget_with_flags() { wget --spider --recursive --no-directories --no-verbose --page-requisites --level inf --wait 2 -e robots=off -o "$2" "$1"; }
 # flags=(--spider --recursive --no-directories --no-verbose --page-requisites --level inf -e robots=off)
 
-wget "${flags[@]}" -o "$2" "$1"
+wget_with_flags "$2" "$1"
 
 grep -B 1 'broken link!' "$2" | less

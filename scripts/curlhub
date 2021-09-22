@@ -1,4 +1,7 @@
 #!/bin/sh
+# Curl wrapper to simplify downloading a raw file from Github.
+# e.g. to download https://github.com/koalaman/shellcheck/blob/master/src/ShellCheck/AST.hs
+# do `curlhub koalaman/shellcheck src/ShellCheck/AST.h`
 command -v curl 1>/dev/null 2>&1 || { printf "curl not installed\n" && exit 1; }
 [ $# -lt 2 ] && { printf "Usage:\tcurlhub username/repository filename [branch]\n" && exit 1; }
 lnk="https://raw.githubusercontent.com/$1/${3:-master}/$2"

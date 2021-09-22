@@ -1,4 +1,6 @@
 #!/bin/sh
+# Simple base converter
+# base [-x|-d|-o|-b] [0x|0d|0o|0b|]NUM
 command -v bc >/dev/null 2>&1 || { printf "bc not installed.\n" && exit 1; }
 
 usage() {
@@ -12,18 +14,22 @@ while [ $(($#)) -ne 0 ]; do
   case "$1" in
     -x|--hex)
       obase=16
+      baseprefix='0x'
       shift
       ;;
     -d|--decimal)
       obase=10
+      baseprefix=''
       shift
       ;;
     -o|--octal)
       obase=8
+      baseprefix='0o'
       shift
       ;;
     -b|--binary)
       obase=2
+      baseprefix='0b'
       shift
       ;;
     -h|--help)
@@ -55,7 +61,7 @@ case "$1" in
 esac
 
 if [ -n "$obase" ]; then
-  printf "obase=%s; ibase=%s; %s\n" "$obase" "$ibase" "$val" | bc -w | tr -d '\n'
+  printf "%s%s" "$baseprefix" "$(printf "obase=%s; ibase=%s; %s\n" "$obase" "$ibase" "$val" | bc -w | tr -d '\n')"
 else
   printf "Dec: %s\n" "$(printf "obase=10; ibase=%s; %s\n" "$ibase" "$val" | bc -w)" \
     && printf "Hex: %s\n" "$(printf "obase=16; ibase=%s; %s\n" "$ibase" "$val" | bc -w)" \

@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+# A script that lets you check build status of github pages and trigger new
+# builds. You can check one or more pages at once, the script minimizes
+# requests using etag values.
 require 'open-uri'
 require 'net/http'
 require 'json'

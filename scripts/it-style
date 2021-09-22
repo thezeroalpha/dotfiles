@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Set a track's genre in iTunes from Discogs.
+# No longer updated, I stopped using iTunes.
+
 oldifs="$IFS"
 console=0
 print_help() {

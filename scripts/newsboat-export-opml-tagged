@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-
+# Exports a newsboat URLs file to an OPML, with tags, for use in e.g. Miniflux.
 ( warn "Usage: newsboat-export-opml-tagged /path/to/urls /path/to/destination.opml"; exit 1 ) unless ARGV.length == 2
 ( warn "#{ARGV[0]} is not readable."; exit 1 ) unless File.readable? ARGV[0]
 urls = File.readlines(ARGV[0])

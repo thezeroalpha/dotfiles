@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Client to query Discogs
 require "discogs-wrapper" # Needed for API access
 
 my_user_token = ENV['DISCOGS_API_TOKEN']

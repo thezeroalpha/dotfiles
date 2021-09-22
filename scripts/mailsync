@@ -1,4 +1,5 @@
 #!/bin/sh
+# Sync my email using mbsync, reindex via notmuch, print the amount of new messages.
 rbw unlock
 mbsync -c /Users/alex/.config/mbsync/mbsyncrc -Va
 notmuch-hook

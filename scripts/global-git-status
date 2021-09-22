@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Gives git status output for all git repositories on the system.
 spin() {
     sp='/-\|'
     printf ' '
@@ -31,14 +32,14 @@ count=0
 echo -ne '\r'
 
 IFS=$'\n'
-for i in ${gits[@]}; do 
+for i in ${gits[@]}; do
   ((count++))
   echo -ne "Processed $count\r"
-  echo "git: $i" >> $logfile; 
-  cd "$i/../" &>/dev/null; 
-  git fetch --all &> /dev/null; 
-  git status >> $logfile; 
-  hr >> $logfile; 
+  echo "git: $i" >> $logfile;
+  cd "$i/../" &>/dev/null;
+  git fetch --all &> /dev/null;
+  git status >> $logfile;
+  hr >> $logfile;
 done
 echo
 vim $logfile -c "let @d=\"j?^git: V/#d\"" -c "w|1" --cmd "echo 'Execute register D to remove a status report.'"

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# Can scrape cloudflare-protected websites
 import cfscrape, sys
 scraper=cfscrape.create_scraper()
 url=sys.argv[1]

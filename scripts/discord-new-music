@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
+# Script that uses selenium-webdriver to go through unread messages in a
+# server's channels, extract any links, and download them. Then marks those
+# messages as read.
+# Useful for downloading new music posted to channels.
 require 'selenium-webdriver'
 require 'json'
 

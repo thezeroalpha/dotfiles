@@ -1,4 +1,5 @@
 #!/bin/sh
+# dwmblocks script for brightness information
 case "$BUTTON" in
   1)
     pgrep -f backlight-brightness || setsid -f "$TERMINAL" -e backlight-brightness

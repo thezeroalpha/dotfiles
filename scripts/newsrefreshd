@@ -1,4 +1,5 @@
 #!/bin/sh
+# This script refreshes newsboat. Runs via a LaunchAgent or cronjob.
 set -e
 
 notidie() {

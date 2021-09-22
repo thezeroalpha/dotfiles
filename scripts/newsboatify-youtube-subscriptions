@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Convert a youtube subscriptions HTML file to a newsboat URLs file.
 require 'nokogiri'
 doc = Nokogiri::HTML File.read("source.html")
 hrefs = doc.css("a.channel-link").inject([]) { |arr,c| arr << c.attr("href") unless c.attr("href").nil? }.uniq!

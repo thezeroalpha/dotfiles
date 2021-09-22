@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# A wrapper around httpie, providing a prompt for repeated querying of the same host.
 if ! command -v http &> /dev/null; then
   echo "Please install httpie"
   exit 1

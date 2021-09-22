@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Converts an image to a Pocketbook-compatible version, for use e.g. as a screen saver image
 if ! command -v convert &> /dev/null; then
   echo "imagemagick not installed." >&2
   exit 1

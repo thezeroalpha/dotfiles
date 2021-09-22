@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# on macOS, gets the title of the frontmost window.
 if ! command -v osascript 1>/dev/null 2>&1; then
   echo "osascript not installed." >&2
   exit 1
@@ -38,4 +39,4 @@ else
       end if
     end tell
 YEET
-  fi
+fi

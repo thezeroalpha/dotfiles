@@ -1,2 +1,5 @@
 #!/bin/sh
-curl -sL 'https://www.chmi.cz/files/portal/docs/meteo/om/predpovedi/CR/p_CR.html' | pup 'pre text{}' | $PAGER
+# Get the latest forecast from CHMU
+curl -sL 'https://www.chmi.cz/files/portal/docs/meteo/om/predpovedi/CR/p_CR.html' \
+  | pup 'pre text{}' \
+  | $PAGER

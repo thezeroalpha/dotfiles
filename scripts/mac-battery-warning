@@ -1,4 +1,13 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
+# On macOS, send a notification warning if battery level is under/over a certain limit.
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps terminal-notifier
+
 batt_status=$(pmset -g batt)
 battery_pct=$(awk '/InternalBattery/ { print $3 }' <<< "$batt_status" | cut -d% -f1)
 if { grep -q "from 'Battery Power'" <<< "$batt_status"; }  && [ "$battery_pct" -le 15 ]; then

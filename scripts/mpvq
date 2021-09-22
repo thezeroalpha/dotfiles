@@ -1,4 +1,5 @@
 #!/bin/sh
+# Queue one or more files in mpv
 if ! [ -S "$HOME"/.cache/mpv/input ]; then
     mkfifo "$HOME"/.cache/mpv/input
 fi

@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-if ! command -v curl &>/dev/null; then
+#!/bin/sh
+# Wrapper script for `curl cheat.sh`, also sets colors depending on system theme
+if ! command -v curl 1>/dev/null 2>&1; then
   echo "curl not installed." >&2
   exit 1
 fi

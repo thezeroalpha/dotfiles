@@ -1,4 +1,5 @@
 #!/bin/sh
+# Cross-platform terminal image preview script.
 HEIGHT="$2"
 [ -z "$2" ] && HEIGHT="$(tput lines)"
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
