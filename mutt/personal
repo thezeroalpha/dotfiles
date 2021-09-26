@@ -20,12 +20,14 @@ unmailboxes *
 unvirtual-mailboxes *
 virtual-mailboxes \
   "Inbox (P)" "notmuch://?query=folder:$my_personal_email/Inbox" \
-  "Archive (P)" "notmuch://?query=folder:$my_personal_email/Archive" \
+  "Archive (2M) (P)" "notmuch://?query=folder:$my_personal_email/Archive and date:2M..today" \
   "Drafts (P)" "notmuch://?query=folder:$my_personal_email/Drafts" \
   "Tickets (P)" "notmuch://?query=folder:$my_personal_email/Tickets" \
   "Sent (P)" "notmuch://?query=folder:$my_personal_email/Sent" \
   "Trash (P)" "notmuch://?query=folder:$my_personal_email/Trash" \
-  "Spam (P)" "notmuch://?query=folder:$my_personal_email/Spam"
+  "Spam (P)" "notmuch://?query=folder:$my_personal_email/Spam" \
+  "Archive (All) (P)" "notmuch://?query=folder:$my_personal_email/Archive"
+
 set spoolfile = "Inbox (P)"
 
 set header_cache = '~/.cache/mutt/$my_personal_email/headers'
@@ -63,7 +65,8 @@ macro index,pager u "\
 
 # Changing folders
 macro index,pager gi "<change-vfolder>Inbox (P)<enter>" "go to Inbox"
-macro index,pager ga "<change-vfolder>Archive (P)<enter>" "go to Archive"
+macro index,pager ga "<change-vfolder>Archive (2M) (P)<enter>" "go to recent Archive"
+macro index,pager gA "<change-vfolder>Archive (All) (P)<enter>" "go to Archive"
 macro index,pager gd "<change-vfolder>Drafts (P)<enter>" "go to Drafts"
 macro index,pager gj "<change-vfolder>Spam (P)<enter>" "go to Spam"
 macro index,pager gt "<change-vfolder>Trash (P)<enter>" "go to Trash"
