@@ -124,6 +124,7 @@ cmd extract ${{
         *.zip) unzip $f;;
         *.rar) unrar x $f;;
         *.7z) 7z x $f;;
+        *.jar) jar -xvf $f;;
     esac
 }}
 
