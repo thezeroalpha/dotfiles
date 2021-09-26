@@ -6,7 +6,7 @@ esac
 
 status="$(battery | tac | tr -d '\n' | sed '
     s/Charging/⚡/;
-    /Discharging[01]*[0-9]$/s/Discharging/‼ /;
+    /Discharging[01][0-9]$/s/Discharging/‼ /;
     s/Discharging/🔋 /;
     s/Not charging/⛔/;
     s/Full/✅/;
