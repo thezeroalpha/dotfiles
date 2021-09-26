@@ -5,8 +5,13 @@ HEIGHT="$2"
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$os" in
   linux*)
-    command -v chafa 1>/dev/null 2>&1 || { printf "Please install chafa\n" && exit 1; }
-    chafa --fill=block --symbols=block -c 256 -s 80x"$HEIGHT" "$1"
+    if command -v catimg 1>/dev/null 2>&1; then
+      catimg -H "$HEIGHT" "$1"
+    elif command -v chafa 1>/dev/null 2>&1; then
+      chafa --fill=block --symbols=block -c 256 -s 80x"$HEIGHT" "$1"
+    else
+      printf "Please install catimg or chafa\n" >&2 && exit 1
+    fi
     ;;
   darwin*)
     command -v chafa 1>/dev/null 2>&1 || { printf "Please install chafa\n" && exit 1; }
