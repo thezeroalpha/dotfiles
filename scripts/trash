@@ -1,0 +1,78 @@
+#!/bin/sh
+TRASHDIR="$HOME/.Trash"
+[ -d "$TRASHDIR" ] || mkdir -p "$TRASHDIR"
+
+printfq() { printf "'%s'\n" "$(printf '%s' "$1" | sed -e "s/'/'\\''/g")"; }
+
+PARAMS=""
+
+trash_empty() {
+  printf "Empty the trash? [y/n] "
+  read -r conf; case "$conf" in
+    Y|y)
+      find "${TRASHDIR:?}" -delete
+      printf "Deleted all items in the trash.\n"
+      ;;
+    *)
+      # code otherwise
+      printf "Cancelled.\n"
+      ;;
+  esac
+}
+
+trash_empty_secure() {
+  printf "Securely empty the trash? [y/n] "
+  read -r conf; case "$conf" in
+    Y|y)
+      command -v shred >/dev/null 2>&1 || { printf "Please install shred (1) to empty trash securely.\n" >&2 && exit 1; }
+      find "${TRASHDIR:?}" -type f -exec shred -uz {} +
+      find "${TRASHDIR:?}" -delete
+      printf "Shredded all items in the trash.\n"
+      ;;
+    *)
+      printf "Cancelled.\n"
+      ;;
+  esac
+}
+
+trash_usage() {
+  printf "%s\n" "$(du -sh "$TRASHDIR")"
+}
+
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -e|--empty)
+      trash_empty && exit 0
+      ;;
+    -s|--secure-empty)
+      trash_empty_secure && exit 0
+      ;;
+    -u|--usage)
+      trash_usage && exit 0
+      ;;
+    -h|--help)
+      printf "Usage:\n"
+      printf "trash -e|--empty\t\tempty the trash\n"
+      printf "trash -u|--usage\t\tprints disk usage info\n"
+      printf "trash arg1 [arg2...]\t\tmove items to the trash\n"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $(printfq "$1")"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+for f in "$@"; do
+  [ -e "$f" ] && mv "$f" "${TRASHDIR:?}/" && printf "Trashed %s\n" "$f"
+done
