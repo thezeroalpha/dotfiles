@@ -31,7 +31,7 @@ while [ \$((\$#)) -ne 0 ]; do
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="\$PARAMS $(printf '%q' "\$1")"
+      PARAMS="\$PARAMS \$(printfq "\$1")"
       shift
       ;;
   esac
@@ -152,6 +152,6 @@ fi
 endsnippet
 
 snippet printfq "A POSIX way to do printf %q" bw
-printfq() { printf "'%s'\\n" "$(printf '%s' "$1" | sed -e "s/'/'\\\\''/g")"; }
+printfq() { printf "'%s'\\n" "$(printf '%s' "\$1" | sed -e "s/'/'\\\\''/g")"; }
 $0
 endsnippet
