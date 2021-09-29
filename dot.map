@@ -69,6 +69,9 @@ xinitrc: ~/.xinitrc
 xprofile: ~/.xprofile
 Xresources: ~/.Xresources
 
+# Config: GTK
+gtk-2.0/gtkrc: ~/.gtkrc-2.0
+
 # Config: Emacs
 emacs:
 - config.org: ~/.emacs.d/config.org

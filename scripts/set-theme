@@ -44,6 +44,12 @@ except Exception as exception:
 EOF
 }
 
+set_gtk() {
+  mkdir -p ~/.config/gtk-2.0 ~/.config/gtk-3.0
+  [ -f ~/.dotfiles/gtk-2.0/"$1" ] && ln -sf ~/.dotfiles/gtk-2.0/"$1" ~/.config/gtk-2.0/theme
+  [ -f ~/.dotfiles/gtk-3.0/"$1".ini ] && ln -sf ~/.dotfiles/gtk-3.0/"$1".ini ~/.config/gtk-3.0/settings.ini
+}
+
 # Change the 'colors' setting in the Alacritty config
 alacritty_change_theme() {
   # Look up the config file
@@ -66,9 +72,9 @@ colors: *${1}" "$CFG" > "$tmpfile" \
 
 set_terminal_and_wallpaper() {
   if [ "$1" = "light" ]; then
-    /Users/alex/.local/bin/wal --saturate 0.8 -i "$(realpath ~/Pictures/Backgrounds/light.jpg)" -l;
+    wal --saturate 0.8 -i "$(realpath ~/Pictures/Backgrounds/light.jpg)" -l;
   else
-    /Users/alex/.local/bin/wal -i "$(realpath ~/Pictures/Backgrounds/dark.jpg)";
+    wal -i "$(realpath ~/Pictures/Backgrounds/dark.jpg)";
   fi
 }
 
@@ -105,6 +111,9 @@ case "$os" in
     # I don't use iterm2
     # set_iterm2 "$theme"
     alacritty_change_theme "$theme"
+    ;;
+  linux*)
+    set_gtk "$theme"
     ;;
 esac
 
