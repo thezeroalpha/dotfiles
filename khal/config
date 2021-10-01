@@ -1,0 +1,17 @@
+[calendars]
+[[mine]]
+path = ~/.local/share/calendars/mine/*
+type = discover
+
+[[web]]
+path = ~/.local/share/calendars/sub/*
+type = discover
+
+[keybindings]
+external_edit = E
+
+[view]
+theme = light
+
+[locale]
+timeformat = "%H:%M"

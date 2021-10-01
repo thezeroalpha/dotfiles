@@ -58,6 +58,9 @@ dunst: ~/.config/dunst
 sxhkd: ~/.config/sxhkd
 talon-user: ~/.talon/user
 surfraw: ~/.config/surfraw
+khard: ~/.config/khard
+khal: ~/.config/khal
+vdirsyncer: ~/.config/vdirsyncer
 
 # Email: these won't exist when you clone the repo
 mbsync: ~/.config/mbsync

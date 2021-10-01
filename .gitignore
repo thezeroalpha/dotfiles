@@ -10,6 +10,9 @@ notmuch/
 mbsync/
 msmtp/
 
+# Contacts/calendars
+vdirsyncer/
+
 # CLI for my router
 scripts/wifi
 

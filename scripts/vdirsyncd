@@ -17,3 +17,4 @@ case "$os" in
 esac
 
 vdirsyncer sync || notify 'Error in vdirsyncer' 'Did not sync properly, check /tmp/vdirsyncd.std{out,err}' vdirsyncd
+vdirsyncer metasync || notify 'Error in vdirsyncer' 'Did not sync properly, check /tmp/vdirsyncd.std{out,err}' vdirsyncd
