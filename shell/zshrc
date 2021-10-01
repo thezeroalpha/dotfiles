@@ -91,6 +91,8 @@ bindkey "\e^y" insert-arg-of-prev-cmd
 bindkey '\e#' pound-insert
 bindkey '^]' vi-find-next-char
 bindkey '\e^]' vi-find-prev-char
+bindkey -s '\el' '\C-e| less'
+bindkey -s '\e&' '\C-e&>/dev/null'
 
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
