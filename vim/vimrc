@@ -427,7 +427,8 @@ let g:repl_config = {
       \ },
       \ 'javascript': { 'cmd': 'node' },
       \ 'ruby': { 'cmd': 'irb', 'load_file': 'load "%s"' },
-      \ 'r': { 'cmd': 'R' }
+      \ 'r': { 'cmd': 'R' },
+      \ 'java': {'cmd': 'jshell' }
 \ }
 nnoremap gzr :Repl<CR>
 " Medieval {{{3
@@ -751,6 +752,8 @@ command! ListFileTypes echo glob($VIMRUNTIME . '/syntax/*.vim')
 command! CD cd %:p:h
 command! LCD lcd %:p:h
 command! TCD tcd %:p:h
+command! RO setlocal nomodifiable readonly
+command! RW setlocal modifiable noreadonly
 command! Maketab set noet ts=2 | %retab!
 command! Diff w !diff % -
 command! Diffg w !git diff % -
@@ -872,9 +875,6 @@ nnoremap <C-l> <C-W>>
 
 " Delete hidden buffers
 nmap <leader>dh <Plug>DeleteHiddenBuffers
-
-" Switch to alernative buffer
-nnoremap <leader>s<leader> :b#<CR>
 
 " Show hidden symbols
 nnoremap <leader>hs :set list!<CR>
@@ -1021,6 +1021,18 @@ xmap N <SID>(search-backward)zzzv
 
 " backspace to switch to alternate buffer
 nnoremap <backspace> <c-^>
+
+" Switch to tab/space indentation
+nnoremap <leader>i<tab> :set noexpandtab shiftwidth=4 softtabstop=4 tabstop=4<CR>
+nnoremap <leader>i<space> :set expandtab shiftwidth=4 softtabstop=4 tabstop=8<CR>
+
+" Switch fold methods
+nnoremap <leader>zm :setlocal foldmethod=manual<CR>
+nnoremap <leader>zi :setlocal foldmethod=indent<CR>
+nnoremap <leader>z{ :setlocal foldmethod=marker<CR>
+nnoremap <leader>zs :setlocal foldmethod=syntax<CR>
+nnoremap <leader>ze :setlocal foldmethod=expr<CR>
+nnoremap <leader>zd :setlocal foldmethod=diff<CR>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
