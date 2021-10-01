@@ -14,8 +14,7 @@ case "$os" in
     fi
     ;;
   darwin*)
-    command -v chafa 1>/dev/null 2>&1 || { printf "Please install chafa\n" && exit 1; }
-    chafa -c 256 -s 80x"$HEIGHT" "$1"
+    catimg -H "$HEIGHT" "$1"
     ;;
   msys*|cygwin*|mingw*|nt|win*)
     printf "Windows not supported.\n"
