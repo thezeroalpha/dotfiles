@@ -74,5 +74,7 @@ done
 eval set -- "$PARAMS"
 
 for f in "$@"; do
-  [ -e "$f" ] && mv "$f" "${TRASHDIR:?}/" && printf "Trashed %s\n" "$f"
+  destname="${f##*/}"
+  ctr=0; while [ -e "$TRASHDIR/$destname" ]; do destname="${f##*/}.$ctr"; ctr=$((ctr+1)); done
+  [ -e "$f" ] && mv "$f" "${TRASHDIR:?}/$destname" && printf "Trashed %s\n" "$f"
 done
