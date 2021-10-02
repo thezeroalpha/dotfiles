@@ -463,16 +463,34 @@ Disable fill mode in Markdown
   (add-hook 'markdown-mode-hook (lambda () (auto-fill-mode 0) (flyspell-mode 1)))
 #+end_src
 
+A tab is 8 spaces:
+
+#+begin_src emacs-lisp
+(setq-default tab-width 8)
+#+end_src
+
 Never insert tabs with indentation:
 
 #+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
 #+end_src
 
+Allow switching between the two easily:
+
+#+begin_src emacs-lisp
+  (defun indent-tabs ()
+    (interactive)
+    (setq indent-tabs-mode t))
+  (defun indent-spaces ()
+    (interactive)
+    (setq indent-tabs-mode nil))
+#+end_src
+
 Indentation for various modes:
 
 #+begin_src emacs-lisp
-  (setq sh-basic-offset 2)
+  (setq-default sh-basic-offset 2
+                c-basic-offset 4)
 #+end_src
 
 ** Wrapping
