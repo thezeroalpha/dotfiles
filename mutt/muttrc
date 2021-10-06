@@ -102,7 +102,7 @@ set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-set attach_format = "%u%D%I %t%4n %T%.40d (%.40F)%> [%.7m/%.10M, %.6e%?C?, %C?, %s]"
+set attach_format = "%u%D%I %t%4n %T%.40d (%.40F -> %.40f)%> [%.7m/%.10M, %.6e%?C?, %C?, %s]"
 
 # General mappings
 macro index,pager S '<sync-mailbox><shell-escape>notmuch-hook<enter>'
