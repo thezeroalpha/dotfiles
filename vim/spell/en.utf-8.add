@@ -435,3 +435,9 @@ CBR
 import
 VUSec
 unmapping
+VMA
+IPC
+PTE
+RW
+VMAs
+reinit
