@@ -893,10 +893,6 @@ nnoremap gV `[v`]
 " Save in insert mode
 inoremap <C-Z> <C-o>:w<CR>
 
-" Set the foldlevel
-nnoremap zn :set foldlevel=
-nnoremap zs :exe "set foldlevel=".foldlevel(line('.'))<CR>
-
 " Config edit mappings
 " Why :drop? It uses the file if it's already open.
 " Also have to map c-c to no-op first, otherwise doesn't work
@@ -1033,6 +1029,11 @@ nnoremap <leader>z{ :setlocal foldmethod=marker<CR>
 nnoremap <leader>zs :setlocal foldmethod=syntax<CR>
 nnoremap <leader>ze :setlocal foldmethod=expr<CR>
 nnoremap <leader>zd :setlocal foldmethod=diff<CR>
+
+" Set the foldlevel
+nnoremap <leader>zn :set foldlevel=
+nnoremap <leader>zt :exe "set foldlevel=".foldlevel(line('.'))<CR>
+
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
