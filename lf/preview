@@ -15,7 +15,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   *.rar) unrar l "$1";;
   *.7z) 7z l "$1";;
   *.[1-8]) man "$1" | col -b ;;
-  *.o) nm "$1" | less ;;
+  *.o) objdump -d "$1" ;; #nm "$1" | less ;;
   # *.torrent) transmission-show "$1";;
   # *.iso) iso-info --no-header -l "$1";;
   *.epub|*.rtf|*.doc|*.docx|*.otd|*.ods|*.odp|*.sxw)
