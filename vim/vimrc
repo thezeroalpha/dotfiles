@@ -600,8 +600,10 @@ set wildmenu
 " Allow the mouse, good for e.g. resizing splits
 set mouse=a
 " fix issue with not being able to drag resize split windows in tmux
-if &term =~ '^screen' || $TMUX !=# ""
+if &term =~# '^screen' || $TMUX !=# ""
   set ttymouse=xterm2
+elseif &term =~# '^st-'
+  set ttymouse=sgr
 endif
 
 " How to split new windows
