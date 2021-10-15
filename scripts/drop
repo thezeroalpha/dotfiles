@@ -2,4 +2,4 @@
 # This script uses `dragon` to provide drag-and-drop functionality.
 # It gives you a window in which you can drop items, printing them to stdout.
 command -v dragon-drag-and-drop || { printf "Install mwh/dragon\n" >&2 && exit 1; }
-dragon-drag-and-drop --target
+setsid -f dragon-drag-and-drop --target

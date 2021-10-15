@@ -3,4 +3,4 @@
 # Provide one or more filenames, and you'll get a window from which you can
 # drag.
 command -v dragon-drag-and-drop || { printf "Install mwh/dragon\n" >&2 && exit 1; }
-dragon-drag-and-drop "$@"
+setsid -f dragon-drag-and-drop "$@"
