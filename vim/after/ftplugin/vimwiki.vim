@@ -1,6 +1,5 @@
 setlocal wrap shiftwidth=4 tabstop=4 softtabstop=4 breakindent breakindentopt=shift:3
 
-cabbrev <buffer> table VimwikiTable
 nmap <buffer> <leader><CR> <Plug>VimwikiSplitLink
 
 let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin.'|' : '')
