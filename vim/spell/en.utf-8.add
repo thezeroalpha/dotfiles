@@ -441,3 +441,6 @@ PTE
 RW
 VMAs
 reinit
+CFI
+derefs
+PRNG
