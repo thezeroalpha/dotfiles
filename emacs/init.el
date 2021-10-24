@@ -1,3 +1,4 @@
+;; Initial bootstrap
 ;; Follow symlinks without prompting (the org file is a symlink)
 (setq vc-follow-symlinks t)
 
@@ -8,6 +9,20 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (tooltip-mode -1))
+
+;; For some reason, my macOS has a problem verifying certs.
+(when (string-equal system-type "darwin")
+  (setq package-check-signature nil))
+
+;; Install and load use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents t)
+  (package-install 'use-package))
+(eval-when-compile (require 'use-package))
+
+;; Always auto-install packages:
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 
 ;; Start in fullscreen mode
 (toggle-frame-fullscreen)

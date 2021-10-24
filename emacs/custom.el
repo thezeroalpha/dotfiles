@@ -8,7 +8,7 @@
  '(default-input-method "czech-qwerty")
  '(package-hidden-regexps '("^I"))
  '(package-selected-packages
-   '(rainbow-mode edit-indirect helm-ag expand-region elpher sr-speedbar 2048-game vterm notmuch magit lean-mode markdown-mode anki-connect anki-editor doom-themes all-the-icons use-package-ensure which-key use-package org-bullets helm exec-path-from-shell)))
+   '(counsel rainbow-mode edit-indirect helm-ag expand-region elpher sr-speedbar 2048-game vterm notmuch magit lean-mode markdown-mode anki-connect anki-editor doom-themes all-the-icons use-package-ensure which-key use-package org-bullets helm exec-path-from-shell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -61,6 +61,7 @@ Garbage-collect on focus-out, Emacs /should/ feel snappier.
 
 * Package management
 ** Repositories (MELPA & Org)
+
 Set up packages:
 
 #+begin_src emacs-lisp
@@ -76,83 +77,88 @@ Refresh packages async:
   (package-refresh-contents t)
 #+end_src
 
-** use-package
-   Install and load use-package.
-   Use-package tidies up package configuration and reduces the verboseness of configuration.
-
-   #+begin_src emacs-lisp
-     (unless (package-installed-p 'use-package)
-       (package-install 'use-package))
-     (eval-when-compile (require 'use-package))
-   #+end_src
-
-   Always auto-install packages:
-
-   #+begin_src emacs-lisp
-     (require 'use-package-ensure)
-     (setq use-package-always-ensure t)
-   #+end_src
-
 * Packages
 ** exec-path-from-shell (macOS)
+In macOS, the path is not set correctly in the GUI app. This fixes it.
 
-   In macOS, the path is not set correctly in the GUI app. This fixes it.
-   #+begin_src emacs-lisp
-     (when (memq window-system '(mac ns x))
-       (use-package exec-path-from-shell
-         :config
-         (add-to-list 'exec-path-from-shell-variables "NOTMUCH_CONFIG")
-         (exec-path-from-shell-initialize)))
-   #+end_src
+#+begin_src emacs-lisp
+  (when (string-equal system-type "darwin")
+    (use-package exec-path-from-shell
+      :config
+      (add-to-list 'exec-path-from-shell-variables "NOTMUCH_CONFIG")
+      (exec-path-from-shell-initialize)))
+#+end_src
 
 ** emacs-which-key
-   Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package which-key
-       :config
-       (which-key-mode))
-   #+end_src
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+end_src
 
-** helm
+** counsel + ivy + swiper
 Better incremental completion and selection narrowing.
 And a bunch more.
 Generally makes for nicer interactivity, like ido mode on steroids.
+Switched to this from Helm, it's more lightweight.
 
 #+begin_src emacs-lisp
-  (use-package helm
-    :defer nil
-    :custom
-    (helm-M-x-always-save-history t)
-    (helm-display-function 'pop-to-buffer)
-    (savehist-additional-variables '(extended-command-history))
-    (history-delete-duplicates t)
-    :custom-face
-    (helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
-    (helm-ff-file-extension ((t (:inherit default))))
-    (helm-buffer-file ((t (:inherit default))))
+  (use-package counsel :demand
     :bind
-    (("M-x" . helm-M-x)
-     ("C-x C-f" . helm-find-files)
-     ("C-x C-b" . helm-buffers-list)
-     ("C-x b" . helm-buffers-list)
-     ("C-x C-r" . helm-recentf)
-     ("C-x C-i" . helm-imenu)
-     ("M-y" . helm-show-kill-ring))
+    (("C-s" . swiper-isearch)
+     ("M-x" . counsel-M-x)
+     ("C-x C-f" . counsel-find-file)
+     ("M-y" . counsel-yank-pop)
+     ("<f1> f" . counsel-describe-function)
+     ("<f1> v" . counsel-describe-variable)
+     ("<f1> l" . counsel-find-library)
+     ("<f2> i" . counsel-info-lookup-symbol)
+     ("<f2> u" . counsel-unicode-char)
+     ("<f2> j" . counsel-set-variable)
+     ("C-x b" . ivy-switch-buffer)
+     ("C-c v" . ivy-push-view)
+     ("C-c V" . ivy-pop-view)
+     ("C-c c" . counsel-compile)
+     ("C-c g" . counsel-git)
+     ("C-c j" . counsel-git-grep)
+     ("C-c L" . counsel-git-log)
+     ("C-c k" . counsel-ag)
+     ("C-c m" . counsel-linux-app)
+     ("C-c n" . counsel-fzf)
+     ("C-x l" . counsel-locate)
+     ("C-c J" . counsel-file-jump)
+     ("C-S-o" . counsel-rhythmbox)
+     ("C-c C-r" . ivy-resume)
+     ("C-c b" . counsel-bookmark)
+     ("C-c d" . counsel-descbinds)
+     ("C-c g" . counsel-git)
+     ("C-c o" . counsel-outline)
+     ("C-c t" . counsel-load-theme)
+     ("C-c F" . counsel-org-file)
+     ("C-x C-i" . counsel-imenu))
     :config
-    (helm-mode)
-    (savehist-mode)
+    (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
+          ivy-height 20                   ; set height of the ivy window
+          ivy-count-format "(%d/%d) "     ; count format, from the ivy help page
+          ivy-display-style 'fancy
+          ivy-format-function 'ivy-format-function-line)
+    (ivy-mode)
+    (counsel-mode)
+
     (defun edit-script ()
       "Edit a file in ~/.scripts/"
       (interactive)
-      (let ((default-directory "~/.scripts/"))
-        (call-interactively #'helm-find-files)))
+      (let ((input (ivy--input)))
+        (ivy-quit-and-run (counsel-file-jump nil "~/.scripts/"))))
     (defun edit-config ()
       "Edit a file in ~/.dotfiles/"
       (interactive)
-      (let ((default-directory "~/.dotfiles/"))
-        (call-interactively #'helm-find-files))))
+      (let ((input (ivy--input)))
+        (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
 #+end_src
+
 
 Ag (silver searcher) support:
 
@@ -161,47 +167,39 @@ Ag (silver searcher) support:
 #+end_src
 
 ** org
-   In org mode, I want to use bullets instead of stars.
-   Also, I add a few expansions
+In org mode, I want to use bullets instead of stars.
+Also, I add a few expansions
 
-   #+begin_src emacs-lisp
-     (use-package org
-       :config
-       (unless (package-installed-p 'org-bullets)
-	 (package-refresh-contents)
-	 (package-install 'org-bullets))
-       (require 'org-bullets)
-       (require 'org-tempo)
+#+begin_src emacs-lisp
+  (use-package org
+    :config
+    (unless (package-installed-p 'org-bullets)
+      (package-refresh-contents)
+      (package-install 'org-bullets))
+    (require 'org-bullets)
+    (require 'org-tempo)
 
-       :hook
-       (org-mode . (lambda () (org-bullets-mode 1))))
-   #+end_src
+    :hook
+    (org-mode . (lambda () (org-bullets-mode 1))))
+#+end_src
 
 ** lean-mode
-   Specifically for the Lean prover.
-   I also install company-lean and helm-lean, which are suggested on the [[https://github.com/leanprover/lean-mode][Github page]].
-   Then I map company-complete only for lean-mode.
+Specifically for the Lean prover.
+I also install company-lean and helm-lean, which are suggested on the [[https://github.com/leanprover/lean-mode][Github page]].
+Then I map company-complete only for lean-mode.
 
-   #+begin_src emacs-lisp
-     (use-package lean-mode
-       :config
-       (unless (package-installed-p 'company-lean)
-	 (package-refresh-contents)
-	 (package-install 'company-lean))
-       (require 'company-lean)
-       (unless (package-installed-p 'helm-lean)
-	 (package-refresh-contents)
-	 (package-install 'helm-lean))
-       (require 'helm-lean)
-
-       :hook
-       (lean-mode . (lambda () (define-key lean-mode-map (kbd "S-SPC") #'company-complete))))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package lean-mode
+    :config
+    (use-package company-lean)
+    :hook
+    (lean-mode . (lambda () (define-key lean-mode-map (kbd "S-SPC") #'company-complete))))
+#+end_src
 
 ** magit
-   #+begin_src emacs-lisp
-     (use-package magit)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
 
 ** vterm
 Emacs has a bunch of built-in terminal emulators.
@@ -249,10 +247,10 @@ Then, select it.
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c f") (lambda () (interactive)
-                                (if (or (not (boundp 'sr-speedbar-exist-p))
-                                        (not (sr-speedbar-exist-p)))
-                                    (sr-speedbar-open))
-                                (sr-speedbar-select-window)))
+                                  (if (or (not (boundp 'sr-speedbar-exist-p))
+                                          (not (sr-speedbar-exist-p)))
+                                      (sr-speedbar-open))
+                                  (sr-speedbar-select-window)))
 #+end_src
 
 ** expand-region
@@ -302,21 +300,21 @@ anki-editor doesn't provide a keymap so I have to set one up here:
 
 * Interface
 ** Messages
-   Hide some messages I don't need.
+Hide some messages I don't need.
 
-   #+begin_src emacs-lisp
-     (setq inhibit-startup-message t)
-     (setq initial-scratch-message "")
-   #+end_src
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message "")
+#+end_src
 
 ** Appearance
 *** Cursor line
-    Highlight the current line:
+Highlight the current line:
 
-    #+begin_src emacs-lisp
-      (global-hl-line-mode)
-      (show-paren-mode 1)
-    #+end_src
+#+begin_src emacs-lisp
+  (global-hl-line-mode)
+  (show-paren-mode 1)
+#+end_src
 *** Cursor
 The default box cursor isn't really accurate, because the cursor is actually between letters, not on a letter.
 So, I want a bar instead of a box:
@@ -328,24 +326,24 @@ So, I want a bar instead of a box:
 (I use ~setq-default~ here because cursor-type is automatically buffer-local when it's set)
 
 *** Line numbers
-    Relative line numbers:
+Relative line numbers:
 
-    #+begin_src emacs-lisp
-      (setq display-line-numbers-type 'relative)
-      (global-display-line-numbers-mode)
-    #+end_src
+#+begin_src emacs-lisp
+  (setq display-line-numbers-type 'relative)
+  (global-display-line-numbers-mode)
+#+end_src
 
-    Don't display them in specific modes.  For each of the modes in
-    'mode-hooks', add a function to hide line numbers when the mode
-    activates (which triggers the 'mode'-hook).
+Don't display them in specific modes.  For each of the modes in
+'mode-hooks', add a function to hide line numbers when the mode
+activates (which triggers the 'mode'-hook).
 
-    #+begin_src emacs-lisp
-      (let ((mode-hooks '(doc-view-mode-hook vterm-mode-hook mpc-status-mode-hook mpc-tagbrowser-mode-hook)))
-        (mapc
-         (lambda (mode-name)
-           (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
-         mode-hooks))
-    #+end_src
+#+begin_src emacs-lisp
+  (let ((mode-hooks '(doc-view-mode-hook vterm-mode-hook mpc-status-mode-hook mpc-tagbrowser-mode-hook)))
+    (mapc
+     (lambda (mode-name)
+       (add-hook mode-name (lambda () (display-line-numbers-mode 0))))
+     mode-hooks))
+#+end_src
 *** Modeline
 I want to show the time and date in the modeline:
 
@@ -378,38 +376,38 @@ use in order for displaying the list, and then options for those functions (each
                         1 ) ;; bottom
 
    display-buffer-alist '(
-     ;; Right side
-     ("\\*Help\\*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (side . right)
-      (slot . -1)
-      (inhibit-same-window . t))
-     ("\\*Async Shell Command\\*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (side . right)
-      (slot . 0)
-      (inhibit-same-window . t))
-     ("magit-process: .*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (side . right)
-      (slot . 0)
-      (inhibit-same-window . t))
+                          ;; Right side
+                          ("\\*Help\\*"
+                           (display-buffer-reuse-window display-buffer-in-side-window)
+                           (side . right)
+                           (slot . -1)
+                           (inhibit-same-window . t))
+                          ("\\*Async Shell Command\\*"
+                           (display-buffer-reuse-window display-buffer-in-side-window)
+                           (side . right)
+                           (slot . 0)
+                           (inhibit-same-window . t))
+                          ("magit-process: .*"
+                           (display-buffer-reuse-window display-buffer-in-side-window)
+                           (side . right)
+                           (slot . 0)
+                           (inhibit-same-window . t))
 
-     ;; Top side
-     ("\\*Info\\*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (side . top)
-      (slot . 0))
-     ("\\*Man .*\\*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (side . top)
-      (slot . 0))
+                          ;; Top side
+                          ("\\*Info\\*"
+                           (display-buffer-reuse-window display-buffer-in-side-window)
+                           (side . top)
+                           (slot . 0))
+                          ("\\*Man .*\\*"
+                           (display-buffer-reuse-window display-buffer-in-side-window)
+                           (side . top)
+                           (slot . 0))
 
-     ;; Bottom
-   ("\\*Flycheck errors\\*"
-    (display-buffer-reuse-window display-buffer-in-side-window)
-    (side . bottom)
-    (slot . 0))))
+                          ;; Bottom
+                          ("\\*Flycheck errors\\*"
+                           (display-buffer-reuse-window display-buffer-in-side-window)
+                           (side . bottom)
+                           (slot . 0))))
 #+end_src
 
 And a way to toggle those side windows:
@@ -420,22 +418,22 @@ And a way to toggle those side windows:
 
 * File locations
 ** Auto-Save files
-  By default, auto-save files ("#file#") are placed in the same directory as the file itself.
-  I want to put this all in some unified place:
+By default, auto-save files ("#file#") are placed in the same directory as the file itself.
+I want to put this all in some unified place:
 
-  #+begin_src emacs-lisp
-    (setq auto-save-file-name-transforms
-	  `((".*" "~/.local/share/emacs/saves/" t)))
-  #+end_src
+#+begin_src emacs-lisp
+  (setq auto-save-file-name-transforms
+        `((".*" "~/.local/share/emacs/saves/" t)))
+#+end_src
 
 ** Backup files
-  By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
-  This setting puts them in ~/.local/share/emacs/backups.
+By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
+This setting puts them in ~/.local/share/emacs/backups.
 
-  #+begin_src emacs-lisp
-    (setq backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
-    (setq backup-by-copying t)
-  #+end_src
+#+begin_src emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
+  (setq backup-by-copying t)
+#+end_src
 
 ** Custom settings file
 Both commands are necessary.
@@ -448,14 +446,23 @@ The second one actually loads them.
 #+end_src
 
 * Editor
-** Strip trailing whitespace
-   You can show trailing whitespace by setting show-trailing-whitespace to 't'.
-   But I want to automatically strip trailing whitespace.
-   Luckily there's already a function for that, I just need to call it in a hook:
 
-   #+begin_src emacs-lisp
-     (add-hook 'before-save-hook 'delete-trailing-whitespace)
-   #+end_src
+** Overwrite selection on typing
+Normally, when I select something and start typing, Emacs clears the selection.
+I want to replace the selection.
+
+#+begin_src emacs-lisp
+  (delete-selection-mode t)
+#+end_src
+
+** Strip trailing whitespace
+You can show trailing whitespace by setting show-trailing-whitespace to 't'.
+But I want to automatically strip trailing whitespace.
+Luckily there's already a function for that, I just need to call it in a hook:
+
+#+begin_src emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
 ** Auto-formatting
 Disable fill mode in Markdown
 
@@ -466,7 +473,7 @@ Disable fill mode in Markdown
 A tab is 8 spaces:
 
 #+begin_src emacs-lisp
-(setq-default tab-width 8)
+  (setq-default tab-width 8)
 #+end_src
 
 Never insert tabs with indentation:
@@ -494,53 +501,53 @@ Indentation for various modes:
 #+end_src
 
 ** Wrapping
-   I want to wrap text at window boundary for some modes:
+I want to wrap text at window boundary for some modes:
 
-   #+begin_src emacs-lisp
-     (add-hook 'org-mode-hook (lambda ()
-				(visual-line-mode)
-				(org-indent-mode)))
-     (add-hook 'markdown-mode-hook (lambda () (visual-line-mode)))
-   #+end_src
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook (lambda ()
+                             (visual-line-mode)
+                             (org-indent-mode)))
+  (add-hook 'markdown-mode-hook (lambda () (visual-line-mode)))
+#+end_src
 
 ** Pulse line
-   Set some options for pulsing:
+Set some options for pulsing:
 
-   #+begin_src emacs-lisp
-     (setq pulse-iterations 10)
-     (setq pulse-delay 0.05)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq pulse-iterations 10)
+  (setq pulse-delay 0.05)
+#+end_src
 
-   Define the pulse function:
+Define the pulse function:
 
-   #+begin_src emacs-lisp
-     (defun pulse-line (&rest _)
-       "Pulse the current line."
-       (pulse-momentary-highlight-one-line (point)))
-   #+end_src
+#+begin_src emacs-lisp
+  (defun pulse-line (&rest _)
+    "Pulse the current line."
+    (pulse-momentary-highlight-one-line (point)))
+#+end_src
 
-   Run it in certain cases: scrolling up/down, recentering, switching windows.
-   'dolist' binds 'command' to each value in the list in turn, and runs the body.
-   'advice-add' makes the pulse-line function run after 'command'.
+Run it in certain cases: scrolling up/down, recentering, switching windows.
+'dolist' binds 'command' to each value in the list in turn, and runs the body.
+'advice-add' makes the pulse-line function run after 'command'.
 
-   #+begin_src emacs-lisp
-     (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
-       (advice-add command :after #'pulse-line))
-   #+end_src
+#+begin_src emacs-lisp
+  (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
+    (advice-add command :after #'pulse-line))
+#+end_src
 ** Pager mode
-   M-x view-mode enables pager behavior.
-   I want read-only files to automatically use pager mode:
+M-x view-mode enables pager behavior.
+I want read-only files to automatically use pager mode:
 
-   #+begin_src emacs-lisp
-     (setq view-read-only t)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq view-read-only t)
+#+end_src
 ** Mail mode for neomutt
-   When editing a message from neomutt, I want to use mail mode.
-   Even though I won't be sending the email from there, I like the syntax highlighting :)
+When editing a message from neomutt, I want to use mail mode.
+Even though I won't be sending the email from there, I like the syntax highlighting :)
 
-   #+begin_src emacs-lisp
-     (add-to-list 'auto-mode-alist '("/neomutt-" . mail-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("/neomutt-" . mail-mode))
+#+end_src
 ** Zap up to char
 It's more useful for me to be able to delete up to a character instead of to and including a character:
 
@@ -556,7 +563,7 @@ Use hippie expand instead of dabbrev-expand:
 
 ** Prefer newer file loading
 #+begin_src emacs-lisp
-(setq load-prefer-newer t)
+  (setq load-prefer-newer t)
 #+end_src
 
 ** Automatically find tags file
@@ -607,13 +614,13 @@ Enable semantic mode for major modes:
 Change M-f to stop at the start of the word:
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "M-f") 'forward-to-word)
+  (global-set-key (kbd "M-f") 'forward-to-word)
 #+end_src
 
 Bind C-M-S-F to the old functionality of M-f (stop at end of word)
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-M-S-F") 'forward-word)
+  (global-set-key (kbd "C-M-S-F") 'forward-word)
 #+end_src
 
 ** Rectangle insert string
@@ -633,15 +640,15 @@ Bind C-M-S-F to the old functionality of M-f (stop at end of word)
 
 * Misc settings
 ** Enable all commands
-   By default, Emacs disables some commands.
-   I want to have these enabled so I don't get a prompt whenever I try to use a disabled command.
+By default, Emacs disables some commands.
+I want to have these enabled so I don't get a prompt whenever I try to use a disabled command.
 
-   #+begin_src emacs-lisp
-     (setq disabled-command-function nil)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq disabled-command-function nil)
+#+end_src
 ** More extensive apropos
 #+begin_src emacs-lisp
-(setq apropos-do-all t)
+  (setq apropos-do-all t)
 #+end_src
 ** Easily edit my config
 Bind a keyboard shortcut to open my config.
@@ -690,21 +697,21 @@ Define some saved searches (i.e. mailboxes):
 
 #+begin_src emacs-lisp
   (setq notmuch-saved-searches
-      `((:name "inbox: personal" :query "folder:/alex@balgavy.eu/ tag:inbox" :key ,(kbd "ip"))
-        (:name "inbox: school" :query "folder:/a.balgavy@student.vu.nl/ tag:inbox" :key ,(kbd "is"))
-        (:name "archive: personal" :query "folder:/alex@balgavy.eu/ tag:archive" :key ,(kbd "ap"))
-        (:name "archive: school" :query "folder:/a.balgavy@student.vu.nl/ tag:archive" :key ,(kbd "as"))))
+        `((:name "inbox: personal" :query "folder:/alex@balgavy.eu/ tag:inbox" :key ,(kbd "ip"))
+          (:name "inbox: school" :query "folder:/a.balgavy@student.vu.nl/ tag:inbox" :key ,(kbd "is"))
+          (:name "archive: personal" :query "folder:/alex@balgavy.eu/ tag:archive" :key ,(kbd "ap"))
+          (:name "archive: school" :query "folder:/a.balgavy@student.vu.nl/ tag:archive" :key ,(kbd "as"))))
 #+end_src
 
 Define the main screen sections:
 
 #+begin_src emacs-lisp
   (setq notmuch-hello-sections
-      '(notmuch-hello-insert-header
-        notmuch-hello-insert-saved-searches
-        notmuch-hello-insert-search
-        notmuch-hello-insert-alltags
-        notmuch-hello-insert-footer))
+        '(notmuch-hello-insert-header
+          notmuch-hello-insert-saved-searches
+          notmuch-hello-insert-search
+          notmuch-hello-insert-alltags
+          notmuch-hello-insert-footer))
 #+end_src
 
 Global keybindings:
@@ -777,6 +784,6 @@ Just a wrapper function to my radio script:
 #+end_src
 
 * References
-  Here's a list of good articles I encountered about configging emacs:
-  - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
-  - [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs]]
+Here's a list of good articles I encountered about configging emacs:
+- [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
+- [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs]]
