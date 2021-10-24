@@ -54,6 +54,7 @@ ansi: #eff0f3, #125394, #145a9c, #1562c0, #2182e1, #2377e1, #3c68e6, #0a0c0f, #5
 
 " group                fg_color, bg_color.        attribute
 Normal                 text, bg
+Keyword                darkred
 Cursorline             NONE, lightgrey
 String                 darkgreen.                 italic
 Identifier             redblack
@@ -96,7 +97,6 @@ GitGutterChange        gold, bg
 GitGutterDelete        darkred, bg
 GitGutterChangeDelete  offlightred, bg
 
-
 " link    group1,group2,...                                                 target group
 link     structure                                                          type
 link     tabline                                                            tablinefill
@@ -115,5 +115,9 @@ link     markdowncode,mkdlink,vimwikilink                                   type
 link     pmenu                                                              statuslinenc
 link     pmenusel                                                           statusline
 link     error                                                              errormsg
+link     ALEError                                                           errormsg
+link     ALEErrorLine                                                       diffdelete
+link     ALEWarning                                                         diffchange
+link     ALEWarningLine                                                     difftext
 link     gitcommitSummary                                                   include
 link     gitcommitOverflow                                                  errormsg

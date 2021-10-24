@@ -10,6 +10,7 @@ let g:colors_name = "jokull"
 let g:terminal_ansi_colors = ["#eff0f3", "#125394", "#145a9c", "#1562c0", "#2182e1", "#2377e1", "#3c68e6", "#0a0c0f", "#525963", "#125394", "#145a9c", "#1562c0", "#2182e1", "#2377e1", "#3c68e6", "#0a0c0f"]
 " Highlight group definitions
 hi Normal guifg=#2c2625 guibg=#e4e4e4 ctermfg=0 ctermbg=254 cterm=NONE gui=NONE
+hi Keyword guifg=#6e032e guibg=NONE ctermfg=52 ctermbg=NONE cterm=NONE gui=NONE
 hi Cursorline guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=NONE
 hi String guifg=#009051 guibg=NONE ctermfg=29 ctermbg=NONE cterm=italic gui=italic
 hi Identifier guifg=#112d4e guibg=NONE ctermfg=17 ctermbg=NONE cterm=NONE gui=NONE
@@ -63,6 +64,7 @@ hi! link netrwdir function
 hi! link gitcommitSummary include
 hi! link netrwexe title
 hi! link tabline tablinefill
+hi! link ALEWarningLine difftext
 hi! link mkdlink type
 hi! link signcolumn linenr
 hi! link spellcap string
@@ -71,6 +73,7 @@ hi! link netrwMarkFile incsearch
 hi! link markdownUrl string
 hi! link error errormsg
 hi! link preproc include
+hi! link ALEError errormsg
 hi! link number delimiter
 hi! link define include
 hi! link typedef structure
@@ -78,10 +81,12 @@ hi! link repeat statement
 hi! link specialcomment delimiter
 hi! link pmenu statuslinenc
 hi! link storageclass structure
+hi! link ALEWarning diffchange
 hi! link gitcommitOverflow errormsg
 hi! link macro include
 hi! link pmenusel statusline
 hi! link modemsg string
+hi! link ALEErrorLine diffdelete
 hi! link character constant
 hi! link structure type
 hi! link debug delimiter
@@ -91,7 +96,7 @@ hi! link operator statement
 hi! link vimwikilink type
 hi! link specialchar delimiter
 " Code to clear any groups that are not defined
-let s:DefinedColors=['precondit', 'tag', 'spellbad', 'spellocal', 'gh_files_dir', 'conditional', 'markdowncode', 'netrwdir', 'gitcommitsummary', 'netrwexe', 'tabline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'preproc', 'number', 'define', 'typedef', 'repeat', 'specialcomment', 'pmenu', 'storageclass', 'gitcommitoverflow', 'macro', 'pmenusel', 'modemsg', 'character', 'structure', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
+let s:DefinedColors=['precondit', 'tag', 'spellbad', 'spellocal', 'gh_files_dir', 'conditional', 'markdowncode', 'netrwdir', 'gitcommitsummary', 'netrwexe', 'tabline', 'alewarningline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'preproc', 'aleerror', 'number', 'define', 'typedef', 'repeat', 'specialcomment', 'pmenu', 'storageclass', 'alewarning', 'gitcommitoverflow', 'macro', 'pmenusel', 'modemsg', 'aleerrorline', 'character', 'structure', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'keyword', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete']
 function! s:ClearUndefinedColors(colors)
   let undefined_groups = filter(a:colors->keys()->map('tolower(v:val)'), 'index(s:DefinedColors, tolower(v:val)) < 0')
   call map(undefined_groups, "execute('highlight' . ' ' . v:val . ' ' . 'NONE')")
