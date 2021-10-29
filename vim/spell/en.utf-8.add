@@ -444,3 +444,11 @@ reinit
 CFI
 derefs
 PRNG
+DMA
+DSP
+SB16
+OSDev
+QEMU
+png
+IRQ
+#ibyte
