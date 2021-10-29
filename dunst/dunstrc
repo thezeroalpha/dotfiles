@@ -1,11 +1,12 @@
 [global]
     monitor = 0
     follow = keyboard
-    geometry = "350x5-0+24"
+    width = 350
+    origin = top-right
+    notification_limit = 24
     indicate_hidden = yes
     shrink = yes
     transparency = 20
-    notification_height = 0
     separator_height = 2
     padding = 0
     horizontal_padding = 8
@@ -53,25 +54,17 @@
     icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/:/usr/share/icons/Adwaita/256x256/status/
     sticky_history = yes
     history_length = 20
-    dmenu = /usr/bin/dmenu -p dunst:
-    browser = /usr/bin/firefox -new-tab
+    dmenu = /usr/local/bin/dmenu
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
 
     title = Dunst
     class = Dunst
-    startup_notification = false
     force_xinerama = false
 
 [experimental]
     per_monitor_dpi = false
-
-[shortcuts]
-    close = ctrl+space
-    close_all = ctrl+shift+space
-    history = ctrl+grave
-    context = ctrl+shift+period
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.

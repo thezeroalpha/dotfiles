@@ -14,3 +14,12 @@ super + ctrl + space
   dmenuunicode
 super + l
   slock -m "$(figlet -f big LOCKED)"
+
+ctrl + space
+  dunstctl close
+ctrl + shift + space
+  dunstctl close-all
+ctrl + grave
+  dunstctl history-pop
+ctrl + shift + period
+  dunstctl context
