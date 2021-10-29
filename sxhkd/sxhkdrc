@@ -11,7 +11,7 @@ alt + shift + 4
 super + shift + m
   dmenuman
 super + ctrl + space
-  dmenuunicode
+  dmenusymbols
 super + l
   slock -m "$(figlet -f big LOCKED)"
 
