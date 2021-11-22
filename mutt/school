@@ -70,11 +70,11 @@ macro index,pager gt "<change-vfolder>Trash (S)<enter>" "go to Trash"
 macro index,pager gs "<change-vfolder>Sent (S)<enter>" "go to Sent"
 
 # Moving emails
-macro index,pager MI "<modify-labels>+inbox -archive -draft -spam -trash -sent -unread<enter><save-message>=Inbox<enter>" "move mail to Inbox"
-macro index,pager MA "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><save-message>=Archive<enter>" "move mail to Archive"
-macro index,pager a "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><save-message>=Archive<enter>" "move mail to Archive"
-macro index,pager MD "<modify-labels>-inbox -archive +draft -spam -trash -sent -unread<enter><save-message>=Drafts<enter>" "move mail to Drafts"
-macro index,pager MJ "<modify-labels>-inbox -archive -draft +spam -trash -sent -unread<enter><save-message>=Junk Email<enter>" "move mail to Junk Email"
-macro index,pager MT "<modify-labels>-inbox -archive -draft -spam +trash -sent -unread<enter><save-message>=Deleted Items<enter>" "move mail to Deleted Items"
-macro index,pager MS "<modify-labels>-inbox -archive -draft -spam -trash +sent -unread<enter><save-message>=Sent Items<enter>" "move mail to Sent Items"
+macro index,pager a "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter><sync-mailbox>" "move mail to Archive"
+macro index,pager MI "<modify-labels>+inbox -archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Inbox<enter><sync-mailbox>" "move mail to Inbox"
+macro index,pager MA "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter><sync-mailbox>" "move mail to Archive"
+macro index,pager MD "<modify-labels>-inbox -archive +draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Drafts<enter><sync-mailbox>" "move mail to Drafts"
+macro index,pager MJ "<modify-labels>-inbox -archive -draft +spam -trash -sent -unread<enter><tag-prefix><save-message>=Junk Email<enter><sync-mailbox>" "move mail to Junk Email"
+macro index,pager MT "<modify-labels>-inbox -archive -draft -spam +trash -sent -unread<enter><tag-prefix><save-message>=Deleted Items<enter><sync-mailbox>" "move mail to Deleted Items"
+macro index,pager MS "<modify-labels>-inbox -archive -draft -spam -trash +sent -unread<enter><tag-prefix><save-message>=Sent Items<enter><sync-mailbox>" "move mail to Sent Items"
 

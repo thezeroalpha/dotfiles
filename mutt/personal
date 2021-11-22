@@ -22,6 +22,7 @@ virtual-mailboxes \
   "Inbox (P)" "notmuch://?query=folder:$my_personal_email/Inbox" \
   "Archive (2M) (P)" "notmuch://?query=folder:$my_personal_email/Archive and date:2M..today" \
   "Drafts (P)" "notmuch://?query=folder:$my_personal_email/Drafts" \
+  "Follow-up (P)" "notmuch://?query=folder:/$my_personal_email/ and tag:followup" \
   "Tickets (P)" "notmuch://?query=folder:$my_personal_email/Tickets" \
   "Sent (P)" "notmuch://?query=folder:$my_personal_email/Sent" \
   "Trash (P)" "notmuch://?query=folder:$my_personal_email/Trash" \
@@ -73,10 +74,10 @@ macro index,pager gt "<change-vfolder>Trash (P)<enter>" "go to Trash"
 macro index,pager gs "<change-vfolder>Sent (P)<enter>" "go to Sent"
 
 # Moving emails
-macro index,pager MI "<modify-labels>+inbox -archive -draft -spam -trash -sent -unread<enter><save-message>=Inbox<enter>" "move mail to Inbox"
-macro index,pager MA "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><save-message>=Archive<enter>" "move mail to Archive"
-macro index,pager a "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><save-message>=Archive<enter>" "move mail to Archive"
-macro index,pager MD "<modify-labels>-inbox -archive +draft -spam -trash -sent -unread<enter><save-message>=Drafts<enter>" "move mail to Drafts"
-macro index,pager MJ "<modify-labels>-inbox -archive -draft +spam -trash -sent -unread<enter><save-message>=Spam<enter>" "move mail to Spam"
-macro index,pager MT "<modify-labels>-inbox -archive -draft -spam +trash -sent -unread<enter><save-message>=Trash<enter>" "move mail to Trash"
-macro index,pager MS "<modify-labels>-inbox -archive -draft -spam -trash +sent -unread<enter><save-message>=Sent<enter>" "move mail to Sent"
+macro index,pager a "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter><sync-mailbox>" "move mail to Archive"
+macro index,pager MA "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter><sync-mailbox>" "move mail to Archive"
+macro index,pager MI "<modify-labels>+inbox -archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Inbox<enter><sync-mailbox>" "move mail to Inbox"
+macro index,pager MD "<modify-labels>-inbox -archive +draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Drafts<enter><sync-mailbox>" "move mail to Drafts"
+macro index,pager MJ "<modify-labels>-inbox -archive -draft +spam -trash -sent -unread<enter><tag-prefix><save-message>=Spam<enter><sync-mailbox>" "move mail to Spam"
+macro index,pager MT "<modify-labels>-inbox -archive -draft -spam +trash -sent -unread<enter><tag-prefix><save-message>=Trash<enter><sync-mailbox>" "move mail to Trash"
+macro index,pager MS "<modify-labels>-inbox -archive -draft -spam -trash +sent -unread<enter><tag-prefix><save-message>=Sent<enter><sync-mailbox>" "move mail to Sent"

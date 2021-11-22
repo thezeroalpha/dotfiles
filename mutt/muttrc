@@ -113,6 +113,8 @@ set attach_format = "%u%D%I %t%4n %T%.40d (%.40F -> %.40f)%> [%.7m/%.10M, %.6e%?
 # General mappings
 macro index,pager S '<sync-mailbox><shell-escape>notmuch-hook<enter>'
 bind index,pager | pipe-message
+bind index,pager s save-message
+bind index,pager m mail
 bind compose p postpone-message
 bind compose l view-attach
 bind compose h exit
