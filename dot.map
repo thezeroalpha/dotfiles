@@ -85,7 +85,7 @@ emacs:
 # Config: shell
 shell:
 - zshenv_bootstrap: ~/.zshenv
-- zshenv: ~/.config/zsh/.zshenv
+# - zshenv: ~/.config/zsh/.zshenv # Catalina decided that /etc/zprofile should override a custom zshenv...so gotta stick everything in zshrc.
 - zshrc: ~/.config/zsh/.zshrc
 - inputrc: ~/.inputrc
 mime.types: ~/.mime.types

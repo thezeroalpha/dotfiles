@@ -6,6 +6,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+srcpath="$HOME/.dotfiles/shell"
+. "$srcpath"/env
+. "$srcpath"/paths
+unset srcpath
+export ZDOTDIR=$HOME/.config/zsh
+export HISTFILE=$ZDOTDIR/.zsh_history
+
 # ZSH-specific inits
 . "$DOTFILES"/shell/rc
 

@@ -1,6 +1,0 @@
-srcpath="$HOME/.dotfiles/shell"
-. "$srcpath"/env
-. "$srcpath"/paths
-unset srcpath
-export ZDOTDIR=$HOME/.config/zsh
-export HISTFILE=$ZDOTDIR/.zsh_history
