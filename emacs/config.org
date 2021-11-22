@@ -36,8 +36,18 @@ Define the themes I want:
   ;; (setq light-theme 'doom-acario-light)
   ;; I used to use doom-acario-light before writing my own theme
   (setq light-theme 'jokull)
-  (defun dark-theme () "Switch to dark theme" (interactive) (load-theme dark-theme))
-  (defun light-theme () "Switch to light theme" (interactive) (load-theme light-theme))
+
+  (defun dark-theme ()
+    "Switch to dark theme"
+    (interactive)
+    (load-theme dark-theme t)
+    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
+
+  (defun light-theme ()
+    "Switch to light theme"
+    (interactive)
+    (load-theme light-theme t)
+    (remove-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 #+end_src
 
 Change theme depending on the current system theme.
@@ -48,8 +58,8 @@ If calling a function that's in a variable, you have to use 'funcall'.
 #+begin_src emacs-lisp
   (let ((dark-mode-p (lambda () (file-exists-p "~/.config/dark-theme"))))
     (if (funcall dark-mode-p)
-        (load-theme dark-theme t)
-      (load-theme light-theme t)))
+        (dark-theme)
+      (light-theme)))
 #+end_src
 
 * Garbage collection
@@ -108,6 +118,7 @@ Switched to this from Helm, it's more lightweight.
   (use-package counsel :demand
     :bind
     (("C-s" . swiper-isearch)
+     ("C-r" . swiper-isearch-backward)
      ("M-x" . counsel-M-x)
      ("C-x C-f" . counsel-find-file)
      ("M-y" . counsel-yank-pop)
@@ -157,13 +168,6 @@ Switched to this from Helm, it's more lightweight.
       (interactive)
       (let ((input (ivy--input)))
         (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
-#+end_src
-
-
-Ag (silver searcher) support:
-
-#+begin_src emacs-lisp
-  (use-package helm-ag)
 #+end_src
 
 ** org
@@ -275,19 +279,19 @@ anki-editor doesn't provide a keymap so I have to set one up here:
 
 #+begin_src emacs-lisp
   (use-package anki-editor
-    :init
+    :config
     (defvar anki-editor-mode-map (make-sparse-keymap))
     (add-to-list 'minor-mode-map-alist (cons 'anki-editor-mode
                                              anki-editor-mode-map))
 
-    :config
     (setq anki-editor-use-math-jax t)
 
-    :bind (:map anki-editor-mode-map
-                ("C-c t" . org-property-next-allowed-value)
-                ("C-c i" . anki-editor-insert-note)
-                ("C-c p" . anki-editor-push-notes)
-                ("C-c c" . anki-editor-cloze-dwim)))
+    :hook
+    (anki-editor-mode . (lambda ()
+                          (define-key (kbd "C-c t") #'org-property-next-allowed-value)
+                          (define-key (kbd "C-c i") #'anki-editor-insert-note)
+                          (define-key (kbd "C-c p") #'anki-editor-push-notes)
+                          (define-key (kbd "C-c c") #'anki-editor-cloze-dwim))))
 #+end_src
 
 ** rainbow-mode
@@ -296,6 +300,28 @@ anki-editor doesn't provide a keymap so I have to set one up here:
 #+begin_src emacs-lisp
   (use-package rainbow-mode
     :hook (emacs-lisp-mode . rainbow-mode))
+#+end_src
+
+** pdf-tools
+A better replacement for DocView:
+
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :hook
+    (pdf-view-mode . (lambda () (display-line-numbers-mode 0)))
+    (pdf-view-mode . (lambda () (define-key pdf-isearch-minor-mode-map (kbd "C-s") #'isearch-forward))))
+  (pdf-tools-install)
+#+end_src
+
+** virtualenvwrapper
+Like virtualenvwrapper.sh, but for Emacs.
+
+#+begin_src emacs-lisp
+  (use-package virtualenvwrapper
+    :config
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell)
+    (setq venv-location "~/.config/virtualenvs"))
 #+end_src
 
 * Interface
@@ -315,12 +341,14 @@ Highlight the current line:
   (global-hl-line-mode)
   (show-paren-mode 1)
 #+end_src
+
 *** Cursor
 The default box cursor isn't really accurate, because the cursor is actually between letters, not on a letter.
 So, I want a bar instead of a box:
 
 #+begin_src emacs-lisp
-  (setq-default cursor-type '(bar . 4))
+  (setq-default cursor-type '(bar . 4)
+                cursor-in-non-selected-windows 'hollow)
 #+end_src
 
 (I use ~setq-default~ here because cursor-type is automatically buffer-local when it's set)
@@ -350,7 +378,7 @@ I want to show the time and date in the modeline:
 #+begin_src emacs-lisp
   (setq display-time-day-and-date t           ; also the date
         display-time-default-load-average nil ; don't show load average
-        display-time-format "%I:%M%p %e %b")   ; "HR:MIN(AM/PM) day-of-month Month"
+        display-time-format "%I:%M%p %e %b (%a)")   ; "HR:MIN(AM/PM) day-of-month Month (Day)"
   (display-time-mode 1)                  ; enable time mode
 #+end_src
 
@@ -360,7 +388,23 @@ I want to show the current function:
   (which-function-mode 1)
 #+end_src
 
-Maybe at some point I'll customize the modeline too.
+And to set the modeline format:
+
+#+begin_src emacs-lisp
+  (setq-default mode-line-format '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
+                                   (vc-mode vc-mode)
+                                   "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
+#+end_src
+
+I want to hide certain modes from the modeline, they're always on:
+
+#+begin_src emacs-lisp
+  (use-package diminish
+    :config
+    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode)))
+      (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide)))
+#+end_src
+
 ** Buffer displaying
 
 So, this is a bit hard to grok. But basically the alist contains a
@@ -446,7 +490,6 @@ The second one actually loads them.
 #+end_src
 
 * Editor
-
 ** Overwrite selection on typing
 Normally, when I select something and start typing, Emacs clears the selection.
 I want to replace the selection.
@@ -588,8 +631,8 @@ Set default submodes:
 #+begin_src emacs-lisp
   (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode ; reparse buffer when idle
                                     global-semanticdb-minor-mode ; maintain database
-                                    global-semantic-idle-summary-mode ; show information (e.g. types) about tag at point
-                                    global-semantic-stickyfunc-mode)) ; show current func in header line
+                                    global-semantic-idle-summary-mode)) ; show information (e.g. types) about tag at point
+  ;; global-semantic-stickyfunc-mode)) ; show current func in header line
 #+end_src
 
 Add some keybindings:
@@ -629,13 +672,45 @@ Bind C-M-S-F to the old functionality of M-f (stop at end of word)
   (global-set-key (kbd "C-x r R") 'replace-rectangle)
 #+end_src
 
-** Org mode - yank URL
+* Org mode
+** Yank URL
 #+begin_src emacs-lisp
   (defun org-yank-link-url ()
     (interactive)
     (kill-new (org-element-property :raw-link (org-element-context))))
 
   (define-key org-mode-map (kbd "C-c M-y") 'org-yank-link-url)
+#+end_src
+
+** Catch invisible edits
+Sometimes when text is folded away, I might accidentally edit text inside of it.
+This option prevents that.
+I wanted to do 'smart', but that has a 'fixme' so it might change in the future...
+Instead, show what's being edited, but don't perform the edit.
+
+#+begin_src emacs-lisp
+  (setq org-catch-invisible-edits 'show-and-error)
+#+end_src
+
+** Notification
+macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
+
+#+begin_src emacs-lisp
+  (if (and (eq system-type 'darwin)
+           (executable-find "terminal-notifier"))
+      (setq org-show-notification-handler
+            (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
+                                         "-title" "Timer done"
+                                         "-message" str
+                                         "-group" "org.gnu.Emacs"
+                                         "-sender" "org.gnu.Emacs"))))
+#+end_src
+* Python
+In Python, I want to enable flycheck and semantic mode:
+
+#+begin_src emacs-lisp
+  (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-hook 'python-mode-hook 'semantic-mode)
 #+end_src
 
 * Misc settings
@@ -646,6 +721,7 @@ I want to have these enabled so I don't get a prompt whenever I try to use a dis
 #+begin_src emacs-lisp
   (setq disabled-command-function nil)
 #+end_src
+
 ** More extensive apropos
 #+begin_src emacs-lisp
   (setq apropos-do-all t)
@@ -662,20 +738,6 @@ I want to bind view-mode to a key for easy access:
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c v") 'view-mode)
-#+end_src
-
-** Org notification
-macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
-
-#+begin_src emacs-lisp
-  (if (and (eq system-type 'darwin)
-           (executable-find "terminal-notifier"))
-      (setq org-show-notification-handler
-            (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
-                                         "-title" "Timer done"
-                                         "-message" str
-                                         "-group" "org.gnu.Emacs"
-                                         "-sender" "org.gnu.Emacs"))))
 #+end_src
 
 ** Kill this buffer
@@ -748,7 +810,7 @@ Run notmuch-hook script on hello refresh, to move messages to folders according 
 Set the windows I want to show:
 
 #+begin_src emacs-lisp
-  (setq mpc-browser-tags '(Artist Album Genre))
+  (setq mpc-browser-tags '(Artist Album Genre Playlist))
 #+end_src
 
 Define some keybindings:
@@ -781,6 +843,24 @@ Just a wrapper function to my radio script:
 
 #+begin_src emacs-lisp
   (define-key dired-mode-map (kbd "M-k") #'dired-kill-subdir)
+#+end_src
+
+Set up listing display:
+
+#+begin_src emacs-lisp
+  (setq-default dired-listing-switches "-alhv")
+#+end_src
+
+By default, hide details (show again by pressing oparen):
+
+#+begin_src emacs-lisp
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+#+end_src
+
+If I have another dired window open, use that as target:
+
+#+begin_src emacs-lisp
+  (setq dired-dwim-target t)
 #+end_src
 
 * References
