@@ -1,26 +1,37 @@
 #!/bin/sh
 notmuch new
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+
+# arg: tag
+# returns: string in the format "-inbox +archive -draft -sent..."
+build_exclusive_tagstr() {
+  [ $# -eq 0 ] && die "tag_exclusive needs an argument"
+  exclusive_tags="inbox archive draft sent trash tickets spam"
+  tag_str=""
+  for tag in $exclusive_tags; do
+    if [ "$1" = "$tag" ]; then
+      tag_str="$tag_str +$tag"
+    else
+      tag_str="$tag_str -$tag"
+    fi
+  done
+  printf '%s' "$tag_str"
+}
 
 # Change tags according to folders
 folders2tags() {
-  # Retag according to folders
-
-  notmuch tag --remove-all --batch <<EOF
+  notmuch tag --batch <<EOF
 # This will always be read mail
-+archive -- folder:/Archive/
-+draft -- folder:/Drafts/
-+sent -- from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl
-+trash -- folder:/Trash/ or folder:/Deleted/
-+tickets -- folder:/Tickets/
-
-+spam +unread -- (folder:/Spam/ or folder:/Junk/) and tag:unread
-+spam -- (folder:/Spam/ or folder:/Junk/) and not tag:unread
-
-+inbox +unread -- folder:/Inbox/ and tag:unread
-+inbox -- folder:/Inbox/ and not tag:unread
+$(build_exclusive_tagstr archive) -- folder:/Archive/
+$(build_exclusive_tagstr draft) -- folder:/Drafts/
+$(build_exclusive_tagstr sent) -- from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl
+$(build_exclusive_tagstr trash) -- folder:/Trash/ or folder:/Deleted/
+$(build_exclusive_tagstr tickets) -- folder:/Tickets/
+$(build_exclusive_tagstr spam) -- folder:/Spam/ or folder:/Junk/
+$(build_exclusive_tagstr inbox) -- folder:/Inbox/
 EOF
-
 }
+
 safeMove() { s=${1##*/}; s=${s%%,*}; mv -f "$1" "$2"/"$s"; }
 alias nms="notmuch search --exclude=false --output=files"
 
