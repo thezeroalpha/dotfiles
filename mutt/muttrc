@@ -57,8 +57,14 @@ bind generic : tag-prefix
 
 set date_format = "%d/%m"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c) %> [%g]"
-set sort = threads                         # like gmail
-set sort_aux = reverse-last-date-received  # like gmail.
+
+# Github issue was fixed, yay!
+# Threads should be sorted by date, top-to-botom.
+# Newest top-level messages should appear at the top.
+set use_threads = yes
+set sort = reverse-last-date-received
+set sort_aux = date-received
+
 # there's an issue with sorting where messages in threads should be sorted by date, top-to-bottom.
 # but at the moment it's a "wontfix". hopefully that changes soon.
 # https://github.com/neomutt/neomutt/issues/2342,
