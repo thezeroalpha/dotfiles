@@ -59,7 +59,7 @@ cmd batch_rename !{{
   dircontents="$(command ls -1p)"
   printf "%s" "$dircontents" | nl -n ln > "$contentsfile";
   $EDITOR "$contentsfile"
-  printf "%s" "$dircontents" | paste "$contentsfile" -d'\t' - \
+  printf "%s" "$dircontents" | paste -d '\t' "$contentsfile" - \
   | while read -r line; do
     orig="$(printf "%s" "$line" | cut -f3 | sed 's!/$!!')"
     new="$(printf "%s" "$line" | cut -f2 | sed 's!/$!!')"
