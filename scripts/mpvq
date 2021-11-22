@@ -13,7 +13,7 @@ play() {
   else
     terminal-notifier -title "Playing video" -message "MPV is launching..." -group "mpv" 1>/dev/null 2>&1
     # This converts FIFO to a domain socket
-    mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-ipc-server="$HOME"/.cache/mpv/input --log-file="$HOME"/.cache/mpv/mpv.log --player-operation-mode=pseudo-gui "$1" &
+    setsid -f mpv --idle=yes --volume=50 --no-terminal --x11-name=MPV-Q --input-ipc-server="$HOME"/.cache/mpv/input --log-file="$HOME"/.cache/mpv/mpv.log --player-operation-mode=pseudo-gui "$1"
   fi
 }
 
