@@ -3,7 +3,7 @@
 
 # Secrets
 shell/secret_env
-mutt/secret
+neomutt/secret
 
 # Email stuff
 notmuch/

@@ -27,8 +27,8 @@ virtual-mailboxes \
 
 set spoolfile = "Inbox (S)"
 
-set header_cache = ~/.cache/mutt/$my_school_email/headers
-set message_cachedir = ~/.cache/mutt/$my_school_email/bodies
+set header_cache = ~/.cache/neomutt/$my_school_email/headers
+set message_cachedir = ~/.cache/neomutt/$my_school_email/bodies
 
 # Send
 set realname=$my_name

@@ -168,9 +168,9 @@ bind index,pager \Cf vfolder-from-query
 
 bind index,pager i noop
 source school
-folder-hook $folder 'source ~/.config/mutt/school'
-macro index,pager is '<sync-mailbox><enter-command>source ~/.config/mutt/school<enter><change-vfolder>Inbox (S)<enter><check-stats>' "switch to school"
+folder-hook $folder 'source ~/.config/neomutt/school'
+macro index,pager is '<sync-mailbox><enter-command>source ~/.config/neomutt/school<enter><change-vfolder>Inbox (S)<enter><check-stats>' "switch to school"
 
 source personal
-folder-hook $folder 'source ~/.config/mutt/personal'
-macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/mutt/personal<enter><change-vfolder>Inbox (P)<enter><check-stats>' "switch to personal"
+folder-hook $folder 'source ~/.config/neomutt/personal'
+macro index,pager ip '<sync-mailbox><enter-command>source ~/.config/neomutt/personal<enter><change-vfolder>Inbox (P)<enter><check-stats>' "switch to personal"

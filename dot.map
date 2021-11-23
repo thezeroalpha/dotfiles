@@ -42,7 +42,7 @@ joplin/keymap.json: ~/.config/joplin/keymap.json
 sxiv: ~/.config/sxiv
 w3m: ~/.config/w3m
 scim/scimrc: ~/.config/scimrc
-mutt: ~/.config/mutt
+neomutt: ~/.config/neomutt
 urlview/urlview: ~/.urlview
 gnupg: ~/.config/gnupg
 mpd: ~/.config/mpd
