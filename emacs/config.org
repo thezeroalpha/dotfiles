@@ -288,10 +288,10 @@ anki-editor doesn't provide a keymap so I have to set one up here:
 
     :hook
     (anki-editor-mode . (lambda ()
-                          (define-key (kbd "C-c t") #'org-property-next-allowed-value)
-                          (define-key (kbd "C-c i") #'anki-editor-insert-note)
-                          (define-key (kbd "C-c p") #'anki-editor-push-notes)
-                          (define-key (kbd "C-c c") #'anki-editor-cloze-dwim))))
+                          (define-key anki-editor-mode-map (kbd "C-c t") #'org-property-next-allowed-value)
+                          (define-key anki-editor-mode-map (kbd "C-c i") #'anki-editor-insert-note)
+                          (define-key anki-editor-mode-map (kbd "C-c p") #'anki-editor-push-notes)
+                          (define-key anki-editor-mode-map (kbd "C-c c") #'anki-editor-cloze-dwim))))
 #+end_src
 
 ** rainbow-mode
@@ -822,6 +822,7 @@ Define some keybindings:
               (define-key mpc-mode-map "P" #'mpc-playlist)
               (define-key mpc-mode-map "x" #'mpc-playlist-delete)
               (define-key mpc-mode-map "p" #'mpc-toggle-play)
+              (define-key mpc-mode-map "t" #'mpc-select-toggle)
               (define-key mpc-mode-map "f" (lambda () "Seek forward 20 seconds" (interactive) (mpc-seek-current "+20")))
               (define-key mpc-mode-map "b" (lambda () "Seek backward 20 seconds" (interactive) (mpc-seek-current "-20")))))
 #+end_src
