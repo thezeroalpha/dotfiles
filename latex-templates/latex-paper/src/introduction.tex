@@ -1,3 +1,31 @@
 \section{Introduction}
 The introduction.
 And I'll cite someone here \cite{author2001}.
+
+And this is how you do figures with subfigures:
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/vrije-universiteit-amsterdam.png}
+        \caption{Subfigure 1}
+        \label{fig:subfig1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/vrije-universiteit-amsterdam.png}
+        \caption{Subfigure 2}
+        \label{fig:subfig2}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.5\textwidth]{images/vrije-universiteit-amsterdam.png}
+        \caption{Subfigure 3}
+        \label{fig:subfig3}
+    \end{subfigure}
+    \caption{A figure with subfigures.}
+    \label{fig:fig}
+\end{figure}
