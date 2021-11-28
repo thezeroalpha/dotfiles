@@ -7,6 +7,7 @@ else
 fi
 
 case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
+  *.pickle) python -mpickle "$1";;
   *.tgz|*.tar.gz) tar tzf "$1";;
   *.tar.bz2|*.tbz2) tar tjf "$1";;
   *.tar.txz|*.txz) xz --list "$1";;
