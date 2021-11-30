@@ -21,7 +21,7 @@
  '(objed-cursor-color "#ff6c6b")
  '(package-hidden-regexps '("^I"))
  '(package-selected-packages
-   '(org-noter org-ref virtualenvwrapper elpy pdf-tools diminish company-lean counsel rainbow-mode edit-indirect expand-region elpher sr-speedbar 2048-game vterm notmuch magit lean-mode markdown-mode anki-connect anki-editor doom-themes all-the-icons use-package-ensure which-key use-package org-bullets exec-path-from-shell))
+   '(hl-todo org-noter org-ref virtualenvwrapper elpy pdf-tools diminish company-lean counsel rainbow-mode edit-indirect expand-region elpher sr-speedbar 2048-game vterm notmuch magit lean-mode markdown-mode anki-connect anki-editor doom-themes all-the-icons use-package-ensure which-key use-package org-bullets exec-path-from-shell))
  '(pdf-view-midnight-colors (cons "#bbc2cf" "#282c34"))
  '(rustic-ansi-faces
    ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])

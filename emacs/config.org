@@ -328,6 +328,20 @@ Like virtualenvwrapper.sh, but for Emacs.
   (use-package org-noter)
 #+end_src
 
+** hl-todo
+I want to highlight TODO keywords in comments:
+
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :custom-face
+    (hl-todo ((t (:inherit hl-todo :underline t))))
+    :config
+    (setq hl-todo-keyword-faces
+          '(("TODO"   . "#ff7060")
+            ("FIXME"  . "#caa000"))))
+#+end_src
+
+(global-hl-todo-mode t)
 * Interface
 ** Messages
 Hide some messages I don't need.
