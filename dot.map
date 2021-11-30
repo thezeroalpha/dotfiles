@@ -81,6 +81,7 @@ emacs:
 - init.el: ~/.emacs.d/init.el
 - custom.el: ~/.emacs.d/custom.el
 - jokull-theme.el: ~/.emacs.d/jokull-theme.el
+- junipero-theme.el: ~/.emacs.d/junipero-theme.el
 
 # Config: shell
 shell:
