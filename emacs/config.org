@@ -338,10 +338,9 @@ I want to highlight TODO keywords in comments:
     :config
     (setq hl-todo-keyword-faces
           '(("TODO"   . "#ff7060")
-            ("FIXME"  . "#caa000"))))
+            ("FIXME"  . "#caa000")))
+    (global-hl-todo-mode t))
 #+end_src
-
-(global-hl-todo-mode t)
 * Interface
 ** Messages
 Hide some messages I don't need.
@@ -419,7 +418,7 @@ I want to hide certain modes from the modeline, they're always on:
 #+begin_src emacs-lisp
   (use-package diminish
     :config
-    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode)))
+    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode)))
       (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide)))
 #+end_src
 
