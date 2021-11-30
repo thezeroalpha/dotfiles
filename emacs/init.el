@@ -1,6 +1,7 @@
 ;; Initial bootstrap
-;; Follow symlinks without prompting (the org file is a symlink)
-(setq vc-follow-symlinks t)
+;; Start in fullscreen mode
+(message (concat "Starting: " (emacs-uptime)))
+(toggle-frame-fullscreen)
 
 ;; Get rid of all bars
 (setq org-src-tab-acts-natively t)
@@ -14,6 +15,12 @@
 (when (string-equal system-type "darwin")
   (setq package-check-signature nil))
 
+;; Also some problems connecting to package repos on Mac & a specific version
+;; https://emacs.stackexchange.com/questions/68288/error-retrieving-https-elpa-gnu-org-packages-archive-contents
+(when (and (equal emacs-version "27.2")
+           (eql system-type 'darwin))
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 ;; Install and load use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents t)
@@ -24,9 +31,18 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; Start in fullscreen mode
-(toggle-frame-fullscreen)
+;; Follow symlinks without prompting (the org file is a symlink)
+(setq vc-follow-symlinks t)
 
-;; Load all other customization from the org file
-(org-babel-load-file
- (expand-file-name "config.org" user-emacs-directory))
+;; Load all other customization from the org file, only compile if necessary
+(let* ((.org (file-truename (concat user-emacs-directory "config.org"))) ; the .org file will be in VC
+       (.el (concat user-emacs-directory "config.el")) ; config.el is generated, so won't be in VC
+       (.org-modification-time (file-attribute-modification-time (file-attributes .org)))
+       (.el-modification-time (file-attribute-modification-time (file-attributes .el)))
+       (config-unchanged-p (time-less-p .org-modification-time .el-modification-time)))
+
+  (require 'org-macs)
+  (unless config-unchanged-p
+    (require 'ob-tangle)
+    (org-babel-tangle-file .org .el "emacs-lisp"))
+  (load-file .el))

@@ -1,6 +1,4 @@
 * Theme
-I want this to load first because otherwise it'll blind me during the night while it's trying to refresh packages.
-
 Icons required for some parts of the doom theme:
 
 #+begin_src emacs-lisp
@@ -19,12 +17,6 @@ Load Doom Emacs themes:
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
 
-    ;; Enable custom neotree theme (all-the-icons must be installed!)
-    (doom-themes-neotree-config)
-    ;; or for treemacs users
-    (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-    (doom-themes-treemacs-config)
-
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
@@ -32,21 +24,20 @@ Load Doom Emacs themes:
 Define the themes I want:
 
 #+begin_src emacs-lisp
-  (setq dark-theme 'doom-one)
-  ;; (setq light-theme 'doom-acario-light)
+  (setq dark-theme-name 'doom-one)
+  (setq light-theme-name 'jokull)
   ;; I used to use doom-acario-light before writing my own theme
-  (setq light-theme 'jokull)
 
   (defun dark-theme ()
     "Switch to dark theme"
     (interactive)
-    (load-theme dark-theme t)
+    (load-theme dark-theme-name t)
     (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 
   (defun light-theme ()
     "Switch to light theme"
     (interactive)
-    (load-theme light-theme t)
+    (load-theme light-theme-name t)
     (remove-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 #+end_src
 
@@ -54,10 +45,11 @@ Change theme depending on the current system theme.
 The way I check for dark mode is defined in 'dark-mode-p'; currently I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set.
 A function ending in '-p' is a predicate, i.e. returns true or false.
 If calling a function that's in a variable, you have to use 'funcall'.
+To evaluate a quoted form, use 'eval'.
 
 #+begin_src emacs-lisp
-  (let ((dark-mode-p (lambda () (file-exists-p "~/.config/dark-theme"))))
-    (if (funcall dark-mode-p)
+  (let ((dark-mode-p '(file-exists-p "~/.config/dark-theme")))
+    (if (eval dark-mode-p)
         (dark-theme)
       (light-theme)))
 #+end_src
@@ -308,6 +300,8 @@ A better replacement for DocView:
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :hook
+    (pdf-annot-list-mode . pdf-annot-list-follow-minor-mode)
+    (pdf-annot-edit-contents-minor-mode . org-mode)
     (pdf-view-mode . (lambda () (display-line-numbers-mode 0)))
     (pdf-view-mode . (lambda () (define-key pdf-isearch-minor-mode-map (kbd "C-s") #'isearch-forward))))
   (pdf-tools-install)
@@ -322,6 +316,16 @@ Like virtualenvwrapper.sh, but for Emacs.
     (venv-initialize-interactive-shells)
     (venv-initialize-eshell)
     (setq venv-location "~/.config/virtualenvs"))
+#+end_src
+
+** org-ref
+#+begin_src emacs-lisp
+  (use-package org-ref)
+#+end_src
+
+** org-noter
+#+begin_src emacs-lisp
+  (use-package org-noter)
 #+end_src
 
 * Interface
@@ -485,7 +489,7 @@ First one tells Emacs where to save customizations.
 The second one actually loads them.
 
 #+begin_src emacs-lisp
-  (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
+  (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
   (load custom-file)
 #+end_src
 
@@ -810,7 +814,7 @@ Run notmuch-hook script on hello refresh, to move messages to folders according 
 Set the windows I want to show:
 
 #+begin_src emacs-lisp
-  (setq mpc-browser-tags '(Artist Album Genre Playlist))
+  (setq mpc-browser-tags '(AlbumArtist Album Genre Playlist))
 #+end_src
 
 Define some keybindings:
