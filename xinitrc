@@ -30,6 +30,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 wal -R && xdotool key "super+shift+r"
 export SHLVL=1
+export _JAVA_AWT_WM_NONREPARENTING=1 # otherwise Ghidra shows a blank screen
 eval $(ssh-agent)
 command -v VBoxClient-all >/dev/null 2>&1 && VBoxClient-all
 xset r rate 300 50 &
