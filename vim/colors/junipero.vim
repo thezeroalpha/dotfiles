@@ -13,7 +13,7 @@ hi Boolean guifg=#fca8ad guibg=NONE ctermfg=217 ctermbg=NONE cterm=NONE gui=NONE
 hi Comment guifg=#349d58 guibg=#11121A ctermfg=71 ctermbg=0 cterm=italic gui=italic
 hi Conditional guifg=#d0688d guibg=#11121A ctermfg=168 ctermbg=0 cterm=NONE gui=NONE
 hi Constant guifg=#5c78f0 guibg=NONE ctermfg=69 ctermbg=NONE cterm=NONE gui=NONE
-hi Cursor guifg=#0000aa guibg=#cad5c0 ctermfg=19 ctermbg=187 cterm=NONE gui=NONE
+hi Cursor guifg=#0000aa guibg=#aab5a0 ctermfg=19 ctermbg=145 cterm=NONE gui=NONE
 hi CursorLinenr guifg=#ffb500 guibg=#101124 ctermfg=214 ctermbg=0 cterm=bold gui=bold
 hi Cursorline guifg=NONE guibg=#222222 ctermfg=NONE ctermbg=234 cterm=NONE gui=NONE
 hi Delimiter guifg=#aaaaca guibg=NONE ctermfg=146 ctermbg=NONE cterm=NONE gui=NONE

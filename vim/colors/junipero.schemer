@@ -19,7 +19,7 @@ Boolean               #fca8ad, NONE.            NONE
 Comment               #349d58, bg.              italic
 Conditional           #d0688d, bg.              NONE
 Constant              #5c78f0, NONE.            NONE
-Cursor                #0000aa, #cad5c0.         NONE
+Cursor                #0000aa, #aab5a0.         NONE
 CursorLinenr          #ffb500, darkblue.        bold
 Cursorline            NONE, #222222.            NONE
 Delimiter             #aaaaca, NONE.            NONE
