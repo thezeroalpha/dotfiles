@@ -10,5 +10,6 @@ setlocal includeexpr=
 let &l:define='\v^\s*(#\s*define)|((const )?(int|char|void|s?size_t) \*? ?)|(struct \ze\k+ \{)|(struct \k+ \ze\k+;)'
 let &l:iskeyword='a-z,A-Z,48-57,_,.'
 let &l:commentstring='// %s'
-
-set foldmethod=syntax
+setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
+setlocal keywordprg=:Man
+setlocal foldmethod=syntax
