@@ -1,5 +1,5 @@
 # vim: filetype=conf
-
+allow_for_physical_item_deletion = no
 ncmpcpp_directory = "~/.config/ncmpcpp"
 lyrics_directory = "~/.local/share/lyrics"
 follow_now_playing_lyrics = yes
