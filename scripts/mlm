@@ -1,0 +1,83 @@
+#!/bin/sh
+# Meant to be used with mpd and mpc.
+# Import everything in the current folder to $MUSIC_DIR. Then update the
+# recently added playlist in $MUSIC_DIR, and run an mpd database update.
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps rsync mpc
+
+# Check necessary variables
+[ -z "$XDG_DATA_HOME" ] && die 'XDG_DATA_HOME not set.'
+MPD_LOGFILE="$XDG_DATA_HOME"/mpd/mpd.log
+[ -f "$MPD_LOGFILE" ] || die "$MPD_LOGFILE does not exist or is not a readable file."
+[ -z "$MUSIC_DIR" ] && die 'MUSIC_DIR not set.'
+[ -d "$MUSIC_DIR" ] || die "$MUSIC_DIR does not exist or is not a readable directory."
+RECENTLY_ADDED_PLAYLIST="$MUSIC_DIR"/recently-added.m3u
+
+import() {
+  # Sync current dir into music dir, (u)pdated only, (r)ecursively, (p)reserve
+  #   permissions, info about whole transfer, delete originals
+  printf "Moving files into library...\n"
+  rsync -urp --info=progress2 --remove-source-files ./ "$MUSIC_DIR"/
+
+  # Update the database, waiting for it to finish
+  printf "Updating MPD database...\n"
+  mpc -w update >/dev/null 2>&1
+
+  # Update the recently added playlist:
+  printf "Updating recently added playlist...\n"
+
+  # Create a tempdir for the files
+  tempdir="$(mktemp -d)"
+  trap 'rm -r "$tempdir"' INT TERM EXIT
+
+  # MPD logs all additions to the library, so extract from that.
+  # Sort for use in comm (1)
+  tac ~/.local/share/mpd/mpd.log \
+    | awk -F 'added ' '/update: added/ { print $2 }' \
+    | sort > "$tempdir"/sorted_newly_added.log
+
+  # Get the current contents of the recently added playlist, without M3U metadata
+  # Sort for use in comm (1)
+  grep -v '^#' "$MUSIC_DIR"/recently-added.m3u > "$tempdir"/current_recently_added.m3u
+  sort "$tempdir"/current_recently_added.m3u > "$tempdir"/sorted_recently_added.m3u
+
+  # Find the lines that have been logged by MPD as added but are not yet in the recently added playlist
+  #   via comm (1), excluding lines present only in file 2 (MPD logfile) and in both.
+  # Then, add an M3U header, and concatenate with the current recently added playlist.
+  # The result is: [M3U header, newly added tracks, rest of current recently added playlist]
+  cat - "$tempdir"/current_recently_added.m3u \
+    > "$MUSIC_DIR"/recently-added.m3u \
+    <<PLAYLIST_END
+#EXTM3U
+#PLAYLIST:Recently Added
+$(comm -23 "$tempdir"/sorted_newly_added.log "$tempdir"/sorted_recently_added.m3u)
+PLAYLIST_END
+
+  # Untrap
+  trap - INT TERM EXIT
+
+  printf "Done!\n"
+}
+
+verify_recently_added() {
+  lns="$(wc -l < "$RECENTLY_ADDED_PLAYLIST" | tr -d '[:space:]')"
+  ctr=1;
+  while read -r f; do
+    printf "$f" | grep '^#' >/dev/null 2>&1 && { ctr=$((ctr+1)); continue; }
+    printf "\r%d/%d" $ctr "$lns"
+    stat "$f" >/dev/null 2>&1 || echo "$f";
+    ctr=$((ctr+1));
+  done < "$RECENTLY_ADDED_PLAYLIST"
+}
+
+case "$1" in
+  import) import;;
+  check-recent) verify_recently_added;;
+  *) printf "Supported commands: import, check-recent\n"; exit 0;;
+esac
