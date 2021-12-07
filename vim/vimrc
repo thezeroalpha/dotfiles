@@ -164,6 +164,8 @@ for reponame in keys(installed_textobjs) | Plug reponame | endfor
 
 Plug 'dense-analysis/ale'
 
+Plug 'Yggdroot/indentLine', { 'for': 'python' }
+
 call plug#end()
 " }}}2
 " Config {{{2
@@ -470,7 +472,10 @@ function! SelectIAsterisks()
   let start_pos = getpos('.')
   return ['v', start_pos, end_pos]
 endfunction
-
+" indentLine {{{3
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_enable = 0 " off by default
+let g:indentLine_fileType = ['python'] " enable for python
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
