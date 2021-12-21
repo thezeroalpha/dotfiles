@@ -1,7 +1,6 @@
 #!/bin/sh
-# Meant to be used with mpd and mpc.
-# Import everything in the current folder to $MUSIC_DIR. Then update the
-# recently added playlist in $MUSIC_DIR, and run an mpd database update.
+# General music library management tasks
+
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 checkdeps() {
   for com in "$@"; do
@@ -9,7 +8,7 @@ checkdeps() {
       || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
   done
 }
-checkdeps rsync mpc
+checkdeps rsync mpc eyeD3 ffprobe
 
 # Check necessary variables
 [ -z "$XDG_DATA_HOME" ] && die 'XDG_DATA_HOME not set.'
@@ -20,6 +19,15 @@ MPD_LOGFILE="$XDG_DATA_HOME"/mpd/mpd.log
 RECENTLY_ADDED_PLAYLIST="$MUSIC_DIR"/recently-added.m3u
 
 import() {
+  if [ -n "$(find . -mindepth 1 -maxdepth 1 -name '*.mp3')" ]; then
+    printf "MP3 files found in current directory!\nAre you sure you want to import? [Y/n] "
+    read -r yn
+    case "$yn" in
+      Y*|y*);;
+      *) die 'User cancelled.';;
+    esac
+  fi
+
   # Sync current dir into music dir, (u)pdated only, (r)ecursively, (p)reserve
   #   permissions, info about whole transfer, delete originals
   printf "Moving files into library...\n"
@@ -69,15 +77,56 @@ verify_recently_added() {
   lns="$(wc -l < "$RECENTLY_ADDED_PLAYLIST" | tr -d '[:space:]')"
   ctr=1;
   while read -r f; do
-    printf "$f" | grep '^#' >/dev/null 2>&1 && { ctr=$((ctr+1)); continue; }
+    printf '%s' "$f" | grep '^#' >/dev/null 2>&1 && { ctr=$((ctr+1)); continue; }
     printf "\r%d/%d" $ctr "$lns"
-    stat "$f" >/dev/null 2>&1 || echo "$f";
+    stat "$MUSIC_DIR/$f" >/dev/null 2>&1 || echo "$f";
     ctr=$((ctr+1));
   done < "$RECENTLY_ADDED_PLAYLIST"
+}
+
+
+embed_lyrics() {
+  LYRICS_DIR="$HOME/.local/share/lyrics"
+  [ -d "$LYRICS_DIR" ] || die "Lyrics dir $LYRICS_DIR not found."
+
+  find "$LYRICS_DIR" -type f \
+    | while read -r lyricsfile; do
+      printf "Processing: %s\n" "$lyricsfile" \
+        && fname="$(printf "%s" "${lyricsfile##*/}" | awk -F " - " '{gsub(".txt", "", $2); print "albumartist " "\"" $1 "\"" " title " "\"" $2 "\"" }' | xargs mpc find | head -n 1)" \
+        && if [ -n "$fname" ]; then
+             eyeD3 --to-v2.4 --remove-all-lyrics --add-lyrics "$lyricsfile" "$MUSIC_DIR/$fname" \
+               && rm "$lyricsfile"
+           else
+             rm "$lyricsfile"
+           fi
+      done
+}
+
+# args: source_dir, dest_dir
+# Places all MP3 files in a directory into folders based on the artist and album.
+# If you want to make changes in the current dir, run `mp3-tags-to-folders . .`
+organize_files() {
+  [ $# -eq 2 ] || die "Arguments required: path to music directory, path to destination"
+  [ -d "$1" ] || die "Path $1 is not a directory."
+  cd "$2" || die "Could not cd to $1"
+  mkdir -p _failed || die "Directory ./_failed already exists"
+  find "$1" -name '*.mp3' 2>/dev/null | \
+    while read -r i; do
+      artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?"\\>' '_' | sed 's/\.\.*$//')"
+      [ -n "$artist" ] || { mv "$i" _failed/ && continue; }
+      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?>\\"' '_' | sed 's/\.\.*$//')"
+      [ -n "$album" ] || { mv "$i" _failed/ && continue; }
+      mkdir -p "$artist/$album"
+      printf "%s -> %s" "$i" "$artist/$album"
+      mv "$i" "$artist/$album"
+    done
+    rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
 }
 
 case "$1" in
   import) import;;
   check-recent) verify_recently_added;;
-  *) printf "Supported commands: import, check-recent\n"; exit 0;;
+  embed-lyrics) embed_lyrics;;
+  organise|organize) organize_files "$@";;
+  *) printf "Supported commands: import, check-recent, embed-lyrics, organise\n"; exit 0;;
 esac
