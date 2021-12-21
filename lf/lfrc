@@ -186,6 +186,23 @@ cmd paste_link %{{
   ln -sr $files -t .
 }}
 
+cmd paste_rename %{{
+  mode="$(head -n 1 ~/.local/share/lf/files)"
+  for fname in $(tail -n +2 ~/.local/share/lf/files); do
+    while [ -z "${newfname:-}" ]; do
+      printf "%s => " "$fname"
+      read -r newfname
+    done
+    if [ "$mode" = 'copy' ]; then
+      cp -n "$fname" ./"$newfname"
+    else
+      mv -n "$fname" ./"$newfname"
+    fi
+  done
+  lf -remote 'send clear'
+  lf -remote 'send load'
+}}
+
 # preview the highlighted file with quicklook (macOS)
 cmd ql_preview &{{
   qlmanage -p $fx &> /dev/null;
@@ -368,6 +385,7 @@ map Y copy_path
 map p
 map pp paste
 map pl paste_link
+map pr paste_rename
 
 # Viewing
 map i file_info
