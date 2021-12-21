@@ -82,9 +82,14 @@ def_key "O"
 def_key "?"
   show_help
 
+def_key "V"
+  reverse_selection
+
+def_key "ctrl-v"
+  remove_selection
+
 def_key "*"
   select_item
-  scroll_down
 
 def_key "J"
   move_selected_items_down
