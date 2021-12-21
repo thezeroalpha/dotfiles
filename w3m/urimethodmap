@@ -1,1 +1,2 @@
 gemini: file:/cgi-bin/uri-handler-gemini.cgi?%s
+magnet: file:/cgi-bin/magnet.cgi?%s
