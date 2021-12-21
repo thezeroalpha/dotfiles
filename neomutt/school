@@ -70,7 +70,7 @@ macro index,pager gt "<change-vfolder>Trash (S)<enter>" "go to Trash"
 macro index,pager gs "<change-vfolder>Sent (S)<enter>" "go to Sent"
 
 # Moving emails
-macro index,pager a "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter><sync-mailbox>" "move mail to Archive"
+macro index,pager a "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter>" "move mail to Archive"
 macro index,pager MI "<modify-labels>+inbox -archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Inbox<enter><sync-mailbox>" "move mail to Inbox"
 macro index,pager MA "<modify-labels>-inbox +archive -draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Archive<enter><sync-mailbox>" "move mail to Archive"
 macro index,pager MD "<modify-labels>-inbox -archive +draft -spam -trash -sent -unread<enter><tag-prefix><save-message>=Drafts<enter><sync-mailbox>" "move mail to Drafts"
