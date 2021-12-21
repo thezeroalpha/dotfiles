@@ -771,6 +771,12 @@ I'll use the keybinding that's standard on macOS:
   (global-set-key (kbd "C-s-f") #'toggle-frame-fullscreen)
 #+end_src
 
+** Enable recursive minibuffers
+#+begin_src emacs-lisp
+  (setq enable-recursive-minibuffers t
+        minibuffer-depth-indicate-mode t)
+#+end_src
+
 * Notmuch
 Define some saved searches (i.e. mailboxes):
 
