@@ -17,7 +17,7 @@ case "$1" in
     setsid -f mpv --volume=50 "$1" 1>/dev/null 2>&1
     ;;
   *reddit.com*)
-    ttrv "$1"
+    reddio print -c always "comments/$(printf "%s" "$1" | cut -d/ -f7)" | less -+F -+X
     ;;
   http://*|https://*)   # everything else opens in w3m, can use go-readability within
     # if command -v go-readability >/dev/null 2>&1; then
