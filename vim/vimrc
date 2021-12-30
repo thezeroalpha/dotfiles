@@ -277,6 +277,13 @@ cabbrev USE UltiSnipsEdit
 " Complete ultisnips with <C-x><C-u>, which is coincidentally the same mapping as user completion
 " (custom function btw)
 set completefunc=ultisnips_complete#ListSnippets
+
+" NOTE: performance improvement. autotrigger leads to slow typing in markdown
+" mode.
+augroup ultisnips_no_auto_expansion
+    au!
+    au VimEnter * au! UltiSnips_AutoTrigger
+augroup END
 " Abolish {{{3
 " Work with variants of words easily
 let g:abolish_save_file = '"$HOME"/.dotfiles/vim/abolish_save_file.vim'
@@ -698,10 +705,14 @@ filetype plugin indent on
 syntax on
 
 " Enable fenced code highlighting in markdown (tpope's plugin, ships with vim)
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map', 'vim', 'c', 'cpp', 'make']
-" Enable markdown folding
-let g:markdown_folding = 1
+" NOTE: I'm disabling it because it makes Vim very slow when typing in
+" markdown...
+" let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'bash=sh', 'map', 'vim', 'c', 'cpp', 'make']
 
+" Enable markdown folding
+" NOTE: I'm disabling it because it makes Vim very slow when typing in
+" markdown...
+" let g:markdown_folding = 1
 
 " Folding on indentation
 set foldmethod=indent
