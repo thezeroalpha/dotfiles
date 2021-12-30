@@ -28,6 +28,13 @@ import() {
     esac
   fi
 
+  printf "Did you already run mp3gain? [Y/n] "
+  read -r yn
+  case "$yn" in
+    Y*|y*);;
+    *) die 'Run it now then.';;
+  esac
+
   # Sync current dir into music dir, (u)pdated only, (r)ecursively, (p)reserve
   #   permissions, info about whole transfer, delete originals
   printf "Moving files into library...\n"
@@ -127,6 +134,6 @@ case "$1" in
   import) import;;
   check-recent) verify_recently_added;;
   embed-lyrics) embed_lyrics;;
-  organise|organize) organize_files "$@";;
+  organise|organize) organize_files "$2" "$3";;
   *) printf "Supported commands: import, check-recent, embed-lyrics, organise\n"; exit 0;;
 esac
