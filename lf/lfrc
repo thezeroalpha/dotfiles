@@ -310,7 +310,7 @@ cmd xld %open -a XLD $f
 cmd fuzzy_select $lf -remote "send $id select \"$(fzf)\""
 
 # Show file info with exiftool
-cmd file_info !LESSOPEN='| exiftool %s' LESS='-cRiX' less $f
+cmd file_info $LESSOPEN='| exiftool %s' LESS='-cRiX' less $f
 
 # Preview a file
 cmd file_preview $LESSOPEN='| ~/.config/lf/preview %s' LESS='-cRiX' less $f
