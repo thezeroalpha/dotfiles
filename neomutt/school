@@ -20,6 +20,7 @@ virtual-mailboxes \
   "Inbox (S)" "notmuch://?query=folder:$my_school_email/Inbox" \
   "Archive (2M) (S)" "notmuch://?query=folder:$my_school_email/Archive and date:2M..today" \
   "Drafts (S)" "notmuch://?query=folder:$my_school_email/Drafts" \
+  "Follow-up (S)" "notmuch://?query=folder:/$my_school_email/ and tag:followup" \
   "Sent (S)" "notmuch://?query='folder:\"$my_school_email/Sent Items\"'" \
   "Trash (S)" "notmuch://?query='folder:\"$my_school_email/Deleted Items\"'" \
   "Spam (S)" "notmuch://?query='folder:\"$my_school_email/Junk Email\"'" \
