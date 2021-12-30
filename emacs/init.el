@@ -21,9 +21,15 @@
            (eql system-type 'darwin))
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
+;; Set up packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
 ;; Install and load use-package
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents t)
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
 
