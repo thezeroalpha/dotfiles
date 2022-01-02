@@ -712,6 +712,13 @@ Let a period followed by a single space be treated as end of sentence:
 #+end_src
 
 * Org mode
+** Tempo expansions
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
+#+end_src
+
 ** Yank URL
 #+begin_src emacs-lisp
   (defun org-yank-link-url ()
@@ -744,6 +751,11 @@ macOS doesn't have dbus. So I use terminal-notifier for functions like org-notif
                                          "-group" "org.gnu.Emacs"
                                          "-sender" "org.gnu.Emacs"))))
 #+end_src
+* Bib(la)tex
+#+begin_src emacs-lisp
+  (add-hook 'bibtex-mode-hook (lambda () (bibtex-set-dialect "biblatex")))
+#+end_src
+
 * Python
 In Python, I want to enable flycheck and semantic mode:
 
