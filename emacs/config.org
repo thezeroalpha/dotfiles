@@ -335,7 +335,7 @@ Sometimes it's better to look at undo history as a tree:
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
-  (toggle-debug-on-error t)
+  ;; (toggle-debug-on-error t)
 #+end_src
 
 ** Messages
