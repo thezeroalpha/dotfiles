@@ -1,7 +1,8 @@
 #!/bin/sh
-[ -d ./public ] || { echo "No public/ folder present in current directory" && exit 1; }
+[ -d ./public ] || { printf "No public/ folder present in current directory\n" && exit 1; }
 destdir=/var/www/"$(basename "$(pwd)")"
 
+ping -c 1 vps >/dev/null 2>&1 || { printf "Host 'vps' not reachable.\n" && exit 1; }
 printf "Upload public/ to vps:%s? [Y/n] " "$destdir"
 read -r conf
 case "$conf" in
