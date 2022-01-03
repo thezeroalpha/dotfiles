@@ -281,6 +281,20 @@ A better replacement for DocView:
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
+    :config
+    (setq-default pdf-annot-default-annotation-properties '((t
+                                                             (label . "Alex Balgavy"))
+                                                            (text
+                                                             (icon . "Note")
+                                                             (color . "#0088ff"))
+                                                            (highlight
+                                                             (color . "yellow"))
+                                                            (squiggly
+                                                             (color . "orange"))
+                                                            (strike-out
+                                                             (color . "red"))
+                                                            (underline
+                                                             (color . "blue"))))
     :hook
     (pdf-annot-list-mode . pdf-annot-list-follow-minor-mode)
     (pdf-annot-edit-contents-minor-mode . org-mode)
