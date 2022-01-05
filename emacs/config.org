@@ -43,6 +43,7 @@ Define the themes I want:
 
 Change theme depending on the current system theme.
 The way I check for dark mode is defined in 'dark-mode-p'; currently I use the presence of the ~/.config/dark-theme file to indicate when dark theme is set.
+I quote the call to ~file-exists-p~ because I want to evaluate it on-demand, not immediately.
 A function ending in '-p' is a predicate, i.e. returns true or false.
 If calling a function that's in a variable, you have to use 'funcall'.
 To evaluate a quoted form, use 'eval'.
@@ -63,7 +64,7 @@ Garbage-collect on focus-out, Emacs /should/ feel snappier.
 
 * Packages
 ** exec-path-from-shell (macOS)
-In macOS, the path is not set correctly in the GUI app. This fixes it.
+In macOS, the path is not set correctly (i.e. as it is in the terminal) in the GUI app. This fixes it.
 
 #+begin_src emacs-lisp
   (when (string-equal system-type "darwin")
@@ -96,33 +97,16 @@ Switched to this from Helm, it's more lightweight.
      ("M-x" . counsel-M-x)
      ("C-x C-f" . counsel-find-file)
      ("M-y" . counsel-yank-pop)
-     ("<f1> f" . counsel-describe-function)
-     ("<f1> v" . counsel-describe-variable)
-     ("<f1> l" . counsel-find-library)
-     ("<f2> i" . counsel-info-lookup-symbol)
-     ("<f2> u" . counsel-unicode-char)
-     ("<f2> j" . counsel-set-variable)
      ("C-x b" . ivy-switch-buffer)
      ("C-c v" . ivy-push-view)
      ("C-c V" . ivy-pop-view)
      ("C-c c" . counsel-compile)
-     ("C-c g" . counsel-git)
-     ("C-c j" . counsel-git-grep)
-     ("C-c L" . counsel-git-log)
      ("C-c k" . counsel-ag)
-     ("C-c m" . counsel-linux-app)
-     ("C-c n" . counsel-fzf)
-     ("C-x l" . counsel-locate)
-     ("C-c J" . counsel-file-jump)
-     ("C-S-o" . counsel-rhythmbox)
-     ("C-c C-r" . ivy-resume)
+     ("C-c f" . counsel-fzf)
      ("C-c b" . counsel-bookmark)
      ("C-c d" . counsel-descbinds)
-     ("C-c g" . counsel-git)
-     ("C-c o" . counsel-outline)
-     ("C-c t" . counsel-load-theme)
-     ("C-c F" . counsel-org-file)
-     ("C-x C-i" . counsel-imenu))
+     ("C-c o" . counsel-outline))
+
     :config
     (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
           ivy-height 20                   ; set height of the ivy window
@@ -145,20 +129,24 @@ Switched to this from Helm, it's more lightweight.
 #+end_src
 
 ** org
-In org mode, I want to use bullets instead of stars.
-Also, I add a few expansions
+In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :config
-    (unless (package-installed-p 'org-bullets)
-      (package-refresh-contents)
-      (package-install 'org-bullets))
-    (require 'org-bullets)
-    (require 'org-tempo)
+      (use-package org
+        :config
+        (unless (package-installed-p 'org-bullets)
+          (package-refresh-contents)
+          (package-install 'org-bullets))
+        (require 'org-bullets)
+        (require 'org-tempo)
 
-    :hook
-    (org-mode . (lambda () (org-bullets-mode 1))))
+        :hook
+        (org-mode . (lambda () (org-bullets-mode 1)))
+
+        :bind
+        (("C-c a" . org-agenda)
+         ("C-c n" . org-capture)
+         ("C-c l" . org-store-link)))
 #+end_src
 
 ** lean-mode
@@ -213,9 +201,7 @@ Make speed bar show in the current frame.
   (use-package sr-speedbar
     :config
     (setq sr-speedbar-right-side nil)
-    (define-key speedbar-mode-map (kbd "q") 'sr-speedbar-close)
-    :bind
-    (("C-c F" . sr-speedbar-toggle)))
+    (define-key speedbar-mode-map (kbd "q") 'sr-speedbar-close))
 
 #+end_src
 
@@ -224,7 +210,7 @@ If it's not bound, or if it's false, first open the speedbar.
 Then, select it.
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c f") (lambda () (interactive)
+  (global-set-key (kbd "C-c F") (lambda () (interactive)
                                   (if (or (not (boundp 'sr-speedbar-exist-p))
                                           (not (sr-speedbar-exist-p)))
                                       (sr-speedbar-open))
@@ -240,7 +226,7 @@ Expand the selected region semantically.
 #+end_src
 
 ** flycheck
-Install flycheck, and enable it in certain major modes:
+Install flycheck, and enable it by default in certain major modes:
 
 #+begin_src emacs-lisp
   (use-package flycheck
@@ -536,7 +522,7 @@ The second one actually loads them.
 
 * Editor
 ** Overwrite selection on typing
-Normally, when I select something and start typing, Emacs clears the selection.
+Normally, when I select something and start typing, Emacs clears the selection, i.e. it deselects and inserts text after the cursor.
 I want to replace the selection.
 
 #+begin_src emacs-lisp
@@ -599,6 +585,7 @@ I want to wrap text at window boundary for some modes:
 #+end_src
 
 ** Pulse line
+When you switch windows, Emacs can flash the cursor briefly to guide your eyes; I like that.
 Set some options for pulsing:
 
 #+begin_src emacs-lisp
@@ -802,7 +789,7 @@ The "(interactive)" means that it can be called from a keybinding or from M-x (t
 I want to bind view-mode to a key for easy access:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c v") 'view-mode)
+  (global-set-key (kbd "C-c r") 'view-mode)
 #+end_src
 
 ** Kill this buffer
