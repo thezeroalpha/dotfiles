@@ -149,21 +149,27 @@ Switched to this from Helm, it's more lightweight.
 In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
 
 #+begin_src emacs-lisp
-      (use-package org
-        :config
-        (unless (package-installed-p 'org-bullets)
-          (package-refresh-contents)
-          (package-install 'org-bullets))
-        (require 'org-bullets)
-        (require 'org-tempo)
+  (use-package org
+    :config
+    (unless (package-installed-p 'org-bullets)
+      (package-refresh-contents)
+      (package-install 'org-bullets))
+    (use-package org-bullets)
+    (require 'org-tempo)
 
-        :hook
-        (org-mode . (lambda () (org-bullets-mode 1)))
+    :hook
+    (org-mode . (lambda () (org-bullets-mode 1)))
 
-        :bind
-        (("C-c a" . org-agenda)
-         ("C-c n" . org-capture)
-         ("C-c l" . org-store-link)))
+    :bind
+    (("C-c a" . org-agenda)
+     ("C-c n" . org-capture)
+     ("C-c l" . org-store-link)))
+#+end_src
+
+To be able to link to emails via notmuch, I use ol-notmuch:
+
+#+begin_src emacs-lisp
+  (use-package ol-notmuch :quelpa)
 #+end_src
 
 ** lean-mode
@@ -799,10 +805,12 @@ Todo keywords based on the GTD system (pipe separates incomplete from complete):
 Create custom agenda views:
 
 #+begin_src emacs-lisp
-  (setq org-agenda-custom-commands '(("w" todo "WAITING" nil)
-                                     ("n" todo "NEXT" nil)
-                                     ("d" "Agenda + Next Actions"
+  (setq org-agenda-custom-commands '(("n" todo "NEXT" nil)
+                                     ("w" "Week Agenda + Next Actions"
                                       ((agenda)
+                                       (todo "NEXT")))
+                                     ("d" "Day Agenda + Next Actions"
+                                      ((agenda "" ((org-agenda-span 'day)))
                                        (todo "NEXT")))))
 #+end_src
 
@@ -818,18 +826,57 @@ I want to log into the LOGBOOK drawer (useful when I want to take quick notes):
   (setq org-log-into-drawer "LOGBOOK")
 #+end_src
 
+I want to hide drawers on startup. This variable has options:
+- 'overview': Top-level headlines only.
+- 'content': All headlines.
+- 'showall': No folding on any entry.
+- 'show2levels: Headline levels 1-2.
+- 'show3levels: Headline levels 1-3.
+- 'show4levels: Headline levels 1-4.
+- 'show5levels: Headline levels 1-5.
+- 'showeverything: Show even drawer contents.
+
+#+begin_src emacs-lisp
+(setq org-startup-folded 'show3levels)
+#+end_src
+
+
 I want to archive to a specific file, in a date tree:
 
 #+begin_src emacs-lisp
   (setq org-archive-location (concat org-life-archive "::datetree/"))
 #+end_src
 
-I also want to log when I finish a task (useful for archiving):
+I also want to log when I finish a task (useful for archiving).
+Furthermore, when I'm done, I want to add a note (any important
+workarounds/tips). And when I reschedule, I want to know the reason.
+I can disable logging on state change for a specific task by adding ~:LOGGING: nil~ to the ~:PROPERTIES:~ drawer.
 
 #+begin_src emacs-lisp
-  (setq org-log-done 'time)
+  (setq org-log-done 'note
+        org-log-reschedule 'note)
 #+end_src
 
+Some tasks should be ordered, i.e. they should be done in steps.
+Those have the ~:ORDERED: t~ setting in ~:PROPERTIES:~, and it should be enforced:
+
+#+begin_src emacs-lisp
+  (setq org-enforce-todo-dependencies t)
+#+end_src
+
+Furthermore, tasks that are ordered and can't be done yet because of previous steps should be dimmed in the agenda:
+
+#+begin_src emacs-lisp
+  (setq org-agenda-dim-blocked-tasks t)
+#+end_src
+
+I might also want to set ~org-enforce-todo-checkbox-dependencies~, but not convinced on that one yet.
+
+Time tracking should be done in its own drawer:
+
+#+begin_src emacs-lisp
+  (setq org-clock-into-drawer "CLOCKING")
+#+end_src
 ** Tempo expansions
 
 #+begin_src emacs-lisp
@@ -1043,3 +1090,5 @@ If I have another dired window open, use that as target:
 Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
 - [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs]]
+
+For Org mode, [[https://www.youtube.com/playlist?list=PLVtKhBrRV_ZkPnBtt_TD1Cs9PJlU0IIdE][Rainer König's tutorials]] are the best.
