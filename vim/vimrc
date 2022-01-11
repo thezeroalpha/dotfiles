@@ -166,6 +166,8 @@ Plug 'dense-analysis/ale'
 
 Plug 'Yggdroot/indentLine', { 'for': 'python' }
 
+Plug 'jceb/vim-orgmode', { 'for': 'org' }
+
 call plug#end()
 " }}}2
 " Config {{{2
