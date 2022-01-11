@@ -55,6 +55,13 @@ To evaluate a quoted form, use 'eval'.
       (light-theme)))
 #+end_src
 
+* Font
+I want Menlo, size 14:
+
+#+begin_src emacs-lisp
+  (set-frame-font "Menlo-14" nil t)
+#+end_src
+
 * Garbage collection
 Garbage-collect on focus-out, Emacs /should/ feel snappier.
 
