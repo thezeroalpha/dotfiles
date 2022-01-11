@@ -70,6 +70,16 @@ Garbage-collect on focus-out, Emacs /should/ feel snappier.
 #+end_src
 
 * Packages
+
+** quelpa
+Quelpa lets you install from local or remote source (like git).
+With quelpa-use-package, I can use the keyword ~:quelpa~ to install via quelpa.
+
+#+begin_src emacs-lisp
+  (use-package quelpa)
+  (use-package quelpa-use-package)
+#+end_src
+
 ** exec-path-from-shell (macOS)
 In macOS, the path is not set correctly (i.e. as it is in the terminal) in the GUI app. This fixes it.
 
