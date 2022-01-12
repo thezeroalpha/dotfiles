@@ -737,8 +737,7 @@ Let a period followed by a single space be treated as end of sentence:
 
 * Org mode
 ** Agenda & GTD
-[[https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html][Here's a good reference for setting up gtd in org mode]]
-
+*** Set file locations
 Tell org where to find my stuff
 
 #+begin_src emacs-lisp
@@ -754,22 +753,18 @@ Which files should be included in the agenda (I have to use ~list~ to evaluate t
 
 #+begin_src emacs-lisp
   (setq org-agenda-files (list org-life-main
-                                org-life-inbox
-                                org-life-tickler))
+                               org-life-inbox
+                               org-life-tickler))
 #+end_src
 
-Templates for quick capture:
+Convenience function to make opening the main file faster:
 
 #+begin_src emacs-lisp
-  (setq org-capture-templates `(("t" "Todo [inbox]" entry
-                                 (file+headline ,org-life-inbox "Tasks")
-                                 "* TODO %i%?")
-                                ("T" "Tickler" entry
-                                 (file+headline ,org-life-tickler "Tickler")
-                                 "* %i%? \n %U")))
+  (defun gtd () (interactive) (find-file org-life-main))
 #+end_src
 
-Where I want to be able to move stuff:
+*** Refiling & archiving
+Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
 
 #+begin_src emacs-lisp
   (setq org-refile-targets `((,org-life-main :maxlevel . 3)
@@ -783,7 +778,7 @@ Include the destination file as an element in the path to a heading, and to use 
   (setq org-refile-use-outline-path 'file)
 #+end_src
 
-Tell Org that you don’t want to complete in steps; you want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy):
+Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy):
 
 #+begin_src emacs-lisp
   (setq org-outline-path-complete-in-steps nil)
@@ -795,6 +790,29 @@ Allow me to tack new heading names onto the end of my outline path, and if I am 
   (setq org-refile-allow-creating-parent-nodes 'confirm)
 #+end_src
 
+I want to archive to a specific file, in a date tree:
+
+#+begin_src emacs-lisp
+  (setq org-archive-location (concat org-life-archive "::datetree/"))
+#+end_src
+
+
+*** Quick capture
+Quick capture lets me send something to my inbox very quickly, without thinking about where it should go.
+The inbox is processed later.
+
+Templates for quick capture:
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates `(("t" "Todo [inbox]" entry
+                                 (file+headline ,org-life-inbox "Tasks")
+                                 "* TODO %i%?")
+                                ("T" "Tickler" entry
+                                 (file+headline ,org-life-tickler "Tickler")
+                                 "* %i%? \n %U")))
+#+end_src
+
+*** Todo
 Todo keywords based on the GTD system (pipe separates incomplete from complete):
 
 #+begin_src emacs-lisp
@@ -802,7 +820,7 @@ Todo keywords based on the GTD system (pipe separates incomplete from complete):
                               "|" "DONE(d)" "CANCELLED(c)"))
 #+end_src
 
-Create custom agenda views:
+Create custom agenda view based on those keywordss:
 
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands '(("n" todo "NEXT" nil)
@@ -814,16 +832,21 @@ Create custom agenda views:
                                        (todo "NEXT")))))
 #+end_src
 
-Convenience function to make opening the main file faster:
-
-#+begin_src emacs-lisp
-  (defun gtd () (interactive) (find-file org-life-main))
-#+end_src
-
+*** Logging
 I want to log into the LOGBOOK drawer (useful when I want to take quick notes):
 
 #+begin_src emacs-lisp
   (setq org-log-into-drawer "LOGBOOK")
+#+end_src
+
+I also want to log when I finish a task (useful for archiving).
+Furthermore, when I'm done, I want to add a note (any important
+workarounds/tips). And when I reschedule, I want to know the reason.
+I can disable logging on state change for a specific task by adding ~:LOGGING: nil~ to the ~:PROPERTIES:~ drawer.
+
+#+begin_src emacs-lisp
+  (setq org-log-done 'note
+        org-log-reschedule 'note)
 #+end_src
 
 I want to hide drawers on startup. This variable has options:
@@ -837,26 +860,10 @@ I want to hide drawers on startup. This variable has options:
 - 'showeverything: Show even drawer contents.
 
 #+begin_src emacs-lisp
-(setq org-startup-folded 'show3levels)
+  (setq org-startup-folded 'show3levels)
 #+end_src
 
-
-I want to archive to a specific file, in a date tree:
-
-#+begin_src emacs-lisp
-  (setq org-archive-location (concat org-life-archive "::datetree/"))
-#+end_src
-
-I also want to log when I finish a task (useful for archiving).
-Furthermore, when I'm done, I want to add a note (any important
-workarounds/tips). And when I reschedule, I want to know the reason.
-I can disable logging on state change for a specific task by adding ~:LOGGING: nil~ to the ~:PROPERTIES:~ drawer.
-
-#+begin_src emacs-lisp
-  (setq org-log-done 'note
-        org-log-reschedule 'note)
-#+end_src
-
+*** Task ordering
 Some tasks should be ordered, i.e. they should be done in steps.
 Those have the ~:ORDERED: t~ setting in ~:PROPERTIES:~, and it should be enforced:
 
@@ -872,11 +879,30 @@ Furthermore, tasks that are ordered and can't be done yet because of previous st
 
 I might also want to set ~org-enforce-todo-checkbox-dependencies~, but not convinced on that one yet.
 
+*** Time tracking & effort
 Time tracking should be done in its own drawer:
 
 #+begin_src emacs-lisp
   (setq org-clock-into-drawer "CLOCKING")
 #+end_src
+
+I want to set effort in hours:minutes:
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-global-properties '("Effort_ALL" . "0:05 0:10 0:15 0:20 0:30 1:00 1:30 2:00 4:00 6:00 8:00"))
+#+end_src
+
+I want column view to look like this:
+
+| To do        | Task      | Tags | Sum of time elapsed | Sum of time estimated (effort) |
+|--------------+-----------+------+---------------------+--------------------------------|
+| todo keyword | task name | tags | sum of clock        | sum of estimated time          |
+| ...          | ...       | ...  | ...                 | ...                            |
+
+#+begin_src emacs-lisp
+  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %6CLOCKSUM(Clock) %8Effort(Effort){:}")
+#+end_src
+
 ** Tempo expansions
 
 #+begin_src emacs-lisp
@@ -1092,3 +1118,4 @@ Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs]]
 
 For Org mode, [[https://www.youtube.com/playlist?list=PLVtKhBrRV_ZkPnBtt_TD1Cs9PJlU0IIdE][Rainer König's tutorials]] are the best.
+[[https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html][Here's a good reference for setting up gtd in org mode]]
