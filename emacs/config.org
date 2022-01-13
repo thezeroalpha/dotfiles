@@ -844,14 +844,13 @@ Agenda views are made up of blocks, appearing in the order that you declare them
            ((agenda "" ((org-agenda-overriding-header "Day:")
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
-            (agenda ""
-                    ((org-agenda-span 'day)
-                     (org-agenda-use-time-grid nil)
-                     (org-agenda-skip-function 'my-skip-unless-habit)
-                     (org-agenda-overriding-header "Habits:")
-                     (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
-                     (org-habit-show-all-today t)))))))
+            (agenda "" ((org-agenda-span 'day)
+                        (org-agenda-use-time-grid nil)
+                        (org-agenda-skip-function 'my-skip-unless-habit)
+                        (org-agenda-overriding-header "Habits:")
+                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
+                        (org-habit-show-all-today t)))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))))
 #+end_src
 
 *** Logging
