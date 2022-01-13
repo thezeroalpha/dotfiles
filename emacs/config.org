@@ -70,7 +70,6 @@ Garbage-collect on focus-out, Emacs /should/ feel snappier.
 #+end_src
 
 * Packages
-
 ** quelpa
 Quelpa lets you install from local or remote source (like git).
 With quelpa-use-package, I can use the keyword ~:quelpa~ to install via quelpa.
@@ -156,10 +155,10 @@ In org mode, I want to use bullets instead of stars, so I also install ~org-bull
       (package-install 'org-bullets))
     (use-package org-bullets)
     (require 'org-tempo)
+    (require 'org-habit)
 
     :hook
     (org-mode . (lambda () (org-bullets-mode 1)))
-
     :bind
     (("C-c a" . org-agenda)
      ("C-c n" . org-capture)
@@ -820,16 +819,40 @@ Todo keywords based on the GTD system (pipe separates incomplete from complete):
                               "|" "DONE(d)" "CANCELLED(c)"))
 #+end_src
 
-Create custom agenda view based on those keywordss:
+Define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
 
 #+begin_src emacs-lisp
-  (setq org-agenda-custom-commands '(("n" todo "NEXT" nil)
-                                     ("w" "Week Agenda + Next Actions"
-                                      ((agenda)
-                                       (todo "NEXT")))
-                                     ("d" "Day Agenda + Next Actions"
-                                      ((agenda "" ((org-agenda-span 'day)))
-                                       (todo "NEXT")))))
+  (defun my-skip-unless-habit ()
+    "Skip trees that are not habits"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+          nil
+        subtree-end)))
+#+end_src
+
+Create custom agenda view based on those keywords.
+Agenda views are made up of blocks, appearing in the order that you declare them.
+
+#+begin_src emacs-lisp
+  (setq org-agenda-custom-commands
+        '(("n" todo "NEXT" nil)
+
+          ("w" "Week Agenda + Next Actions"
+           ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+
+          ("d" "Day Agenda + Next Actions + Habits"
+           ((agenda "" ((org-agenda-overriding-header "Day:")
+                        (org-agenda-span 'day)
+                        (org-habit-show-habits nil)))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
+            (agenda ""
+                    ((org-agenda-span 'day)
+                     (org-agenda-use-time-grid nil)
+                     (org-agenda-skip-function 'my-skip-unless-habit)
+                     (org-agenda-overriding-header "Habits:")
+                     (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
+                     (org-habit-show-all-today t)))))))
 #+end_src
 
 *** Logging
