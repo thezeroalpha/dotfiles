@@ -1023,6 +1023,19 @@ I'll use the keybinding that's standard on macOS:
         minibuffer-depth-indicate-mode t)
 #+end_src
 
+** Sexp manipulation
+When I write lisp, sometimes I want to switch two sexps (e.g. ~(one) (two)~ → ~(two) (one)~), so a key binding is nice for that:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-S-t") #'transpose-sexps)
+#+end_src
+
+Also, to raise a sexp (e.g. ~(one (two))~ → ~(two)~):
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-S-u") #'raise-sexp)
+#+end_src
+
 * Notmuch
 Define some saved searches (i.e. mailboxes):
 
