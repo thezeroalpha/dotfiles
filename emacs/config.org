@@ -389,7 +389,6 @@ Show matching parentheses:
   (show-paren-mode t)
 #+end_src
 
-
 *** Cursor
 The default box cursor isn't really accurate, because the cursor is actually between letters, not on a letter.
 So, I want a bar instead of a box:
@@ -883,7 +882,7 @@ I want to hide drawers on startup. This variable has options:
 - 'showeverything: Show even drawer contents.
 
 #+begin_src emacs-lisp
-  (setq org-startup-folded 'show3levels)
+  (setq org-startup-folded 'content)
 #+end_src
 
 *** Task ordering
