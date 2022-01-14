@@ -838,11 +838,12 @@ Templates for quick capture:
 
 #+begin_src emacs-lisp
   (setq org-capture-templates `(("t" "Todo [inbox]" entry
-                                 (file+headline ,org-life-inbox "Tasks")
+                                 (file ,org-life-inbox)
                                  "* TODO %i%?")
-                                ("T" "Tickler" entry
-                                 (file+headline ,org-life-tickler "Tickler")
-                                 "* %i%? \n %U")))
+
+                                ("s" "Save for read/watch/listen" entry
+                                 (file ,org-life-inbox)
+                                 "* TODO %?[[%^{link}][%^{description}]] %^G")))
 #+end_src
 
 *** Todo & agenda views
