@@ -810,12 +810,16 @@ Templates for quick capture:
                                  "* %i%? \n %U")))
 #+end_src
 
-*** Todo
+*** Todo & agenda views
 Todo keywords based on the GTD system (pipe separates incomplete from complete):
-
 #+begin_src emacs-lisp
-    (setq org-todo-keywords '("TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "PROJECT(p)"
-                              "|" "DONE(d)" "CANCELLED(c)"))
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-todo-keyword-faces '(("TODO" . org-todo)
+                                 ("NEXT" . org-todo)
+                                 ("WAITING" . org-todo)
+                                 ("SOMEDAY" . org-todo)
+                                 ("DONE" . org-done)
+                                 ("CANCELLED" . org-done)))
 #+end_src
 
 Define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
