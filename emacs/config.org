@@ -919,6 +919,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("w" "Week Agenda + Next Actions"
            ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
             (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+
           ("o" "Month agenda"
            ((agenda "" ((org-agenda-overriding-header "Month agenda:")
                         (org-agenda-span 'month)))))
@@ -927,10 +928,10 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((agenda "" ((org-agenda-overriding-header "Day:")
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
-            (agenda "" ((org-agenda-span 'day)
+            (agenda "" ((org-agenda-overriding-header "Habits:")
+                        (org-agenda-span 'day)
                         (org-agenda-use-time-grid nil)
                         (org-agenda-skip-function 'my-skip-unless-habit)
-                        (org-agenda-overriding-header "Habits:")
                         (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
                         (org-habit-show-all-today t)))
             (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
