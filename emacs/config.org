@@ -882,6 +882,20 @@ Only the top-level project headlines should be tagged as projects, so disable in
   (setq org-tags-exclude-from-inheritance '("PROJECT"))
 #+end_src
 
+Define a function to skip items if they're part of a project (i.e. one of their parents has a "PROJECT" tag).
+The problem is, the "PROJECT" tag isn't inherited. So, we temporarily disable excluding from inheritance, just for the ~org-get-tags~ call. Then check if "PROJECT" is one of the tags.
+
+#+begin_src emacs-lisp
+  (defun my-skip-if-in-project ()
+    "Skip items that are part of a project"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (item-tags (let ((org-tags-exclude-from-inheritance nil)) (org-get-tags))))
+      (if (member "PROJECT" item-tags)
+          subtree-end
+        nil)))
+
+#+end_src
+
 Also, define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
 
 #+begin_src emacs-lisp
@@ -922,7 +936,11 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
             (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
 
           ("p" "Projects"
-           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")))))))
+           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")))))
+
+          ("f" "Finished tasks that aren't in a project"
+           ((tags "TODO=\"DONE\"" ((org-agenda-overriding-header "Finished tasks:")
+                                   (org-agenda-skip-function 'my-skip-if-in-project)))))))
 
 #+end_src
 
