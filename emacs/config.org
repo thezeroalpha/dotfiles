@@ -912,36 +912,38 @@ Agenda views are made up of blocks, appearing in the order that you declare them
 The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
 
 #+begin_src emacs-lisp
-  (setq org-agenda-custom-commands
-        '(("n" "Next actions"
-           ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+            (setq org-agenda-custom-commands
+                  '(("n" "Next actions"
+                     ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
 
-          ("w" "Week Agenda + Next Actions"
-           ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+                    ("w" "Week Agenda + Next Actions"
+                     ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
+                      (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
 
-          ("o" "Month agenda"
-           ((agenda "" ((org-agenda-overriding-header "Month agenda:")
-                        (org-agenda-span 'month)))))
+                    ("o" "Month agenda"
+                     ((agenda "" ((org-agenda-overriding-header "Month agenda:")
+                                  (org-agenda-span 'month)))))
 
-          ("d" "Day Agenda + Next Actions + Habits"
-           ((agenda "" ((org-agenda-overriding-header "Day:")
-                        (org-agenda-span 'day)
-                        (org-habit-show-habits nil)))
-            (agenda "" ((org-agenda-overriding-header "Habits:")
-                        (org-agenda-span 'day)
-                        (org-agenda-use-time-grid nil)
-                        (org-agenda-skip-function 'my-skip-unless-habit)
-                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
-                        (org-habit-show-all-today t)))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+                    ("d" "Day Agenda + Next Actions + Habits"
+                     ((agenda "" ((org-agenda-overriding-header "Day:")
+                                  (org-agenda-span 'day)
+                                  (org-habit-show-habits nil)))
+                      (agenda "" ((org-agenda-overriding-header "Habits:")
+                                  (org-agenda-span 'day)
+                                  (org-agenda-use-time-grid nil)
+                                  (org-agenda-skip-function 'my-skip-unless-habit)
+                                  (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
+                                  (org-habit-show-all-today t)))
+                      (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
 
-          ("p" "Projects"
-           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")))))
+                    ("p" "Projects"
+                     ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")
+                                       (org-agenda-prefix-format '((tags . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
+                                       (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
 
-          ("f" "Finished tasks that aren't in a project"
-           ((tags "TODO=\"DONE\"" ((org-agenda-overriding-header "Finished tasks:")
-                                   (org-agenda-skip-function 'my-skip-if-in-project)))))))
+                    ("f" "Finished tasks that aren't in a project"
+                     ((tags "TODO=\"DONE\"" ((org-agenda-overriding-header "Finished tasks:")
+                                             (org-agenda-skip-function 'my-skip-if-in-project)))))))
 
 #+end_src
 
