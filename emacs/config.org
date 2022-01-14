@@ -144,6 +144,25 @@ Switched to this from Helm, it's more lightweight.
         (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
 #+end_src
 
+I like having ivy in a popup.
+Problem: posframe does not work if emacs is too old and on macos.
+See here: https://github.com/tumashu/posframe/issues/30
+On Mac, ~brew install --HEAD emacs~ doesn't work either.
+Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --with-cocoa~
+
+#+begin_src emacs-lisp
+  (if (and ( version< emacs-version "28") (equal system-type 'darwin))
+      (message "ivy-posframe won't work properly, run `brew install daviderestivo/emacs-head/emacs-head@28 --with-cocoa`")
+    (use-package ivy-posframe
+      :config
+      (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+      (setq ivy-posframe-parameters
+            '((left-fringe . 8)
+              (right-fringe . 8)))
+      (setq ivy-posframe-border-width 10)
+      (custom-set-faces '(ivy-posframe-border ((t (:inherit mode-line-inactive)))))
+      (ivy-posframe-mode 1)))
+#+end_src
 ** org
 In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
 
