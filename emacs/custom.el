@@ -21,7 +21,7 @@
  '(objed-cursor-color "#ff6c6b")
  '(package-hidden-regexps '("^I"))
  '(package-selected-packages
-   '(ol-notmuch quelpa-use-package quelpa org-contrib rubik poker minesweeper undo-tree csv-mode hl-todo org-noter org-ref virtualenvwrapper elpy pdf-tools diminish company-lean counsel rainbow-mode edit-indirect expand-region elpher sr-speedbar 2048-game vterm notmuch magit lean-mode markdown-mode anki-connect anki-editor doom-themes all-the-icons use-package-ensure which-key use-package org-bullets exec-path-from-shell))
+   '(ivy-posframe ol-notmuch quelpa-use-package quelpa org-contrib rubik poker minesweeper undo-tree csv-mode hl-todo org-noter org-ref virtualenvwrapper elpy pdf-tools diminish company-lean counsel rainbow-mode edit-indirect expand-region elpher sr-speedbar 2048-game vterm notmuch magit lean-mode markdown-mode anki-connect anki-editor doom-themes all-the-icons use-package-ensure which-key use-package org-bullets exec-path-from-shell))
  '(pdf-view-midnight-colors (cons "#bbc2cf" "#282c34"))
  '(rustic-ansi-faces
    ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
@@ -47,13 +47,3 @@
     (cons 340 "#5B6268")
     (cons 360 "#5B6268")))
  '(vc-annotate-very-old-color nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(helm-buffer-file ((t (:inherit default))))
- '(helm-ff-file-extension ((t (:inherit default))))
- '(helm-non-file-buffer ((t (:inherit font-lock-comment-face))))
- '(hl-todo ((t (:inherit hl-todo :underline t))))
- '(pulse-highlight-start-face ((t (:background "CadetBlue2")))))

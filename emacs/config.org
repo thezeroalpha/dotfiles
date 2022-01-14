@@ -630,6 +630,13 @@ Run it in certain cases: scrolling up/down, recentering, switching windows.
   (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
     (advice-add command :after #'pulse-line))
 #+end_src
+
+And set the pulse color:
+
+#+begin_src emacs-lisp
+  (custom-set-faces '(pulse-highlight-start-face ((t (:background "CadetBlue2")))))
+#+end_src
+
 ** Pager mode
 M-x view-mode enables pager behavior.
 I want read-only files to automatically use pager mode:
