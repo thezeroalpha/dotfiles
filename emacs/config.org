@@ -794,7 +794,6 @@ I want to archive to a specific file, in a date tree:
   (setq org-archive-location (concat org-life-archive "::datetree/"))
 #+end_src
 
-
 *** Quick capture
 Quick capture lets me send something to my inbox very quickly, without thinking about where it should go.
 The inbox is processed later.
@@ -833,16 +832,40 @@ Define a function to skip tasks (trees) that are not habits (i.e. don't have the
         subtree-end)))
 #+end_src
 
+I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).
+
+#+begin_src emacs-lisp
+  (defun my-mark-as-project ()
+    "This function makes sure that the current heading has
+      (1) the tag PROJECT
+      (2) the property COOKIE_DATA set to \"todo recursive\"
+      (3) a leading progress indicator"
+    (interactive)
+    (org-set-property "TODO" "")
+    (org-toggle-tag "PROJECT" 'on)
+    (org-set-property "COOKIE_DATA" "todo recursive")
+    (org-back-to-heading t)
+    (forward-whitespace 1)
+    (insert "[/] ")
+    (org-update-statistics-cookies nil))
+  (setq org-tags-exclude-from-inheritance '("PROJECT"))
+#+end_src
+
 Create custom agenda view based on those keywords.
 Agenda views are made up of blocks, appearing in the order that you declare them.
+The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
 
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
-        '(("n" todo "NEXT" nil)
+        '(("n" "Next actions"
+           ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
 
           ("w" "Week Agenda + Next Actions"
            ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
             (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+          ("o" "Month agenda"
+           ((agenda "" ((org-agenda-overriding-header "Month agenda:")
+                        (org-agenda-span 'month)))))
 
           ("d" "Day Agenda + Next Actions + Habits"
            ((agenda "" ((org-agenda-overriding-header "Day:")
@@ -854,7 +877,11 @@ Agenda views are made up of blocks, appearing in the order that you declare them
                         (org-agenda-overriding-header "Habits:")
                         (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
                         (org-habit-show-all-today t)))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+
+          ("p" "Projects"
+           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")))))))
+
 #+end_src
 
 *** Logging
