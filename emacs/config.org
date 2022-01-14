@@ -858,17 +858,6 @@ Todo keywords based on the GTD system (pipe separates incomplete from complete):
                                  ("CANCELLED" . org-done)))
 #+end_src
 
-Define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
-
-#+begin_src emacs-lisp
-  (defun my-skip-unless-habit ()
-    "Skip trees that are not habits"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (string= (org-entry-get nil "STYLE") "habit")
-          nil
-        subtree-end)))
-#+end_src
-
 I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).
 
 #+begin_src emacs-lisp
@@ -885,7 +874,23 @@ I decided that projects will not be TODO items, but their progress will be track
     (forward-whitespace 1)
     (insert "[/] ")
     (org-update-statistics-cookies nil))
+#+end_src
+
+Only the top-level project headlines should be tagged as projects, so disable inheritance of that tag:
+
+#+begin_src emacs-lisp
   (setq org-tags-exclude-from-inheritance '("PROJECT"))
+#+end_src
+
+Also, define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
+
+#+begin_src emacs-lisp
+  (defun my-skip-unless-habit ()
+    "Skip trees that are not habits"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+          nil
+        subtree-end)))
 #+end_src
 
 Create custom agenda view based on those keywords.
