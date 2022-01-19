@@ -477,8 +477,9 @@ I want to hide certain modes from the modeline, they're always on:
 #+begin_src emacs-lisp
   (use-package diminish
     :config
-    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode)))
-      (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide)))
+    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode undo-tree-mode ivy-posframe-mode)))
+      (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide))
+    (diminish 'view-mode " 👓"))
 #+end_src
 
 ** Buffer displaying
