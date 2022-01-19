@@ -19,8 +19,8 @@ Plug 'guns/xterm-color-table.vim'
 " Simple commenting
 Plug 'tpope/vim-commentary'
 
-" Emmet but simpler
-Plug 'rstacruz/sparkup'
+" Faster HTML
+Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] }
 
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
@@ -348,9 +348,6 @@ nmap <leader>ss <Plug>SaveSession
 nmap <leader>sl <Plug>LoadSession
 nmap <leader>sd <Plug>DeleteSession
 nmap <leader>sq <Plug>CloseSession
-" Sparkup {{{3
-let g:sparkupExecuteMapping = '<C-x><C-e><CR>'
-let g:sparkupNextMapping = '<C-x><C-e><tab>'
 " Haskell {{{3
 let hs_highlight_delimiters = 1
 let hs_highlight_boolean = 1
