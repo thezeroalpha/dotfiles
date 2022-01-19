@@ -781,7 +781,8 @@ Tell org where to find my stuff
         org-life-main (concat org-life-dir "life.org")
         org-life-tickler (concat org-life-dir "tickler.org")
         org-life-someday (concat org-life-dir "someday.org")
-        org-life-archive (concat org-life-dir "archive.org"))
+        org-life-archive (concat org-life-dir "archive.org")
+        org-life-reference (concat org-life-dir "reference.org"))
 #+end_src
 
 Which files should be included in the agenda (I have to use ~list~ to evaluate the variables, because org-agenda-files expects strings):
@@ -802,9 +803,10 @@ Convenience function to make opening the main file faster:
 Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
 
 #+begin_src emacs-lisp
-  (setq org-refile-targets `((,org-life-main :maxlevel . 3)
-                             (,org-life-someday :level . 1)
-                             (,org-life-tickler :maxlevel . 2)))
+    (setq org-refile-targets `((,org-life-main :maxlevel . 3)
+                               (,org-life-someday :level . 1)
+                               (,org-life-tickler :maxlevel . 2)
+                               (,org-life-reference :maxlevel . 2)))
 #+end_src
 
 Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself:
