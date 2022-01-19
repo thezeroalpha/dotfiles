@@ -1215,6 +1215,13 @@ Run notmuch-hook script on hello refresh, to move messages to folders according 
 #+begin_src emacs-lisp
   (add-hook 'notmuch-hello-refresh-hook (lambda () (start-process "notmuch-hook" nil "notmuch-hook" "tags2folders")))
 #+end_src
+
+Sort with newest first:
+
+#+begin_src emacs-lisp
+  (setq-default notmuch-search-oldest-first nil)
+#+end_src
+
 * MPC
 Set the windows I want to show:
 
