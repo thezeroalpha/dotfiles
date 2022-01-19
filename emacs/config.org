@@ -1029,28 +1029,15 @@ I want column view to look like this:
     (unless (org-at-timestamp-p 'lax)
       (user-error "Not at timestamp"))
 
-    ;; We want to return to current location after the function runs
-    (save-mark-and-excursion
-      ;; find the end of the timestamp
-      (unless (member (char-before) '(?\] ?>))
-        (re-search-forward "[\]>]"))
-      ;; save it
-      (push-mark)
-      ;; find the start of the timestamp
-      (re-search-backward "[\[<]")
-      ;; save the whole thing to the kill ring
-      (kill-ring-save (point) (mark))
-
-      ;; use a temp buffer to avoid corrupting current buffer
-      (with-temp-buffer
-        (insert (current-kill 0))        ; the timestamp that was yanked
-        (insert "--")                    ; range separator
-        (org-time-stamp '(16)) ; two prefix arguments insert current timestamp without prompting
-        (org-evaluate-time-range)) ; figure out the range between two timestamps
-
-      ;; restore the previous kill-ring state
-      (rotate-yank-pointer 1)))
+    (when (org-at-timestamp-p 'lax)
+      (let ((timestamp (match-string 0)))
+        (with-temp-buffer
+          (insert timestamp
+                  "--"
+                  (org-time-stamp '(16)))
+          (org-evaluate-time-range)))))
 #+end_src
+
 ** Tempo expansions
 
 #+begin_src emacs-lisp
