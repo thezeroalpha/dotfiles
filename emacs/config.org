@@ -481,6 +481,12 @@ I want to hide certain modes from the modeline, they're always on:
       (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide))
     (diminish 'view-mode " 👓"))
 #+end_src
+*** Tab bar
+Only show tab bar if there's more than 1 tab:
+
+#+begin_src emacs-lisp
+  (setq tab-bar-show 1)
+#+end_src
 
 ** Buffer displaying
 
