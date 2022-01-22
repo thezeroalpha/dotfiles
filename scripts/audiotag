@@ -1,0 +1,130 @@
+#!/bin/sh
+# A wrapper for audio taggers for different formats
+printfq() { printf "'%s'\n" "$(printf '%s' "$1" | sed -e "s/'/'\\''/g")"; }
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+
+PARAMS=""
+
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -b|--band)
+      band="$2"
+      shift 2
+      ;;
+    -t|--title)
+      title="$2"
+      shift 2
+      ;;
+    -l|--album)
+      album="$2"
+      shift 2
+      ;;
+    -r|--artist)
+      artist="$2"
+      shift 2
+      ;;
+    -n|--number)
+      number="$2"
+      shift 2
+      ;;
+    -x|--extract)
+      spec="$2"
+      shift 2
+      ;;
+    -c|--clear)
+      clear=1
+      shift
+      ;;
+    -h|--help)
+      printf 'Supported usage\n'
+      printf '%s -b albumartist -t title -l album -r artist -n tracknumber FILE\n' "$0"
+      printf '%s [--extract|-x] "filename_spec" FILE\n' "$0"
+      printf '%s [--clear|-c] FILE\n' "$0"
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $(printfq "$1")"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+[ $# -eq 0 ] && die 'Need a file to operate on.'
+[ $# -gt 1 ] && die 'Only single file argument supported right now.'
+file="$1"
+[ -f "$file" ] || die "File $file not readable."
+
+# Clear params, will rebuild them per command
+set --
+
+case "$file" in
+  *.mp3)
+    if [ -n "$clear" ]; then
+      command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
+      eyeD3 --remove-all-objects "$file"
+    elif [ -n "$spec" ]; then
+      command -v taffy >/dev/null 2>&1 || die 'taffy must be installed.'
+      taffy --extract "$spec" "$file"
+    else
+      command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
+      set -- --to-v2.4
+      [ -n "$band" ] && set -- "$@" -b "$band"
+      [ -n "$title" ] && set -- "$@" -t "$title"
+      [ -n "$album" ] && set -- "$@" -A "$album"
+      [ -n "$artist" ] && set -- "$@" -a "$artist"
+      [ -n "$number" ] && set -- "$@" -n "$number"
+      eyeD3 "$@" "$file"
+    fi
+    ;;
+  *.opus)
+    command -v ffmpeg >/dev/null 2>&1 || die 'ffmpeg must be installed.'
+    if [ -n "$clear" ]; then
+      tempdir="$(mktemp -d)"
+      ffmpeg -i "$file" -map_metadata -1 -codec copy "$tempdir/output.opus" \
+        && mv "$tempdir/output.opus" "$file" \
+        && rmdir "$tempdir"
+    elif [ -n "$spec" ]; then
+      die 'Extracting from opus filename not yet supported.'
+    else
+      # See https://exiftool.org/TagNames/Vorbis.html#Comments
+      set -- -i "$file" -codec copy
+      [ -n "$band" ] && set -- "$@" -metadata ALBUMARTIST="$band"
+      [ -n "$title" ] && set -- "$@" -metadata TITLE="$title"
+      [ -n "$album" ] && set -- "$@" -metadata ALBUM="$album"
+      [ -n "$artist" ] && set -- "$@" -metadata ARTIST="$artist"
+      [ -n "$number" ] && set -- "$@" -metadata TRACKNUMBER="$number"
+
+      tempdir="$(mktemp -d)"
+      ffmpeg "$@" "$tempdir/output.opus" \
+        && mv "$tempdir/output.opus" "$file" \
+        && rmdir "$tempdir"
+    fi
+    ;;
+  *.flac)
+    command -v metaflac >/dev/null 2>&1 || die 'metaflac must be installed.'
+    if [ -n "$clear" ]; then
+      metaflac --remove-all-tags "$file"
+    elif [ -n "$spec" ]; then
+      die 'Extracting from flac filename not yet supported.'
+    else
+      [ -n "$band" ] && set -- "$@" --set-tag=ALBUMARTIST="$band"
+      [ -n "$title" ] && set -- "$@" --set-tag=TITLE="$title"
+      [ -n "$album" ] && set -- "$@" --set-tag=ALBUM="$album"
+      [ -n "$artist" ] && set -- "$@" --set-tag=ARTIST="$artist"
+      [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER "$number"
+
+      metaflac "$@" "$file"
+    fi
+    ;;
+  *)
+    die 'File format not (yet) supported.';;
+esac
