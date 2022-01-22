@@ -11,6 +11,11 @@
   (scroll-bar-mode -1)
   (tooltip-mode -1))
 
+;; Set up custom opener command
+(defun my-open (what)
+  "Use ~/.scripts/open to open a file"
+  (shell-command (concat "~/.scripts/open " what)))
+
 ;; For some reason, my macOS has a problem verifying certs.
 (when (string-equal system-type "darwin")
   (setq package-check-signature nil))
