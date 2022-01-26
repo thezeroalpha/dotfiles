@@ -386,7 +386,12 @@ Sometimes it's better to look at undo history as a tree:
     :config
     (global-undo-tree-mode))
 #+end_src
-
+** ledger
+#+begin_src emacs-lisp
+  (use-package ledger-mode
+    :config
+    (setq ledger-clear-whole-transactions t))
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
