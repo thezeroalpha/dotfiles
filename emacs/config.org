@@ -399,11 +399,19 @@ Sometimes it's better to look at undo history as a tree:
 #+end_src
 
 ** Messages
-Hide some messages I don't need.
+Hide some messages I don't need, and add a list of recent files.
 
 #+begin_src emacs-lisp
-  (setq inhibit-startup-message t)
-  (setq initial-scratch-message "")
+  (recentf-mode)
+  (setq inhibit-startup-message t
+        initial-major-mode #'org-mode
+        initial-scratch-message
+        (concat "Welcome to Emacs\n\n"
+                "Recent:\n"
+                (mapconcat
+                 (lambda (x) (format "- [[%s]]" x)) recentf-list "\n")
+                "\n\nELISP Evaluation area:\n#+begin_src emacs-lisp\n\n#+end_src"))
+
 #+end_src
 
 ** Appearance
