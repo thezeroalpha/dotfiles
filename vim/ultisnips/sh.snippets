@@ -31,12 +31,13 @@ while [ \$((\$#)) -ne 0 ]; do
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="\$PARAMS \$(printfq "\$1")"
+      # if params is set, add space.
+      PARAMS="\$PARAMS\${PARAMS:+ }\$1"
       shift
       ;;
   esac
 done
-eval set -- "\$PARAMS"
+set -- "\$PARAMS"
 endsnippet
 
 snippet !bash "Bash shebang" b

@@ -51,12 +51,13 @@ while [ $(($#)) -ne 0 ]; do
       exit 1
       ;;
     *) # preserve positional arguments
-      PARAMS="$PARAMS $(printfq "$1")"
+      # if params is set, add space.
+      PARAMS="$PARAMS${PARAMS:+ }$1"
       shift
       ;;
   esac
 done
-eval set -- "$PARAMS"
+set -- "$PARAMS"
 
 [ $# -eq 0 ] && die 'Need a file to operate on.'
 [ $# -gt 1 ] && die 'Only single file argument supported right now.'
