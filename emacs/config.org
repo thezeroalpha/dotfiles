@@ -163,6 +163,10 @@ Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --wit
       (custom-set-faces '(ivy-posframe-border ((t (:inherit mode-line-inactive)))))
       (ivy-posframe-mode 1)))
 #+end_src
+** wgrep
+#+begin_src emacs-lisp
+  (use-package wgrep)
+#+end_src
 ** avy
 This lets me jump to any position in Emacs rather quickly, sometimes it's useful.
 ~avy-goto-char-timer~ lets me type a part of the text before avy kicks in.
