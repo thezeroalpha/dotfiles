@@ -12,7 +12,7 @@
   (tooltip-mode -1))
 
 ;; Set up custom opener command
-(defun my-open (what)
+(defun za/open (what)
   "Use ~/.scripts/open to open a file"
   (shell-command (concat "~/.scripts/open " what)))
 
@@ -33,6 +33,9 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
+(setq za/manually-installed-package-dir (concat user-emacs-directory "lisp/"))
+(make-directory za/manually-installed-package-dir t)
+(add-to-list 'load-path za/manually-installed-package-dir)
 
 ;; Install and load use-package
 (unless (package-installed-p 'use-package)
