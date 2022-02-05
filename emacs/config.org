@@ -816,10 +816,24 @@ Which files should be included in the agenda (I have to use ~list~ to evaluate t
                                org-life-tickler))
 #+end_src
 
-Convenience function to make opening the main file faster:
+Convenience functions to make opening the main file faster:
 
 #+begin_src emacs-lisp
-  (defun gtd () (interactive) (find-file org-life-main))
+  (defun gtd () "GTD: main file" (interactive) (find-file org-life-main))
+  (defun gtd-inbox () "GTD: inbox" (interactive) (find-file org-life-inbox))
+  (defun gtd-archive () "GTD: archive" (interactive) (find-file org-life-archive))
+  (defun gtd-someday () "GTD: someday" (interactive) (find-file org-life-someday))
+  (defun gtd-reference () "GTD: reference" (interactive) (find-file org-life-reference))
+#+end_src
+
+Bind keys to those functions:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c g i") 'gtd-inbox)
+  (global-set-key (kbd "C-c g g") 'gtd)
+  (global-set-key (kbd "C-c g a") 'gtd-archive)
+  (global-set-key (kbd "C-c g s") 'gtd-someday)
+  (global-set-key (kbd "C-c g r") 'gtd-reference)
 #+end_src
 
 *** Refiling & archiving
