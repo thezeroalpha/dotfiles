@@ -163,6 +163,13 @@ Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --wit
       (custom-set-faces '(ivy-posframe-border ((t (:inherit mode-line-inactive)))))
       (ivy-posframe-mode 1)))
 #+end_src
+** company
+Good completion.
+
+#+begin_src emacs-lisp
+  (use-package company
+    :hook (ledger-mode . company-mode))
+#+end_src
 ** wgrep
 #+begin_src emacs-lisp
   (use-package wgrep)
@@ -389,8 +396,10 @@ Sometimes it's better to look at undo history as a tree:
 ** ledger
 #+begin_src emacs-lisp
   (use-package ledger-mode
+    :mode ("\\.ledger\\'")
     :config
-    (setq ledger-clear-whole-transactions t))
+    (setq ledger-clear-whole-transactions t
+          ledger-reconcile-default-commodity "EUR"))
 #+end_src
 * Interface
 ** Start debugger on error
@@ -869,7 +878,6 @@ Allow me to tack new heading names onto the end of my outline path, and if I am 
 #+begin_src emacs-lisp
   (setq org-refile-allow-creating-parent-nodes 'confirm)
 #+end_src
-
 
 *** Quick capture
 Quick capture lets me send something to my inbox very quickly, without thinking about where it should go.
