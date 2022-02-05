@@ -32,7 +32,7 @@ import() {
   read -r yn
   case "$yn" in
     Y*|y*);;
-    *) die 'Run it now then. mp3gain -s i. add -l for albums.';;
+    *) die 'Run it now then. mp3gain -s i. add -a for albums.';;
   esac
 
   # Sync current dir into music dir, (u)pdated only, (r)ecursively, (p)reserve
@@ -119,9 +119,9 @@ organize_files() {
   mkdir -p _failed || die "Directory ./_failed already exists"
   find "$1" -name '*.mp3' 2>/dev/null | \
     while read -r i; do
-      artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?"\\>' '_' | sed 's/\.\.*$//')"
+      artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?"\\>' '_' | sed 's/\.\.*$//')"
       [ -n "$artist" ] || { mv "$i" _failed/ && continue; }
-      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '!@#$%^&*:?>\\"' '_' | sed 's/\.\.*$//')"
+      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?>\\"' '_' | sed 's/\.\.*$//')"
       [ -n "$album" ] || { mv "$i" _failed/ && continue; }
       mkdir -p "$artist/$album"
       printf "%s -> %s" "$i" "$artist/$album"
