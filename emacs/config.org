@@ -1044,6 +1044,13 @@ Time tracking should be done in its own drawer:
   (setq org-clock-into-drawer "CLOCK")
 #+end_src
 
+And to customize how clock tables work:
+
+#+begin_src emacs-lisp
+  (setq org-clocktable-defaults '(:lang "en" :scope agenda-with-archives  :wstart 1 :mstart 1 :compact t :maxlevel nil))
+  (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel nil))
+#+end_src
+
 I want to set effort in hours:minutes:
 
 #+begin_src emacs-lisp
