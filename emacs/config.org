@@ -121,6 +121,7 @@ Switched to this from Helm, it's more lightweight.
      ("C-c f" . counsel-fzf)
      ("C-c b" . counsel-bookmark)
      ("C-c d" . counsel-descbinds)
+     ("C-c p" . counsel-recentf)
      ("C-c o" . counsel-outline))
 
     :config
@@ -891,11 +892,11 @@ Templates for quick capture:
                                  "* TODO %i%?")
 
                                 ("s" "Save for read/watch/listen" entry
-                                 (file ,org-life-inbox)
+                                 (file+headline ,org-life-tickler "Read/watch/listen")
                                  "* TODO %?[[%^{link}][%^{description}]] %^G")))
 #+end_src
 
-*** Todo & agenda views
+*** Todo & custom agenda views
 Todo keywords based on the GTD system (pipe separates incomplete from complete).
 Apart from the logging-on-done configured [[*Logging][below]], I also want to log a note & timestamp when I start waiting on something.
 In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
@@ -975,41 +976,47 @@ Agenda views are made up of blocks, appearing in the order that you declare them
 The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
 
 #+begin_src emacs-lisp
-    (setq org-agenda-custom-commands
-          '(("n" "Next actions"
-             ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
-            ("W" "Waiting"
-             ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
+  (setq org-agenda-custom-commands
+        '(("n" "Next actions"
+           ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+          ("W" "Waiting"
+           ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
+          ("S" . "Saved for later...")
+          ("Sw" "Saved to watch"
+           ((tags-todo "WATCH" ((org-agenda-overriding-header "To watch:")))))
+          ("Sr" "Saved to read"
+           ((tags-todo "READ" ((org-agenda-overriding-header "To read:")))))
+          ("Sl" "Saved to listen"
+           ((tags-todo "LISTEN" ((org-agenda-overriding-header "To listen:")))))
+          ("w" "Week Agenda + Next Actions"
+           ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
 
-            ("w" "Week Agenda + Next Actions"
-             ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
-              (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+          ("o" "Month agenda"
+           ((agenda "" ((org-agenda-overriding-header "Month agenda:")
+                        (org-agenda-span 'month)))))
 
-            ("o" "Month agenda"
-             ((agenda "" ((org-agenda-overriding-header "Month agenda:")
-                          (org-agenda-span 'month)))))
+          ("d" "Day Agenda + Next Actions + Habits"
+           ((agenda "" ((org-agenda-overriding-header "Day:")
+                        (org-agenda-span 'day)
+                        (org-habit-show-habits nil)))
+            (agenda "" ((org-agenda-overriding-header "Habits:")
+                        (org-agenda-span 'day)
+                        (org-agenda-use-time-grid nil)
+                        (org-agenda-skip-function 'za/skip-unless-habit)
+                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
+                        (org-habit-show-all-today t)))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
 
-            ("d" "Day Agenda + Next Actions + Habits"
-             ((agenda "" ((org-agenda-overriding-header "Day:")
-                          (org-agenda-span 'day)
-                          (org-habit-show-habits nil)))
-              (agenda "" ((org-agenda-overriding-header "Habits:")
-                          (org-agenda-span 'day)
-                          (org-agenda-use-time-grid nil)
-                          (org-agenda-skip-function 'za/skip-unless-habit)
-                          (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
-                          (org-habit-show-all-today t)))
-              (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+          ("p" "Projects"
+           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")
+                             (org-agenda-prefix-format '((tags . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
+                             (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
 
-            ("p" "Projects"
-             ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")
-                               (org-agenda-prefix-format '((tags . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
-                               (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
-
-            ("f" "Finished tasks that aren't in a project"
-             ((tags "TODO=\"DONE\"" ((org-agenda-overriding-header "Finished tasks:")
-                                     (org-agenda-skip-function 'za/skip-if-in-project)))))))
-
+          ("f" "Finished tasks that aren't in a project"
+           ((tags "TODO=\"DONE\"" ((org-agenda-overriding-header "Finished tasks:")
+                                   (org-agenda-skip-function 'za/skip-if-in-project)))))))
 #+end_src
 
 *** Logging
@@ -1112,6 +1119,7 @@ I want column view to look like this:
 #+begin_src emacs-lisp
   (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
+  (add-to-list 'org-structure-template-alist '("ss" . "src sh"))
 #+end_src
 
 ** Yank URL
