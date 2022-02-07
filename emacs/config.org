@@ -203,6 +203,7 @@ In org mode, I want to use bullets instead of stars, so I also install ~org-bull
     :bind
     (("C-c a" . org-agenda)
      ("C-c n" . org-capture)
+     ("C-M-<return>" . org-insert-todo-heading)
      ("C-c l" . org-store-link)))
 #+end_src
 
