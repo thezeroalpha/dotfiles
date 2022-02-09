@@ -1020,6 +1020,12 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                                    (org-agenda-skip-function 'za/skip-if-in-project)))))))
 #+end_src
 
+Tags were getting cut off so I have to set column manually:
+
+#+begin_src emacs-lisp
+  (setq org-agenda-tags-column (- 10 (window-total-width)))
+#+end_src
+
 *** Logging
 I want to log into the LOGBOOK drawer (useful when I want to take quick notes):
 
