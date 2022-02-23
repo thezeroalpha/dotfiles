@@ -86,7 +86,7 @@ verify_recently_added() {
   while read -r f; do
     printf '%s' "$f" | grep '^#' >/dev/null 2>&1 && { ctr=$((ctr+1)); continue; }
     printf "\r%d/%d" $ctr "$lns"
-    stat "$MUSIC_DIR/$f" >/dev/null 2>&1 || echo "$f";
+    stat "$MUSIC_DIR/$f" >/dev/null 2>&1 || printf "\t%s\n" "$f";
     ctr=$((ctr+1));
   done < "$RECENTLY_ADDED_PLAYLIST"
 }
@@ -124,7 +124,7 @@ organize_files() {
       album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?>\\"' '_' | sed 's/\.\.*$//')"
       [ -n "$album" ] || { mv "$i" _failed/ && continue; }
       mkdir -p "$artist/$album"
-      printf "%s -> %s" "$i" "$artist/$album"
+      printf "%s -> %s\n" "$i" "$artist/$album"
       mv "$i" "$artist/$album"
     done
     rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
