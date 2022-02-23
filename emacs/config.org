@@ -401,7 +401,7 @@ Sometimes it's better to look at undo history as a tree:
     :mode ("\\.ledger\\'")
     :config
     (setq ledger-clear-whole-transactions t
-          ledger-reconcile-default-commodity "EUR"))
+          ledger-reconcile-default-commodity "eur"))
 #+end_src
 * Interface
 ** Start debugger on error
@@ -415,13 +415,13 @@ Hide some messages I don't need, and add a list of recent files.
 #+begin_src emacs-lisp
   (recentf-mode)
   (setq inhibit-startup-message t
-        initial-major-mode #'org-mode
-        initial-scratch-message
-        (concat "Welcome to Emacs\n\n"
-                "Recent:\n"
-                (mapconcat
-                 (lambda (x) (format "- [[%s]]" x)) recentf-list "\n")
-                "\n\nELISP Evaluation area:\n#+begin_src emacs-lisp\n\n#+end_src"))
+	initial-major-mode #'org-mode
+	initial-scratch-message
+	(concat "Welcome to Emacs\n\n"
+		"Recent:\n"
+		(mapconcat
+		 (lambda (x) (format "- [[%s]]" x)) recentf-list "\n")
+		"\n\nELISP Evaluation area:\n#+begin_src emacs-lisp\n\n#+end_src"))
 
 #+end_src
 
@@ -484,12 +484,6 @@ I want to show the time and date in the modeline:
         display-time-default-load-average nil ; don't show load average
         display-time-format "%I:%M%p %e %b (%a)")   ; "HR:MIN(AM/PM) day-of-month Month (Day)"
   (display-time-mode 1)                  ; enable time mode
-#+end_src
-
-I want to show the current function:
-
-#+begin_src emacs-lisp
-  (which-function-mode 1)
 #+end_src
 
 And to set the modeline format:
@@ -669,6 +663,55 @@ I want to wrap text at window boundary for some modes:
   (add-hook 'markdown-mode-hook (lambda () (visual-line-mode)))
 #+end_src
 
+Also a function to toggle wrapping:
+
+#+begin_src emacs-lisp
+  (make-variable-buffer-local 'za/wrapping) ; wrapping changes per buffer
+
+  (defun za/toggle-wrap (&optional enable)
+    "Toggle line wrapping settings"
+    (interactive "P")
+
+    ;; If an argument is provided, prefix or otherwise
+    (if enable
+        (let ((enable (cond ((numberp enable)
+                             enable)
+                            ((or (listp enable) (string= "-" enable))
+                             (prefix-numeric-value enable)))))
+          ;; If zero or negative, we want to disable wrapping, so pretend it's currently enabled.
+          ;; And vice versa.
+          (cond ((<= enable 0) (setq za/wrapping t))
+                ((> enable 0) (setq za/wrapping nil)))))
+
+
+    (let ((disable-wrapping (lambda ()
+                              (visual-line-mode -1)
+                              (toggle-truncate-lines t)))
+          (enable-wrapping (lambda ()
+                             (toggle-truncate-lines -1)
+                             (visual-line-mode))))
+
+      ;; If za/wrapping is not locally set, infer its values from the enabled modes
+      (unless (boundp 'za/wrapping)
+        (setq za/wrapping (and visual-line-mode
+                               (not truncate-lines))))
+
+      ;; Toggle wrapping based on current value
+      (cond (za/wrapping
+             (funcall disable-wrapping)
+             (setq za/wrapping nil)
+             (message "Wrapping disabled."))
+            (t
+             (funcall enable-wrapping)
+             (setq za/wrapping t)
+             (message "Wrapping enabled.")))))
+#+end_src
+
+And a keybinding to toggle wrapping:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c q w") #'za/toggle-wrap)
+#+end_src
 ** Pulse line
 When you switch windows, Emacs can flash the cursor briefly to guide your eyes; I like that.
 Set some options for pulsing:
@@ -805,6 +848,18 @@ Let a period followed by a single space be treated as end of sentence:
 #+end_src
 
 * Org mode
+** Get number of headlines in a file
+#+begin_src emacs-lisp
+  (defun za/org-count-headlines-in-file (level filename)
+    "Count number of level LEVEL headlines in FILENAME. If LEVEL is 0, count all."
+    (let ((headline-str (cond ((zerop level) "^\*+")
+			      (t (format "^%s " (apply 'concat (make-list level "\\*")))))))
+      (save-mark-and-excursion
+	(with-temp-buffer
+	  (insert-file-contents filename)
+	  (count-matches headline-str (point-min) (point-max))))))
+#+end_src
+
 ** Agenda & GTD
 *** Set file locations
 Tell org where to find my stuff
