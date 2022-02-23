@@ -1001,13 +1001,13 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((agenda "" ((org-agenda-overriding-header "Day:")
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
             (agenda "" ((org-agenda-overriding-header "Habits:")
                         (org-agenda-span 'day)
                         (org-agenda-use-time-grid nil)
                         (org-agenda-skip-function 'za/skip-unless-habit)
                         (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
                         (org-habit-show-all-today t)))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
             (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
 
           ("p" "Projects"
