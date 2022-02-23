@@ -453,3 +453,5 @@ png
 IRQ
 #ibyte
 Oversubscription
+bisimilar
+bisimulation
