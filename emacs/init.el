@@ -54,7 +54,7 @@
        (.el (concat user-emacs-directory "config.el")) ; config.el is generated, so won't be in VC
        (.org-modification-time (file-attribute-modification-time (file-attributes .org)))
        (.el-modification-time (file-attribute-modification-time (file-attributes .el)))
-       (config-unchanged-p (time-less-p .org-modification-time .el-modification-time)))
+       (config-unchanged-p (and (file-exists-p .el) (time-less-p .org-modification-time .el-modification-time))))
 
   (require 'org-macs)
   (unless config-unchanged-p
