@@ -1016,7 +1016,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                              (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
 
           ("f" "Finished tasks that aren't in a project"
-           ((tags "TODO=\"DONE\"" ((org-agenda-overriding-header "Finished tasks:")
+           ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
                                    (org-agenda-skip-function 'za/skip-if-in-project)))))))
 #+end_src
 
