@@ -608,7 +608,7 @@ set mouse=a
 " fix issue with not being able to drag resize split windows in tmux
 if &term =~# '^screen' || $TMUX !=# ""
   set ttymouse=xterm2
-elseif &term =~# '^st-'
+elseif &term =~# '^st-' || &term =~# '^alacritty'
   set ttymouse=sgr
 endif
 
