@@ -654,28 +654,22 @@ Indentation for various modes:
 #+end_src
 
 ** Wrapping
-I want to wrap text at window boundary for some modes:
 
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook (lambda ()
-                             (visual-line-mode)
-                             (org-indent-mode)))
-  (add-hook 'markdown-mode-hook (lambda () (visual-line-mode)))
-#+end_src
-
-Also a function to toggle wrapping:
+A function to toggle wrapping:
 
 #+begin_src emacs-lisp
   (make-variable-buffer-local 'za/wrapping) ; wrapping changes per buffer
 
   (defun za/toggle-wrap (&optional enable)
-    "Toggle line wrapping settings"
+    "Toggle line wrapping settings. With ENABLE a positive number, enable wrapping. If ENABLE is negative or zero, disable wrapping."
     (interactive "P")
 
     ;; If an argument is provided, prefix or otherwise
     (if enable
         (let ((enable (cond ((numberp enable)
                              enable)
+                            ((booleanp enable)
+                             (if enable 1 0))
                             ((or (listp enable) (string= "-" enable))
                              (prefix-numeric-value enable)))))
           ;; If zero or negative, we want to disable wrapping, so pretend it's currently enabled.
@@ -712,6 +706,16 @@ And a keybinding to toggle wrapping:
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c q w") #'za/toggle-wrap)
 #+end_src
+
+I want to wrap text at window boundary for some modes:
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook (lambda ()
+                             (za/toggle-wrap t)
+                             (org-indent-mode)))
+  (add-hook 'markdown-mode-hook (lambda () (za/toggle-wrap t)))
+#+end_src
+
 ** Pulse line
 When you switch windows, Emacs can flash the cursor briefly to guide your eyes; I like that.
 Set some options for pulsing:
