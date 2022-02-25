@@ -38,6 +38,8 @@ map i recolor
 map P print
 map p snap_to_page
 map w adjust_window width
+map [normal] <BackSpace> scroll full-up
+map [normal] <S-Space> scroll full-up
 map z adjust_window best-fit
 map b toggle_statusbar
 map <C-g> abort
