@@ -15,7 +15,7 @@ inoremap <buffer> : :<c-g>u
 inoremap <buffer> ; ;<c-g>u
 inoremap <buffer> - -<c-g>u
 
-nnoremap <buffer> <leader><CR> :silent !open "%<.pdf"<CR>:redraw!<CR>
+nnoremap <buffer> <leader><CR> :silent !open %:p:r:S.pdf<CR>:redraw!<CR>
 nnoremap <buffer> <leader>` :<C-u>EvalBlock<CR>
 
 nmap <buffer> <leader>ce <Plug>LitMdExecPrevBlock
