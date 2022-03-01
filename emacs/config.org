@@ -1293,6 +1293,26 @@ Also, to raise a sexp (e.g. ~(one (two))~ → ~(two)~):
   (global-set-key (kbd "C-S-u") #'raise-sexp)
 #+end_src
 
+** Dedicated windows
+Sometimes I want to avoid Emacs overriding a window's contents.
+So I create a keybinding to toggle dedicated on a window:
+
+#+begin_src emacs-lisp
+  (defun za/toggle-window-dedicated-p ()
+    "Toggle set-window-dedicated-p on current window"
+    (interactive)
+    (cond ((window-dedicated-p (selected-window))
+           (set-window-dedicated-p (selected-window) nil)
+           (message "Window no longer dedicated"))
+          (t
+           (set-window-dedicated-p (selected-window) t)
+           (message "Window marked as dedicated"))))
+
+  (global-set-key (kbd "C-x 9") #'za/toggle-window-dedicated-p)
+
+#+end_src
+
+
 * Notmuch
 Define some saved searches (i.e. mailboxes):
 
