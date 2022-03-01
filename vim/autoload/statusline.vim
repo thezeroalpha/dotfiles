@@ -111,8 +111,8 @@ function! statusline#StatuslineWordCount()
 endfunction
 
 function! statusline#StatuslineVimtexCompiler()
-    if exists('b:vimtex.compiler') && b:vimtex.compiler.is_running()
-        return '⚙︎ {'.(fnamemodify(b:vimtex.compiler.target_path, ":p:.")).'}'
+    if exists('b:vimtex') && b:vimtex->has_key('compiler') && b:vimtex['compiler']['is_running']()
+        return '⚙︎ {'.(fnamemodify(b:vimtex['tex'], ":p:.")).'}'
     endif
     return ''
 endfunction
