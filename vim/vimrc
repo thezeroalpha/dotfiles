@@ -20,7 +20,7 @@ Plug 'guns/xterm-color-table.vim'
 Plug 'tpope/vim-commentary'
 
 " Faster HTML
-Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'markdown'] }
 
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
@@ -482,6 +482,13 @@ endfunction
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_enable = 0 " off by default
 let g:indentLine_fileType = ['python'] " enable for python
+" Emmet {{{3
+let g:user_emmet_settings = {
+      \ 'markdown': {
+        \ 'indentation': '',
+      \   'extends': 'html'
+      \ }
+    \ }
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
