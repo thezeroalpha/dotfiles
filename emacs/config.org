@@ -731,6 +731,7 @@ I want to wrap text at window boundary for some modes:
                              (za/toggle-wrap t)
                              (org-indent-mode)))
   (add-hook 'markdown-mode-hook (lambda () (za/toggle-wrap t)))
+  (add-hook 'help-mode-hook (lambda () (za/toggle-wrap t)))
 #+end_src
 
 ** Pulse line
