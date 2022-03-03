@@ -187,6 +187,20 @@ This lets me jump to any position in Emacs rather quickly, sometimes it's useful
 
 ** org
 In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
+Furthermore, tags were getting cut off, so I manually set the best column to display them.
+
+#+begin_src emacs-lisp
+  (defun za/settings-org-mode ()
+    "My settings for org mode"
+    (org-bullets-mode 1)
+    (setq org-tags-column (- 10 (window-total-width)))
+    ;; Realign tags
+    (org-set-tags-command '(4)))
+
+  (defun za/settings-org-agenda-mode ()
+    "My settings for org agenda mode"
+    (setq org-agenda-tags-column (- 10 (window-total-width))))
+#+end_src
 
 #+begin_src emacs-lisp
   (use-package org
@@ -197,9 +211,12 @@ In org mode, I want to use bullets instead of stars, so I also install ~org-bull
     (use-package org-bullets)
     (require 'org-tempo)
     (require 'org-habit)
+    (require 'org-agenda)
 
-    :hook
-    (org-mode . (lambda () (org-bullets-mode 1)))
+    :init
+    (add-hook 'org-mode-hook #'za/settings-org-mode)
+    (add-hook 'org-agenda-mode-hook #'za/settings-org-agenda-mode)
+
     :bind
     (("C-c a" . org-agenda)
      ("C-c n" . org-capture)
@@ -1077,12 +1094,6 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("f" "Finished tasks that aren't in a project"
            ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
                                    (org-agenda-skip-function 'za/skip-if-in-project)))))))
-#+end_src
-
-Tags were getting cut off so I have to set column manually:
-
-#+begin_src emacs-lisp
-  (setq org-agenda-tags-column (- 10 (window-total-width)))
 #+end_src
 
 *** Logging
