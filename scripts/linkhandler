@@ -6,9 +6,9 @@ case "$1" in
     setsid -f mpvq "$1" 1>/dev/null 2>&1
     ;;
   *png|*jpg|*jpe|*jpeg|*gif)
-    notify 'Starting sxiv' "Opening $1..." 'linkhandler'
+    notify 'Starting image viewer' "Opening $1..." 'linkhandler'
     curl -sL "$1" > "/tmp/$(printf "%s" "$1" | sed "s/.*\///")" \
-      && sxiv -a "/tmp/$(printf "%s" "$1" | sed "s/.*\///")"  1>/dev/null 2>&1 &
+      && opener "/tmp/$(printf "%s" "$1" | sed "s/.*\///")"  1>/dev/null 2>&1 &
     ;;
   *gifv)
     setsid -f mpv -loop "$1" 1>/dev/null 2>&1
