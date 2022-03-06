@@ -1077,6 +1077,16 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((tags-todo "READ" ((org-agenda-overriding-header "To read:")))))
           ("Sl" "Saved to listen"
            ((tags-todo "LISTEN" ((org-agenda-overriding-header "To listen:")))))
+
+          ("a" . "Agenda with schedule only...")
+          ("aw" "This week"
+           ((agenda "" ((org-agenda-span 'week)))))
+          ("ad" "Today"
+           ((agenda "" ((org-agenda-span 'day)))))
+          ("at" "Tomorrow"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-day "+1d")))))
+
           ("w" "Week Agenda + Next Actions"
            ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
             (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
