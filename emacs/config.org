@@ -232,6 +232,16 @@ To be able to link to emails via notmuch, I use ol-notmuch:
   (use-package ol-notmuch :quelpa)
 #+end_src
 
+** calfw
+Basically provides a way to show the org agenda as a standard GUI calendar app would.
+
+#+begin_src emacs-lisp
+  (use-package calfw
+    :config
+    (use-package calfw-org)
+    (setq cfw:org-overwrite-default-keybinding t))
+#+end_src
+
 ** lean-mode
 Specifically for the Lean prover.
 I also install company-lean and helm-lean, which are suggested on the [[https://github.com/leanprover/lean-mode][Github page]].
@@ -1049,6 +1059,18 @@ Also, define a function to skip tasks (trees) that are not habits (i.e. don't ha
         subtree-end)))
 #+end_src
 
+And one to skip tasks that /are/ habits:
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-habit ()
+    "Skip trees that are not habits"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+          subtree-end
+        nil)))
+#+end_src
+
+
 And another function, to skip tasks that are blocked:
 
 #+begin_src emacs-lisp
@@ -1115,7 +1137,13 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
 
           ("f" "Finished tasks that aren't in a project"
            ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
-                                   (org-agenda-skip-function 'za/skip-if-in-project)))))))
+                                                      (org-agenda-skip-function 'za/skip-if-in-project)))))
+
+          ;; Useful thread for opening calfw: https://github.com/kiwanami/emacs-calfw/issues/18
+          ("c" "Calendar view" (lambda (&rest _)
+                                 (interactive)
+                                 (let ((org-agenda-skip-function 'za/skip-if-habit))
+                                 (cfw:open-org-calendar))))))
 #+end_src
 
 *** Logging
