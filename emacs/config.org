@@ -1228,7 +1228,7 @@ I want column view to look like this:
 | ...          | ...       | ...  | ...                 | ...                            |
 
 #+begin_src emacs-lisp
-  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %6CLOCKSUM(Clock) %8Effort(Effort){:}")
+  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %8Effort(Effort){:}")
 #+end_src
 
 *** Calculate time since timestamp
