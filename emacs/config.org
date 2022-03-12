@@ -1231,6 +1231,18 @@ I want column view to look like this:
   (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %8Effort(Effort){:}")
 #+end_src
 
+Fix column alignment in agenda. Unfortunately that means I have to
+decrease the size of the date-today font. But I don't have any other
+solution atm.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'org-column nil
+                      :height (face-attribute 'default :height)
+                      :family (face-attribute 'default :family))
+  (set-face-attribute 'org-agenda-date-today nil
+                      :height (face-attribute 'default :height))
+#+end_src
+
 *** Calculate time since timestamp
 #+begin_src emacs-lisp
   (defun za/org-time-since ()
