@@ -239,7 +239,8 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
   (use-package calfw
     :config
     (use-package calfw-org)
-    (setq cfw:org-overwrite-default-keybinding t))
+    (setq cfw:org-overwrite-default-keybinding t)
+    (setq calendar-week-start-day 1))
 #+end_src
 
 ** lean-mode
@@ -1143,7 +1144,13 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("c" "Calendar view" (lambda (&rest _)
                                  (interactive)
                                  (let ((org-agenda-skip-function 'za/skip-if-habit))
-                                 (cfw:open-org-calendar))))))
+                                   (cfw:open-org-calendar))))))
+#+end_src
+
+In calfw, I don't want to show habits:
+
+#+begin_src emacs-lisp
+  (add-hook 'cfw:calendar-mode-hook (setq-local org-agenda-skip-function 'za/skip-if-habit))
 #+end_src
 
 *** Logging
