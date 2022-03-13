@@ -433,6 +433,30 @@ Sometimes it's better to look at undo history as a tree:
     (setq ledger-clear-whole-transactions t
           ledger-reconcile-default-commodity "eur"))
 #+end_src
+
+Custom reports:
+
+#+begin_src emacs-lisp
+  (custom-set-variables
+   '(ledger-reports
+     '(("budget-last-month" "ledger -f %(ledger-file) --period \"last month\" budget ^expenses -X eur")
+       ("budget-this-month" "ledger -f %(ledger-file) --period \"this month\" budget ^expenses -X eur")
+       ("expenses-this-month-vs-budget" "ledger -f %(ledger-file) --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur --budget")
+       ("expenses-last-month-vs-budget" "ledger -f %(ledger-file) --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur --budget")
+       ("expenses-vs-income-last-month" "ledger -f %(ledger-file) --period \"last month\" --period-sort \"(amount)\" bal ^expenses ^income -X eur")
+       ("expenses-last-month" "ledger -f %(ledger-file) --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur")
+       ("expenses-this-month" "ledger -f %(ledger-file) --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur")
+       ("expenses-vs-income-this-month" "ledger -f %(ledger-file) --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
+       ("expenses-this-month" "ledger -f %(ledger-file) --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
+       ("bal-assets-czk" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal Assets Liabilities -X czk")
+       ("bal-assets" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal Assets Liabilities")
+       ("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal -B")
+       ("bal-assets-eur" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal Assets Liabilities -X eur")
+       ("reg" "%(binary) -f %(ledger-file) reg")
+       ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+       ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+   )
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
