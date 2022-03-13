@@ -49,6 +49,9 @@
 ;; Follow symlinks without prompting (the org file is a symlink)
 (setq vc-follow-symlinks t)
 
+;; Some config should not be public, so it's in a separate file:
+(load-file (file-truename (concat user-emacs-directory "secret.el")))
+
 ;; Load all other customization from the org file, only compile if necessary
 (let* ((.org (file-truename (concat user-emacs-directory "config.org"))) ; the .org file will be in VC
        (.el (concat user-emacs-directory "config.el")) ; config.el is generated, so won't be in VC

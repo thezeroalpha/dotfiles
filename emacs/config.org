@@ -906,34 +906,22 @@ Let a period followed by a single space be treated as end of sentence:
 
 ** Agenda & GTD
 *** Set file locations
-Tell org where to find my stuff
-
-#+begin_src emacs-lisp
-  (setq org-life-dir "~/Documents/life/"
-        org-life-inbox (concat org-life-dir "inbox.org")
-        org-life-main (concat org-life-dir "life.org")
-        org-life-tickler (concat org-life-dir "tickler.org")
-        org-life-someday (concat org-life-dir "someday.org")
-        org-life-archive (concat org-life-dir "archive.org")
-        org-life-reference (concat org-life-dir "reference.org"))
-#+end_src
-
 Which files should be included in the agenda (I have to use ~list~ to evaluate the variables, because org-agenda-files expects strings):
 
 #+begin_src emacs-lisp
-  (setq org-agenda-files (list org-life-main
-                               org-life-inbox
-                               org-life-tickler))
+  (setq org-agenda-files (list za/org-life-main
+                               za/org-life-inbox
+                               za/org-life-tickler))
 #+end_src
 
 Convenience functions to make opening the main file faster:
 
 #+begin_src emacs-lisp
-  (defun gtd () "GTD: main file" (interactive) (find-file org-life-main))
-  (defun gtd-inbox () "GTD: inbox" (interactive) (find-file org-life-inbox))
-  (defun gtd-archive () "GTD: archive" (interactive) (find-file org-life-archive))
-  (defun gtd-someday () "GTD: someday" (interactive) (find-file org-life-someday))
-  (defun gtd-reference () "GTD: reference" (interactive) (find-file org-life-reference))
+  (defun gtd () "GTD: main file" (interactive) (find-file za/org-life-main))
+  (defun gtd-inbox () "GTD: inbox" (interactive) (find-file za/org-life-inbox))
+  (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
+  (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
+  (defun gtd-reference () "GTD: reference" (interactive) (find-file za/org-life-reference))
 #+end_src
 
 Bind keys to those functions:
@@ -945,21 +933,20 @@ Bind keys to those functions:
   (global-set-key (kbd "C-c g s") 'gtd-someday)
   (global-set-key (kbd "C-c g r") 'gtd-reference)
 #+end_src
-
 *** Refiling & archiving
 Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
 
 #+begin_src emacs-lisp
-    (setq org-refile-targets `((,org-life-main :maxlevel . 3)
-                               (,org-life-someday :level . 1)
-                               (,org-life-tickler :maxlevel . 2)
-                               (,org-life-reference :maxlevel . 2)))
+    (setq org-refile-targets `((,za/org-life-main :maxlevel . 3)
+                               (,za/org-life-someday :level . 1)
+                               (,za/org-life-tickler :maxlevel . 2)
+                               (,za/org-life-reference :maxlevel . 2)))
 #+end_src
 
 I want to archive to a specific file, in a date tree:
 
 #+begin_src emacs-lisp
-  (setq org-archive-location (concat org-life-archive "::datetree/"))
+  (setq org-archive-location (concat za/org-life-archive "::datetree/"))
 #+end_src
 
 Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself:
@@ -988,11 +975,11 @@ Templates for quick capture:
 
 #+begin_src emacs-lisp
   (setq org-capture-templates `(("t" "Todo [inbox]" entry
-                                 (file ,org-life-inbox)
+                                 (file ,za/org-life-inbox)
                                  "* TODO %i%?")
 
                                 ("s" "Save for read/watch/listen" entry
-                                 (file+headline ,org-life-tickler "Read/watch/listen")
+                                 (file+headline ,za/org-life-tickler "Read/watch/listen")
                                  "* TODO %?[[%^{link}][%^{description}]] %^G")))
 #+end_src
 
@@ -1418,10 +1405,10 @@ Define some saved searches (i.e. mailboxes):
 
 #+begin_src emacs-lisp
   (setq notmuch-saved-searches
-        `((:name "inbox: personal" :query "folder:/alex@balgavy.eu/ tag:inbox" :key ,(kbd "ip"))
-          (:name "inbox: school" :query "folder:/a.balgavy@student.vu.nl/ tag:inbox" :key ,(kbd "is"))
-          (:name "archive: personal" :query "folder:/alex@balgavy.eu/ tag:archive" :key ,(kbd "ap"))
-          (:name "archive: school" :query "folder:/a.balgavy@student.vu.nl/ tag:archive" :key ,(kbd "as"))))
+        `((:name "inbox: personal" :query ,(format "folder:/%s/ tag:inbox" za/email-personal) :key ,(kbd "ip"))
+          (:name "inbox: school" :query ,(format "folder:/%s/ tag:inbox" za/email-vu) :key ,(kbd "is"))
+          (:name "archive: personal" :query ,(format "folder:/%s/ tag:archive" za/email-personal) :key ,(kbd "ap"))
+          (:name "archive: school" :query ,(format "folder:/%s/ tag:archive" za/email-vu) :key ,(kbd "as"))))
 #+end_src
 
 Define the main screen sections:
@@ -1469,7 +1456,7 @@ Run notmuch-hook script on hello refresh, to move messages to folders according 
 #+end_src
 
 #+begin_src emacs-lisp
-  (add-hook 'notmuch-hello-refresh-hook #'za/notmuch-hook/tags2folders)
+  (add-hook 'notmuch-hello-refresh-hook #'za/notmuch-hook-tags2folders)
 #+end_src
 
 Sort with newest first:
