@@ -463,6 +463,26 @@ Custom reports:
        ("account" "%(binary) -f %(ledger-file) reg %(account)")))
    )
 #+end_src
+** osm
+#+begin_src emacs-lisp
+  (use-package osm
+    :bind (("C-c M h" . osm-home)
+           ("C-c M s" . osm-search)
+           ("C-c M v" . osm-server)
+           ("C-c M t" . osm-goto)
+           ("C-c M x" . osm-gpx-show)
+           ("C-c M j" . osm-bookmark-jump))
+
+    :custom
+    ;; Take a look at the customization group `osm' for more options.
+    (osm-server 'default) ;; Configure the tile server
+    (osm-copyright nil)     ;; Display the copyright information
+
+    :init
+    ;; Load Org link support
+    (with-eval-after-load 'org
+      (require 'osm-ol)))
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
