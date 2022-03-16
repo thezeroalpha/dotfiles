@@ -277,8 +277,6 @@ And I'm not gonna be a heretic and open Vim inside of Emacs.
 
 #+begin_src emacs-lisp
   (use-package vterm
-    :config
-    (setq vterm-environment '("EDITOR=emacsclient"))
     :hook
     (vterm-mode . (lambda () (unless server-process (server-start)))))
 #+end_src
@@ -1449,7 +1447,33 @@ So I create a keybinding to toggle dedicated on a window:
 
 #+end_src
 
+* Daemon
+I want to have a way to kill the Emacs daemon.
+So, define a function that kills the frame, and with a prefix kills emacs.
 
+#+begin_src emacs-lisp
+  (defun za/emacsclient-c-x-c-c (&optional arg)
+    "If running in emacsclient, make C-x C-c exit frame, and C-u C-x C-c exit Emacs."
+    (interactive "P") ; prefix arg in raw form
+    (if arg
+        (save-buffers-kill-emacs)
+      (save-buffers-kill-terminal)))
+#+end_src
+
+Then, if I'm in an emacsclient, I want to bind C-x C-c to that function (if not, I just want the default keybinding):
+
+#+begin_src emacs-lisp
+  ;; If not running in emacsclient, use the default bindings
+  (if (daemonp)
+      (global-set-key (kbd "C-x C-c") #'za/emacsclient-c-x-c-c))
+#+end_src
+
+Furthermore, I want to set the theme correctly whenever I connect with 'emacsclient':
+
+#+begin_src emacs-lisp
+  (if (daemonp)
+    (add-hook 'after-make-frame-functions #'za/auto-select-theme))
+#+end_src
 * Notmuch
 Define some saved searches (i.e. mailboxes):
 

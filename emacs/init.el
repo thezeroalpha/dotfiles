@@ -5,7 +5,7 @@
 
 ;; Get rid of all bars
 (setq org-src-tab-acts-natively t)
-(when window-system
+(when (or window-system (daemonp))
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
