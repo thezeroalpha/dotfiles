@@ -191,8 +191,32 @@ This lets me jump to any position in Emacs rather quickly, sometimes it's useful
     (("C-:" . 'avy-goto-char-timer)))
 #+end_src
 
-** org
+** Org
+*** Installation
+Install Org and require additional components that I use.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :config
+    (require 'org-tempo)
+    (require 'org-habit)
+    (require 'org-agenda)
+
+    :bind
+    (("C-c a" . org-agenda)
+     ("C-c n" . org-capture)
+     ("C-M-<return>" . org-insert-todo-heading)
+     ("C-c l" . org-store-link)))
+#+end_src
+
+*** Nicer bullets
 In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
+
+#+begin_src emacs-lisp
+  (use-package org-bullets)
+#+end_src
+
+*** Org mode settings
 Furthermore, tags were getting cut off, so I manually set the best column to display them.
 
 #+begin_src emacs-lisp
@@ -205,39 +229,459 @@ Furthermore, tags were getting cut off, so I manually set the best column to dis
     ;; Realign tags
     (org-set-tags-command '(4)))
 
-  (defun za/settings-org-agenda-mode ()
-    "My settings for org agenda mode"
-    (setq org-agenda-tags-column (- 10 (window-total-width))))
+  (add-hook 'org-mode-hook #'za/settings-org-mode)
 #+end_src
 
-#+begin_src emacs-lisp
-  (use-package org
-    :config
-    (unless (package-installed-p 'org-bullets)
-      (package-refresh-contents)
-      (package-install 'org-bullets))
-    (use-package org-bullets)
-    (require 'org-tempo)
-    (require 'org-habit)
-    (require 'org-agenda)
-
-    :init
-    (add-hook 'org-mode-hook #'za/settings-org-mode)
-    (add-hook 'org-agenda-mode-hook #'za/settings-org-agenda-mode)
-
-    :bind
-    (("C-c a" . org-agenda)
-     ("C-c n" . org-capture)
-     ("C-M-<return>" . org-insert-todo-heading)
-     ("C-c l" . org-store-link)))
-#+end_src
-
+*** Enable linking to email via notmuch
 To be able to link to emails via notmuch, I use ol-notmuch:
 
 #+begin_src emacs-lisp
   (use-package ol-notmuch :quelpa)
 #+end_src
 
+*** Agenda & GTD
+**** Agenda mode settings
+Fix tag display by dynamically calculating the column.
+
+#+begin_src emacs-lisp
+  (defun za/settings-org-agenda-mode ()
+    "My settings for org agenda mode"
+    (setq org-agenda-tags-column (- 10 (window-total-width))))
+
+  (add-hook 'org-agenda-mode-hook #'za/settings-org-agenda-mode)
+#+end_src
+
+**** Set file locations
+Which files should be included in the agenda (I have to use ~list~ to evaluate the variables, because org-agenda-files expects strings):
+
+#+begin_src emacs-lisp
+  (setq org-agenda-files (list za/org-life-main
+                               za/org-life-inbox
+                               za/org-life-tickler))
+#+end_src
+
+Convenience functions to make opening the main file faster:
+
+#+begin_src emacs-lisp
+  (defun gtd () "GTD: main file" (interactive) (find-file za/org-life-main))
+  (defun gtd-inbox () "GTD: inbox" (interactive) (find-file za/org-life-inbox))
+  (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
+  (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
+  (defun gtd-reference () "GTD: reference" (interactive) (find-file za/org-life-reference))
+  (defun gtd-tickler () "GTD: tickler" (interactive) (find-file za/org-life-tickler))
+#+end_src
+
+Bind keys to those functions:
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c g i") 'gtd-inbox)
+  (global-set-key (kbd "C-c g g") 'gtd)
+  (global-set-key (kbd "C-c g a") 'gtd-archive)
+  (global-set-key (kbd "C-c g s") 'gtd-someday)
+  (global-set-key (kbd "C-c g r") 'gtd-reference)
+  (global-set-key (kbd "C-c g t") 'gtd-tickler)
+#+end_src
+**** Refiling & archiving
+Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
+
+#+begin_src emacs-lisp
+    (setq org-refile-targets `((,za/org-life-main :maxlevel . 3)
+                               (,za/org-life-someday :level . 1)
+                               (,za/org-life-tickler :maxlevel . 2)
+                               (,za/org-life-reference :maxlevel . 2)))
+#+end_src
+
+I want to archive to a specific file, in a date tree:
+
+#+begin_src emacs-lisp
+  (setq org-archive-location (concat za/org-life-archive "::datetree/"))
+#+end_src
+
+Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself:
+
+#+begin_src emacs-lisp
+  (setq org-refile-use-outline-path 'file)
+#+end_src
+
+Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy):
+
+#+begin_src emacs-lisp
+  (setq org-outline-path-complete-in-steps nil)
+#+end_src
+
+Allow me to tack new heading names onto the end of my outline path, and if I am asking to create new ones, make me confirm it:
+
+#+begin_src emacs-lisp
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+#+end_src
+
+**** Quick capture
+Quick capture lets me send something to my inbox very quickly, without thinking about where it should go.
+The inbox is processed later.
+
+Templates for quick capture:
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates `(("t" "Todo [inbox]" entry
+                                 (file ,za/org-life-inbox)
+                                 "* TODO %i%?")
+
+                                ("s" "Save for read/watch/listen" entry
+                                 (file+headline ,za/org-life-tickler "Read/watch/listen")
+                                 "* TODO %?[[%^{link}][%^{description}]] %^G")))
+#+end_src
+
+**** Todo & custom agenda views
+Todo keywords based on the GTD system (pipe separates incomplete from complete).
+Apart from the logging-on-done configured [[*Logging][below]], I also want to log a note & timestamp when I start waiting on something.
+In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
+
+#+begin_src emacs-lisp
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-todo-keyword-faces '(("TODO" . org-todo)
+                                 ("NEXT" . org-todo)
+                                 ("WAITING" . org-todo)
+                                 ("SOMEDAY" . org-todo)
+                                 ("DONE" . org-done)
+                                 ("CANCELLED" . org-done)))
+#+end_src
+
+I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).
+
+#+begin_src emacs-lisp
+  (defun za/mark-as-project ()
+    "This function makes sure that the current heading has
+      (1) the tag PROJECT
+      (2) the property COOKIE_DATA set to \"todo recursive\"
+      (3) a leading progress indicator"
+    (interactive)
+    (org-set-property "TODO" "")
+    (org-toggle-tag "PROJECT" 'on)
+    (org-set-property "COOKIE_DATA" "todo recursive")
+    (org-back-to-heading t)
+    (forward-whitespace 1)
+    (insert "[/] ")
+    (org-update-statistics-cookies nil))
+#+end_src
+
+Only the top-level project headlines should be tagged as projects, so disable inheritance of that tag:
+
+#+begin_src emacs-lisp
+  (setq org-tags-exclude-from-inheritance '("PROJECT"))
+#+end_src
+
+Define a function to skip items if they're part of a project (i.e. one of their parents has a "PROJECT" tag).
+The problem is, the "PROJECT" tag isn't inherited. So, we temporarily disable excluding from inheritance, just for the ~org-get-tags~ call. Then check if "PROJECT" is one of the tags.
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-in-project ()
+    "Skip items that are part of a project"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (item-tags (let ((org-tags-exclude-from-inheritance nil)) (org-get-tags))))
+      (if (member "PROJECT" item-tags)
+          subtree-end
+        nil)))
+
+#+end_src
+
+Also, define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
+
+#+begin_src emacs-lisp
+  (defun za/skip-unless-habit ()
+    "Skip trees that are not habits"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+          nil
+        subtree-end)))
+#+end_src
+
+And one to skip tasks that /are/ habits:
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-habit ()
+    "Skip trees that are not habits"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+          subtree-end
+        nil)))
+#+end_src
+
+
+And another function, to skip tasks that are blocked:
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-blocked ()
+    "Skip trees that are blocked by previous tasks"
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (org-entry-blocked-p)
+          subtree-end
+        nil)))
+#+end_src
+
+Create custom agenda view based on those keywords.
+Agenda views are made up of blocks, appearing in the order that you declare them.
+The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
+
+#+begin_src emacs-lisp
+  (setq org-agenda-custom-commands
+        '(("n" "Next actions"
+           ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+          ("W" "Waiting"
+           ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
+          ("S" . "Saved for later...")
+          ("Sw" "Saved to watch"
+           ((tags-todo "WATCH" ((org-agenda-overriding-header "To watch:")))))
+          ("Sr" "Saved to read"
+           ((tags-todo "READ" ((org-agenda-overriding-header "To read:")))))
+          ("Sl" "Saved to listen"
+           ((tags-todo "LISTEN" ((org-agenda-overriding-header "To listen:")))))
+
+          ("a" . "Agenda with schedule only...")
+          ("aw" "This week"
+           ((agenda "" ((org-agenda-span 'week)))))
+          ("ad" "Today"
+           ((agenda "" ((org-agenda-span 'day)))))
+          ("at" "Tomorrow"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-day "+1d")))))
+
+          ("w" "Week Agenda + Next Actions"
+           ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+
+          ("o" "Month agenda"
+           ((agenda "" ((org-agenda-overriding-header "Month agenda:")
+                        (org-agenda-span 'month)))))
+
+          ("d" "Day Agenda + Next Actions + Habits"
+           ((agenda "" ((org-agenda-overriding-header "Day:")
+                        (org-agenda-span 'day)
+                        (org-habit-show-habits nil)))
+            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
+            (agenda "" ((org-agenda-overriding-header "Habits:")
+                        (org-agenda-span 'day)
+                        (org-agenda-use-time-grid nil)
+                        (org-agenda-skip-function 'za/skip-unless-habit)
+                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
+                        (org-habit-show-all-today t)))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
+
+          ("p" "Projects"
+           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")
+                             (org-agenda-prefix-format '((tags . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
+                             (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
+
+          ("f" "Finished tasks that aren't in a project"
+           ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
+                                                      (org-agenda-skip-function 'za/skip-if-in-project)))))
+
+          ;; Useful thread for opening calfw: https://github.com/kiwanami/emacs-calfw/issues/18
+          ("c" "Calendar view" (lambda (&rest _)
+                                 (interactive)
+                                 (let ((org-agenda-skip-function 'za/skip-if-habit))
+                                   (cfw:open-org-calendar))))))
+#+end_src
+
+In calfw, I don't want to show habits:
+
+#+begin_src emacs-lisp
+  (add-hook 'cfw:calendar-mode-hook (setq-local org-agenda-skip-function 'za/skip-if-habit))
+#+end_src
+
+**** Logging for tasks
+I want to log into the LOGBOOK drawer (useful when I want to take quick notes):
+
+#+begin_src emacs-lisp
+  (setq org-log-into-drawer "LOGBOOK")
+#+end_src
+
+I also want to log when I finish a task (useful for archiving).
+Furthermore, when I'm done, I want to add a note (any important
+workarounds/tips). And when I reschedule, I want to know the reason.
+I can disable logging on state change for a specific task by adding ~:LOGGING: nil~ to the ~:PROPERTIES:~ drawer.
+
+#+begin_src emacs-lisp
+  (setq org-log-done 'note
+        org-log-reschedule 'note)
+#+end_src
+
+I want to hide drawers on startup. This variable has options:
+- 'overview': Top-level headlines only.
+- 'content': All headlines.
+- 'showall': No folding on any entry.
+- 'show2levels: Headline levels 1-2.
+- 'show3levels: Headline levels 1-3.
+- 'show4levels: Headline levels 1-4.
+- 'show5levels: Headline levels 1-5.
+- 'showeverything: Show even drawer contents.
+
+#+begin_src emacs-lisp
+  (setq org-startup-folded 'content)
+#+end_src
+
+**** Task ordering
+Some tasks should be ordered, i.e. they should be done in steps.
+Those have the ~:ORDERED: t~ setting in ~:PROPERTIES:~, and it should be enforced:
+
+#+begin_src emacs-lisp
+  (setq org-enforce-todo-dependencies t)
+#+end_src
+
+Furthermore, tasks that are ordered and can't be done yet because of previous steps should be dimmed in the agenda:
+
+#+begin_src emacs-lisp
+  (setq org-agenda-dim-blocked-tasks t)
+#+end_src
+
+I might also want to set ~org-enforce-todo-checkbox-dependencies~, but not convinced on that one yet.
+
+**** Time tracking & effort
+Time tracking should be done in its own drawer:
+
+#+begin_src emacs-lisp
+  (setq org-clock-into-drawer "CLOCK")
+#+end_src
+
+And to customize how clock tables work:
+
+#+begin_src emacs-lisp
+  (setq org-clocktable-defaults '(:lang "en" :scope agenda-with-archives  :wstart 1 :mstart 1 :compact t :maxlevel nil))
+  (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel nil))
+#+end_src
+
+I want to set effort in hours:minutes:
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-global-properties '("Effort_ALL" . "0:05 0:10 0:15 0:20 0:30 0:45 1:00 1:30 2:00 4:00 6:00 8:00"))
+#+end_src
+
+I want column view to look like this:
+
+| To do        | Task      | Tags | Sum of time elapsed | Sum of time estimated (effort) |
+|--------------+-----------+------+---------------------+--------------------------------|
+| todo keyword | task name | tags | sum of clock        | sum of estimated time          |
+| ...          | ...       | ...  | ...                 | ...                            |
+
+#+begin_src emacs-lisp
+  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %8Effort(Effort){:}")
+#+end_src
+
+Fix column alignment in agenda. Unfortunately that means I have to
+decrease the size of the date-today font. But I don't have any other
+solution atm.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'org-column nil
+                      :height (face-attribute 'default :height)
+                      :family (face-attribute 'default :family))
+  (set-face-attribute 'org-agenda-date-today nil
+                      :height (face-attribute 'default :height))
+#+end_src
+
+**** Calculate time since timestamp
+#+begin_src emacs-lisp
+  (defun za/org-time-since ()
+    "Print the amount of time between the timestamp at point and the current date and time."
+    (interactive)
+    (unless (org-at-timestamp-p 'lax)
+      (user-error "Not at timestamp"))
+
+    (when (org-at-timestamp-p 'lax)
+      (let ((timestamp (match-string 0)))
+        (with-temp-buffer
+          (insert timestamp
+                  "--"
+                  (org-time-stamp '(16)))
+          (org-evaluate-time-range)))))
+#+end_src
+
+*** Custom functions
+**** Get number of headlines in a file
+#+begin_src emacs-lisp
+  (defun za/org-count-headlines-in-file (level filename)
+    "Count number of level LEVEL headlines in FILENAME. If LEVEL is 0, count all."
+    (let ((headline-str (cond ((zerop level) "^\*+")
+			      (t (format "^%s " (apply 'concat (make-list level "\\*")))))))
+      (save-mark-and-excursion
+	(with-temp-buffer
+	  (insert-file-contents filename)
+	  (count-matches headline-str (point-min) (point-max))))))
+#+end_src
+
+**** Yank URL
+#+begin_src emacs-lisp
+  (defun org-yank-link-url ()
+    (interactive)
+    (kill-new (org-element-property :raw-link (org-element-context))))
+
+  (define-key org-mode-map (kbd "C-c M-y") 'org-yank-link-url)
+#+end_src
+*** Tempo expansions
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
+  (add-to-list 'org-structure-template-alist '("ss" . "src sh"))
+#+end_src
+
+*** Catch invisible edits
+Sometimes when text is folded away, I might accidentally edit text inside of it.
+This option prevents that.
+I wanted to do 'smart', but that has a 'fixme' so it might change in the future...
+Instead, show what's being edited, but don't perform the edit.
+
+#+begin_src emacs-lisp
+  (setq org-catch-invisible-edits 'show-and-error)
+#+end_src
+
+*** Notification
+macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
+
+#+begin_src emacs-lisp
+  (if (and (eq system-type 'darwin)
+           (executable-find "terminal-notifier"))
+      (setq org-show-notification-handler
+            (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
+                                         "-title" "Timer done"
+                                         "-message" str
+                                         "-group" "org.gnu.Emacs"
+                                         "-sender" "org.gnu.Emacs"))))
+#+end_src
+
+*** org-caldav
+This lets me sync my Org agenda to my CalDAV server.
+The main reason is because Orgzly doesn't have a calendar view and can't (yet) search for events on a specific day, so if someone asks "are you free on that day", it's a bit hard for me to answer if I don't have my computer with me.
+This way, I can just check my calendar.
+
+#+begin_src emacs-lisp
+  (use-package org-caldav)
+#+end_src
+
+A lot of these variables are from my secret.el file, they're not something I can share publicly.
+I use ~/.authinfo.gpg to store authorization info for the server.
+
+#+begin_src emacs-lisp
+  (setq org-caldav-url za/caldav-url
+        org-caldav-calendar-id za/caldav-org-calendar-id
+        za/org-life-calendar-inbox (concat za/org-life-dir "calendar-inbox.org")
+        org-caldav-inbox za/org-life-calendar-inbox
+        org-caldav-files (cons (car (split-string org-archive-location "::")) org-agenda-files)
+        org-icalendar-include-todo 'all
+        org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+        org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+
+#+end_src
+
+I don't want to export habits, because those will just clutter up my calendar.
+The calendar is supposed to be for one-off stuff, or rarely repeating stuff.
+Yes, I have to manually add the "HABIT" tag to every habit.
+Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.
+
+#+begin_src emacs-lisp
+  (setq org-caldav-exclude-tags '("HABIT")))
+#+end_src
+
+Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
 ** calfw
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
@@ -937,403 +1381,6 @@ Let a period followed by a single space be treated as end of sentence:
 
 #+begin_src emacs-lisp
   (setq sentence-end-double-space nil)
-#+end_src
-
-* Org mode
-** Get number of headlines in a file
-#+begin_src emacs-lisp
-  (defun za/org-count-headlines-in-file (level filename)
-    "Count number of level LEVEL headlines in FILENAME. If LEVEL is 0, count all."
-    (let ((headline-str (cond ((zerop level) "^\*+")
-			      (t (format "^%s " (apply 'concat (make-list level "\\*")))))))
-      (save-mark-and-excursion
-	(with-temp-buffer
-	  (insert-file-contents filename)
-	  (count-matches headline-str (point-min) (point-max))))))
-#+end_src
-
-** Agenda & GTD
-*** Set file locations
-Which files should be included in the agenda (I have to use ~list~ to evaluate the variables, because org-agenda-files expects strings):
-
-#+begin_src emacs-lisp
-  (setq org-agenda-files (list za/org-life-main
-                               za/org-life-inbox
-                               za/org-life-tickler))
-#+end_src
-
-Convenience functions to make opening the main file faster:
-
-#+begin_src emacs-lisp
-  (defun gtd () "GTD: main file" (interactive) (find-file za/org-life-main))
-  (defun gtd-inbox () "GTD: inbox" (interactive) (find-file za/org-life-inbox))
-  (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
-  (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
-  (defun gtd-reference () "GTD: reference" (interactive) (find-file za/org-life-reference))
-#+end_src
-
-Bind keys to those functions:
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c g i") 'gtd-inbox)
-  (global-set-key (kbd "C-c g g") 'gtd)
-  (global-set-key (kbd "C-c g a") 'gtd-archive)
-  (global-set-key (kbd "C-c g s") 'gtd-someday)
-  (global-set-key (kbd "C-c g r") 'gtd-reference)
-#+end_src
-*** Refiling & archiving
-Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
-
-#+begin_src emacs-lisp
-    (setq org-refile-targets `((,za/org-life-main :maxlevel . 3)
-                               (,za/org-life-someday :level . 1)
-                               (,za/org-life-tickler :maxlevel . 2)
-                               (,za/org-life-reference :maxlevel . 2)))
-#+end_src
-
-I want to archive to a specific file, in a date tree:
-
-#+begin_src emacs-lisp
-  (setq org-archive-location (concat za/org-life-archive "::datetree/"))
-#+end_src
-
-Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself:
-
-#+begin_src emacs-lisp
-  (setq org-refile-use-outline-path 'file)
-#+end_src
-
-Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy):
-
-#+begin_src emacs-lisp
-  (setq org-outline-path-complete-in-steps nil)
-#+end_src
-
-Allow me to tack new heading names onto the end of my outline path, and if I am asking to create new ones, make me confirm it:
-
-#+begin_src emacs-lisp
-  (setq org-refile-allow-creating-parent-nodes 'confirm)
-#+end_src
-
-*** Quick capture
-Quick capture lets me send something to my inbox very quickly, without thinking about where it should go.
-The inbox is processed later.
-
-Templates for quick capture:
-
-#+begin_src emacs-lisp
-  (setq org-capture-templates `(("t" "Todo [inbox]" entry
-                                 (file ,za/org-life-inbox)
-                                 "* TODO %i%?")
-
-                                ("s" "Save for read/watch/listen" entry
-                                 (file+headline ,za/org-life-tickler "Read/watch/listen")
-                                 "* TODO %?[[%^{link}][%^{description}]] %^G")))
-#+end_src
-
-*** Todo & custom agenda views
-Todo keywords based on the GTD system (pipe separates incomplete from complete).
-Apart from the logging-on-done configured [[*Logging][below]], I also want to log a note & timestamp when I start waiting on something.
-In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
-
-#+begin_src emacs-lisp
-  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)"))
-        org-todo-keyword-faces '(("TODO" . org-todo)
-                                 ("NEXT" . org-todo)
-                                 ("WAITING" . org-todo)
-                                 ("SOMEDAY" . org-todo)
-                                 ("DONE" . org-done)
-                                 ("CANCELLED" . org-done)))
-#+end_src
-
-I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).
-
-#+begin_src emacs-lisp
-  (defun za/mark-as-project ()
-    "This function makes sure that the current heading has
-      (1) the tag PROJECT
-      (2) the property COOKIE_DATA set to \"todo recursive\"
-      (3) a leading progress indicator"
-    (interactive)
-    (org-set-property "TODO" "")
-    (org-toggle-tag "PROJECT" 'on)
-    (org-set-property "COOKIE_DATA" "todo recursive")
-    (org-back-to-heading t)
-    (forward-whitespace 1)
-    (insert "[/] ")
-    (org-update-statistics-cookies nil))
-#+end_src
-
-Only the top-level project headlines should be tagged as projects, so disable inheritance of that tag:
-
-#+begin_src emacs-lisp
-  (setq org-tags-exclude-from-inheritance '("PROJECT"))
-#+end_src
-
-Define a function to skip items if they're part of a project (i.e. one of their parents has a "PROJECT" tag).
-The problem is, the "PROJECT" tag isn't inherited. So, we temporarily disable excluding from inheritance, just for the ~org-get-tags~ call. Then check if "PROJECT" is one of the tags.
-
-#+begin_src emacs-lisp
-  (defun za/skip-if-in-project ()
-    "Skip items that are part of a project"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-          (item-tags (let ((org-tags-exclude-from-inheritance nil)) (org-get-tags))))
-      (if (member "PROJECT" item-tags)
-          subtree-end
-        nil)))
-
-#+end_src
-
-Also, define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
-
-#+begin_src emacs-lisp
-  (defun za/skip-unless-habit ()
-    "Skip trees that are not habits"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (string= (org-entry-get nil "STYLE") "habit")
-          nil
-        subtree-end)))
-#+end_src
-
-And one to skip tasks that /are/ habits:
-
-#+begin_src emacs-lisp
-  (defun za/skip-if-habit ()
-    "Skip trees that are not habits"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (string= (org-entry-get nil "STYLE") "habit")
-          subtree-end
-        nil)))
-#+end_src
-
-
-And another function, to skip tasks that are blocked:
-
-#+begin_src emacs-lisp
-  (defun za/skip-if-blocked ()
-    "Skip trees that are blocked by previous tasks"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (org-entry-blocked-p)
-          subtree-end
-        nil)))
-#+end_src
-
-Create custom agenda view based on those keywords.
-Agenda views are made up of blocks, appearing in the order that you declare them.
-The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
-
-#+begin_src emacs-lisp
-  (setq org-agenda-custom-commands
-        '(("n" "Next actions"
-           ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
-          ("W" "Waiting"
-           ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
-          ("S" . "Saved for later...")
-          ("Sw" "Saved to watch"
-           ((tags-todo "WATCH" ((org-agenda-overriding-header "To watch:")))))
-          ("Sr" "Saved to read"
-           ((tags-todo "READ" ((org-agenda-overriding-header "To read:")))))
-          ("Sl" "Saved to listen"
-           ((tags-todo "LISTEN" ((org-agenda-overriding-header "To listen:")))))
-
-          ("a" . "Agenda with schedule only...")
-          ("aw" "This week"
-           ((agenda "" ((org-agenda-span 'week)))))
-          ("ad" "Today"
-           ((agenda "" ((org-agenda-span 'day)))))
-          ("at" "Tomorrow"
-           ((agenda "" ((org-agenda-span 'day)
-                        (org-agenda-start-day "+1d")))))
-
-          ("w" "Week Agenda + Next Actions"
-           ((agenda "" ((org-agenda-overriding-header "Week agenda:")))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
-
-          ("o" "Month agenda"
-           ((agenda "" ((org-agenda-overriding-header "Month agenda:")
-                        (org-agenda-span 'month)))))
-
-          ("d" "Day Agenda + Next Actions + Habits"
-           ((agenda "" ((org-agenda-overriding-header "Day:")
-                        (org-agenda-span 'day)
-                        (org-habit-show-habits nil)))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
-            (agenda "" ((org-agenda-overriding-header "Habits:")
-                        (org-agenda-span 'day)
-                        (org-agenda-use-time-grid nil)
-                        (org-agenda-skip-function 'za/skip-unless-habit)
-                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
-                        (org-habit-show-all-today t)))
-            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
-
-          ("p" "Projects"
-           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")
-                             (org-agenda-prefix-format '((tags . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
-                             (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
-
-          ("f" "Finished tasks that aren't in a project"
-           ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
-                                                      (org-agenda-skip-function 'za/skip-if-in-project)))))
-
-          ;; Useful thread for opening calfw: https://github.com/kiwanami/emacs-calfw/issues/18
-          ("c" "Calendar view" (lambda (&rest _)
-                                 (interactive)
-                                 (let ((org-agenda-skip-function 'za/skip-if-habit))
-                                   (cfw:open-org-calendar))))))
-#+end_src
-
-In calfw, I don't want to show habits:
-
-#+begin_src emacs-lisp
-  (add-hook 'cfw:calendar-mode-hook (setq-local org-agenda-skip-function 'za/skip-if-habit))
-#+end_src
-
-*** Logging
-I want to log into the LOGBOOK drawer (useful when I want to take quick notes):
-
-#+begin_src emacs-lisp
-  (setq org-log-into-drawer "LOGBOOK")
-#+end_src
-
-I also want to log when I finish a task (useful for archiving).
-Furthermore, when I'm done, I want to add a note (any important
-workarounds/tips). And when I reschedule, I want to know the reason.
-I can disable logging on state change for a specific task by adding ~:LOGGING: nil~ to the ~:PROPERTIES:~ drawer.
-
-#+begin_src emacs-lisp
-  (setq org-log-done 'note
-        org-log-reschedule 'note)
-#+end_src
-
-I want to hide drawers on startup. This variable has options:
-- 'overview': Top-level headlines only.
-- 'content': All headlines.
-- 'showall': No folding on any entry.
-- 'show2levels: Headline levels 1-2.
-- 'show3levels: Headline levels 1-3.
-- 'show4levels: Headline levels 1-4.
-- 'show5levels: Headline levels 1-5.
-- 'showeverything: Show even drawer contents.
-
-#+begin_src emacs-lisp
-  (setq org-startup-folded 'content)
-#+end_src
-
-*** Task ordering
-Some tasks should be ordered, i.e. they should be done in steps.
-Those have the ~:ORDERED: t~ setting in ~:PROPERTIES:~, and it should be enforced:
-
-#+begin_src emacs-lisp
-  (setq org-enforce-todo-dependencies t)
-#+end_src
-
-Furthermore, tasks that are ordered and can't be done yet because of previous steps should be dimmed in the agenda:
-
-#+begin_src emacs-lisp
-  (setq org-agenda-dim-blocked-tasks t)
-#+end_src
-
-I might also want to set ~org-enforce-todo-checkbox-dependencies~, but not convinced on that one yet.
-
-*** Time tracking & effort
-Time tracking should be done in its own drawer:
-
-#+begin_src emacs-lisp
-  (setq org-clock-into-drawer "CLOCK")
-#+end_src
-
-And to customize how clock tables work:
-
-#+begin_src emacs-lisp
-  (setq org-clocktable-defaults '(:lang "en" :scope agenda-with-archives  :wstart 1 :mstart 1 :compact t :maxlevel nil))
-  (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel nil))
-#+end_src
-
-I want to set effort in hours:minutes:
-
-#+begin_src emacs-lisp
-  (add-to-list 'org-global-properties '("Effort_ALL" . "0:05 0:10 0:15 0:20 0:30 0:45 1:00 1:30 2:00 4:00 6:00 8:00"))
-#+end_src
-
-I want column view to look like this:
-
-| To do        | Task      | Tags | Sum of time elapsed | Sum of time estimated (effort) |
-|--------------+-----------+------+---------------------+--------------------------------|
-| todo keyword | task name | tags | sum of clock        | sum of estimated time          |
-| ...          | ...       | ...  | ...                 | ...                            |
-
-#+begin_src emacs-lisp
-  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %8Effort(Effort){:}")
-#+end_src
-
-Fix column alignment in agenda. Unfortunately that means I have to
-decrease the size of the date-today font. But I don't have any other
-solution atm.
-
-#+begin_src emacs-lisp
-  (set-face-attribute 'org-column nil
-                      :height (face-attribute 'default :height)
-                      :family (face-attribute 'default :family))
-  (set-face-attribute 'org-agenda-date-today nil
-                      :height (face-attribute 'default :height))
-#+end_src
-
-*** Calculate time since timestamp
-#+begin_src emacs-lisp
-  (defun za/org-time-since ()
-    "Print the amount of time between the timestamp at point and the current date and time."
-    (interactive)
-    (unless (org-at-timestamp-p 'lax)
-      (user-error "Not at timestamp"))
-
-    (when (org-at-timestamp-p 'lax)
-      (let ((timestamp (match-string 0)))
-        (with-temp-buffer
-          (insert timestamp
-                  "--"
-                  (org-time-stamp '(16)))
-          (org-evaluate-time-range)))))
-#+end_src
-
-** Tempo expansions
-
-#+begin_src emacs-lisp
-  (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
-  (add-to-list 'org-structure-template-alist '("ss" . "src sh"))
-#+end_src
-
-** Yank URL
-#+begin_src emacs-lisp
-  (defun org-yank-link-url ()
-    (interactive)
-    (kill-new (org-element-property :raw-link (org-element-context))))
-
-  (define-key org-mode-map (kbd "C-c M-y") 'org-yank-link-url)
-#+end_src
-
-** Catch invisible edits
-Sometimes when text is folded away, I might accidentally edit text inside of it.
-This option prevents that.
-I wanted to do 'smart', but that has a 'fixme' so it might change in the future...
-Instead, show what's being edited, but don't perform the edit.
-
-#+begin_src emacs-lisp
-  (setq org-catch-invisible-edits 'show-and-error)
-#+end_src
-
-** Notification
-macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
-
-#+begin_src emacs-lisp
-  (if (and (eq system-type 'darwin)
-           (executable-find "terminal-notifier"))
-      (setq org-show-notification-handler
-            (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
-                                         "-title" "Timer done"
-                                         "-message" str
-                                         "-group" "org.gnu.Emacs"
-                                         "-sender" "org.gnu.Emacs"))))
 #+end_src
 
 * Markdown
