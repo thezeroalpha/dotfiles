@@ -1,7 +1,7 @@
 #!/bin/sh
 # Linkhandler: handles links. Like `opener` but for URLs
 case "$1" in
-  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*)
+  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*|*fb.watch*)
     notify 'Starting mpv' "Opening $1..." 'linkhandler'
     setsid -f mpvq "$1" 1>/dev/null 2>&1
     ;;
