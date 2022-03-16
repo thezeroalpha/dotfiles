@@ -24,20 +24,22 @@ Load Doom Emacs themes:
 Define the themes I want:
 
 #+begin_src emacs-lisp
-  (setq dark-theme-name 'doom-one)
-  (setq light-theme-name 'jokull)
+  (setq za/dark-theme-name 'doom-one)
+  (setq za/light-theme-name 'jokull)
   ;; I used to use doom-acario-light before writing my own theme
 
-  (defun dark-theme ()
+  (defun za/dark-theme ()
     "Switch to dark theme"
     (interactive)
-    (load-theme dark-theme-name t)
+    (mapcar #'disable-theme custom-enabled-themes)
+    (load-theme za/dark-theme-name t)
     (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 
-  (defun light-theme ()
+  (defun za/light-theme ()
     "Switch to light theme"
     (interactive)
-    (load-theme light-theme-name t)
+    (mapcar #'disable-theme custom-enabled-themes)
+    (load-theme za/light-theme-name t)
     (remove-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 #+end_src
 
@@ -49,17 +51,21 @@ If calling a function that's in a variable, you have to use 'funcall'.
 To evaluate a quoted form, use 'eval'.
 
 #+begin_src emacs-lisp
-  (let ((dark-mode-p '(file-exists-p "~/.config/dark-theme")))
-    (if (eval dark-mode-p)
-        (dark-theme)
-      (light-theme)))
+  (defun za/auto-select-theme (&rest _)
+    "Automatically select dark/light theme based on presence of ~/.config/dark-theme"
+    (let ((dark-mode-p '(file-exists-p "~/.config/dark-theme")))
+      (if (eval dark-mode-p)
+          (za/dark-theme)
+        (za/light-theme))))
+
+  (za/auto-select-theme)
 #+end_src
 
 * Font
 I want Menlo, size 14:
 
 #+begin_src emacs-lisp
-  (set-frame-font "Menlo-14" nil t)
+  (add-to-list 'default-frame-alist '(font . "Menlo-14"))
 #+end_src
 
 * Garbage collection
@@ -718,7 +724,7 @@ A function to toggle wrapping:
 
   (defun za/toggle-wrap (&optional enable)
     "Toggle line wrapping settings. With ENABLE a positive number, enable wrapping. If ENABLE is negative or zero, disable wrapping."
-    (interactive "P")
+    (interactive "P") ; prefix arg in raw form
 
     ;; If an argument is provided, prefix or otherwise
     (if enable
