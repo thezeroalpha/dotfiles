@@ -167,7 +167,6 @@ Plug 'dense-analysis/ale'
 Plug 'Yggdroot/indentLine', { 'for': 'python' }
 
 Plug 'jceb/vim-orgmode', { 'for': 'org' }
-
 call plug#end()
 " }}}2
 " Config {{{2
@@ -826,6 +825,7 @@ let digraphs = {
       \ '0s': 0x2080, '1s': 0x2081, '2s': 0x2082, '3s': 0x2083, '4s': 0x2084, '5s': 0x2085, '6s': 0x2086, '7s': 0x2087, '8s': 0x2088, '9s': 0x2089, '+s': 0x208A, '-s': 0x208B, '=s': 0x208C, '(s': 0x208D, ')s': 0x208E,
       \ '-<':  0x227a, '>-': 0x227b,
       \ '\|=': 0x22a8, '\|-': 0x22a2, '!m': 0x22ad,
+      \ '[]': 0x25a1, '()': 0x25c7, '<(': 0x3008, '>)': 0x3009,
       \ 'n#': 0x2115, 'r#': 0x211d, 'z#': 0x2124 }
 
 for [dg, code] in items(digraphs)
