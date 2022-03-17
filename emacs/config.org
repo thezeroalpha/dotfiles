@@ -566,9 +566,7 @@ I want column view to look like this:
   (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %8Effort(Effort){:}")
 #+end_src
 
-Fix column alignment in agenda. Unfortunately that means I have to
-decrease the size of the date-today font. But I don't have any other
-solution atm.
+Fix column alignment in agenda.
 
 #+begin_src emacs-lisp
   (set-face-attribute 'org-column nil
@@ -678,7 +676,7 @@ Yes, I have to manually add the "HABIT" tag to every habit.
 Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.
 
 #+begin_src emacs-lisp
-  (setq org-caldav-exclude-tags '("HABIT")))
+  (setq org-caldav-exclude-tags '("HABIT"))
 #+end_src
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
