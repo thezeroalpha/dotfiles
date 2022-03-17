@@ -1526,10 +1526,10 @@ Define some saved searches (i.e. mailboxes):
 
 #+begin_src emacs-lisp
   (setq notmuch-saved-searches
-        `((:name "inbox: personal" :query ,(format "folder:/%s/ tag:inbox" za/email-personal) :key ,(kbd "ip"))
-          (:name "inbox: school" :query ,(format "folder:/%s/ tag:inbox" za/email-vu) :key ,(kbd "is"))
-          (:name "archive: personal" :query ,(format "folder:/%s/ tag:archive" za/email-personal) :key ,(kbd "ap"))
-          (:name "archive: school" :query ,(format "folder:/%s/ tag:archive" za/email-vu) :key ,(kbd "as"))))
+        `((:name "inbox: personal" :query ,(format "folder:/%s/ tag:inbox" za/email-personal) :key ,(kbd "ip") :search-type 'tree)
+          (:name "inbox: school" :query ,(format "folder:/%s/ tag:inbox" za/email-vu) :key ,(kbd "is") :search-type 'tree)
+          (:name "archive: personal" :query ,(format "folder:/%s/ tag:archive" za/email-personal) :key ,(kbd "ap") :search-type 'tree)
+          (:name "archive: school" :query ,(format "folder:/%s/ tag:archive" za/email-vu) :key ,(kbd "as") :search-type 'tree)))
 #+end_src
 
 Define the main screen sections:
