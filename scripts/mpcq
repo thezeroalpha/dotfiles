@@ -16,7 +16,7 @@ pgrep mpd >/dev/null 2>&1 || die "mpd is not running."
 
 queue() {
   case "$1" in
-    *.wav|*.flac|*.mp3|*.m4a|*.opus)
+    *.wav|*.flac|*.mp3|*.m4a|*.opus|*.webm)
       { [ -n "$next" ] && queuecmd="insert"; } || queuecmd="add"
       mpc -h ~/.local/share/mpd/socket "$queuecmd" "file://$1"
       printf "Queued: %s\n" "$1"
