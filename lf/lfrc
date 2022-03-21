@@ -86,16 +86,7 @@ cmd change %{{
 # load audio files/playlists in mpd
 cmd queue %{{
   for i in $fx; do
-    case "$i" in
-      *.wav|*.flac|*.mp3|*.m4a|*.opus)
-        mpc -h ~/.local/share/mpd/socket add "file://$i"
-        printf "Queued: %s" "$i"
-        ;;
-      *.m3u)
-        mpc -h ~/.local/share/mpd/socket load "file://$i"
-        printf "Loaded playlist: %s" "$i"
-        ;;
-    esac
+    mpcq "$i"
   done
 }}
 cmd queuenext %{{
