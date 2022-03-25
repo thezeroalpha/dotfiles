@@ -878,6 +878,15 @@ Sometimes it's better to look at undo history as a tree:
     :config
     (global-undo-tree-mode))
 #+end_src
+
+Save undo files into ~/.emacs.d/undo-tree
+
+#+begin_src emacs-lisp
+  (let ((undo-tree-dir (concat user-emacs-directory "undo-tree/")))
+    (unless (file-directory-p undo-tree-dir) (make-directory undo-tree-dir))
+    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir))))
+#+end_src
+
 ** ledger
 #+begin_src emacs-lisp
   (use-package ledger-mode
