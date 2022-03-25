@@ -216,6 +216,13 @@ In org mode, I want to use bullets instead of stars, so I also install ~org-bull
   (use-package org-bullets)
 #+end_src
 
+*** More languages
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . nil)
+     (R . t)))
+#+end_src
 *** Org mode settings
 Furthermore, tags were getting cut off, so I manually set the best column to display them.
 
