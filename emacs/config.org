@@ -1,3 +1,38 @@
+* Emacs file locations
+** Auto-Save files
+By default, auto-save files ("#file#") are placed in the same directory as the file itself.
+I want to put this all in some unified place:
+
+#+begin_src emacs-lisp
+  (let ((saves-directory "~/.local/share/emacs/saves/"))
+    (unless (file-directory-p saves-directory)
+      (make-directory saves-directory))
+    (setq auto-save-file-name-transforms
+          `((".*" ,saves-directory t))))
+#+end_src
+
+** Backup files
+By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
+This setting puts them in ~/.local/share/emacs/backups.
+
+#+begin_src emacs-lisp
+  (let ((backups-directory "~/.local/share/emacs/backups"))
+    (unless (file-directory-p backups-directory)
+      (make-directory backups-directory))
+    (setq backup-directory-alist `(("." . ,backups-directory)))
+    (setq backup-by-copying t))
+#+end_src
+
+** Custom settings file
+Both commands are necessary.
+First one tells Emacs where to save customizations.
+The second one actually loads them.
+
+#+begin_src emacs-lisp
+  (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
+  (load custom-file)
+#+end_src
+
 * Theme
 Icons required for some parts of the doom theme:
 
@@ -1107,41 +1142,6 @@ And a way to toggle those side windows:
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c w") (lambda () (interactive) (window-toggle-side-windows)))
 #+end_src
-* Emacs file locations
-** Auto-Save files
-By default, auto-save files ("#file#") are placed in the same directory as the file itself.
-I want to put this all in some unified place:
-
-#+begin_src emacs-lisp
-  (let ((saves-directory "~/.local/share/emacs/saves/"))
-    (unless (file-directory-p saves-directory)
-      (make-directory saves-directory))
-    (setq auto-save-file-name-transforms
-          `((".*" ,saves-directory t))))
-#+end_src
-
-** Backup files
-By default, backup files (those with a tilde) are saved in the same directory as the currently edited file.
-This setting puts them in ~/.local/share/emacs/backups.
-
-#+begin_src emacs-lisp
-  (let ((backups-directory "~/.local/share/emacs/backups"))
-    (unless (file-directory-p backups-directory)
-      (make-directory backups-directory))
-    (setq backup-directory-alist `(("." . ,backups-directory)))
-    (setq backup-by-copying t))
-#+end_src
-
-** Custom settings file
-Both commands are necessary.
-First one tells Emacs where to save customizations.
-The second one actually loads them.
-
-#+begin_src emacs-lisp
-  (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
-  (load custom-file)
-#+end_src
-
 * Editor
 ** Overwrite selection on typing
 Normally, when I select something and start typing, Emacs clears the selection, i.e. it deselects and inserts text after the cursor.
