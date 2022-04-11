@@ -946,28 +946,35 @@ Save undo files into ~/.emacs.d/undo-tree
           ledger-reconcile-default-commodity "eur"))
 #+end_src
 
+Budget throws an error when there's multiple commodities involved.
+See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-390067165
+#+begin_src emacs-lisp
+  (setq za/ledger-budget-fix-string
+      "-X eur -F '%(justify(scrub(get_at(display_total, 0)), 20, -1, true, false)) %(justify(get_at(display_total, 1) ? -scrub(get_at(display_total, 1)) : 0.0, 20,            20 + 1 + 20, true, false)) %(justify(get_at(display_total, 1) ? (get_at(display_total, 0) ?           -(scrub(get_at(display_total, 1) + get_at(display_total, 0))) :           -(scrub(get_at(display_total, 1)))) : -(scrub(get_at(display_total, 0))), 20,            20 + 1 + 20 + 1 + 20, true, false))%(get_at(display_total, 1) and (abs(quantity(scrub(get_at(display_total, 0))) /           quantity(scrub(get_at(display_total, 1)))) >= 1) ?  \" \" : \" \")%(justify((get_at(display_total, 1) ?           (100% * (get_at(display_total, 0) ? scrub(get_at(display_total, 0)) : 0.0)) /              -scrub(get_at(display_total, 1)) : \"na\"),            5, -1, true, false))  %(!options.flat ? depth_spacer : \"\")%-(partial_account(options.flat))\n%/%$2 %$3 %$4 %$6\n%/%(prepend_width ? \" \" * int(prepend_width) : \"\")    ----------------     ----------------     ---------------- -----\n'")
+#+end_src
 Custom reports:
 
 #+begin_src emacs-lisp
   (custom-set-variables
    '(ledger-reports
-     '(("budget-last-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses -X eur")
-       ("budget-this-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"this month\" budget ^expenses -X eur")
-       ("expenses-this-month-vs-budget" "ledger -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur --budget")
-       ("expenses-last-month-vs-budget" "ledger -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur --budget")
-       ("expenses-vs-income-last-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses ^income -X eur")
-       ("expenses-last-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur")
-       ("expenses-this-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur")
-       ("expenses-vs-income-this-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
-       ("expenses-this-month" "ledger -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
-       ("bal-assets-czk" "ledger [[ledger-mode-flags]] -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X czk")
-       ("bal-assets" "ledger [[ledger-mode-flags]] -f %(ledger-file) --start-of-week=1 bal Assets Liabilities")
-       ("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) --start-of-week=1 bal -B")
-       ("bal-assets-eur" "ledger [[ledger-mode-flags]] -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X eur")
+     '(("budget-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses")
+       ("budget-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" budget ^expenses")
+       ("expenses-this-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses --budget")
+       ("expenses-last-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses --budget")
+       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
+       ("expenses-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur")
+       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur")
+       ("expenses-vs-income-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
+       ("expenses-vs-income-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"last month\" --period-sort \"(amount)\" bal ^expenses ^income -X eur")
+       ("bal-assets-czk" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X czk")
+       ("bal-assets" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities")
+       ("bal" "%(binary) -f %(ledger-file) --start-of-week=1 bal -B")
+       ("bal-assets-eur" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X eur")
+       ("monthly-balance-abn-checking" "%(binary) -f %(ledger-file) --start-of-week=1 --effective reg --monthly 'Assets:ABN Checking'")
+       ("monthly-expenses" "%(binary) -f %(ledger-file) --monthly register ^expenses --collapse -X eur")
        ("reg" "%(binary) -f %(ledger-file) --start-of-week=1 reg")
        ("payee" "%(binary) -f %(ledger-file) --start-of-week=1 reg @%(payee)")
-       ("account" "%(binary) -f %(ledger-file) --start-of-week=1 reg %(account)")))
-   )
+       ("account" "%(binary) -f %(ledger-file) --start-of-week=1 reg %(account)"))))
 #+end_src
 ** osm
 #+begin_src emacs-lisp
