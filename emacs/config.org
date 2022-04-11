@@ -253,10 +253,18 @@ In org mode, I want to use bullets instead of stars, so I also install ~org-bull
 
 *** More languages
 #+begin_src emacs-lisp
+(use-package inf-ruby)
+#+end_src
+#+begin_src emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . nil)
-     (R . t)))
+   '((emacs-lisp . t)
+     (R . t)
+     (python . t)
+     (ruby . t)))
+
+  (setq org-babel-python-command "python3")
+  (setq org-confirm-babel-evaluate nil)
 #+end_src
 *** Org mode settings
 Furthermore, tags were getting cut off, so I manually set the best column to display them.
