@@ -10,6 +10,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+" To get documentation on vim-plug
+Plug 'junegunn/vim-plug'
+
 " Vim tester
 Plug 'junegunn/vader.vim'
 
