@@ -21,7 +21,7 @@ RECENTLY_ADDED_PLAYLIST="$MUSIC_DIR"/recently-added.m3u
 import() {
   if [ -n "$(find . -mindepth 1 -maxdepth 1 -name '*.mp3')" ]; then
     printf "MP3 files found in current directory!\nAre you sure you want to import? [Y/n] "
-    read -r yn
+    stty raw; yn="$(dd bs=1 count=1 2>/dev/null)"; stty -raw
     case "$yn" in
       Y*|y*);;
       *) die 'User cancelled.';;
@@ -29,7 +29,7 @@ import() {
   fi
 
   printf "Did you already run mp3gain? [Y/n] "
-  read -r yn
+  stty raw; yn="$(dd bs=1 count=1 2>/dev/null)"; stty -raw
   case "$yn" in
     Y*|y*);;
     *) die 'Run it now then. mp3gain -s i. add -a for albums.';;
