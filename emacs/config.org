@@ -1418,6 +1418,24 @@ Let a period followed by a single space be treated as end of sentence:
 #+begin_src emacs-lisp
   (setq sentence-end-double-space nil)
 #+end_src
+** Make region readonly or writable
+#+begin_src emacs-lisp
+  (defun za/set-region-read-only (begin end)
+    "Sets the read-only text property on the marked region.
+  Use `set-region-writeable' to remove this property."
+    ;; See https://stackoverflow.com/questions/7410125
+    (interactive "r")
+    (with-silent-modifications
+      (put-text-property begin end 'read-only t)))
+
+  (defun za/set-region-writeable (begin end)
+    "Removes the read-only text property from the marked region.
+  Use `set-region-read-only' to set this property."
+    ;; See https://stackoverflow.com/questions/7410125
+    (interactive "r")
+    (with-silent-modifications
+      (remove-text-properties begin end '(read-only t))))
+#+end_src
 
 * Markdown
 Markdown mode settings.
