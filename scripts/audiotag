@@ -71,7 +71,7 @@ case "$file" in
   *.mp3)
     if [ -n "$clear" ]; then
       command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
-      eyeD3 --remove-all-objects "$file"
+      eyeD3 --remove-all "$file"
     elif [ -n "$spec" ]; then
       command -v taffy >/dev/null 2>&1 || die 'taffy must be installed.'
       taffy --extract "$spec" "$file"
