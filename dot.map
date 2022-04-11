@@ -79,7 +79,6 @@ gtk-2.0/gtkrc: ~/.gtkrc-2.0
 emacs:
 - config.org: ~/.emacs.d/config.org
 - init.el: ~/.emacs.d/init.el
-- custom.el: ~/.emacs.d/custom.el
 - jokull-theme.el: ~/.emacs.d/jokull-theme.el
 - junipero-theme.el: ~/.emacs.d/junipero-theme.el
 
