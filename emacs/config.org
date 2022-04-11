@@ -282,6 +282,13 @@ Furthermore, tags were getting cut off, so I manually set the best column to dis
   (add-hook 'org-mode-hook #'za/settings-org-mode)
 #+end_src
 
+Link settings:
+
+#+begin_src emacs-lisp
+  (setq org-link-elisp-confirm-function #'y-or-n-p
+        org-link-elisp-skip-confirm-regexp "^org-noter$")
+#+end_src
+
 *** Enable linking to email via notmuch
 To be able to link to emails via notmuch, I use ol-notmuch:
 
