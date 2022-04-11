@@ -92,7 +92,8 @@ endsnippet
 
 snippet confirm "Ask for confirmation" b
 printf "${1:prompt}"
-read -r conf; case "$conf" in
+stty raw && conf="$(dd bs=1 count=1 2>/dev/null)" && stty -raw
+case "$conf" in
   Y|y)
     ${2:# code if yes}
     ;;
