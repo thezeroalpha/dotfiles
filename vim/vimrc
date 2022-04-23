@@ -319,6 +319,10 @@ nnoremap <leader>/ :Ag<CR>
 nnoremap <leader>M :Marks<CR>
 nnoremap <leader>; :History:<CR>
 
+" My extensions
+nmap <leader>J <Plug>FzfChangesJumpsJumps
+nmap <leader>C <Plug>FzfChangesJumpsChanges
+
 " Search for Todos/Fixmes
 command! Todo Ag ((TO ?DO)|FIXME):?<space>?
 nnoremap <leader>! :Todo<CR>
