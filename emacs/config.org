@@ -739,21 +739,11 @@ Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I h
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
 *** export
 #+begin_src emacs-lisp
-  (custom-set-variables '(org-export-backends '(ascii html icalendar latex odt md)))
+  (custom-set-variables '(org-export-backends '(ascii html icalendar latex odt md org)))
 #+end_src
 ** org-ref
-It's a great package, but seems to be a bit buggy in my setup.
-Basically, having this package loaded would cause an error when executing a source block.
-So, install it, but only require it if we're not running in daemon mode.
-If we're running in daemon mode, add it as a hook [[*Daemon][below]].
-
-TODO: this should be reported as a bug at some point!
-
 #+begin_src emacs-lisp
-  (unless (package-installed-p 'org-ref)
-    (package-install 'org-ref))
-  (unless (daemonp)
-    (require 'org-ref))
+  (use-package org-ref)
 #+end_src
 
 ** calfw
@@ -1587,12 +1577,11 @@ Then, if I'm in an emacsclient, I want to bind C-x C-c to that function (if not,
       (global-set-key (kbd "C-x C-c") #'za/emacsclient-c-x-c-c))
 #+end_src
 
-Furthermore, I want to set the theme correctly whenever I connect with 'emacsclient', and org-ref needs to be loaded after a frame is created for some reason:
+Furthermore, I want to set the theme correctly whenever I connect with 'emacsclient':
 
 #+begin_src emacs-lisp
   (if (daemonp)
-    (add-hook 'after-make-frame-functions #'za/auto-select-theme)
-    (add-hook 'after-make-frame-functions (lambda () (require 'org-ref))))
+    (add-hook 'after-make-frame-functions #'za/auto-select-theme))
 #+end_src
 * Notmuch
 Define some saved searches (i.e. mailboxes):
