@@ -1010,6 +1010,10 @@ Custom reports:
     (with-eval-after-load 'org
       (require 'osm-ol)))
 #+end_src
+** ess
+#+begin_src emacs-lisp
+  (use-package ess)
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
