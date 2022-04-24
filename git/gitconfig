@@ -97,6 +97,7 @@
 
 [merge]
     tool = vimdiff
+    conflictstyle = diff3
 
 [core]
     autocrlf = input
