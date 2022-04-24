@@ -366,7 +366,8 @@ map <c-r> batch_rename
 map C change
 map cw push :rename<space>
 
-map <c-i> jump-next
+# <tab> == <c-i>
+map <tab> jump-next
 map <c-o> jump-prev
 # Delete
 map D trash
