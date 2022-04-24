@@ -1,0 +1,2 @@
+#!/bin/sh
+fzf-tmux --prompt="Choose > " --layout=reverse

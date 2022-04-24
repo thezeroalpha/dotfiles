@@ -8,8 +8,8 @@ elif [ -n "$INSIDE_EMACS" ]; then EDITOR="emacsclient"
 else EDITOR="$(command -v vim)"; fi
 export EDITOR
 
+export CHOOSER=fzfchoose
 export MUSIC_DIR="/Volumes/HDD/Music/Libraries/Mine"
-
 export PAGER="less"
 export LESS="-FRiX"
 

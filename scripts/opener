@@ -3,7 +3,7 @@
 [ $# -gt 0 ] || { printf "File required in argument.\n" && exit 1; }
 case "$1" in
   # Handling links is another script's job
-  http*) linkhandler "$@";;
+  *://*) linkhandler "$@";;
   *)
     case $(file --mime-type "$1" -bL) in
       text/*|application/json|inode/x-empty) { [ -n "$VIM_TERMINAL" ] && vimsend "$1"; } || ${EDITOR:-vim} "$1";;
