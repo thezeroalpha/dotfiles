@@ -1,12 +1,30 @@
 #!/bin/sh
 # A CLI utility for exchange rates via https://www.xe.com
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps curl pup tr
 
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 
-[ $# -eq 3 ] || die 'Usage: xe AMOUNT FROM_CURRENCY TO_CURRENCY'
-amount="$1"
-from="$(printf '%s' "$2" | tr '[[:lower:]]' '[[:upper:]]')"
-to="$(printf '%s' "$3" | tr '[[:lower:]]' '[[:upper:]]')"
+# if args == amount from to
+if [ $# -eq 3 ]; then
+  amount="$1"
+  from="$(printf '%s' "$2" | tr '[:lower:]' '[:upper:]')"
+  to="$(printf '%s' "$3" | tr '[:lower:]' '[:upper:]')"
+# if args == from to, and amount on stdin
+elif ! [ -t 0 ] && [ $# -eq 2 ]; then
+  read -r amount
+  from="$(printf '%s' "$1" | tr '[:lower:]' '[:upper:]')"
+  to="$(printf '%s' "$2" | tr '[:lower:]' '[:upper:]')"
+# else usage is incorrect
+else
+  die 'Usage: xe AMOUNT FROM_CURRENCY TO_CURRENCY'
+fi
+
 
 curl -sL "https://www.xe.com/currencyconverter/convert/?Amount=$amount&From=$from&To=$to" \
   -H 'authority: www.xe.com' \
