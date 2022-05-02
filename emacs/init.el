@@ -4,7 +4,10 @@
 (toggle-frame-fullscreen)
 
 ;; Get rid of all bars
-(setq org-src-tab-acts-natively t)
+;; Note: this hinders discoverability! Not a problem for me, because
+;; counsel-M-x gives discoverability with fuzzy-finding and
+;; tmm-menubar still lets me use the menubar when needed. But this is
+;; worth considering.
 (when (or window-system (daemonp))
   (menu-bar-mode -1)
   (tool-bar-mode -1)

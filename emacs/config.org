@@ -276,6 +276,7 @@ Furthermore, tags were getting cut off, so I manually set the best column to dis
     (za/toggle-wrap t)
     (org-indent-mode)
     (setq org-tags-column (- 10 (window-total-width)))
+    (setq org-src-tab-acts-natively t)    ; a tab in a code block indents the code as it should
     ;; Realign tags
     (org-set-tags-command '(4)))
 
