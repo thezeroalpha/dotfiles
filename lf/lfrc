@@ -284,7 +284,7 @@ cmd pgp_sign_detach ${{
 }}
 
 # Select files based on glob filter
-cmd filter %{{
+cmd glob-select-wrapper %{{
   printf "Filter: "
   read -r filter_expr
   lf -remote "send $id unselect"
@@ -350,7 +350,7 @@ map U redraw
 map f fuzzy_select
 map <esc> unselect; clear
 map <space> :toggle; down
-map F filter
+map F glob-select-wrapper
 map u
 map uu unselect
 map uy clear
