@@ -33,7 +33,7 @@ case "$1" in
         ;;
     esac
     ;;
-  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*|*fb.watch*)
+  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*yewtu.be*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*|*fb.watch*)
     case "$(printf 'Open\nDownload\nPlay' | "$CHOOSER")" in
       Open)
         open "$1"
