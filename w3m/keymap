@@ -27,6 +27,8 @@ keymap ~ GOTO_HOME # specified in $WWW_HOME
 keymap C-l REDRAW
 keymap s PRINT
 keymap S DOWNLOAD
+keymap D SAVE_LINK
+keymap M-d DOWNLOAD_LIST
 keymap ";" COMMAND
 keymap e EXTERN_LINK
 keymap ] EXTERN
@@ -88,7 +90,6 @@ keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 # DICT_WORD_AT  Execute dictionary command for word at cursor
 # DISPLAY_IMAGE Restart loading and drawing of images
 # DOWNLOAD      Save document source
-# DOWNLOAD_LIST Display downloads panel
 # EDIT          Edit local source
 # EDIT_SCREEN   Edit rendered copy of document
 # EXEC_SHELL    Execute shell command and display output
@@ -157,7 +158,6 @@ keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 # RESHAPE       Re-render document
 # RIGHT         Shift screen one column right
 # SAVE_IMAGE    Save inline image
-# SAVE_LINK     Save hyperlink target
 # SAVE_SCREEN   Save rendered document
 # SEARCH                Search forward
 # SEARCH_BACK   Search backward
