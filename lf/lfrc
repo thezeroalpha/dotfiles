@@ -422,6 +422,8 @@ map ce edit_config
 map Q queue
 
 # Compressing
+map t
+map * tag-toggle
 map tz zip
 map tt tar
 map tu extract
