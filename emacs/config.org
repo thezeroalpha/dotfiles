@@ -1,3 +1,73 @@
+* Keep track of custom key bindings
+I want an easy way to see which global key bindings I have.
+Some packages provide things like this, but I want it to be simple and always available, so I'll roll my own.
+These functions allow a way to store personal global key bindings and view them as a list.
+
+I'll use a hash table to map a key (in ~kbd~ format, the inverse of this is ~key-description~) to its function (and its previous function):
+
+#+begin_src emacs-lisp
+  (setq za/personal-keybinds (make-hash-table :test 'equal))
+#+end_src
+
+A function to bind keys:
+
+#+begin_src emacs-lisp
+  (defun za/global-set-key (keys fun)
+    "Bind KEYS to FUN. This will be saved to the za/personal-keybinds hash table."
+    (let* (;; Store the previous function KEYS were bound to
+           (lookup-result (lookup-key (current-global-map) keys))
+           (previous-fun (cond ((not lookup-result) nil)
+                               ((numberp lookup-result) nil)
+                               ((equal lookup-result fun) nil)
+                               (t lookup-result)))
+           ;; Try to see if it already has a custom binding
+           (existing-entry (gethash keys za/personal-keybinds)))
+
+      ;; If KEYS already have a custom binding, fail, unless we're just repeating the same binding
+      (if (and existing-entry
+               (not (equal (car existing-entry) fun)))
+          (user-error (format "Keys are already bound to %s" (car existing-entry))))
+
+      (puthash keys (list fun previous-fun) za/personal-keybinds)
+      (global-set-key keys fun)))
+#+end_src
+
+And one to remove bindings:
+
+#+begin_src emacs-lisp
+  (defun za/global-unset-key (keys)
+    "Remove a custom key binding from za/personal-keybinds and unbind the keys."
+    (remhash keys za/personal-keybinds)
+    (global-unset-key keys))
+#+end_src
+
+Then a way to retrieve keybindings:
+
+#+begin_src emacs-lisp
+  (defun za/get-personal-keybinds ()
+    "Return the contents of za/personal-keybinds as a string."
+    (let (result
+          (format-entry (lambda (k v)
+                          (let ((get-func (lambda (e) (nth 0 e)))
+                                (get-prev-func (lambda (e) (nth 1 e))))
+                            (push
+                             (concat (format "%s\t\t%s" (key-description k) (funcall get-func v))
+                                     (if (funcall get-prev-func v)
+                                         (format "\t\t(previously %s)" (funcall get-prev-func v))))
+                             result)))))
+      (maphash format-entry za/personal-keybinds)
+      (mapconcat 'identity (sort result 'string<) "\n")))
+#+end_src
+(za/global-unset-key (kbd "C-x C-s"))
+And a way to display all of the keybindings:
+
+#+begin_src emacs-lisp
+  (defun za/list-personal-keybinds ()
+    (interactive)
+    (with-output-to-temp-buffer "*Personal Keybindings*"
+      (princ (za/get-personal-keybinds))))
+#+end_src
+
 * Emacs file locations
 ** Auto-Save files
 By default, auto-save files ("#file#") are placed in the same directory as the file itself.
@@ -32,7 +102,6 @@ The second one actually loads them.
   (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
   (load custom-file)
 #+end_src
-
 * Theme
 Icons required for some parts of the doom theme:
 
@@ -338,12 +407,12 @@ Convenience functions to make opening the main file faster:
 Bind keys to those functions:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c g i") 'gtd-inbox)
-  (global-set-key (kbd "C-c g g") 'gtd)
-  (global-set-key (kbd "C-c g a") 'gtd-archive)
-  (global-set-key (kbd "C-c g s") 'gtd-someday)
-  (global-set-key (kbd "C-c g r") 'gtd-reference)
-  (global-set-key (kbd "C-c g t") 'gtd-tickler)
+  (za/global-set-key (kbd "C-c g i") #'gtd-inbox)
+  (za/global-set-key (kbd "C-c g g") #'gtd)
+  (za/global-set-key (kbd "C-c g a") #'gtd-archive)
+  (za/global-set-key (kbd "C-c g s") #'gtd-someday)
+  (za/global-set-key (kbd "C-c g r") #'gtd-reference)
+  (za/global-set-key (kbd "C-c g t") #'gtd-tickler)
 #+end_src
 **** Refiling & archiving
 Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
@@ -804,7 +873,7 @@ I'll bind a key to start a vterm or switch to the running vterm:
          (if (get-buffer vterm-buffer-name)
              (switch-to-buffer vterm-buffer-name)
            (vterm)))
-  (global-set-key (kbd "C-c t") 'switch-to-vterm)
+  (za/global-set-key (kbd "C-c t") 'switch-to-vterm)
 #+end_src
 
 ** sr-speedbar
@@ -823,13 +892,17 @@ If it's not bound, or if it's false, first open the speedbar.
 Then, select it.
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c F") (lambda () (interactive)
-                                  (if (or (not (boundp 'sr-speedbar-exist-p))
-                                          (not (sr-speedbar-exist-p)))
-                                      (sr-speedbar-open))
-                                  (sr-speedbar-select-window)))
+  (defun za/jump-to-speedbar-or-open ()
+    "Open a speedbar or jump to it if already open."
+    (interactive)
+    (if (or (not (boundp 'sr-speedbar-exist-p))
+            (not (sr-speedbar-exist-p)))
+        (sr-speedbar-open))
+    (sr-speedbar-select-window))
 #+end_src
-
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-c F") 'za/jump-to-speedbar-or-open)
+#+end_src
 ** expand-region
 Expand the selected region semantically.
 
@@ -1177,7 +1250,7 @@ use in order for displaying the list, and then options for those functions (each
 And a way to toggle those side windows:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c w") (lambda () (interactive) (window-toggle-side-windows)))
+  (za/global-set-key (kbd "C-c w") #'window-toggle-side-windows)
 #+end_src
 * Editor
 ** Overwrite selection on typing
@@ -1279,7 +1352,7 @@ A function to toggle wrapping:
 And a keybinding to toggle wrapping:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c q w") #'za/toggle-wrap)
+  (za/global-set-key (kbd "C-c q w") #'za/toggle-wrap)
 #+end_src
 
 I want to wrap text at window boundary for some modes:
@@ -1344,13 +1417,13 @@ Even though I won't be sending the email from there, I like the syntax highlight
 It's more useful for me to be able to delete up to a character instead of to and including a character:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-z") 'zap-up-to-char)
+  (za/global-set-key (kbd "M-z") 'zap-up-to-char)
 #+end_src
 ** Expansion/completion
 Use hippie expand instead of dabbrev-expand:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-/") 'hippie-expand)
+  (za/global-set-key (kbd "M-/") 'hippie-expand)
 #+end_src
 
 ** Prefer newer file loading
@@ -1411,19 +1484,19 @@ Enable semantic mode for major modes:
 Change M-f to stop at the start of the word:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-f") 'forward-to-word)
+  (za/global-set-key (kbd "M-f") 'forward-to-word)
 #+end_src
 
 Bind C-M-S-F to the old functionality of M-f (stop at end of word)
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-M-S-F") 'forward-word)
+  (za/global-set-key (kbd "C-M-S-F") 'forward-word)
 #+end_src
 
 ** Rectangle insert string
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x r I") 'string-insert-rectangle)
-  (global-set-key (kbd "C-x r R") 'replace-rectangle)
+  (za/global-set-key (kbd "C-x r I") 'string-insert-rectangle)
+  (za/global-set-key (kbd "C-x r R") 'replace-rectangle)
 #+end_src
 ** End sentences with one space
 Emacs uses the rather old-fashioned convention of treating a period followed by double spaces as end of sentence. However, it is more common these days to end sentences with a period followed by a single space.
@@ -1499,30 +1572,38 @@ I want to have these enabled so I don't get a prompt whenever I try to use a dis
 #+end_src
 ** Easily edit my config
 Bind a keyboard shortcut to open my config.
-The "(interactive)" means that it can be called from a keybinding or from M-x (though since it's a lambda, it can't be called from M-x).
+The "(interactive)" means that it can be called from a keybinding or from M-x.
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c E") (lambda () (interactive) (find-file (expand-file-name "config.org" user-emacs-directory))))
+  (defun za/edit-config-org ()
+    "Edit my config.org file"
+    (interactive)
+    (find-file (expand-file-name "config.org" user-emacs-directory)))
 #+end_src
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-c E") 'za/edit-config-org)
+#+end_src
+(describe-key (kbd "C-c E"))
 ** Fast access to view-mode (pager)
 I want to bind view-mode to a key for easy access:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c r") 'view-mode)
+  (za/global-set-key (kbd "C-c q r") 'view-mode)
 #+end_src
 
 ** Kill this buffer
 I like to be able to kill a buffer instantly:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "s-<backspace>") 'kill-current-buffer)
+  (za/global-set-key (kbd "s-<backspace>") 'kill-current-buffer)
 #+end_src
 
 ** Toggle fullscreen
 I'll use the keybinding that's standard on macOS:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-s-f") #'toggle-frame-fullscreen)
+  (za/global-set-key (kbd "C-s-f") #'toggle-frame-fullscreen)
 #+end_src
 
 ** Enable recursive minibuffers
@@ -1535,13 +1616,13 @@ I'll use the keybinding that's standard on macOS:
 When I write lisp, sometimes I want to switch two sexps (e.g. ~(one) (two)~ → ~(two) (one)~), so a key binding is nice for that:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-S-t") #'transpose-sexps)
+  (za/global-set-key (kbd "C-S-t") #'transpose-sexps)
 #+end_src
 
 Also, to raise a sexp (e.g. ~(one (two))~ → ~(two)~):
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-S-u") #'raise-sexp)
+  (za/global-set-key (kbd "C-S-u") #'raise-sexp)
 #+end_src
 
 ** Dedicated windows
@@ -1559,7 +1640,7 @@ So I create a keybinding to toggle dedicated on a window:
            (set-window-dedicated-p (selected-window) t)
            (message "Window marked as dedicated"))))
 
-  (global-set-key (kbd "C-x 9") #'za/toggle-window-dedicated-p)
+  (za/global-set-key (kbd "C-x 9") #'za/toggle-window-dedicated-p)
 
 #+end_src
 
@@ -1581,7 +1662,7 @@ Then, if I'm in an emacsclient, I want to bind C-x C-c to that function (if not,
 #+begin_src emacs-lisp
   ;; If not running in emacsclient, use the default bindings
   (if (daemonp)
-      (global-set-key (kbd "C-x C-c") #'za/emacsclient-c-x-c-c))
+      (za/global-set-key (kbd "C-x C-c") #'za/emacsclient-c-x-c-c))
 #+end_src
 
 Furthermore, I want to set the theme correctly whenever I connect with 'emacsclient':
@@ -1615,7 +1696,7 @@ Define the main screen sections:
 Global keybindings:
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c m") #'notmuch)
+  (za/global-set-key (kbd "C-c m") #'notmuch)
 #+end_src
 
 Show newest mail first:
