@@ -57,9 +57,6 @@
 [submodule "shell/osx-zsh-completions"]
 	path = shell/osx-zsh-completions
 	url = https://github.com/nilsonholger/osx-zsh-completions
-[submodule "tools/tuxi"]
-	path = tools/tuxi
-	url = https://github.com/Bugswriter/tuxi/
 [submodule "tools/translate-shell"]
 	path = tools/translate-shell
 	url = https://github.com/soimort/translate-shell
