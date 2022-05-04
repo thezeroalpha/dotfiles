@@ -1,127 +1,187 @@
-#!/bin/sh
-# Linkhandler: handles links. Like `opener` but for URLs
-case "$1" in
-  *bandcamp.com*)
-    case "$(printf 'Download\nPlay' | "$CHOOSER")" in
-      Download)
-        DOWNLOAD_DIR="$HOME"/Downloads/songs/listen\ to
-        mkdir -p "$DOWNLOAD_DIR"
-        cd "$DOWNLOAD_DIR" || { printf "Couldn't cd into download directory %s\n" "$DOWNLOAD_DIR"; exit 1; }
-        command -v youtube-dl 1>/dev/null 2>&1 || { printf "Youtube-dl required.\n"; exit 1; }
+#!/usr/bin/env perl
+use strict;
+use warnings;
 
-        url="$1"
-        name="${url##*/}"
-        artist="$(printf "%s" "$url" | sed 's|https*://||;s:\.bandcamp\.com.*::')"
+if ( @ARGV != 1 ) {
+    die 'Link necessary.';
+}
+my ($link)  = @ARGV;
+my $CHOOSER = $ENV{'CHOOSER'};
+my $HOME    = $ENV{'HOME'};
+my $choice;
 
-        [ -d "$artist" ] || mkdir -p "$artist"
-        cd "$artist" || { printf "Couldn't cd into directory %s\n" "$(pwd)/$artist"; exit 1; }
-        [ -d "$name" ] || mkdir -p "$name"
-        cd "$name" || { printf "Couldn't cd into directory %s\n" "$(pwd)/$name"; exit 1; }
-        youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" "$url"
-        printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u
-        youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" --exec "notify 'Downloaded $artist - $name' '$url' bcdl" "$url" >> "$name".m3u
-        ;;
-      Play)
-        case "$(printf 'Audio (queue in mpd)\nAudio (mpv)' | "$CHOOSER")" in
-          'Audio (queue in mpd)')
-            mpc add "$(youtube-dl -x -g "$1")"
-            ;;
-          'Audio (mpv)')
-            mpv --no-audio-display --no-video --volume=50 "$1"
-            ;;
-        esac
-        ;;
-    esac
-    ;;
-  *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*yewtu.be*|*youtu.be*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*v.redd.it*|*fb.watch*)
-    case "$(printf 'Open\nDownload\nPlay' | "$CHOOSER")" in
-      Open)
-        open "$1"
-        ;;
-      Download)
-        DOWNLOAD_DIR=~/Downloads/
-        case "$(printf 'Both\nAudio\nVideo' | "$CHOOSER")" in
-          Both)
-            notify 'Download (av) started' "Downloading" linkhandler
-            nohup >/dev/null youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$DOWNLOAD_DIR/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded.' linkhandler" "$1" & disown
-            ;;
-          Audio)
-            notify 'Download (audio) started' "Downloading" linkhandler
-            nohup >/dev/null youtube-dl --add-metadata -xic -f bestaudio/best -o "$DOWNLOAD_DIR/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded.' linkhandler" "$1" & disown
-            ;;
-          Video)
-            notify 'Download (video) started' "Downloading" 'linkhandler'
-            nohup >/dev/null youtube-dl -f bestvideo --add-metadata -ic --write-sub --embed-subs -o "$DOWNLOAD_DIR/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded.' linkhandler" "$1" & disown
-            ;;
-        esac
-        ;;
-      Play)
-        case "$(printf 'Video\nAudio (queue in mpd)\nAudio (mpv)' | "$CHOOSER")" in
-          Video)
-            setsid -f mpvq "$1" 1>/dev/null 2>&1
-            notify 'Starting mpv' "Opening $1..." 'linkhandler'
-            ;;
-          'Audio (queue in mpd)')
-            mpc add "$(youtube-dl -x -g "$1")"
-            ;;
-          'Audio (mpv)')
-            mpv --no-audio-display --no-video --volume=50 "$1"
-            ;;
-        esac
-        ;;
-    esac
-    ;;
-  *png|*jpg|*jpe|*jpeg|*gif)
-    notify 'Starting image viewer' "Opening $1..." 'linkhandler'
-    curl -sL "$1" > "/tmp/$(printf "%s" "$1" | sed "s/.*\///")" \
-      && opener "/tmp/$(printf "%s" "$1" | sed "s/.*\///")"  1>/dev/null 2>&1 &
-    ;;
-  *gifv)
-    setsid -f mpv -loop "$1" 1>/dev/null 2>&1
-    ;;
-  *mp3|*flac|*opus|*mp3?source*)
-    case "$(printf 'Download\nPlay' | "$CHOOSER")" in
-      Download)
-        ;;
-      Play)
-        setsid -f mpv --volume=50 "$1" 1>/dev/null 2>&1
-        ;;
-    esac
-    ;;
-  *reddit.com*)
-    reddio print -c always "comments/$(printf "%s" "$1" | cut -d/ -f7)" | less -+F -+X
-    ;;
-  http://*|https://*)   # everything else opens in w3m, can use go-readability within
-    # if command -v go-readability >/dev/null 2>&1; then
-    #   go-readability "$1" | w3m -config ~/.config/w3m/config -T text/html
-    # else
-    w3m -config ~/.config/w3m/config -T text/html "$1"
-    # fi
-    ;;
-  '!http'*)
-    os=$(uname -s | tr '[:upper:]' '[:lower:]')
-    case "$os" in
-      linux*)
-        setsid -f brave "${1##!}"
-        ;;
-      darwin*)
-        open -a 'Brave Browser' "${1##!}"
-        ;;
-      msys*|cygwin*|mingw*|nt|win*)
-        printf "Windows not supported.\n" >&2
-        ;;
-      *)
-        printf "Operating system %s is unknown.\n" "$os"
-        ;;
-    esac
-    ;;
-  '@http'*)
-    printf '%s' "${1##@}" | clc
-    ;;
-  *)
-    if [ -f "$1" ]; then "${EDITOR:-vim}" "$1"
-    else open "$1" >/dev/null 2>&1
-    fi
-    ;;
-esac
+sub detach {
+    my $funcref = shift;
+    if ( fork() == 0 ) {
+        $funcref->();
+    }
+    return;
+}
 
+sub includes_strs {
+    my $substrs  = shift;
+    my @included = grep { index( $link, $_ ) != -1 } @{$substrs};
+    return scalar @included;
+}
+
+sub endswith_strs {
+    my $suffixes = shift;
+    my @endswith = grep { $link =~ /\Q$_\E$/msx } @{$suffixes};
+    return scalar @endswith;
+}
+
+sub startswith_strs {
+    my $prefixes   = shift;
+    my @startswith = grep { $link =~ /^\Q$_\E/msx } @{$prefixes};
+    return scalar @startswith;
+}
+
+sub choose {
+    my $options_ref = shift;
+    my $options_str = join "\n", @{$options_ref};
+    my $selected    = `printf '$options_str\n' | "$CHOOSER"`;
+    $selected =~ s/\s+$//msx;
+    return $selected;
+}
+
+sub notify {
+    my ( $title, $message ) = @_;
+    system qq(notify '$title' '$message' linkhandler >/dev/null 2>&1);
+    return;
+}
+
+if ( includes_strs( ['bandcamp.com'] ) ) {
+    $choice = choose( [ 'Download', 'Play' ] );
+
+    if ( $choice eq 'Download' ) {
+        detach sub {
+            my $download_dir = "$HOME/Downloads/songs/listen to";
+            system(qq(mkdir -p "$download_dir"));
+            chdir($download_dir);
+            ( my $name   = $link ) =~ s!^.*/!!;
+            ( my $artist = $link ) =~ s|https*://||;
+            $artist =~ s/\.bandcamp\.com.*//;
+
+            notify( "Downloading $name by $artist", "Downloading $link" );
+            system(qq(mkdir -p $artist)) unless ( -d $artist );
+            chdir($artist);
+            system(qq(mkdir -p $name)) unless ( -d $name );
+            chdir($name);
+            system qq(youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >/dev/null 2>&1);
+            system(qq(printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u));
+            system(qq(youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >> "$name".m3u));
+            notify( "Finished downloading $name by $artist",
+                "Downloaded $link" );
+        }
+    }
+    elsif ( $choice eq 'Play' ) {
+        $choice =
+          choose( [ 'Audio (queue in mpd)', 'Audio (mpv in foreground)' ] );
+        if ( $choice eq 'Audio (queue in mpd)' ) {
+            detach sub { system(qq(mpc add "\$(youtube-dl -x -g "$link")")); };
+        }
+        elsif ( $choice eq 'Audio (mpv in foreground)' ) {
+            system(qq(mpv --no-audio-display --no-video --volume=50 "$link"));
+        }
+    }
+}
+elsif (
+    endswith_strs( [ 'mkv', 'webm', 'mp4' ] )
+    or includes_strs(
+        [
+            'youtube.com/watch',    'youtube.com/playlist',
+            'yewtu.be',             'youtu.be',
+            'hooktube.com',         'bitchute.com',
+            'videos.lukesmith.xyz', 'v.redd.it',
+            'fb.watch'
+        ]
+    )
+  )
+{
+    $choice = choose( [ 'Open', 'Download', 'Play' ] );
+    if ( $choice eq 'Open' ) {
+        system( 'open', $link );
+    }
+    elsif ( $choice eq 'Download' ) {
+        my $download_dir = "$HOME/Downloads";
+        $choice = choose( [ 'Both', 'Audio', 'Video' ] );
+        if ( $choice eq 'Both' ) {
+            detach sub {
+                system(qq(notify "Download (av) started" 'Downloading $link' linkhandler >/dev/null 2>&1));
+                system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" $link >/dev/null 2>&1));
+            }
+        }
+        elsif ( $choice eq 'Audio' ) {
+            detach sub {
+                system(qq(notify "Download (audio) started" 'Downloading $link' linkhandler >/dev/null 2>&1));
+                system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" $link >/dev/null 2>&1));
+            }
+        }
+        elsif ( $choice eq 'Video' ) {
+            detach sub {
+                system(qq(notify "Download (video) started" 'Downloading $link' linkhandler >/dev/null 2>&1));
+                system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" $link >/dev/null 2>&1));
+            }
+        }
+    }
+    elsif ( $choice eq 'Play' ) {
+        $choice = choose(
+            [ 'Video', 'Audio (queue in mpd)', 'Audio (mpv in foreground)' ] );
+        if ( $choice eq 'Video' ) {
+            detach sub {
+                system("mpvq $link 1>/dev/null 2>&1");
+                system(qq(notify 'Starting mpv' 'Opening $link...' linkhandler >/dev/null 2>&1));
+            }
+        }
+        elsif ( $choice eq 'Audio (queue in mpd)' ) {
+            detach sub {
+                system(qq(mpc add "\$(youtube-dl -x -g "$link")"));
+            }
+        }
+        elsif ( $choice eq 'Audio (mpv in foreground)' ) {
+            system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
+        }
+    }
+}
+elsif ( endswith_strs( [ 'png', 'jpg', 'jpe', 'jpeg', 'gif' ] ) ) {
+    detach sub {
+        system(qq(notify 'Starting image viewer' 'Opening $link...' linkhandler >/dev/null 2>&1));
+        system(qq(curl -sL "$link" >"/tmp/\$(printf "%s" "$link" | sed "s/.*\\///")"));
+        system(qq(opener "/tmp/\$(printf "%s" "$link" | sed "s/.*\\///")" >/dev/null 2>&1));
+    }
+}
+elsif ( endswith_strs( ['gifv'] ) ) {
+    detach sub {
+        system(qq(mpv --volume=50 "$link" >/dev/null 2>&1));
+    }
+}
+elsif ( endswith_strs( [ 'mp3', 'flac', 'opus', 'mp3?source' ] ) ) {
+    $choice = choose( [ 'Download', 'Play' ] );
+    if ( $choice eq 'Download' ) {
+        # TODO
+    }
+    elsif ( $choice eq 'Play' ) {
+        system(qq(mpv --volume=50 "$link" >/dev/null 2>&1));
+    }
+
+}
+elsif ( includes_strs( ['reddit.com'] ) ) {
+    system(qq(reddio print -c always "comments/\$(printf "%s" "$link" | cut -d/ -f7)" | less -+F -+X));
+}
+elsif ( startswith_strs( [ 'http://', 'https://' ] ) ) {
+    system(qq(w3m -config ~/.config/w3m/config -T text/html "$link"));
+}
+elsif ( startswith_strs( ['!http'] ) ) {
+    system(qq(notify 'Open in browser incomplete' 'not yet' linkhandler));
+}
+elsif ( startswith_strs( ['@http'] ) ) {
+    system(qq(notify 'copy incomplete' 'not yet' linkhandler));
+}
+else {
+    if ( -f $link ) {
+        system(qq(\${EDITOR:-vim} "$link"));
+    }
+    else {
+        system(qq(open "$link" >/dev/null 2>&1));
+    }
+}
