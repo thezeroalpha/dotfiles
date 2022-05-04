@@ -817,6 +817,13 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
 #+begin_src emacs-lisp
   (custom-set-variables '(org-export-backends '(ascii html icalendar latex odt md org)))
 #+end_src
+
+** org-contrib
+#+begin_src emacs-lisp
+  (use-package org-contrib
+    :config
+    (require 'org-checklist))
+#+end_src
 ** org-ref
 #+begin_src emacs-lisp
   (use-package org-ref)
