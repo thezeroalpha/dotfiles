@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 if ( @ARGV != 1 ) {
-    die 'Link necessary.';
+  die 'Link necessary.';
 }
 my ($link)  = @ARGV;
 my $CHOOSER = $ENV{'CHOOSER'};
@@ -18,174 +18,176 @@ a wait to remove the zombies."
 (Also, what a sentence. Fun without the context.)
 =cut
 sub detach {
-    my $funcref = shift;
-    if ( fork() == 0 ) {
-        $funcref->();
-    }
-    return;
+  my $funcref = shift;
+  if ( fork() == 0 ) {
+    $funcref->();
+  }
+  return;
 }
 
 sub includes_strs {
-    my $substrs  = shift;
-    my @included = grep { index( $link, $_ ) != -1 } @{$substrs};
-    return scalar @included;
+  my $substrs  = shift;
+  my @included = grep { index( $link, $_ ) != -1 } @{$substrs};
+  return scalar @included;
 }
 
 sub endswith_strs {
-    my $suffixes = shift;
-    my @endswith = grep { $link =~ /\Q$_\E$/msx } @{$suffixes};
-    return scalar @endswith;
+  my $suffixes = shift;
+  my @endswith = grep { $link =~ /\Q$_\E$/msx } @{$suffixes};
+  return scalar @endswith;
 }
 
 sub startswith_strs {
-    my $prefixes   = shift;
-    my @startswith = grep { $link =~ /^\Q$_\E/msx } @{$prefixes};
-    return scalar @startswith;
+  my $prefixes   = shift;
+  my @startswith = grep { $link =~ /^\Q$_\E/msx } @{$prefixes};
+  return scalar @startswith;
 }
 
 sub choose {
-    my $options_ref = shift;
-    my $options_str = join "\n", @{$options_ref};
-    my $selected    = `printf '$options_str\n' | "$CHOOSER"`;
-    $selected =~ s/\s+$//msx;
-    return $selected;
+  my $options_ref = shift;
+  my $options_str = join "\n", @{$options_ref};
+  my $selected    = `printf '$options_str\n' | "$CHOOSER"`;
+  $selected =~ s/\s+$//msx;
+  return $selected;
 }
 
 sub notify {
-    my ( $title, $message ) = @_;
-    system qq(notify '$title' '$message' linkhandler >/dev/null 2>&1);
-    return;
+  my ( $title, $message ) = @_;
+  system qq(notify '$title' '$message' linkhandler >/dev/null 2>&1);
+  return;
 }
 
 if ( includes_strs( ['bandcamp.com'] ) ) {
-    $choice = choose( [ 'Download', 'Play' ] );
+  $choice = choose( [ 'Download', 'Play' ] );
 
-    if ( $choice eq 'Download' ) {
-        detach sub {
-            my $download_dir = "$HOME/Downloads/songs/listen to";
-            system(qq(mkdir -p "$download_dir"));
-            chdir($download_dir);
-            ( my $name   = $link ) =~ s!^.*/!!;
-            ( my $artist = $link ) =~ s|https*://||;
-            $artist =~ s/\.bandcamp\.com.*//;
+  if ( $choice eq 'Download' ) {
+    detach sub {
+      my $download_dir = "$HOME/Downloads/songs/listen to";
+      system(qq(mkdir -p "$download_dir"));
+      chdir($download_dir);
+      ( my $name   = $link ) =~ s!^.*/!!;
+      ( my $artist = $link ) =~ s|https*://||;
+      $artist =~ s/\.bandcamp\.com.*//;
 
-            notify( "Downloading $name by $artist", "Downloading $link" );
-            system(qq(mkdir -p $artist)) unless ( -d $artist );
-            chdir($artist);
-            system(qq(mkdir -p $name)) unless ( -d $name );
-            chdir($name);
-            system qq(youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >/dev/null 2>&1);
-            system(qq(printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u));
-            system(qq(youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >> "$name".m3u));
-            notify( "Finished downloading $name by $artist",
-                "Downloaded $link" );
-        };
+      notify( "Downloading $name by $artist", "Downloading $link" );
+      system(qq(mkdir -p $artist)) unless ( -d $artist );
+      chdir($artist);
+      system(qq(mkdir -p $name)) unless ( -d $name );
+      chdir($name);
+      system qq(youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >/dev/null 2>&1);
+      system(qq(printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u));
+      system(qq(youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >> "$name".m3u));
+      notify( "Finished downloading $name by $artist",
+        "Downloaded $link" );
+    };
+  }
+  elsif ( $choice eq 'Play' ) {
+    $choice =
+    choose( [ 'Audio (queue in mpd)', 'Audio (mpv)' ] );
+    if ( $choice eq 'Audio (queue in mpd)' ) {
+      detach sub { system(qq(mpc add "\$(youtube-dl -x -g '$link')")); };
     }
-    elsif ( $choice eq 'Play' ) {
-        $choice =
-          choose( [ 'Audio (queue in mpd)', 'Audio (mpv in foreground)' ] );
-        if ( $choice eq 'Audio (queue in mpd)' ) {
-            detach sub { system(qq(mpc add "\$(youtube-dl -x -g '$link')")); };
-        }
-        elsif ( $choice eq 'Audio (mpv in foreground)' ) {
-            system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
-        }
+    elsif ( $choice eq 'Audio (mpv)' ) {
+      system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
     }
+  }
 }
 elsif (
-    endswith_strs( [ 'mkv', 'webm', 'mp4' ] )
+  endswith_strs( [ 'mkv', 'webm', 'mp4' ] )
     or includes_strs(
-        [
-            'youtube.com/watch',    'youtube.com/playlist',
-            'yewtu.be',             'youtu.be',
-            'hooktube.com',         'bitchute.com',
-            'videos.lukesmith.xyz', 'v.redd.it',
-            'fb.watch'
-        ]
-    )
+    [
+      'youtube.com/watch',    'youtube.com/playlist',
+      'yewtu.be',             'youtu.be',
+      'hooktube.com',         'bitchute.com',
+      'videos.lukesmith.xyz', 'v.redd.it',
+      'fb.watch'
+    ]
   )
+)
 {
-    $choice = choose( [ 'Open', 'Download', 'Play' ] );
-    if ( $choice eq 'Open' ) {
-        system( 'open', $link );
+  $choice = choose( [ 'Open', 'Download', 'Play' ] );
+  if ( $choice eq 'Open' ) {
+    system( 'open', $link );
+  }
+  elsif ( $choice eq 'Download' ) {
+    my $download_dir = "$HOME/Downloads";
+    $choice = choose([ 'Both', 'Audio', 'Video' ]);
+    if ( $choice eq 'Both' ) {
+      detach sub {
+        notify 'Download (av) started', "Downloading $link";
+        system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+      };
     }
-    elsif ( $choice eq 'Download' ) {
-        my $download_dir = "$HOME/Downloads";
-        $choice = choose([ 'Both', 'Audio', 'Video' ]);
-        if ( $choice eq 'Both' ) {
-            detach sub {
-                notify 'Download (av) started', "Downloading $link";
-                system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
-            };
-        }
-        elsif ( $choice eq 'Audio' ) {
-            detach sub {
-                notify 'Download (audio) started', 'Downloading $link';
-                system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
-            };
-        }
-        elsif ( $choice eq 'Video' ) {
-            detach sub {
-                notify 'Download (video) started', "Downloading $link";
-                system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
-            };
-        }
+    elsif ( $choice eq 'Audio' ) {
+      detach sub {
+        notify 'Download (audio) started', 'Downloading $link';
+        system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+      };
     }
-    elsif ( $choice eq 'Play' ) {
-        $choice = choose(['Video', 'Audio (queue in mpd)', 'Audio (mpv in foreground)']);
-        if ( $choice eq 'Video' ) {
-          system(qq(mpvq '$link' >/dev/null 2>&1));
-          notify 'Starting mpv', "Opening $link...";
-        }
-        elsif ( $choice eq 'Audio (queue in mpd)' ) {
-            detach sub {
-                system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
-            };
-        }
-        elsif ( $choice eq 'Audio (mpv in foreground)' ) {
-            system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
-        }
+    elsif ( $choice eq 'Video' ) {
+      detach sub {
+        notify 'Download (video) started', "Downloading $link";
+        system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+      };
     }
+  }
+  elsif ( $choice eq 'Play' ) {
+    $choice = choose(['Video', 'Audio (queue in mpd)', 'Audio (mpv)']);
+    if ( $choice eq 'Video' ) {
+      detach sub {
+        system(qq(mpvq '$link' >/dev/null 2>&1));
+        notify 'Starting mpv', "Opening $link...";
+      }
+    }
+    elsif ( $choice eq 'Audio (queue in mpd)' ) {
+      detach sub {
+        system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+      };
+    }
+    elsif ( $choice eq 'Audio (mpv)' ) {
+      system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
+    }
+  }
 }
 elsif ( endswith_strs( [ 'png', 'jpg', 'jpe', 'jpeg', 'gif' ] ) ) {
-    detach sub {
-        notify 'Starting image viewer', "Opening $link...";
-        system(qq(curl -sL '$link' >"/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")"));
-        system(qq(opener "/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")" >/dev/null 2>&1));
-    };
+  detach sub {
+    notify 'Starting image viewer', "Opening $link...";
+    system(qq(curl -sL '$link' >"/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")"));
+    system(qq(opener "/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")" >/tmp/error 2>&1));
+  }
 }
 elsif ( endswith_strs( ['gifv'] ) ) {
-    detach sub {
-        system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
-    };
+  detach sub {
+    system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
+  };
 }
 elsif ( endswith_strs( [ 'mp3', 'flac', 'opus', 'mp3?source' ] ) ) {
-    $choice = choose( [ 'Download', 'Play' ] );
-    if ( $choice eq 'Download' ) {
-        # TODO
-    }
-    elsif ( $choice eq 'Play' ) {
-        system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
-    }
+  $choice = choose( [ 'Download', 'Play' ] );
+  if ( $choice eq 'Download' ) {
+    # TODO
+  }
+  elsif ( $choice eq 'Play' ) {
+    system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
+  }
 
 }
 elsif ( includes_strs( ['reddit.com'] ) ) {
-    system(qq(reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X));
+  system(qq(reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X));
 }
 elsif ( startswith_strs( [ 'http://', 'https://' ] ) ) {
-    system(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
+  system(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
 }
 elsif ( startswith_strs( ['!http'] ) ) {
-    notify 'Open in browser incomplete', 'not yet';
+  notify 'Open in browser incomplete', 'not yet';
 }
 elsif ( startswith_strs( ['@http'] ) ) {
-    notify 'copy incomplete', 'not yet';
+  notify 'copy incomplete', 'not yet';
 }
 else {
-    if ( -f $link ) {
-        system(qq(\${EDITOR:-vim} '$link'));
-    }
-    else {
-        system(qq(open '$link' >/dev/null 2>&1));
-    }
+  if ( -f $link ) {
+    system(qq(\${EDITOR:-vim} '$link'));
+  }
+  else {
+    system(qq(open '$link' >/dev/null 2>&1));
+  }
 }
