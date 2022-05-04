@@ -24,7 +24,7 @@ folders2tags() {
 # This will always be read mail
 $(build_exclusive_tagstr archive) -- folder:/Archive/
 $(build_exclusive_tagstr draft) -- folder:/Drafts/
-$(build_exclusive_tagstr sent) -- from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl
+$(build_exclusive_tagstr sent) -- (from:alex@balgavy.eu or from:a.balgavy@gmail.com or from:a.balgavy@student.vu.nl) and (not folder:/Drafts/)
 $(build_exclusive_tagstr trash) -- folder:/Trash/ or folder:/Deleted/
 $(build_exclusive_tagstr tickets) -- folder:/Tickets/
 $(build_exclusive_tagstr spam) -- folder:/Spam/ or folder:/Junk/
