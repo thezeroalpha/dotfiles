@@ -10,6 +10,13 @@ my $CHOOSER = $ENV{'CHOOSER'};
 my $HOME    = $ENV{'HOME'};
 my $choice;
 
+=pod
+Using a fork is OK here because: "If a parent process terminates, then its
+"zombie" children (if any) are adopted by init(8), which automatically performs
+a wait to remove the zombies."
+# https://linux.die.net/man/2/wait
+(Also, what a sentence. Fun without the context.)
+=cut
 sub detach {
     my $funcref = shift;
     if ( fork() == 0 ) {
@@ -72,16 +79,16 @@ if ( includes_strs( ['bandcamp.com'] ) ) {
             system(qq(youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >> "$name".m3u));
             notify( "Finished downloading $name by $artist",
                 "Downloaded $link" );
-        }
+        };
     }
     elsif ( $choice eq 'Play' ) {
         $choice =
           choose( [ 'Audio (queue in mpd)', 'Audio (mpv in foreground)' ] );
         if ( $choice eq 'Audio (queue in mpd)' ) {
-            detach sub { system(qq(mpc add "\$(youtube-dl -x -g "$link")")); };
+            detach sub { system(qq(mpc add "\$(youtube-dl -x -g '$link')")); };
         }
         elsif ( $choice eq 'Audio (mpv in foreground)' ) {
-            system(qq(mpv --no-audio-display --no-video --volume=50 "$link"));
+            system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
         }
     }
 }
@@ -104,39 +111,36 @@ elsif (
     }
     elsif ( $choice eq 'Download' ) {
         my $download_dir = "$HOME/Downloads";
-        $choice = choose( [ 'Both', 'Audio', 'Video' ] );
+        $choice = choose([ 'Both', 'Audio', 'Video' ]);
         if ( $choice eq 'Both' ) {
             detach sub {
-                system(qq(notify "Download (av) started" 'Downloading $link' linkhandler >/dev/null 2>&1));
-                system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" $link >/dev/null 2>&1));
-            }
+                notify 'Download (av) started', "Downloading $link";
+                system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+            };
         }
         elsif ( $choice eq 'Audio' ) {
             detach sub {
-                system(qq(notify "Download (audio) started" 'Downloading $link' linkhandler >/dev/null 2>&1));
-                system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" $link >/dev/null 2>&1));
-            }
+                notify 'Download (audio) started', 'Downloading $link';
+                system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+            };
         }
         elsif ( $choice eq 'Video' ) {
             detach sub {
-                system(qq(notify "Download (video) started" 'Downloading $link' linkhandler >/dev/null 2>&1));
-                system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" $link >/dev/null 2>&1));
-            }
+                notify 'Download (video) started', "Downloading $link";
+                system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+            };
         }
     }
     elsif ( $choice eq 'Play' ) {
-        $choice = choose(
-            [ 'Video', 'Audio (queue in mpd)', 'Audio (mpv in foreground)' ] );
+        $choice = choose(['Video', 'Audio (queue in mpd)', 'Audio (mpv in foreground)']);
         if ( $choice eq 'Video' ) {
-            detach sub {
-                system("mpvq $link 1>/dev/null 2>&1");
-                system(qq(notify 'Starting mpv' 'Opening $link...' linkhandler >/dev/null 2>&1));
-            }
+          system(qq(mpvq '$link' >/dev/null 2>&1));
+          notify 'Starting mpv', "Opening $link...";
         }
         elsif ( $choice eq 'Audio (queue in mpd)' ) {
             detach sub {
-                system(qq(mpc add "\$(youtube-dl -x -g "$link")"));
-            }
+                system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+            };
         }
         elsif ( $choice eq 'Audio (mpv in foreground)' ) {
             system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
@@ -145,15 +149,15 @@ elsif (
 }
 elsif ( endswith_strs( [ 'png', 'jpg', 'jpe', 'jpeg', 'gif' ] ) ) {
     detach sub {
-        system(qq(notify 'Starting image viewer' 'Opening $link...' linkhandler >/dev/null 2>&1));
-        system(qq(curl -sL "$link" >"/tmp/\$(printf "%s" "$link" | sed "s/.*\\///")"));
-        system(qq(opener "/tmp/\$(printf "%s" "$link" | sed "s/.*\\///")" >/dev/null 2>&1));
-    }
+        notify 'Starting image viewer', "Opening $link...";
+        system(qq(curl -sL '$link' >"/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")"));
+        system(qq(opener "/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")" >/dev/null 2>&1));
+    };
 }
 elsif ( endswith_strs( ['gifv'] ) ) {
     detach sub {
-        system(qq(mpv --volume=50 "$link" >/dev/null 2>&1));
-    }
+        system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
+    };
 }
 elsif ( endswith_strs( [ 'mp3', 'flac', 'opus', 'mp3?source' ] ) ) {
     $choice = choose( [ 'Download', 'Play' ] );
@@ -161,27 +165,27 @@ elsif ( endswith_strs( [ 'mp3', 'flac', 'opus', 'mp3?source' ] ) ) {
         # TODO
     }
     elsif ( $choice eq 'Play' ) {
-        system(qq(mpv --volume=50 "$link" >/dev/null 2>&1));
+        system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
     }
 
 }
 elsif ( includes_strs( ['reddit.com'] ) ) {
-    system(qq(reddio print -c always "comments/\$(printf "%s" "$link" | cut -d/ -f7)" | less -+F -+X));
+    system(qq(reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X));
 }
 elsif ( startswith_strs( [ 'http://', 'https://' ] ) ) {
-    system(qq(w3m -config ~/.config/w3m/config -T text/html "$link"));
+    system(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
 }
 elsif ( startswith_strs( ['!http'] ) ) {
-    system(qq(notify 'Open in browser incomplete' 'not yet' linkhandler));
+    notify 'Open in browser incomplete', 'not yet';
 }
 elsif ( startswith_strs( ['@http'] ) ) {
-    system(qq(notify 'copy incomplete' 'not yet' linkhandler));
+    notify 'copy incomplete', 'not yet';
 }
 else {
     if ( -f $link ) {
-        system(qq(\${EDITOR:-vim} "$link"));
+        system(qq(\${EDITOR:-vim} '$link'));
     }
     else {
-        system(qq(open "$link" >/dev/null 2>&1));
+        system(qq(open '$link' >/dev/null 2>&1));
     }
 }
