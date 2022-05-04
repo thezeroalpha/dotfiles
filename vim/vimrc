@@ -449,6 +449,7 @@ let g:ale_c_clangd_options = '-std=gnu99 -Wall'
 let g:ale_c_clangformat_options = '-std=gnu99 -Wall'
 let g:ale_c_clangtidy_options = '-std=gnu99 -Wall'
 let g:ale_c_clangtidy_extra_options = '-std=gnu99 -Wall'
+let g:ale_perl_perlcritic_options = '--brutal'
 " indentLine {{{3
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_enable = 0 " off by default
