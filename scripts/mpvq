@@ -19,6 +19,7 @@ play() {
 
 # link archive
 arc(){
+  [ -d "$HOME/.cache/mpv" ] || mkdir -p "$HOME/.cache/mpv"
   title=$(youtube-dl --ignore-config --get-title "$1" 2>/dev/null)
   printf "%b\n" "$title\t$1" >> "$HOME/.cache/mpv/linkarchive"
 }
