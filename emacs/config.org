@@ -982,6 +982,17 @@ A better replacement for DocView:
   (pdf-tools-install)
 #+end_src
 
+Save position and jump back:
+
+#+begin_src emacs-lisp
+  (define-key pdf-view-mode-map (kbd "C-SPC")
+    (lambda () (interactive) (message "Position saved") (pdf-view-position-to-register ?x)))
+  (define-key pdf-view-mode-map (kbd "C-u C-SPC")
+    (lambda () (interactive) (pdf-view-jump-to-register ?x)))
+#+end_src
+
+*** TODO this clobbers register x. Find a way to not clobber a register
+
 ** virtualenvwrapper
 Like virtualenvwrapper.sh, but for Emacs.
 
@@ -996,6 +1007,13 @@ Like virtualenvwrapper.sh, but for Emacs.
 ** org-noter
 #+begin_src emacs-lisp
   (use-package org-noter)
+#+end_src
+
+Fix disabling of line wrap by no-opping set-notes-scroll:
+
+#+begin_src emacs-lisp
+  (defun za/no-op (&rest args))
+  (advice-add 'org-noter--set-notes-scroll :override 'za/no-op)
 #+end_src
 
 ** hl-todo
@@ -1197,6 +1215,10 @@ I want to hide certain modes from the modeline, they're always on:
     (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode undo-tree-mode ivy-posframe-mode)))
       (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide))
     (diminish 'view-mode " 👓"))
+#+end_src
+*** Transparent title bar
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 #+end_src
 *** Tab bar
 Only show tab bar if there's more than 1 tab:
