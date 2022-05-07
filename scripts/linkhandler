@@ -5,9 +5,10 @@ use warnings;
 if ( @ARGV != 1 ) {
   die 'Link necessary.';
 }
-my ($link)  = @ARGV;
+my ($link) = @ARGV;
 my $CHOOSER = $ENV{'CHOOSER'};
-my $HOME    = $ENV{'HOME'};
+my $HOME = $ENV{'HOME'};
+my $TERM = $ENV{'TERM'};
 my $choice;
 
 =pod
@@ -26,7 +27,7 @@ sub detach {
 }
 
 sub includes_strs {
-  my $substrs  = shift;
+  my $substrs = shift;
   my @included = grep { index( $link, $_ ) != -1 } @{$substrs};
   return scalar @included;
 }
@@ -38,7 +39,7 @@ sub endswith_strs {
 }
 
 sub startswith_strs {
-  my $prefixes   = shift;
+  my $prefixes = shift;
   my @startswith = grep { $link =~ /^\Q$_\E/msx } @{$prefixes};
   return scalar @startswith;
 }
@@ -46,7 +47,7 @@ sub startswith_strs {
 sub choose {
   my $options_ref = shift;
   my $options_str = join "\n", @{$options_ref};
-  my $selected    = `printf '$options_str\n' | "$CHOOSER"`;
+  my $selected = `printf '$options_str\n' | "$CHOOSER"`;
   $selected =~ s/\s+$//msx;
   return $selected;
 }
@@ -65,7 +66,7 @@ if ( includes_strs( ['bandcamp.com'] ) ) {
       my $download_dir = "$HOME/Downloads/songs/listen to";
       system(qq(mkdir -p "$download_dir"));
       chdir($download_dir);
-      ( my $name   = $link ) =~ s!^.*/!!;
+      ( my $name = $link ) =~ s!^.*/!!;
       ( my $artist = $link ) =~ s|https*://||;
       $artist =~ s/\.bandcamp\.com.*//;
 
@@ -82,30 +83,22 @@ if ( includes_strs( ['bandcamp.com'] ) ) {
     };
   }
   elsif ( $choice eq 'Play' ) {
-    $choice =
-    choose( [ 'Audio (queue in mpd)', 'Audio (mpv)' ] );
+    $choice = choose(['Audio (queue in mpd)', 'Audio (mpv)']);
     if ( $choice eq 'Audio (queue in mpd)' ) {
-      detach sub { system(qq(mpc add "\$(youtube-dl -x -g '$link')")); };
+      detach sub {
+        system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
+          title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
+          printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
+        system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+      };
     }
     elsif ( $choice eq 'Audio (mpv)' ) {
       system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
     }
   }
 }
-elsif (
-  endswith_strs( [ 'mkv', 'webm', 'mp4' ] )
-    or includes_strs(
-    [
-      'youtube.com/watch',    'youtube.com/playlist',
-      'yewtu.be',             'youtu.be',
-      'hooktube.com',         'bitchute.com',
-      'videos.lukesmith.xyz', 'v.redd.it',
-      'fb.watch'
-    ]
-  )
-)
-{
-  $choice = choose( [ 'Open', 'Download', 'Play' ] );
+elsif (endswith_strs(['mkv', 'webm', 'mp4']) or includes_strs(['youtube.com/watch', 'youtube.com/playlist', 'yewtu.be', 'youtu.be', 'hooktube.com', 'bitchute.com', 'videos.lukesmith.xyz', 'v.redd.it', 'fb.watch', 'vimeo.com'])) {
+  $choice = choose(['Play', 'Open', 'Download']);
   if ( $choice eq 'Open' ) {
     system( 'open', $link );
   }
@@ -120,7 +113,7 @@ elsif (
     }
     elsif ( $choice eq 'Audio' ) {
       detach sub {
-        notify 'Download (audio) started', 'Downloading $link';
+        notify 'Download (audio) started', "Downloading $link";
         system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
       };
     }
@@ -141,6 +134,9 @@ elsif (
     }
     elsif ( $choice eq 'Audio (queue in mpd)' ) {
       detach sub {
+        system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
+          title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
+          printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
         system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
       };
     }
@@ -161,13 +157,24 @@ elsif ( endswith_strs( ['gifv'] ) ) {
     system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
   };
 }
-elsif ( endswith_strs( [ 'mp3', 'flac', 'opus', 'mp3?source' ] ) ) {
+elsif ( endswith_strs(['mp3', 'flac', 'opus', 'mp3?source']) or includes_strs(['soundcloud.com'])) {
   $choice = choose( [ 'Download', 'Play' ] );
   if ( $choice eq 'Download' ) {
     # TODO
   }
   elsif ( $choice eq 'Play' ) {
-    system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
+    $choice = choose(['Audio (queue in mpd)', 'Audio (mpv)']);
+    if ( $choice eq 'Audio (queue in mpd)' ) {
+      detach sub {
+        system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
+          title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
+          printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
+        system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+      };
+    }
+    elsif ( $choice eq 'Audio (mpv)' ) {
+      system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
+    }
   }
 
 }
@@ -175,7 +182,12 @@ elsif ( includes_strs( ['reddit.com'] ) ) {
   system(qq(reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X));
 }
 elsif ( startswith_strs( [ 'http://', 'https://' ] ) ) {
-  system(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
+  if (($TERM eq 'dumb') or (not defined $TERM)) {
+    system(qq(alacritty -e w3m -config ~/.config/w3m/config -T text/html '$link'));
+  }
+  else {
+    system(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
+  }
 }
 elsif ( startswith_strs( ['!http'] ) ) {
   notify 'Open in browser incomplete', 'not yet';
