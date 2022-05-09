@@ -163,18 +163,18 @@ cmd paste &{{
 
 # paste as a symbolic link to original
 cmd paste_link %{{
-  for file in $(cat ~/.local/share/lf/files); do
-    if [ ! -n "${mode+1}" ]; then
-      mode="$file"
-      continue
-    fi
-    files+=("$file")
-  done
-  if [ -z "$files" ] || [ "${#files[@]}" -lt 1 ]; then
-    lf -remote "send $id echo no files to link files: ${files}"
-    exit 0
+  if [ "$(wc -l < ~/.local/share/lf/files)" -gt 1 ]; then
+    while read -r file; do
+      case "$file" in
+        copy|move) ;;
+        *)
+          ln -s "$file" .
+          ;;
+      esac
+    done < ~/.local/share/lf/files
+  else
+    lf -remote "send $id echo no files to link."
   fi
-  ln -sr $files -t .
 }}
 
 cmd paste_rename %{{
