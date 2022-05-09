@@ -217,23 +217,6 @@ Switched to this from Helm, it's more lightweight.
 
 #+begin_src emacs-lisp
   (use-package counsel :demand
-    :bind
-    (("C-s" . swiper-isearch)
-     ("C-r" . swiper-isearch-backward)
-     ("M-x" . counsel-M-x)
-     ("C-x C-f" . counsel-find-file)
-     ("M-y" . counsel-yank-pop)
-     ("C-x b" . ivy-switch-buffer)
-     ("C-c v" . ivy-push-view)
-     ("C-c V" . ivy-pop-view)
-     ("C-c c" . counsel-compile)
-     ("C-c k" . counsel-ag)
-     ("C-c f" . counsel-fzf)
-     ("C-c b" . counsel-bookmark)
-     ("C-c d" . counsel-descbinds)
-     ("C-c p" . counsel-recentf)
-     ("C-c o" . counsel-outline))
-
     :config
     (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
           ivy-height 20                   ; set height of the ivy window
@@ -253,6 +236,25 @@ Switched to this from Helm, it's more lightweight.
       (interactive)
       (let ((input (ivy--input)))
         (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
+#+end_src
+
+Set the key bindings:
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-s") #'swiper-isearch)
+  (za/global-set-key (kbd "C-r") #'swiper-isearch-backward)
+  (za/global-set-key (kbd "M-x") #'counsel-M-x)
+  (za/global-set-key (kbd "C-x C-f") #'counsel-find-file)
+  (za/global-set-key (kbd "M-y") #'counsel-yank-pop)
+  (za/global-set-key (kbd "C-x b") #'ivy-switch-buffer)
+  (za/global-set-key (kbd "C-c v") #'ivy-push-view)
+  (za/global-set-key (kbd "C-c V") #'ivy-pop-view)
+  (za/global-set-key (kbd "C-c c") #'counsel-compile)
+  (za/global-set-key (kbd "C-c k") #'counsel-ag)
+  (za/global-set-key (kbd "C-c f") #'counsel-fzf)
+  (za/global-set-key (kbd "C-c b") #'counsel-bookmark)
+  (za/global-set-key (kbd "C-c p") #'counsel-recentf)
+  (za/global-set-key (kbd "C-c o") #'counsel-outline)
 #+end_src
 
 I like having ivy in a popup.
