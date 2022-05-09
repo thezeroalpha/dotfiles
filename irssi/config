@@ -11,15 +11,14 @@ servers = (
     use_tls = "yes";
     tls_verify = "no";
   },
-  {
-    address = "chat.freenode.net";
-    chatnet = "Freenode";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "no";
-  },
   { address = "irc.rekt.network"; chatnet = "Rekt"; use_tls = "yes"; },
-
+  {
+    address = "irc.libera.chat";
+    chatnet = "liberachat";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
+  }
 );
 
 chatnets = {
@@ -35,21 +34,12 @@ chatnets = {
     max_msgs = "4";
     max_whois = "1";
   };
-  Freenode = {
-    type = "IRC";
-    max_kicks = "1";
-    max_msgs = "4";
-    max_whois = "1";
-  };
   Rekt = { type = "IRC"; max_kicks = "1"; max_msgs = "4"; max_whois = "1"; };
+  liberachat = { type = "IRC"; };
 };
 
 channels = (
   { name = "#ebooks"; chatnet = "IRCHighWay"; autojoin = "yes"; },
-  { name = "#vim"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#vimwiki"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#bash"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#irssi"; chatnet = "Freenode"; autojoin = "yes"; },
   { name = "#bookz"; chatnet = "Undernet"; autojoin = "yes"; },
   { name = "#audiobooks"; chatnet = "IRCHighWay"; autojoin = "yes"; },
   { name = "#rekt"; chatnet = "Rekt"; autojoin = "yes"; }
@@ -224,14 +214,24 @@ settings = {
     nick = "zeroalpha";
     settings_autosave = "yes";
   };
-  "fe-text" = { actlist_sort = "refnum"; paste_join_multiline = "no"; };
+  "fe-text" = {
+    actlist_sort = "refnum";
+    paste_join_multiline = "no";
+    colors = "no";
+    colors_ansi_24bit = "no";
+  };
   "perl/core/scripts" = {
     awl_shared_sbar = "OFF";
     awl_viewer = "no";
     awl_block = "-14";
     trackbar_require_seen = "yes";
+    awl_all_disable = "yes";
   };
-  "fe-common/core" = { print_active_channel = "no"; theme = "tugg"; };
+  "fe-common/core" = {
+    print_active_channel = "no";
+    theme = "tugg";
+    completion_auto = "yes";
+  };
   "irc/core" = { alternate_nick = "xza"; };
 };
 hilights = ( { text = "zeroalpha"; nick = "yes"; word = "yes"; } );
