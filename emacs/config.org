@@ -1057,6 +1057,20 @@ Save undo files into ~/.emacs.d/undo-tree
           ledger-reconcile-default-commodity "eur"))
 #+end_src
 
+org-capture lets me add transactions from anywhere in Emacs:
+
+#+begin_src emacs-lisp
+    (add-to-list 'org-capture-templates `("$" "Ledger entry" plain
+                                          (file ,za/ledger-file)
+                                          "%(ledger-read-date \"Date\") %^{Payee}
+      %^{Account}  %^{Amount}
+      Assets:ABN Checking%?
+    "
+                                          :empty-lines-before 1))
+
+
+#+end_src
+
 Budget throws an error when there's multiple commodities involved.
 See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-390067165
 #+begin_src emacs-lisp
