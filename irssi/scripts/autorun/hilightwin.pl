@@ -1,0 +1,1 @@
+/Users/alex/.dotfiles/irssi/scripts/hilightwin.pl
