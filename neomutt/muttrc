@@ -100,7 +100,7 @@ macro index,pager,attach,compose U "\
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
 set fcc_attach                       # save attachments with the body
-set mime_forward                     # forward attachments as part of body
+set mime_forward = no                # forward attachments as part of body, most clients don't easily show attached message
 set forward_format = "Fwd: %s"       # format of subject when forwarding
 set forward_decode                   # decode when forwarding
 set attribution = "On %d, %n wrote:" # format of quoting header
@@ -160,6 +160,7 @@ bind index,pager M noop
 bind index,pager,browser / search
 bind index,pager,browser n search-next
 bind index,pager,browser N search-opposite
+bind index,pager f forward-message
 macro index A "<limit>all<enter>"
 
 set nm_default_url = "notmuch://`notmuch config get database.path`"
