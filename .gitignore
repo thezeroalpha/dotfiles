@@ -45,8 +45,11 @@ ncmpcpp/patterns.list
 # Misc
 *.pyc
 vim/autoload/plug.vim*
-irssi/*.log
 karabiner/automatic_backups/
 /tools/solvitaire
 
 bin/geckodriver
+
+# irssi
+irssi/*.log
+irssi/config.autosave
