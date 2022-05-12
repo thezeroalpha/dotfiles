@@ -3,7 +3,7 @@
 printfq() { printf "'%s'\n" "$(printf '%s' "$1" | sed -e "s/'/'\\''/g")"; }
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 
-PARAMS=""
+FILES=""
 
 while [ $(($#)) -ne 0 ]; do
   case "$1" in
@@ -50,82 +50,86 @@ while [ $(($#)) -ne 0 ]; do
       echo "Unsupported flag $1" >&2
       exit 1
       ;;
-    *) # preserve positional arguments
-      # if params is set, add space.
-      PARAMS="$PARAMS${PARAMS:+ }$1"
+    *)
+      if [ -z "$FILES" ]; then
+        FILES="$1"
+      else
+        FILES="$FILES$(printf '\n%s' "$1")"
+      fi
       shift
       ;;
   esac
 done
-set -- "$PARAMS"
 
-[ $# -eq 0 ] && die 'Need a file to operate on.'
-[ $# -gt 1 ] && die 'Only single file argument supported right now.'
-file="$1"
-[ -f "$file" ] || die "File $file not readable."
+[ -z "$FILES" ] && die 'Need a file to operate on.'
 
-# Clear params, will rebuild them per command
-set --
+printf '%s\n' "$FILES" | while IFS='' read -r file; do
+  [ -f "$file" ] || die "File $file not readable."
 
-case "$file" in
-  *.mp3)
-    if [ -n "$clear" ]; then
-      command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
-      eyeD3 --remove-all "$file"
-    elif [ -n "$spec" ]; then
-      command -v taffy >/dev/null 2>&1 || die 'taffy must be installed.'
-      taffy --extract "$spec" "$file"
-    else
-      command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
-      set -- --to-v2.4
-      [ -n "$band" ] && set -- "$@" -b "$band"
-      [ -n "$title" ] && set -- "$@" -t "$title"
-      [ -n "$album" ] && set -- "$@" -A "$album"
-      [ -n "$artist" ] && set -- "$@" -a "$artist"
-      [ -n "$number" ] && set -- "$@" -n "$number"
-      eyeD3 "$@" "$file"
-    fi
-    ;;
-  *.opus)
-    command -v ffmpeg >/dev/null 2>&1 || die 'ffmpeg must be installed.'
-    if [ -n "$clear" ]; then
-      tempdir="$(mktemp -d)"
-      ffmpeg -i "$file" -map_metadata -1 -codec copy "$tempdir/output.opus" \
-        && mv "$tempdir/output.opus" "$file" \
-        && rmdir "$tempdir"
-    elif [ -n "$spec" ]; then
-      die 'Extracting from opus filename not yet supported.'
-    else
-      # See https://exiftool.org/TagNames/Vorbis.html#Comments
-      set -- -i "$file" -codec copy
-      [ -n "$band" ] && set -- "$@" -metadata ALBUMARTIST="$band"
-      [ -n "$title" ] && set -- "$@" -metadata TITLE="$title"
-      [ -n "$album" ] && set -- "$@" -metadata ALBUM="$album"
-      [ -n "$artist" ] && set -- "$@" -metadata ARTIST="$artist"
-      [ -n "$number" ] && set -- "$@" -metadata TRACKNUMBER="$number"
+  # Clear params, will rebuild them per command
+  set --
 
-      tempdir="$(mktemp -d)"
-      ffmpeg "$@" "$tempdir/output.opus" \
-        && mv "$tempdir/output.opus" "$file" \
-        && rmdir "$tempdir"
-    fi
-    ;;
-  *.flac)
-    command -v metaflac >/dev/null 2>&1 || die 'metaflac must be installed.'
-    if [ -n "$clear" ]; then
-      metaflac --remove-all-tags "$file"
-    elif [ -n "$spec" ]; then
-      die 'Extracting from flac filename not yet supported.'
-    else
-      [ -n "$band" ] && set -- "$@" --set-tag=ALBUMARTIST="$band"
-      [ -n "$title" ] && set -- "$@" --set-tag=TITLE="$title"
-      [ -n "$album" ] && set -- "$@" --set-tag=ALBUM="$album"
-      [ -n "$artist" ] && set -- "$@" --set-tag=ARTIST="$artist"
-      [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER "$number"
+  case "$file" in
+    *.mp3)
+      if [ -n "$clear" ]; then
+        command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
+        eyeD3 --remove-all "$file"
+      elif [ -n "$spec" ]; then
+        command -v taffy >/dev/null 2>&1 || die 'taffy must be installed.'
+        taffy --extract "$spec" "$file"
+      else
+        command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
+        set -- --to-v2.4
+        [ -n "$band" ] && set -- "$@" -b "$band"
+        [ -n "$title" ] && set -- "$@" -t "$title"
+        [ -n "$album" ] && set -- "$@" -A "$album"
+        [ -n "$artist" ] && set -- "$@" -a "$artist"
+        [ -n "$number" ] && set -- "$@" -n "$number"
+        eyeD3 "$@" "$file"
+      fi
+      ;;
+    *.opus)
+      command -v ffmpeg >/dev/null 2>&1 || die 'ffmpeg must be installed.'
+      if [ -n "$clear" ]; then
+        tempdir="$(mktemp -d)"
+        ffmpeg -i "$file" -map_metadata -1 -codec copy "$tempdir/output.opus" \
+          && mv "$tempdir/output.opus" "$file" \
+          && rmdir "$tempdir"
+      elif [ -n "$spec" ]; then
+        die 'Extracting from opus filename not yet supported.'
+      else
+        # See https://exiftool.org/TagNames/Vorbis.html#Comments
+        set -- -i "$file" -codec copy
+        [ -n "$band" ] && set -- "$@" -metadata ALBUMARTIST="$band"
+        [ -n "$title" ] && set -- "$@" -metadata TITLE="$title"
+        [ -n "$album" ] && set -- "$@" -metadata ALBUM="$album"
+        [ -n "$artist" ] && set -- "$@" -metadata ARTIST="$artist"
+        [ -n "$number" ] && set -- "$@" -metadata TRACKNUMBER="$number"
 
-      metaflac "$@" "$file"
-    fi
-    ;;
-  *)
-    die 'File format not (yet) supported.';;
-esac
+        tempdir="$(mktemp -d)"
+        ffmpeg "$@" "$tempdir/output.opus" \
+          && mv "$tempdir/output.opus" "$file" \
+          && rmdir "$tempdir"
+      fi
+      ;;
+    *.flac)
+      command -v metaflac >/dev/null 2>&1 || die 'metaflac must be installed.'
+      if [ -n "$clear" ]; then
+        metaflac --remove-all-tags "$file"
+      elif [ -n "$spec" ]; then
+        die 'Extracting from flac filename not yet supported.'
+      else
+        [ -n "$band" ] && set -- "$@" --set-tag=ALBUMARTIST="$band"
+        [ -n "$title" ] && set -- "$@" --set-tag=TITLE="$title"
+        [ -n "$album" ] && set -- "$@" --set-tag=ALBUM="$album"
+        [ -n "$artist" ] && set -- "$@" --set-tag=ARTIST="$artist"
+        [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER "$number"
+
+        metaflac "$@" "$file"
+      fi
+      ;;
+    *)
+      die 'File format not (yet) supported.';;
+  esac
+
+done
