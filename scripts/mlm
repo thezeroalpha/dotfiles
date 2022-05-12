@@ -1,6 +1,5 @@
 #!/bin/sh
-# General music library management tasks
-
+# General music library management tasks. NOT multi-level marketing.
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 checkdeps() {
   for com in "$@"; do
@@ -115,9 +114,11 @@ embed_lyrics() {
 organize_files() {
   [ $# -eq 2 ] || die "Arguments required: path to music directory, path to destination"
   [ -d "$1" ] || die "Path $1 is not a directory."
-  cd "$2" || die "Could not cd to $1"
-  mkdir -p _failed || die "Directory ./_failed already exists"
-  find "$1" -name '*.mp3' 2>/dev/null | \
+  src="$(realpath "$1")"
+  dst="$(realpath "$2")"
+  cd "$dst" || die "Could not cd to $dst"
+  mkdir -p _failed
+  find "$src" -name '*.mp3' 2>/dev/null | \
     while read -r i; do
       artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?"\\>' '_' | sed 's/\.\.*$//')"
       [ -n "$artist" ] || { mv "$i" _failed/ && continue; }
