@@ -1002,11 +1002,6 @@ vnoremap <silent> <leader>hc :call clearmatches()<CR>
 noremap <expr> <SID>(search-forward) 'Nn'[v:searchforward]
 " and N always search backward
 noremap <expr> <SID>(search-backward) 'nN'[v:searchforward]
-" and center search results on the screen
-nmap n <SID>(search-forward)zzzv
-xmap n <SID>(search-forward)zzzv
-nmap N <SID>(search-backward)zzzv
-xmap N <SID>(search-backward)zzzv
 
 " backspace to switch to alternate buffer
 nnoremap <backspace> <c-^>
