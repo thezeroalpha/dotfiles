@@ -1152,6 +1152,13 @@ Custom reports:
 #+begin_src emacs-lisp
   (use-package ess)
 #+end_src
+** eglot
+A good LSP plugin.
+
+#+begin_src emacs-lisp
+  (use-package eglot)
+#+end_src
+
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
