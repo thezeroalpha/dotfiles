@@ -758,8 +758,6 @@ Fix column alignment in agenda.
   (defun org-yank-link-url ()
     (interactive)
     (kill-new (org-element-property :raw-link (org-element-context))))
-
-  (define-key org-mode-map (kbd "C-c M-y") 'org-yank-link-url)
 #+end_src
 *** Tempo expansions
 
@@ -864,7 +862,15 @@ Then I map company-complete only for lean-mode.
     :config
     (use-package company-lean)
     :hook
-    (lean-mode . (lambda () (define-key lean-mode-map (kbd "S-SPC") #'company-complete))))
+    (lean-mode . (lambda () )))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun za/keybinds-lean-mode ()
+    "Function to set lean-mode keybindings, run via lean-mode-hook."
+    (define-key lean-mode-map (kbd "S-SPC") #'company-complete))
+
+  (add-hook 'lean-mode-hook #'za/keybinds-lean-mode)
 #+end_src
 
 ** magit
@@ -903,9 +909,15 @@ Make speed bar show in the current frame.
 #+begin_src emacs-lisp
   (use-package sr-speedbar
     :config
-    (setq sr-speedbar-right-side nil)
+    (setq sr-speedbar-right-side nil))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun za/keybinds-speedbar-mode ()
+    "Function to set speedbar-mode keybindings, run via speedbar-mode-hook."
     (define-key speedbar-mode-map (kbd "q") 'sr-speedbar-close))
 
+  (add-hook 'speedbar-mode-hook #'za/keybinds-speedbar-mode)
 #+end_src
 
 Jump to speedbar. sr-speedbar-exist-p can be void, so I check if it's bound first.
@@ -921,6 +933,9 @@ Then, select it.
         (sr-speedbar-open))
     (sr-speedbar-select-window))
 #+end_src
+
+
+
 #+begin_src emacs-lisp
   (za/global-set-key (kbd "C-c F") 'za/jump-to-speedbar-or-open)
 #+end_src
