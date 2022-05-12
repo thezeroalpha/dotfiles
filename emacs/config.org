@@ -1891,6 +1891,25 @@ If I have another dired window open, use that as target:
   (setq dired-dwim-target t)
 #+end_src
 
+* Syncthing
+Some functions to start/stop syncthing.
+#+begin_src emacs-lisp
+  (setq za/st-buffer-name "*syncthing*")
+  (defun za/st ()
+    "Start syncthing"
+    (interactive)
+    (if (get-buffer-process za/st-buffer-name)
+        (user-error "Syncthing is already running."))
+    (async-shell-command "syncthing serve --no-browser" za/st-buffer-name))
+
+  (defun za/st-kill ()
+    "Stop syncthing"
+    (interactive)
+    (unless (get-buffer-process za/st-buffer-name)
+      (user-error "Syncthing is not running."))
+    (async-shell-command "syncthing cli operations shutdown"))
+#+end_src
+
 * References
 Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
