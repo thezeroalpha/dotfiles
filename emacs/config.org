@@ -306,15 +306,27 @@ Install Org and require additional components that I use.
     :config
     (require 'org-tempo)
     (require 'org-habit)
-    (require 'org-agenda)
-
-    :bind
-    (("C-c a" . org-agenda)
-     ("C-c n" . org-capture)
-     ("C-M-<return>" . org-insert-todo-heading)
-     ("C-c l" . org-store-link)))
+    (require 'org-agenda))
 #+end_src
 
+*** Key bindings
+Global:
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-c a") #'org-agenda)
+  (za/global-set-key (kbd "C-c n") #'org-capture)
+  (za/global-set-key (kbd "C-c l") #'org-store-link)
+#+end_src
+
+Org mode:
+#+begin_src emacs-lisp
+  (defun za/keybinds-org-mode ()
+    "Function to set org-mode keybindings, run via org-mode-hook."
+    (define-key org-mode-map (kbd "C-M-<return>") #'org-insert-todo-heading)
+    (define-key org-mode-map (kbd "C-c M-y") #'org-yank-link-url)
+    (define-key org-mode-map (kbd "C-c N") #'org-noter))
+
+  (add-hook 'org-mode-hook #'za/keybinds-org-mode)
+#+end_src
 *** Nicer bullets
 In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
 
