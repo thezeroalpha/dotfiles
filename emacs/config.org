@@ -1159,6 +1159,12 @@ A good LSP plugin.
   (use-package eglot)
 #+end_src
 
+** crdt
+Collaborative editing in Emacs:
+
+#+begin_src emacs-lisp
+  (use-package crdt)
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
