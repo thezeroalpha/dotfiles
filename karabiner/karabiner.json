@@ -759,21 +759,21 @@
             "simple_modifications": [
                 {
                     "from": {
-                        "key_code": "f10"
-                    },
-                    "to": [
-                        {
-                            "consumer_key_code": "mute"
-                        }
-                    ]
-                },
-                {
-                    "from": {
                         "consumer_key_code": "eject"
                     },
                     "to": [
                         {
                             "key_code": "f13"
+                        }
+                    ]
+                },
+                {
+                    "from": {
+                        "key_code": "f10"
+                    },
+                    "to": [
+                        {
+                            "consumer_key_code": "mute"
                         }
                     ]
                 }
