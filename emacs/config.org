@@ -276,6 +276,12 @@ Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --wit
       (custom-set-faces '(ivy-posframe-border ((t (:inherit mode-line-inactive)))))
       (ivy-posframe-mode 1)))
 #+end_src
+
+Have to set this to let me select exactly what I'm typing as a candidate:
+
+#+begin_src emacs-lisp
+  (setq ivy-use-selectable-prompt t)
+#+end_src
 ** company
 Good completion.
 
