@@ -903,7 +903,28 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
 #+begin_src emacs-lisp
   (use-package org-ref)
 #+end_src
+** org-roam
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :custom
+    (org-roam-directory za/org-roam-dir)
+    (org-roam-completion-everywhere t)
 
+    :config
+    (org-roam-setup))
+  (require 'org-roam-export)
+#+end_src
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-c w n") #'org-roam-capture)
+  (za/global-set-key (kbd "C-c w f") #'org-roam-node-find)
+  (za/global-set-key (kbd "C-c w w") #'org-roam-buffer-toggle)
+  (za/global-set-key (kbd "C-c w i") #'org-roam-node-insert)
+#+end_src
+** org-roam-ui
+#+begin_src emacs-lisp
+  (use-package org-roam-ui)
+#+end_src
 ** calfw
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
@@ -1228,6 +1249,7 @@ Collaborative editing in Emacs:
 #+begin_src emacs-lisp
   (use-package crdt)
 #+end_src
+
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
@@ -1398,7 +1420,7 @@ use in order for displaying the list, and then options for those functions (each
 And a way to toggle those side windows:
 
 #+begin_src emacs-lisp
-  (za/global-set-key (kbd "C-c w") #'window-toggle-side-windows)
+  (za/global-set-key (kbd "C-c W") #'window-toggle-side-windows)
 #+end_src
 * Editor
 ** Overwrite selection on typing
