@@ -361,7 +361,7 @@ Furthermore, tags were getting cut off, so I manually set the best column to dis
 #+begin_src emacs-lisp
   (defun za/settings-org-mode ()
     "My settings for org mode"
-    (org-bullets-mode 1)
+    (org-superstar-mode 1)
     (za/toggle-wrap t)
     (org-indent-mode)
     (setq org-tags-column (- 10 (window-total-width)))
