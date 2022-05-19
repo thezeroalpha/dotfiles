@@ -308,11 +308,12 @@ This lets me jump to any position in Emacs rather quickly, sometimes it's useful
 Install Org and require additional components that I use.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :config
-    (require 'org-tempo)
-    (require 'org-habit)
-    (require 'org-agenda))
+    (use-package org
+      :config
+      (require 'org-tempo)
+      (require 'org-habit)
+      (require 'org-agenda)
+      (require 'org-id))
 #+end_src
 
 *** Key bindings
@@ -325,19 +326,22 @@ Global:
 
 Org mode:
 #+begin_src emacs-lisp
-  (defun za/keybinds-org-mode ()
-    "Function to set org-mode keybindings, run via org-mode-hook."
-    (define-key org-mode-map (kbd "C-M-<return>") #'org-insert-todo-heading)
-    (define-key org-mode-map (kbd "C-c M-y") #'org-yank-link-url)
-    (define-key org-mode-map (kbd "C-c N") #'org-noter))
+    (defun za/keybinds-org-mode ()
+      "Function to set org-mode keybindings, run via org-mode-hook."
+      (define-key org-mode-map (kbd "C-M-<return>") #'org-insert-todo-heading)
+      (define-key org-mode-map (kbd "C-c M-y") #'org-yank-link-url)
+      (define-key org-mode-map (kbd "C-c N") #'org-noter)
+      (define-key org-mode-map (kbd "C-M-i") #'completion-at-point))
 
-  (add-hook 'org-mode-hook #'za/keybinds-org-mode)
+    (add-hook 'org-mode-hook #'za/keybinds-org-mode)
 #+end_src
 *** Nicer bullets
-In org mode, I want to use bullets instead of stars, so I also install ~org-bullets~.
+In org mode, I want to use bullets instead of stars, so I also install ~org-superstar~.
 
 #+begin_src emacs-lisp
-  (use-package org-bullets)
+  (use-package org-superstar
+    :config
+    (setq org-superstar-leading-bullet ?\s))
 #+end_src
 
 *** More languages
@@ -420,7 +424,6 @@ Convenience functions to make opening the main file faster:
   (defun gtd-inbox () "GTD: inbox" (interactive) (find-file za/org-life-inbox))
   (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
   (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
-  (defun gtd-reference () "GTD: reference" (interactive) (find-file za/org-life-reference))
   (defun gtd-tickler () "GTD: tickler" (interactive) (find-file za/org-life-tickler))
 #+end_src
 
@@ -431,7 +434,6 @@ Bind keys to those functions:
   (za/global-set-key (kbd "C-c g g") #'gtd)
   (za/global-set-key (kbd "C-c g a") #'gtd-archive)
   (za/global-set-key (kbd "C-c g s") #'gtd-someday)
-  (za/global-set-key (kbd "C-c g r") #'gtd-reference)
   (za/global-set-key (kbd "C-c g t") #'gtd-tickler)
 #+end_src
 **** Refiling & archiving
@@ -440,8 +442,7 @@ Where I want to be able to move subtrees (doesn't include inbox because I never 
 #+begin_src emacs-lisp
     (setq org-refile-targets `((,za/org-life-main :maxlevel . 3)
                                (,za/org-life-someday :level . 1)
-                               (,za/org-life-tickler :maxlevel . 2)
-                               (,za/org-life-reference :maxlevel . 2)))
+                               (,za/org-life-tickler :maxlevel . 2)))
 #+end_src
 
 I want to archive to a specific file, in a date tree:
@@ -763,7 +764,8 @@ Fix column alignment in agenda.
 #+begin_src emacs-lisp
   (defun org-yank-link-url ()
     (interactive)
-    (kill-new (org-element-property :raw-link (org-element-context))))
+    (kill-new (org-element-property :raw-link (org-element-context)))
+    (message "Link copied to clipboard"))
 #+end_src
 **** Manipulating time
 Sometimes I want to be able to close a TODO at a different time than /right now/.
@@ -812,7 +814,7 @@ For the repeater:
   (defun za/org-current-time-effective (old-org-current-time &rest args)
     "Return the manually set effective time, or call the original function to get it."
     (or za/org-current-time-effective
-        (funcall old-org-current-time args)))
+        (apply old-org-current-time args)))
 
   (advice-add 'org-current-time :around #'za/org-current-time-effective)
 
@@ -823,7 +825,7 @@ For the repeater:
   (defun za/org-time-stamp-format-effective (old-org-time-stamp-format &rest args)
     (if za/org-current-time-effective
         (format-time-string (funcall old-org-time-stamp-format args) za/org-current-time-effective)
-      (funcall old-org-time-stamp-format args)))
+      (apply old-org-time-stamp-format args)))
   (advice-add 'org-time-stamp-format :around #'za/org-time-stamp-format-effective)
 #+end_src
 
