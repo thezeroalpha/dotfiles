@@ -8,7 +8,10 @@ PARAMS=""
 
 trash_empty() {
   printf "Empty the trash? [y/n] "
-  read -r conf; case "$conf" in
+  stty raw && conf="$(dd bs=1 count=1 2>/dev/null)" && stty -raw
+  printf "\n"
+
+  case "$conf" in
     Y|y)
       find "${TRASHDIR:?}" -delete
       printf "Deleted all items in the trash.\n"
@@ -22,7 +25,10 @@ trash_empty() {
 
 trash_empty_secure() {
   printf "Securely empty the trash? [y/n] "
-  read -r conf; case "$conf" in
+  stty raw && conf="$(dd bs=1 count=1 2>/dev/null)" && stty -raw
+  printf "\n"
+
+  case "$conf" in
     Y|y)
       command -v shred >/dev/null 2>&1 || { printf "Please install shred (1) to empty trash securely.\n" >&2 && exit 1; }
       find "${TRASHDIR:?}" -type f -exec shred -uz {} +
