@@ -893,11 +893,6 @@ Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I h
 #+end_src
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
-*** export
-#+begin_src emacs-lisp
-  (custom-set-variables '(org-export-backends '(ascii html icalendar latex odt md org)))
-#+end_src
-
 ** org-contrib
 #+begin_src emacs-lisp
   (use-package org-contrib
