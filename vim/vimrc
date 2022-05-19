@@ -49,9 +49,6 @@ Plug 'tpope/vim-fugitive'
 " Undo tree visualiser
 Plug 'simnalamburt/vim-mundo'
 
-" Quickfix window mappings
-Plug 'romainl/vim-qf'
-
 " Repeat everything with '.'
 Plug 'tpope/vim-repeat'
 
@@ -160,6 +157,13 @@ Plug 'Yggdroot/indentLine', { 'for': 'python' }
 
 Plug 'jceb/vim-orgmode', { 'for': 'org' }
 call plug#end()
+
+" quickfix filtering
+packadd cfilter
+
+" matchit.vim is default, why not enable it
+packadd matchit
+
 " }}}2
 " Config {{{2
 " Tagbar {{{3
@@ -503,9 +507,6 @@ set dictionary+=/usr/share/dict/words
 
 " thesaurus file
 set thesaurus=~/.vim/words/thesaurus/mthesaur.txt
-
-" matchit.vim is default, why not enable it
-runtime macros/matchit.vim
 
 " same with :Man
 " I'm lazy-loading this because it really affects my startup time.
