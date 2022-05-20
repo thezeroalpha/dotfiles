@@ -1880,6 +1880,18 @@ So I create a keybinding to toggle dedicated on a window:
 
 #+end_src
 
+** Rebuild org cache
+#+begin_src emacs-lisp
+(defun za/force-org-rebuild-cache ()
+  "Rebuild the `org-mode' and `org-roam' cache."
+  (interactive)
+  (org-id-update-id-locations)
+  ;; Note: you may need `org-roam-db-clear-all'
+  ;; followed by `org-roam-db-sync'
+  (org-roam-db-sync)
+  (org-roam-update-org-id-locations))
+#+end_src
+
 * Daemon
 I want to have a way to kill the Emacs daemon.
 So, define a function that kills the frame, and with a prefix kills emacs.
