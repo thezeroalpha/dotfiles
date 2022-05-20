@@ -927,6 +927,70 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
 #+begin_src emacs-lisp
   (use-package org-roam-ui)
 #+end_src
+** org publishing
+I decided, after trying many different thing, to settle on org-publish.
+Markdown export didn't let me add a preamble, which Zola requires; there's no proper backend for Zola.
+So I settled on HTML export.
+The ~:html-head~ setting comes from my base template for the website.
+
+#+begin_src emacs-lisp
+  (require 'ox-publish)
+  (setq org-publish-project-alist
+        `(
+          ("org-roam" :components ("org-notes" "org-notes-data"))
+          ("org-notes"
+           :base-directory ,za/org-roam-dir
+           :base-extension "org"
+           :publishing-directory ,(concat za/my-website-dir "static/org-roam/")
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :auto-preamble t
+           :sitemap-filename "index.org"
+           :sitemap-title "Org Roam"
+           :auto-sitemap t
+           :html-head "
+        <script type=\"text/javascript\">
+        if (window.matchMedia('(prefers-color-scheme: dark)').media === 'not all') {
+          document.documentElement.style.display = 'none';
+          var hour = new Date().getHours();
+          var sheet = (hour >= 20 || hour < 6) ? \"/dark.css\" : \"/light.css\";
+          document.head.insertAdjacentHTML(
+            'beforeend',
+            '<link rel=\"stylesheet\" type=\"text/css\" href=\"'+sheet+'\" onload=\"document.documentElement.style.display = \'\'\">'
+          );
+        }
+      </script>
+      <!-- For browsers without JS, load the light theme -->
+      <noscript><link rel=\"stylesheet\" type=\"text/css\" href=\"/light.css\"></noscript>
+      <!-- For browsers supporting prefers-color-scheme, use that -->
+      <link rel=\"stylesheet\" type=\"text/css\" href=\"/dark.css\" media=\"(prefers-color-scheme: dark)\">
+      <link rel=\"stylesheet\" type=\"text/css\" href=\"/light.css\" media=\"(prefers-color-scheme: light)\">
+
+      <!-- PWA stuff -->
+      <link rel=\"manifest\" href=\"/manifest.json\">
+      <script src=\"/sw.js\"></script>
+      <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('Registration successful, scope is:', registration.scope);
+            })
+            .catch(function(error) {
+              console.log('Service worker registration failed, error:', error);
+            });
+        }
+      </script>
+  "
+           )
+          ("org-notes-data"
+           :base-directory ,za/org-roam-dir
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :publishing-directory ,(concat za/my-website-dir "static/org-roam/")
+           :recursive t
+           :publishing-function org-publish-attachment)
+          ))
+#+end_src
+
 ** calfw
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
