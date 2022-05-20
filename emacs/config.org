@@ -411,10 +411,10 @@ Which files should be included in the agenda (I have to use ~list~ to evaluate t
                                za/org-life-tickler))
 #+end_src
 
-I want to search all files in the life directory:
+I want to search all Org files in the life directory:
 
 #+begin_src emacs-lisp
-  (setq org-agenda-text-search-extra-files (directory-files za/org-life-dir t (rx bol (not ?.) (* anything))))
+  (setq org-agenda-text-search-extra-files (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org")))
 #+end_src
 
 Convenience functions to make opening the main file faster:
