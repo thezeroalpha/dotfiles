@@ -491,11 +491,11 @@ Apart from the logging-on-done configured [[*Logging][below]], I also want to lo
 In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
 
 #+begin_src emacs-lisp
-  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)"))
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)"))
         org-todo-keyword-faces '(("TODO" . org-todo)
                                  ("NEXT" . org-todo)
                                  ("WAITING" . org-todo)
-                                 ("SOMEDAY" . org-todo)
+                                 ("STARTED" . org-todo)
                                  ("DONE" . org-done)
                                  ("CANCELLED" . org-done)))
 #+end_src
