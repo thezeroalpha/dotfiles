@@ -282,6 +282,14 @@ Have to set this to let me select exactly what I'm typing as a candidate:
 #+begin_src emacs-lisp
   (setq ivy-use-selectable-prompt t)
 #+end_src
+
+Also, accidentally pressing shift-space deletes input, because by default, shift-space is bound to ~ivy-restrict-to-matches~ in the ivy minibuffer. I don't want that, I want it bound to shift-tab:
+
+#+begin_src emacs-lisp
+  (define-key ivy-minibuffer-map (kbd "S-SPC") (lambda () (interactive) (insert ?\s)))
+  (define-key ivy-minibuffer-map (kbd "<backtab>") #'ivy-restrict-to-matches)
+#+end_src
+
 ** company
 Good completion.
 
