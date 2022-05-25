@@ -197,7 +197,7 @@ brew "zbar"
 brew "zola"
 brew "zsh"
 brew "charmbracelet/tap/glow"
-brew "daviderestivo/emacs-head/emacs-head@28", args: ["with-cocoa"]
+brew "daviderestivo/emacs-head/emacs-head@28", args: ["with-cocoa", "with-dbus", "with-native-comp", "with-xwidgets"]
 brew "heroku/brew/heroku"
 brew "keith/formulae/reminders-cli"
 brew "thezeroalpha/formulae/choice", args: ["HEAD"]
@@ -206,10 +206,11 @@ brew "thezeroalpha/formulae/gocket"
 brew "thezeroalpha/formulae/hpanot"
 brew "thezeroalpha/formulae/manpages-posix"
 brew "thezeroalpha/formulae/ncmpcpp", args: ["HEAD"]
-brew "thezeroalpha/formulae/radio"
+brew "thezeroalpha/formulae/radio", args: ["HEAD"]
 brew "thezeroalpha/formulae/reddio", args: ["HEAD"]
 brew "thezeroalpha/formulae/upd"
 brew "thezeroalpha/formulae/vbox"
+brew "thezeroalpha/formulae/xe", args: ["HEAD"]
 brew "tzvetkoff/extras/im2a"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "vitorgalvao/tiny-scripts/cask-repair"
