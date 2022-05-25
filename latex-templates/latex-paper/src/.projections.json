@@ -1,4 +1,4 @@
 {
   "references.bib": {"type": "bibliography"},
-  "thesis.tex": {"type": "main"}
+  "main.tex": {"type": "main"}
 }

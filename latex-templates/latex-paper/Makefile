@@ -1,9 +1,10 @@
 LMK_AUXDIR=build
-MAINFILE=src/thesis.tex
+MAINFILE=src/main.tex
+PDFNAME=output.pdf
 
 LMK_FLAGS=-bibtex -cd -auxdir=$(LMK_AUXDIR) -outdir=$(LMK_AUXDIR)
 SRCFILES=$(wildcard $(dir $(MAINFILE))*.tex)
-PDFNAME:=$(basename $(notdir $(MAINFILE))).pdf
+OUTPDF=$(dir $(MAINFILE))$(LMK_AUXDIR)/$(notdir $(basename $(MAINFILE))).pdf
 
 .PHONY: all clean cleanall open
 
@@ -13,10 +14,10 @@ open: $(PDFNAME)
 	@open $(PDFNAME) || xdg-open $(PDFNAME) || echo "Don't know how to open."
 
 
-$(PDFNAME): $(dir $(MAINFILE))$(LMK_AUXDIR)/thesis.pdf
-	mv $(dir $(MAINFILE))$(LMK_AUXDIR)/thesis.pdf ./$(PDFNAME)
+$(PDFNAME): $(OUTPDF)
+	mv $(OUTPDF) ./$(PDFNAME)
 
-$(dir $(MAINFILE))$(LMK_AUXDIR)/thesis.pdf: $(SRCFILES)
+$(OUTPDF): $(SRCFILES)
 	latexmk $(LMK_FLAGS) -pdf $(MAINFILE)
 
 clean:
