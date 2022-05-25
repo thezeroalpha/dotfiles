@@ -1324,6 +1324,30 @@ Collaborative editing in Emacs:
   (use-package crdt)
 #+end_src
 
+** git gutter
+General git gutter:
+
+#+begin_src emacs-lisp
+  (use-package git-gutter
+    :config
+    (global-git-gutter-mode 1))
+#+end_src
+
+Some bindings:
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-c d n") #'git-gutter:next-hunk)
+  (za/global-set-key (kbd "C-c d p") #'git-gutter:previous-hunk)
+
+#+end_src
+
+** keycast
+In case I want to show what keys I'm pressing.
+
+#+begin_src emacs-lisp
+(use-package keycast)
+#+end_src
+
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
@@ -1427,7 +1451,7 @@ I want to hide certain modes from the modeline, they're always on:
 #+begin_src emacs-lisp
   (use-package diminish
     :config
-    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode undo-tree-mode ivy-posframe-mode)))
+    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode undo-tree-mode ivy-posframe-mode git-gutter-mode)))
       (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide))
     (diminish 'view-mode " 👓"))
 #+end_src
