@@ -58,7 +58,7 @@ sub notify {
   return;
 }
 
-if ( includes_strs( ['bandcamp.com'] ) ) {
+if ( includes_strs( ['bandcamp.com', 'godisanastronaut.com'] ) ) {
   $choice = choose( [ 'Download', 'Play' ] );
 
   if ( $choice eq 'Download' ) {
