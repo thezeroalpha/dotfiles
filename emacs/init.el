@@ -14,6 +14,14 @@
   (scroll-bar-mode -1)
   (tooltip-mode -1))
 
+;; If we have native compilation, disable showing them, they get
+;; annoying (but still want to log them)
+(if (native-comp-available-p)
+    (setq native-comp-async-report-warnings-errors 'silent))
+
+;; Hide 'package CL is deprecated' warning
+(setq byte-compile-warnings '(cl-functions))
+
 ;; Set up custom opener command
 (defun za/open (what)
   "Use ~/.scripts/open to open a file"
