@@ -85,7 +85,7 @@ link   Debug,Special,SpecialChar,SpecialComment,Tag             Delimiter
 link   StatusLineNC,TabLine,TabLineFill,SignColumn,netrwDir     LineNr
 link   NetrwExe                                                 Title
 link   SpellBad                                                 Todo
-link   SpelLocal,SpellRare,SpellCap                             String
+link   SpellLocal,SpellRare,SpellCap                             String
 link   LineHighlight                                            VisualNOS
 link   MkdLink           Type
 link   adaBegin,adaEnd   Function

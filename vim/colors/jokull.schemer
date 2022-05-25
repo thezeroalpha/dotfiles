@@ -110,7 +110,7 @@ link     netrwdir,gh_files_dir                                              func
 link     netrwexe                                                           title
 link     netrwMarkFile                                                      incsearch
 link     spellbad                                                           todo
-link     spellocal,spellrare,spellcap,markdownUrl,modemsg                   string
+link     spelllocal,spellrare,spellcap,markdownUrl,modemsg                   string
 link     markdowncode,mkdlink,vimwikilink                                   type
 link     pmenu                                                              statuslinenc
 link     pmenusel                                                           statusline
