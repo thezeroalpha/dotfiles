@@ -448,6 +448,8 @@ let g:user_emmet_settings = {
       \   'extends': 'html'
       \ }
     \ }
+" Smoothie {{{3
+let g:smoothie_remapped_commands = ['<C-D>', '<C-U>', '<C-F>', '<C-B>']
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
