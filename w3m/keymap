@@ -43,7 +43,7 @@ keymap M-b BOOKMARK
 keymap M-a ADD_BOOKMARK
 keymap M-g SELECT_MENU
 keymap M-o LIST_MENU
-keymap U LIST
+keymap U LIST # Show all URLs referenced
 keymap M-l LINK_MENU
 
 # Link info
@@ -109,7 +109,7 @@ keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 # LINK_BEGIN    Move to the first hyperlink
 # LINK_END      Move to the last hyperlink
 # LINK_MENU     Pop up link element menu
-# LIST          Show all URLs referenced
+# LIST
 # LIST_MENU     Pop up menu for hyperlinks to browse to
 # LOAD          Open local file in a new buffer
 # MAIN_MENU     Pop up menu
