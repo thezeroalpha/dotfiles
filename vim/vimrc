@@ -365,23 +365,6 @@ nnoremap <leader>ga :<c-u>ascii<cr>
 let g:peekaboo_compact=1
 " Mundo {{{3
 nnoremap <leader>u :MundoToggle<CR>
-" Vim-qf {{{3
-" quickfix
-nmap <leader>qn <Plug>(qf_qf_next)
-nmap <leader>qp <Plug>(qf_qf_previous)
-nmap <leader>qf <Plug>(qf_qf_toggle)
-
-" location
-nmap <leader>ln <Plug>(qf_loc_next)
-nmap <leader>lp <Plug>(qf_loc_previous)
-nmap <leader>ll <Plug>(qf_loc_toggle)
-nnoremap <leader>lb :lbefore<CR>
-nnoremap <leader>la :lafter<CR>
-nnoremap <leader>lf :lfirst<CR>
-
-" Disable auto-open because it interferes with Dispatch reverting makeprg
-" See here https://github.com/tpope/vim-dispatch/issues/254
-let g:qf_auto_open_quickfix = 0
 " Dispatch {{{3
 " Disable default maps
 let g:dispatch_no_maps = 1
@@ -1022,6 +1005,19 @@ nnoremap <leader>zd :setlocal foldmethod=diff<CR>
 " Set the foldlevel
 nnoremap <leader>zn :set foldlevel=
 nnoremap <leader>zt :exe "set foldlevel=".foldlevel(line('.'))<CR>
+
+" quickfix
+nnoremap <leader>qf :cwindow<CR>
+nnoremap <leader>qn :cnext<CR>
+nnoremap <leader>cp :cprevious<CR>
+
+" location
+nnoremap <leader>ll :lwindow<CR>
+nnoremap <leader>ln :lnext<CR>
+nnoremap <leader>lp :lprevious<CR>
+nnoremap <leader>lb :lbefore<CR>
+nnoremap <leader>la :lafter<CR>
+nnoremap <leader>lf :lfirst<CR>
 
 " Autocommands {{{1
 if has('autocmd')
