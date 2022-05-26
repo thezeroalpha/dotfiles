@@ -6,7 +6,7 @@ These functions allow a way to store personal global key bindings and view them 
 I'll use a hash table to map a key (in ~kbd~ format, the inverse of this is ~key-description~) to its function (and its previous function):
 
 #+begin_src emacs-lisp
-  (setq za/personal-keybinds (make-hash-table :test 'equal))
+  (defvar za/personal-keybinds (make-hash-table :test 'equal) "A hash table for my personal keybindings.")
 #+end_src
 
 A function to bind keys:
@@ -128,8 +128,8 @@ Load Doom Emacs themes:
 Define the themes I want:
 
 #+begin_src emacs-lisp
-  (setq za/dark-theme-name 'doom-one)
-  (setq za/light-theme-name 'jokull)
+  (defconst za/dark-theme-name 'doom-one "A symbol representing the name of the dark theme I use.")
+  (defconst za/light-theme-name 'jokull "A symbol representing the name of the light theme I use.")
   ;; I used to use doom-acario-light before writing my own theme
 
   (defun za/dark-theme ()
@@ -781,7 +781,7 @@ So we'll have a buffer-local variable that controls whether we use /right now/ (
 
 ***** The variable that controls it
 #+begin_src emacs-lisp
-  (defvar-local za/org-current-time-effective nil)
+  (defvar-local za/org-current-time-effective nil "If set, the current time that should be used when marking items in Org mode as done, taking notes, repeating tasks, etc.")
 #+end_src
 
 And a function to manipulate the variable:
@@ -1259,9 +1259,11 @@ org-capture lets me add transactions from anywhere in Emacs:
 Budget throws an error when there's multiple commodities involved.
 See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-390067165
 #+begin_src emacs-lisp
-  (setq za/ledger-budget-fix-string
-      "-X eur -F '%(justify(scrub(get_at(display_total, 0)), 20, -1, true, false)) %(justify(get_at(display_total, 1) ? -scrub(get_at(display_total, 1)) : 0.0, 20,            20 + 1 + 20, true, false)) %(justify(get_at(display_total, 1) ? (get_at(display_total, 0) ?           -(scrub(get_at(display_total, 1) + get_at(display_total, 0))) :           -(scrub(get_at(display_total, 1)))) : -(scrub(get_at(display_total, 0))), 20,            20 + 1 + 20 + 1 + 20, true, false))%(get_at(display_total, 1) and (abs(quantity(scrub(get_at(display_total, 0))) /           quantity(scrub(get_at(display_total, 1)))) >= 1) ?  \" \" : \" \")%(justify((get_at(display_total, 1) ?           (100% * (get_at(display_total, 0) ? scrub(get_at(display_total, 0)) : 0.0)) /              -scrub(get_at(display_total, 1)) : \"na\"),            5, -1, true, false))  %(!options.flat ? depth_spacer : \"\")%-(partial_account(options.flat))\n%/%$2 %$3 %$4 %$6\n%/%(prepend_width ? \" \" * int(prepend_width) : \"\")    ----------------     ----------------     ---------------- -----\n'")
+    (defconst za/ledger-budget-fix-string
+        "-X eur -F '%(justify(scrub(get_at(display_total, 0)), 20, -1, true, false)) %(justify(get_at(display_total, 1) ? -scrub(get_at(display_total, 1)) : 0.0, 20,            20 + 1 + 20, true, false)) %(justify(get_at(display_total, 1) ? (get_at(display_total, 0) ?           -(scrub(get_at(display_total, 1) + get_at(display_total, 0))) :           -(scrub(get_at(display_total, 1)))) : -(scrub(get_at(display_total, 0))), 20,            20 + 1 + 20 + 1 + 20, true, false))%(get_at(display_total, 1) and (abs(quantity(scrub(get_at(display_total, 0))) /           quantity(scrub(get_at(display_total, 1)))) >= 1) ?  \" \" : \" \")%(justify((get_at(display_total, 1) ?           (100% * (get_at(display_total, 0) ? scrub(get_at(display_total, 0)) : 0.0)) /              -scrub(get_at(display_total, 1)) : \"na\"),            5, -1, true, false))  %(!options.flat ? depth_spacer : \"\")%-(partial_account(options.flat))\n%/%$2 %$3 %$4 %$6\n%/%(prepend_width ? \" \" * int(prepend_width) : \"\")    ----------------     ----------------     ---------------- -----\n'"
+        "Append this to a ledger budget to fix errors with multiple commodities.")
 #+end_src
+
 Custom reports:
 
 #+begin_src emacs-lisp
@@ -1574,7 +1576,7 @@ Indentation for various modes:
 A function to toggle wrapping:
 
 #+begin_src emacs-lisp
-  (make-variable-buffer-local 'za/wrapping) ; wrapping changes per buffer
+  (defvar-local za/wrapping nil "Wrapping changes per buffer.")
 
   (defun za/toggle-wrap (&optional enable)
     "Toggle line wrapping settings. With ENABLE a positive number, enable wrapping. If ENABLE is negative or zero, disable wrapping."
@@ -2095,7 +2097,7 @@ If I have another dired window open, use that as target:
 * Syncthing
 Some functions to start/stop syncthing.
 #+begin_src emacs-lisp
-  (setq za/st-buffer-name "*syncthing*")
+  (defconst za/st-buffer-name "*syncthing*" "Buffer name for the syncthing process.")
   (defun za/st ()
     "Start syncthing"
     (interactive)

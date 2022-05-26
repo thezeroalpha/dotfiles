@@ -44,7 +44,7 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
-(setq za/manually-installed-package-dir (concat user-emacs-directory "lisp/"))
+(defconst za/manually-installed-package-dir (concat user-emacs-directory "lisp/") "The directory for packages (.lisp) that I manually install.")
 (make-directory za/manually-installed-package-dir t)
 (add-to-list 'load-path za/manually-installed-package-dir)
 
