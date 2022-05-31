@@ -1,86 +1,53 @@
+# vim: filetype=conf foldmethod=marker
+# Each action has runtime checks, so a few actions can be bound to the same key.
+# Actions are tested in order of definition.
+# Whatever's not defined here will be defined by ncmpcpp using default bindings.
+# Switching screens {{{1
 def_key "+"
   show_clock
-def_key "="
-  volume_up
-def_key "-"
-  volume_down
 
-def_key "j"
-  scroll_down
-def_key "k"
-  scroll_up
+def_key "F"
+  show_browser
 
-def_key "ctrl-u"
-  page_up
-def_key "ctrl-d"
-  page_down
-
-def_key "h"
-  previous_column
-def_key "l"
-  next_column
+def_key "P"
+  show_playlist
 
 def_key "."
   show_lyrics
 
-def_key "n"
-  next_found_item
-def_key "N"
-  previous_found_item
-
-def_key "J"
-  move_sort_order_down
-def_key "K"
-  move_sort_order_up
-
-def_key "h"
-  jump_to_parent_directory
-
-def_key "l"
-  enter_directory
-def_key "l"
-  run_action
 def_key "m"
   show_media_library
-def_key "m"
-  toggle_media_library_columns_mode
+
 def_key "t"
   show_tag_editor
+
 def_key "v"
   show_visualizer
-def_key "G"
-  move_end
-def_key "g"
-  move_home
-def_key "U"
-  update_database
-def_key "s"
-  reset_search_engine
+
 def_key "s"
   show_search_engine
-def_key "F"
-  show_browser
-def_key "ctrl-f"
-  jump_to_browser
-def_key "f"
-  seek_forward
-def_key "f"
-  change_browse_mode
-def_key "x"
-  delete_playlist_items
-def_key "x"
-  delete_browser_items
-def_key "P"
-  show_playlist
 
-def_key "p"
-  pause
-def_key "p"
-  play
-def_key "O"
-  load
 def_key "?"
   show_help
+
+def_key "T"
+  toggle_library_tag_type
+def_key "T"
+  dummy
+# This lets you "lock" a screen and switch between them.
+# So basically, window splits.
+def_key "ctrl-l"
+  toggle_screen_lock
+
+def_key "tab"
+  next_screen
+
+def_key "shift-tab"
+  previous_screen
+
+# Select current item
+def_key "*"
+  select_item
 
 def_key "V"
   reverse_selection
@@ -88,10 +55,152 @@ def_key "V"
 def_key "ctrl-v"
   remove_selection
 
-def_key "*"
-  select_item
+# This pops up a menu of where to add the item
+def_key "a"
+  add_selected_items
 
+# This adds immediately to current playlist
+def_key "A"
+  add_item_to_playlist
+
+def_key "/"
+  find
+def_key "/"
+  find_item_forward
+
+def_key "?"
+  find
+def_key "?"
+  find_item_backward
+
+# Select whatever matches your search
+# Bound to ctrl-/, didn't accept by name but accepts non-ascii chars, so that's what I use.
+def_key ""
+  select_found_items
+# Global {{{1
+def_key "="
+  volume_up
+
+def_key "-"
+  volume_down
+
+def_key "j"
+  scroll_down
+
+def_key "k"
+  scroll_up
+
+def_key "ctrl-u"
+  page_up
+
+def_key "ctrl-d"
+  page_down
+
+def_key "h"
+  previous_column
+
+def_key "l"
+  next_column
+
+def_key "n"
+  next_found_item
+
+def_key "N"
+  previous_found_item
+
+def_key "G"
+  move_end
+
+def_key "g"
+  move_home
+
+def_key "u"
+  update_database
+
+# Locate song in browser
+def_key "ctrl-f"
+  jump_to_browser
+
+def_key "f"
+  seek_forward
+def_key "right"
+  seek_forward
+
+def_key "b"
+  seek_backward
+def_key "left"
+  seek_backward
+
+
+def_key "space"
+  pause
+def_key "p"
+  pause
+
+def_key "space"
+  play
+def_key "p"
+  play
+
+# Filter by regular expression
+def_key "\\"
+  apply_filter
+# Current playlist {{{1
+# Move selected items up/down
+def_key "J"
+  move_sort_order_down
 def_key "J"
   move_selected_items_down
+
+def_key "K"
+  move_sort_order_up
 def_key "K"
   move_selected_items_up
+
+# Move selected items to cursor
+def_key "H"
+  move_selected_items_to
+
+def_key "x"
+  delete_playlist_items
+
+# Load stored playlist from file
+def_key "O"
+  load
+
+# Browser {{{1
+def_key "h"
+  jump_to_parent_directory
+
+def_key "l"
+  enter_directory
+
+# Browse MPD database/local filesystem
+def_key "F"
+  change_browse_mode
+
+def_key "x"
+  delete_browser_items
+# Search engine {{{1
+# Modify option/run action
+def_key "l"
+  run_action
+
+def_key "s"
+  reset_search_engine
+
+def_key "y"
+  start_searching
+# Media library {{{1
+# Switch between two/three columns mode
+def_key "m"
+  toggle_media_library_columns_mode
+
+# Locate currently playing song
+def_key "o"
+  jump_to_playing_song
+
+def_key "("
+  master_screen
+def_key ")"
+  slave_screen
