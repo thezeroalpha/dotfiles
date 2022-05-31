@@ -80,7 +80,7 @@ StatusLineFile         offwhite, darkblue
 StatusLineNormMode     darkblue, lightgrey.
 Visual                 NONE, offairblue
 Title                  darkturq.                  bold
-Matchparen             airgreen, airblue
+Matchparen             ddarkgreen, airblue
 QfFileName             lighterblue
 Delimiter              darkgold
 Comment                grey.                      italic

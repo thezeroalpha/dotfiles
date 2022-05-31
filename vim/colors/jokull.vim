@@ -36,7 +36,7 @@ hi StatusLineFile guifg=#e5e5e5 guibg=#0087af ctermfg=7 ctermbg=31 cterm=NONE gu
 hi StatusLineNormMode guifg=#0087af guibg=#d0d0d0 ctermfg=31 ctermbg=252 cterm=NONE gui=NONE
 hi Visual guifg=NONE guibg=#a8caff ctermfg=NONE ctermbg=153 cterm=NONE gui=NONE
 hi Title guifg=#225555 guibg=NONE ctermfg=23 ctermbg=NONE cterm=bold gui=bold
-hi Matchparen guifg=#d7f1e0 guibg=#a8dbfd ctermfg=194 ctermbg=153 cterm=NONE gui=NONE
+hi Matchparen guifg=#007822 guibg=#a8dbfd ctermfg=28 ctermbg=153 cterm=NONE gui=NONE
 hi QfFileName guifg=#0076ff guibg=NONE ctermfg=33 ctermbg=NONE cterm=NONE gui=NONE
 hi Delimiter guifg=#5f5f00 guibg=NONE ctermfg=58 ctermbg=NONE cterm=NONE gui=NONE
 hi Comment guifg=#5f5f5f guibg=NONE ctermfg=59 ctermbg=NONE cterm=italic gui=italic
