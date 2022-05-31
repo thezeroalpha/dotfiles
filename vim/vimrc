@@ -1011,7 +1011,8 @@ nnoremap <leader>zt :exe "set foldlevel=".foldlevel(line('.'))<CR>
 " quickfix
 nnoremap <leader>qf :cwindow<CR>
 nnoremap <leader>qn :cnext<CR>
-nnoremap <leader>cp :cprevious<CR>
+nnoremap <leader>qp :cprevious<CR>
+nnoremap <leader>qc :cclose<CR>
 
 " location
 nnoremap <leader>ll :lwindow<CR>
