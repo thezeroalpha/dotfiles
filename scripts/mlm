@@ -29,6 +29,7 @@ import() {
 
   printf "Did you already run mp3gain? [Y/n] "
   stty raw; yn="$(dd bs=1 count=1 2>/dev/null)"; stty -raw
+  printf '\n'
   case "$yn" in
     Y*|y*);;
     *) die 'Run it now then. mp3gain -s i. add -a for albums.';;
