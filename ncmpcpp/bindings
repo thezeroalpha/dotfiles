@@ -131,6 +131,8 @@ def_key "b"
 def_key "left"
   seek_backward
 
+def_key "alt-f"
+  jump_to_position_in_song
 
 def_key "space"
   pause
@@ -145,6 +147,60 @@ def_key "p"
 # Filter by regular expression
 def_key "\\"
   apply_filter
+
+# Toggle mouse support
+def_key "|"
+  toggle_mouse
+
+def_key "mouse"
+  mouse_event
+# Mouse events are:
+# Global
+#   Left click on Playing/Paused: Play/pause
+#   Left click on progressbar: Jump to pointed position in playing song
+#   Mouse wheel on Volume: xx: Play/pause
+#   Mouse wheel on main window: Scroll
+# Playlist
+#   Left click: Select pointed item
+#   Right click: Play
+# Browser
+#   Left click on directory: Enter pointed directory
+#   Right click on directory: Add pointed directory to playlist
+#   Left click on song/playlist: Add pointed item to playlist
+#   Right click on song/playlist: Add pointed item to playlist and play it
+# Search engine
+#   Left click: Highlight/switch value
+#   Right click: Change value
+# Media library
+#   Column Left/middle
+#     Left click: Select pointed item: true
+#     Right click: Add item to playlist: true
+#   Column Right
+#     Left Click: Add pointed item to playlist: true
+#     Right Click: Add pointed item to playlist and play it: true
+# Playlist editor
+#   Column Left
+#     Left click: Select pointed item: true
+#     Right click: Add item to playlist: true
+#   Column Right
+#     Left click: Add pointed item to playlist: true
+#     Right click: Add pointed item to playlist and play it: true
+# Tiny tag editor
+#   Left click: Select option
+#   Right click: Set value/execute
+# Tag editor
+#   Column Left
+#     Left click: Enter pointed directory/select pointed album: true
+#     Right click: Toggle view (directories/albums
+#   Column Middle
+#     Left click: Select option: true
+#     Right click: Set value/execute: true
+#   Column Right
+#     Left click: Select pointed item: true
+#     Right click: Set value: true
+# Outputs
+#   Left click: Select pointed output
+#   Right click: Toggle output
 # Current playlist {{{1
 # Move selected items up/down
 def_key "J"
