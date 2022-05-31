@@ -334,14 +334,15 @@ Global:
 
 Org mode:
 #+begin_src emacs-lisp
-    (defun za/keybinds-org-mode ()
-      "Function to set org-mode keybindings, run via org-mode-hook."
-      (define-key org-mode-map (kbd "C-M-<return>") #'org-insert-todo-heading)
-      (define-key org-mode-map (kbd "C-c M-y") #'org-yank-link-url)
-      (define-key org-mode-map (kbd "C-c N") #'org-noter)
-      (define-key org-mode-map (kbd "C-M-i") #'completion-at-point))
+  (defun za/keybinds-org-mode ()
+    "Function to set org-mode keybindings, run via org-mode-hook."
+    (define-key org-mode-map (kbd "C-M-<return>") #'org-insert-todo-heading)
+    (define-key org-mode-map (kbd "C-c M-y") #'org-yank-link-url)
+    (define-key org-mode-map (kbd "C-c N") #'org-noter)
+    (define-key org-mode-map (kbd "C-M-i") #'completion-at-point)
+    (define-key org-mode-map (kbd "C-c q t") #'org-timestone-set-org-current-time-effective))
 
-    (add-hook 'org-mode-hook #'za/keybinds-org-mode)
+  (add-hook 'org-mode-hook #'za/keybinds-org-mode)
 #+end_src
 *** Nicer bullets
 In org mode, I want to use bullets instead of stars, so I also install ~org-superstar~.
@@ -776,67 +777,11 @@ Fix column alignment in agenda.
     (message "Link copied to clipboard"))
 #+end_src
 **** Manipulating time
-Sometimes I want to be able to close a TODO at a different time than /right now/.
-So we'll have a buffer-local variable that controls whether we use /right now/ (if nil), or some other time (if set).
-
-***** The variable that controls it
 #+begin_src emacs-lisp
-  (defvar-local za/org-current-time-effective nil "If set, the current time that should be used when marking items in Org mode as done, taking notes, repeating tasks, etc.")
+  (use-package org-timestone
+    :quelpa (org-timestone :repo "thezeroalpha/org-timestone.el" :fetcher github)
+    :ensure nil)
 #+end_src
-
-And a function to manipulate the variable:
-
-#+begin_src emacs-lisp
-  (defun za/set-org-current-time-effective ()
-    "Set `current-time' in the current buffer for `org-todo'.
-  Use `keyboard-quit' to unset it."
-    (interactive)
-    (setq za/org-current-time-effective
-          (condition-case nil
-              (org-read-date t 'totime)
-            (quit nil))))
-#+end_src
-
-And a binding for that function:
-
-#+begin_src emacs-lisp
-  (za/global-set-key (kbd "C-c q t") #'za/set-org-current-time-effective)
-#+end_src
-
-Now we have to modify the functions that get the date.
-
-***** Repeater in todo (e.g. .+1d)
-For the repeater:
-
-#+begin_src emacs-lisp
-  (defun za/org-today-effective (old-org-today)
-    (if za/org-current-time-effective
-        (time-to-days za/org-current-time-effective)
-      (funcall old-org-today)))
-
-  (advice-add 'org-today :around #'za/org-today-effective)
-#+end_src
-
-***** Logging (e.g. logrepeat, with note -- the timestamp you see in the logbook)
-#+begin_src emacs-lisp
-  (defun za/org-current-time-effective (old-org-current-time &rest args)
-    "Return the manually set effective time, or call the original function to get it."
-    (or za/org-current-time-effective
-        (apply old-org-current-time args)))
-
-  (advice-add 'org-current-time :around #'za/org-current-time-effective)
-
-#+end_src
-
-***** last_repeat property
-#+begin_src emacs-lisp
-  (defun za/org-time-stamp-format-effective (old-org-time-stamp-format &rest args)
-    (if za/org-current-time-effective
-        (format-time-string (funcall old-org-time-stamp-format args) za/org-current-time-effective)
-      (apply old-org-time-stamp-format args)))
-  (advice-add 'org-time-stamp-format :around #'za/org-time-stamp-format-effective)
-#+end_src
-
 *** Tempo expansions
 
 #+begin_src emacs-lisp
