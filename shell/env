@@ -28,6 +28,13 @@ if command -v brave >/dev/null 2>&1; then
 else
   export BROWSER="open"
 fi
+
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  export WORKON_HOME=$HOME/.config/virtualenvs
+  VIRTUALENVWRAPPER_PYTHON=$(which python3); export VIRTUALENVWRAPPER_PYTHON
+  export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+fi
+
 export WWW_HOME="https://tab.alex.balgavy.eu"
 # Icons for lf {{{1
 export LF_ICONS="\
@@ -225,3 +232,6 @@ eval "$(perl -I$XDG_DATA_HOME/perl5/lib/perl5 -Mlocal::lib=$XDG_DATA_HOME/perl5)
 alias glow='glow --config "$XDG_CONFIG_HOME/glow/glow.yml"'
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+export RBENV_ROOT="$XDG_DATA_HOME/rbenv"
+

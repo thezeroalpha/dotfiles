@@ -24,6 +24,8 @@
 [ -d "$XDG_DATA_HOME/cargo/bin" ]                                                && [ -n "${PATH##*"$XDG_DATA_HOME/cargo/bin"*}" ]          && PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 [ -d "/usr/local/go/bin" ] || [ -L "/usr/local/go/bin" ]                         && [ -n "${PATH##*"/usr/local/go/bin"*}" ]                 && PATH="/usr/local/go/bin:$PATH"
 [ -d "/usr/local/opt/ruby/bin" ] || [ -L "/usr/local/opt/ruby/bin" ]             && [ -n "${PATH##*"/usr/local/opt/ruby/bin"*}" ]           && PATH="/usr/local/opt/ruby/bin:$PATH"
+[ -d "$PYENV_ROOT/bin" ]                                                         && [ -n "${PATH##*"$PYENV_ROOT/bin"*}" ]                   && PATH="$PYENV_ROOT/bin:$PATH"
 command -v rbenv 1>/dev/null 2>&1 && eval "$(rbenv init -)"
 command -v jenv 1>/dev/null 2>&1 && eval "$(jenv init -)"
+command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init -)"
 export PATH

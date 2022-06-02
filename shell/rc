@@ -9,10 +9,6 @@ source_if_exists() { [ -f "$1" ] && . "$1"; }
 
 # Enable virtualenvwrapper if installed
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-  export WORKON_HOME=$HOME/.config/virtualenvs
-  VIRTUALENVWRAPPER_PYTHON=$(which python3); export VIRTUALENVWRAPPER_PYTHON
-  export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-  mkdir -p "$WORKON_HOME"
   . /usr/local/bin/virtualenvwrapper_lazy.sh
 fi
 
