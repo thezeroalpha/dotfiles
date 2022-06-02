@@ -1,17 +1,25 @@
 #!/usr/bin/env perl
+# vim: foldmethod=marker
 use strict;
 use warnings;
+
+use constant EXIT_USER_CANCELLED => 130;
 
 if ( @ARGV != 1 ) {
   die 'Link necessary.';
 }
-my ($link) = @ARGV;
+my ($LINK) = @ARGV;
 my $CHOOSER = $ENV{'CHOOSER'};
+unless (length $CHOOSER) {
+  die 'Must set CHOOSER in environment.';
+}
+
 my $HOME = $ENV{'HOME'};
 my $TERM = $ENV{'TERM'};
-my $choice;
 
-=pod
+=begin
+This subroutine takes a subroutine reference and executes the dereferenced subroutine in a fork.
+Basically a way to handle things async by just writing `detach sub { .... }` in code.
 Using a fork is OK here because: "If a parent process terminates, then its
 "zombie" children (if any) are adopted by init(8), which automatically performs
 a wait to remove the zombies."
@@ -26,180 +34,296 @@ sub detach {
   return;
 }
 
-sub includes_strs {
-  my $substrs = shift;
-  my @included = grep { index( $link, $_ ) != -1 } @{$substrs};
-  return scalar @included;
+# Runs arguments in surrounding terminal, or creates a new one.
+sub launch_in_terminal {
+  my $args = shift;
+  if (($TERM eq 'dumb') or (not defined $TERM)) {
+    system(qq(alacritty -e $args));
+  }
+  else {
+    system($args);
+  }
+  return;
 }
 
-sub endswith_strs {
-  my $suffixes = shift;
-  my @endswith = grep { $link =~ /\Q$_\E$/msx } @{$suffixes};
-  return scalar @endswith;
+# Send notification via my cross-platform-ish `notify` script
+sub notify {
+  my ($title, $message) = @_;
+  system qq(notify '$title' '$message' linkhandler >/dev/null 2>&1);
+  return;
 }
 
-sub startswith_strs {
-  my $prefixes = shift;
-  my @startswith = grep { $link =~ /^\Q$_\E/msx } @{$prefixes};
-  return scalar @startswith;
+# String checking functions {{{1
+# Checks if $str (includes|endswith|startswith) any of $substrs
+sub checkstr {
+  my ($str, $mode, $substrs) = @_;
+  my @result;
+  if ($mode eq 'includes') {
+    @result = grep { index( $str, $_ ) != -1 } @{$substrs};
+  }
+  elsif ($mode eq 'ends') {
+    @result = grep { $str =~ /\Q$_\E$/msx } @{$substrs};
+  }
+  elsif ($mode eq 'starts') {
+    @result = grep { $str =~ /^\Q$_\E/msx } @{$substrs};
+  }
+  return scalar @result;
 }
 
+sub is_bandcamp {
+  my $link = shift;
+  return checkstr($link, 'includes', ['bandcamp.com', 'godisanastronaut.com']);
+}
+
+sub is_video {
+  my $link = shift;
+  return (checkstr($link, 'ends', ['mkv', 'webm', 'mp4'])
+      or checkstr($link, 'includes', ['youtube.com/watch', 'youtube.com/playlist', 'yewtu.be', 'youtu.be',
+        'hooktube.com', 'bitchute.com', 'videos.lukesmith.xyz', 'v.redd.it', 'fb.watch', 'vimeo.com']));
+}
+sub is_image {
+  my $link = shift;
+  return checkstr($link, 'ends',  ['png', 'jpg', 'jpe', 'jpeg', 'gif']);
+}
+
+sub is_gifv {
+  my $link = shift;
+  return checkstr($link, 'ends', ['gifv']);
+}
+
+sub is_audio {
+  my $link = shift;
+  return (checkstr($link, 'ends', ['mp3', 'flac', 'opus', 'mp3?source'])
+      or checkstr($link, 'includes', ['soundcloud.com']));
+}
+
+# Menu builders {{{1
+# Choose from @options (passed by reference) via $CHOOSER
 sub choose {
   my $options_ref = shift;
   my $options_str = join "\n", @{$options_ref};
   my $selected = `printf '$options_str\n' | "$CHOOSER"`;
   $selected =~ s/\s+$//msx;
+  unless (length $selected) {
+    exit EXIT_USER_CANCELLED; # user interrupted
+  }
   return $selected;
 }
 
-sub notify {
-  my ( $title, $message ) = @_;
-  system qq(notify '$title' '$message' linkhandler >/dev/null 2>&1);
-  return;
+# Receives a dispatch table of strings to subroutines.
+# Lets you select one of the strings via `choose`.
+# Returns reference to corresponding subroutine.
+sub menu {
+  my $tableref = shift;
+
+  # Global system open -- should be available for every link
+  $tableref->{'Open (system)'} = sub {
+    my ($link) = @_;
+    system('open', $link);
+    notify 'Opening...', $link;
+  };
+
+  # Global copy -- should be available for every link
+  $tableref->{'Copy'} = sub {
+    my ($link) = @_;
+    system(qq(printf '%s' '$link' | clc));
+    notify 'Copied to clipboard', $link;
+  };
+
+  # Choose an option
+  my @options = keys %{$tableref};
+  my $choice = choose(\@options);
+
+  # Return corresponding the subroutine reference
+  return $tableref->{$choice};
 }
 
-if ( includes_strs( ['bandcamp.com', 'godisanastronaut.com'] ) ) {
-  $choice = choose( [ 'Download', 'Play' ] );
+# How to play {{{1
+sub play_audio_mpd {
+  my $link = shift;
+  detach sub {
+    system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
+      title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
+      printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
+    system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+  };
+}
 
-  if ( $choice eq 'Download' ) {
-    detach sub {
-      my $download_dir = "$HOME/Downloads/songs/listen to";
-      system(qq(mkdir -p "$download_dir"));
-      chdir($download_dir);
-      ( my $name = $link ) =~ s!^.*/!!;
-      ( my $artist = $link ) =~ s|https*://||;
-      $artist =~ s/\.bandcamp\.com.*//;
+sub play_audio_mpv {
+  my $link = shift;
+  system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
+}
 
-      notify( "Downloading $name by $artist", "Downloading $link" );
-      system(qq(mkdir -p $artist)) unless ( -d $artist );
-      chdir($artist);
-      system(qq(mkdir -p $name)) unless ( -d $name );
-      chdir($name);
-      system qq(youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >/dev/null 2>&1);
-      system(qq(printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u));
-      system(qq(youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >> "$name".m3u));
-      notify( "Finished downloading $name by $artist",
-        "Downloaded $link" );
-    };
-  }
-  elsif ( $choice eq 'Play' ) {
-    $choice = choose(['Audio (queue in mpd)', 'Audio (mpv)']);
-    if ( $choice eq 'Audio (queue in mpd)' ) {
-      detach sub {
-        system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
-          title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
-          printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
-        system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
-      };
-    }
-    elsif ( $choice eq 'Audio (mpv)' ) {
-      system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
-    }
+sub play_video_mpv {
+  my $link = shift;
+  detach sub {
+    system(qq(mpvq '$link' >/dev/null 2>&1));
+    notify 'Starting mpv', "Opening $link...";
   }
 }
-elsif (endswith_strs(['mkv', 'webm', 'mp4']) or includes_strs(['youtube.com/watch', 'youtube.com/playlist', 'yewtu.be', 'youtu.be', 'hooktube.com', 'bitchute.com', 'videos.lukesmith.xyz', 'v.redd.it', 'fb.watch', 'vimeo.com'])) {
-  $choice = choose(['Play', 'Open', 'Download']);
-  if ( $choice eq 'Open' ) {
-    system( 'open', $link );
-  }
-  elsif ( $choice eq 'Download' ) {
-    my $download_dir = "$HOME/Downloads";
-    $choice = choose([ 'Both', 'Audio', 'Video' ]);
-    if ( $choice eq 'Both' ) {
+
+# How to download {{{1
+sub download_bandcamp {
+  my $link = shift;
+  detach sub {
+    my $download_dir = "$HOME/Downloads/songs/listen to";
+    system(qq(mkdir -p "$download_dir"));
+    chdir($download_dir);
+    ( my $name = $link ) =~ s!^.*/!!;
+    ( my $artist = $link ) =~ s|https*://||;
+    $artist =~ s/\.bandcamp\.com.*//;
+
+    notify( "Downloading $name by $artist", "Downloading $link" );
+    system(qq(mkdir -p $artist)) unless ( -d $artist );
+    chdir($artist);
+    system(qq(mkdir -p $name)) unless ( -d $name );
+    chdir($name);
+    system qq(youtube-dl -f mp3 -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >/dev/null 2>&1);
+    system(qq(printf "#EXTM3U\n#PLAYLIST:%s\n#EXTART:%s\n" "$name" "$artist" > "$name".m3u));
+    system(qq(youtube-dl -f mp3 --get-filename -o "%(playlist_index)s %(title)s %(id)s.%(ext)s" '$link' >> "$name".m3u));
+    notify( "Finished downloading $name by $artist",
+      "Downloaded $link" );
+  };
+}
+
+sub download_audio {
+  my $link = shift;
+  detach sub {
+    my $download_dir = "$HOME/Downloads/songs/listen to";
+    notify 'Download (audio) started', "Downloading $link";
+    system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
+  };
+}
+
+sub download_video {
+  my $link = shift;
+  my $download_dir = "$HOME/Downloads";
+
+  my %choices = (
+    'Both' => sub {
+      my $link = shift;
       detach sub {
         notify 'Download (av) started', "Downloading $link";
         system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
       };
-    }
-    elsif ( $choice eq 'Audio' ) {
-      detach sub {
-        notify 'Download (audio) started', "Downloading $link";
-        system(qq(youtube-dl --add-metadata -xic -f bestaudio/best -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
-      };
-    }
-    elsif ( $choice eq 'Video' ) {
+    },
+    'Audio' => \&download_audio,
+    'Video' => sub {
+      my $link = shift;
       detach sub {
         notify 'Download (video) started', "Downloading $link";
         system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
       };
     }
-  }
-  elsif ( $choice eq 'Play' ) {
-    $choice = choose(['Video', 'Audio (queue in mpd)', 'Audio (mpv)']);
-    if ( $choice eq 'Video' ) {
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($link);
+}
+
+# Main {{{1
+if (is_bandcamp($LINK)) {
+  my %choices = (
+    'Download' => \&download_bandcamp,
+    'Play' => sub {
+      my $link = shift;
+      my %choices = (
+        'Audio (queue in mpd)' => \&play_audio_mpd,
+        'Audio (mpv)' => \&play_audio_mpv
+      );
+
+      my $selected_ref = menu(\%choices);
+      $selected_ref->($link);
+    }
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
+}
+elsif (is_video($LINK)) {
+  my %choices = (
+    'Play' => sub {
+      my $link = shift;
+
+      my %choices = (
+        'Video' => \&play_video_mpv,
+        'Audio (queue in mpd)' => \&play_audio_mpd,
+        'Audio (mpv)' => \&play_audio_mpv
+      );
+      my $selected_ref = menu(\%choices);
+      $selected_ref->($LINK);
+    },
+    'Download' => \&download_video
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
+}
+elsif (is_image($LINK)) {
+  my %choices = (
+    'View (nsxiv)' => sub {
+      my $link = shift;
       detach sub {
-        system(qq(mpvq '$link' >/dev/null 2>&1));
-        notify 'Starting mpv', "Opening $link...";
+        notify 'Starting image viewer', "Opening $link...";
+        system(qq(curl -sL '$link' >"/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")"));
+        system(qq(opener "/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")" >/tmp/error 2>&1));
       }
     }
-    elsif ( $choice eq 'Audio (queue in mpd)' ) {
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
+}
+elsif (is_gifv($LINK)) {
+  my %choices = (
+    'View (mpv)' => sub {
+      my $link = shift;
       detach sub {
-        system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
-          title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
-          printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
-        system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+        system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
       };
     }
-    elsif ( $choice eq 'Audio (mpv)' ) {
-      system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
-    }
-  }
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
 }
-elsif ( endswith_strs( [ 'png', 'jpg', 'jpe', 'jpeg', 'gif' ] ) ) {
-  detach sub {
-    notify 'Starting image viewer', "Opening $link...";
-    system(qq(curl -sL '$link' >"/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")"));
-    system(qq(opener "/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")" >/tmp/error 2>&1));
-  }
-}
-elsif ( endswith_strs( ['gifv'] ) ) {
-  detach sub {
-    system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
-  };
-}
-elsif ( endswith_strs(['mp3', 'flac', 'opus', 'mp3?source']) or includes_strs(['soundcloud.com'])) {
-  $choice = choose( [ 'Download', 'Play' ] );
-  if ( $choice eq 'Download' ) {
-    # TODO
-  }
-  elsif ( $choice eq 'Play' ) {
-    $choice = choose(['Audio (queue in mpd)', 'Audio (mpv)']);
-    if ( $choice eq 'Audio (queue in mpd)' ) {
-      detach sub {
-        system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
-          title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
-          printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
-        system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
-      };
-    }
-    elsif ( $choice eq 'Audio (mpv)' ) {
-      system(qq(mpv --no-audio-display --no-video --volume=50 '$link'));
-    }
-  }
+elsif (is_audio($LINK)) {
+  my %choices = (
+    'Download' => \&download_audio,
+    'Play' => sub {
+      my $link = shift;
+      my %choices = (
+        'Audio (queue in mpd)' => \&play_audio_mpd,
+        'Audio (mpv)' => \&play_audio_mpv
+      );
 
+      my $selected_ref = menu(\%choices);
+      $selected_ref->($link);
+    }
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
 }
-elsif ( includes_strs( ['reddit.com'] ) ) {
-  system(qq(reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X));
+elsif (checkstr($LINK, 'includes',  ['reddit.com'])) {
+  my %choices = (
+    'reddio' => sub {
+      my $link = shift;
+      # Have to go via bash here to be able to pipe to `less`
+      launch_in_terminal(qq(bash -c 'reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X'));
+    }
+  );
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
 }
-elsif ( startswith_strs( [ 'http://', 'https://' ] ) ) {
-  if (($TERM eq 'dumb') or (not defined $TERM)) {
-    system(qq(alacritty -e w3m -config ~/.config/w3m/config -T text/html '$link'));
-  }
-  else {
-    system(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
-  }
-}
-elsif ( startswith_strs( ['!http'] ) ) {
-  notify 'Open in browser incomplete', 'not yet';
-}
-elsif ( startswith_strs( ['@http'] ) ) {
-  notify 'copy incomplete', 'not yet';
+elsif (checkstr($LINK, 'starts', ['http://', 'https://'])) {
+  my %choices = (
+    'w3m' => sub {
+      my $link = shift;
+      launch_in_terminal(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
+    });
+  my $selected_ref = menu(\%choices);
+  $selected_ref->($LINK);
 }
 else {
-  if ( -f $link ) {
-    system(qq(\${EDITOR:-vim} '$link'));
+  if ( -f $LINK ) {
+    system(qq(\${EDITOR:-vim} '$LINK'));
   }
   else {
-    system(qq(open '$link' >/dev/null 2>&1));
+    system(qq(open '$LINK' >/dev/null 2>&1));
   }
 }
