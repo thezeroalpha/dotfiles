@@ -1325,6 +1325,20 @@ Also, counsel doesn't provide some keybindings that I can get from helpful:
   (za/global-set-key (kbd "C-h k") #'helpful-key)
   (za/global-set-key (kbd "C-h C") #'helpful-command)
 #+end_src
+** ace-window
+Window switching with ~other-window~ sucks when I have more than 2 windows open. Too much cognitive load.
+This lets me select a window to jump to using a single key, sort of like ~avy~.
+
+#+begin_src emacs-lisp
+  (use-package ace-window)
+  (za/global-set-key (kbd "M-o") #'ace-window)
+#+end_src
+
+I prefer using home-row keys instead of numbers:
+
+#+begin_src emacs-lisp
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
