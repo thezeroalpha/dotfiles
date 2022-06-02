@@ -215,6 +215,11 @@ And a bunch more.
 Generally makes for nicer interactivity, like ido mode on steroids.
 Switched to this from Helm, it's more lightweight.
 
+The components:
+- ivy: generic completion mechanism
+- counsel: collection of common Emacs commands enhanced using ivy
+- swiper: search enhanced using ivy
+
 #+begin_src emacs-lisp
   (use-package counsel :demand
     :config
@@ -255,6 +260,9 @@ Set the key bindings:
   (za/global-set-key (kbd "C-c b") #'counsel-bookmark)
   (za/global-set-key (kbd "C-c p") #'counsel-recentf)
   (za/global-set-key (kbd "C-c o") #'counsel-outline)
+  (za/global-set-key (kbd "C-h f") #'counsel-describe-function)
+  (za/global-set-key (kbd "C-h v") #'counsel-describe-variable)
+  (za/global-set-key (kbd "C-h o") #'counsel-describe-symbol)
 #+end_src
 
 I like having ivy in a popup.
@@ -1295,6 +1303,28 @@ In case I want to show what keys I'm pressing.
 (use-package keycast)
 #+end_src
 
+** helpful
+An alternative to the built-in Emacs help that provides much more contextual information.
+
+#+begin_src emacs-lisp
+  (use-package helpful)
+#+end_src
+
+I use counsel, so I use the keybindings in [[*counsel + ivy + swiper]].
+I just augment the functions counsel uses:
+
+#+begin_src emacs-lisp
+  (setq counsel-describe-symbol-function #'helpful-symbol
+        counsel-describe-function-function #'helpful-callable
+        counsel-describe-variable-function #'helpful-variable)
+#+end_src
+
+Also, counsel doesn't provide some keybindings that I can get from helpful:
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-h k") #'helpful-key)
+  (za/global-set-key (kbd "C-h C") #'helpful-command)
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
@@ -1427,36 +1457,36 @@ use in order for displaying the list, and then options for those functions (each
                         3   ;; right
                         1 ) ;; bottom
 
-   display-buffer-alist '(
+   display-buffer-alist `(
                           ;; Right side
-                          ("\\*Help\\*"
+                          (,(rx (or "*Help*" (seq "*helpful " (* anything) "*")))
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . right)
                            (slot . -1)
                            (inhibit-same-window . t))
-                          ("\\*Async Shell Command\\*"
+                          (,(rx "*Async Shell Command*")
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . right)
                            (slot . 0)
                            (inhibit-same-window . t))
-                          ("magit-process: .*"
+                          (,(rx "magit-process: " (* anything))
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . right)
                            (slot . 0)
                            (inhibit-same-window . t))
 
                           ;; Top side
-                          ("\\*Info\\*"
+                          (,(rx "*Info*")
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . top)
                            (slot . 0))
-                          ("\\*Man .*\\*"
+                          (,(rx "*Man " (* anything) "*")
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . top)
                            (slot . 0))
 
                           ;; Bottom
-                          ("\\*Flycheck errors\\*"
+                          (,(rx "*Flycheck errors*")
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . bottom)
                            (slot . 0))))
@@ -1576,10 +1606,14 @@ I want to wrap text at window boundary for some modes:
   (defun za/settings-help-mode ()
     "Help mode settings"
     (za/toggle-wrap t))
+  (add-hook 'help-mode-hook #'za/settings-help-mode)
 #+end_src
 
 #+begin_src emacs-lisp
-  (add-hook 'help-mode-hook #'za/settings-help-mode)
+  (defun za/settings-helpful-mode ()
+    "Helpful mode settings"
+    (za/toggle-wrap t))
+  (add-hook 'helpful-mode-hook #'za/settings-helpful-mode)
 #+end_src
 
 ** Pulse line
