@@ -47,8 +47,8 @@ ncmpcpp/patterns.list
 vim/autoload/plug.vim*
 karabiner/automatic_backups/
 /tools/solvitaire
-
 bin/geckodriver
+Gemfile.lock
 
 # irssi
 irssi/*.log
