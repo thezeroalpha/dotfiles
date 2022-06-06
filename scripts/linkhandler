@@ -110,32 +110,42 @@ sub choose {
   return $selected;
 }
 
-# Receives a dispatch table of strings to subroutines.
+# Receives a dispatch table of strings to subroutines, as an array.
 # Lets you select one of the strings via `choose`.
 # Returns reference to corresponding subroutine.
 sub menu {
   my $tableref = shift;
 
   # Global system open -- should be available for every link
-  $tableref->{'Open (system)'} = sub {
+
+  push @$tableref, ['Open (system)', sub {
     my ($link) = @_;
     system('open', $link);
     notify 'Opening...', $link;
-  };
+  }];
 
   # Global copy -- should be available for every link
-  $tableref->{'Copy'} = sub {
+  push @$tableref, ['Copy', sub {
     my ($link) = @_;
     system(qq(printf '%s' '$link' | clc));
     notify 'Copied to clipboard', $link;
-  };
+  }];
+
+  push @$tableref, ['Save', sub {
+      my ($link) = @_;
+      detach sub {
+        system(qq(pocket save '$link'));
+        notify 'Saved to Pocket', $link;
+      }
+    }];
 
   # Choose an option
-  my @options = keys %{$tableref};
+  my @options = map { $_->[0] } @$tableref;
   my $choice = choose(\@options);
 
   # Return corresponding the subroutine reference
-  return $tableref->{$choice};
+  my $choice_index = (grep { $options[$_] eq $choice } 0..$#options)[0];
+  return $tableref->[$choice_index][1];
 }
 
 # How to play {{{1
@@ -199,124 +209,124 @@ sub download_video {
   my $link = shift;
   my $download_dir = "$HOME/Downloads";
 
-  my %choices = (
-    'Both' => sub {
+  my @choices = (
+    ['Both', sub {
       my $link = shift;
       detach sub {
         notify 'Download (av) started', "Downloading $link";
         system(qq(youtube-dl --add-metadata -ic --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
       };
-    },
-    'Audio' => \&download_audio,
-    'Video' => sub {
+    }],
+    ['Audio', \&download_audio],
+    ['Video', sub {
       my $link = shift;
       detach sub {
         notify 'Download (video) started', "Downloading $link";
         system(qq(youtube-dl --add-metadata -ic -f bestvideo --write-sub --embed-subs -o "$download_dir/%(title)s-%(creator)s.%(ext)s" --exec "notify 'Download finished' 'Downloaded $link.' linkhandler" '$link' >/dev/null 2>&1));
       };
-    }
+    }]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($link);
 }
 
 # Main {{{1
 if (is_bandcamp($LINK)) {
-  my %choices = (
-    'Download' => \&download_bandcamp,
-    'Play' => sub {
+  my @choices = (
+    ['Download', \&download_bandcamp],
+    ['Play', sub {
       my $link = shift;
-      my %choices = (
-        'Audio (queue in mpd)' => \&play_audio_mpd,
-        'Audio (mpv)' => \&play_audio_mpv
+      my @choices = (
+        ['Audio (queue in mpd)', \&play_audio_mpd],
+        ['Audio (mpv)', \&play_audio_mpv]
       );
 
-      my $selected_ref = menu(\%choices);
+      my $selected_ref = menu(\@choices);
       $selected_ref->($link);
-    }
+    }]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 elsif (is_video($LINK)) {
-  my %choices = (
-    'Play' => sub {
+  my @choices = (
+    ['Play', sub {
       my $link = shift;
 
-      my %choices = (
-        'Video' => \&play_video_mpv,
-        'Audio (queue in mpd)' => \&play_audio_mpd,
-        'Audio (mpv)' => \&play_audio_mpv
+      my @choices = (
+        ['Video', \&play_video_mpv],
+        ['Audio (queue in mpd)', \&play_audio_mpd],
+        ['Audio (mpv)', \&play_audio_mpv]
       );
-      my $selected_ref = menu(\%choices);
+      my $selected_ref = menu(\@choices);
       $selected_ref->($LINK);
-    },
-    'Download' => \&download_video
+    }],
+    ['Download', \&download_video]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 elsif (is_image($LINK)) {
-  my %choices = (
-    'View (nsxiv)' => sub {
+  my @choices = (
+    ['View (nsxiv)', sub {
       my $link = shift;
       detach sub {
         notify 'Starting image viewer', "Opening $link...";
         system(qq(curl -sL '$link' >"/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")"));
         system(qq(opener "/tmp/\$(printf "%s" '$link' | sed "s/.*\\///")" >/tmp/error 2>&1));
       }
-    }
+    }]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 elsif (is_gifv($LINK)) {
-  my %choices = (
-    'View (mpv)' => sub {
+  my @choices = (
+    ['View (mpv)', sub {
       my $link = shift;
       detach sub {
         system(qq(mpv --volume=50 '$link' >/dev/null 2>&1));
       };
-    }
+    }]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 elsif (is_audio($LINK)) {
-  my %choices = (
-    'Download' => \&download_audio,
-    'Play' => sub {
+  my @choices = (
+    ['Download', \&download_audio],
+    ['Play', sub {
       my $link = shift;
-      my %choices = (
-        'Audio (queue in mpd)' => \&play_audio_mpd,
-        'Audio (mpv)' => \&play_audio_mpv
+      my @choices = (
+        ['Audio (queue in mpd)', \&play_audio_mpd],
+        ['Audio (mpv)', \&play_audio_mpv]
       );
 
-      my $selected_ref = menu(\%choices);
+      my $selected_ref = menu(\@choices);
       $selected_ref->($link);
-    }
+    }]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 elsif (checkstr($LINK, 'includes',  ['reddit.com'])) {
-  my %choices = (
-    'reddio' => sub {
+  my @choices = (
+    ['reddio', sub {
       my $link = shift;
       # Have to go via bash here to be able to pipe to `less`
       launch_in_terminal(qq(bash -c 'reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X'));
-    }
+    }]
   );
-  my $selected_ref = menu(\%choices);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 elsif (checkstr($LINK, 'starts', ['http://', 'https://'])) {
-  my %choices = (
-    'w3m' => sub {
+  my @choices = (
+    ['w3m', sub {
       my $link = shift;
       launch_in_terminal(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
-    });
-  my $selected_ref = menu(\%choices);
+    }]);
+  my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
 }
 else {
