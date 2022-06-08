@@ -1,3 +1,7 @@
+* Info
+On macOS, I use Homebrew to install Emacs from daviderestivo/emacs-head/emacs-head@28.
+I install with ~--HEAD --with-dbus --with-cocoa --with-xwidgets --with-native-comp~.
+
 * Keep track of custom key bindings
 I want an easy way to see which global key bindings I have.
 Some packages provide things like this, but I want it to be simple and always available, so I'll roll my own.
@@ -815,17 +819,21 @@ Instead, show what's being edited, but don't perform the edit.
 #+end_src
 
 *** Notification
-macOS doesn't have dbus. So I use terminal-notifier for functions like org-notify:
+macOS version might not be compiled with dbus support; in that case you can use e.g. terminal-notifier.
+If you use the ~sender~ option, notifications don't show
+unless the app is in the background. [[https://github.com/julienXX/terminal-notifier/issues/68][See this Github issue.]]
 
 #+begin_src emacs-lisp
-  (if (and (eq system-type 'darwin)
+  (if (and (not (featurep 'dbus))
+           (eq system-type 'darwin)
            (executable-find "terminal-notifier"))
       (setq org-show-notification-handler
             (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
                                          "-title" "Timer done"
                                          "-message" str
                                          "-group" "org.gnu.Emacs"
-                                         "-sender" "org.gnu.Emacs"))))
+                                         "-ignoreDnD"
+                                         "-activate" "org.gnu.Emacs"))))
 #+end_src
 
 *** org-caldav
