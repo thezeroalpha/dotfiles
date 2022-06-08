@@ -70,9 +70,14 @@ sub checkstr {
   return scalar @result;
 }
 
-sub is_bandcamp {
+sub is_bandcamp_track {
   my $link = shift;
-  return checkstr($link, 'includes', ['bandcamp.com', 'godisanastronaut.com']);
+  return (checkstr($link, 'includes', ['bandcamp.com', 'godisanastronaut.com']) and checkstr($link, 'includes', ['/track/']));
+}
+
+sub is_bandcamp_album {
+  my $link = shift;
+  return (checkstr($link, 'includes', ['bandcamp.com', 'godisanastronaut.com']) and checkstr($link, 'includes', ['/album/']));
 }
 
 sub is_video {
@@ -231,7 +236,7 @@ sub download_video {
 }
 
 # Main {{{1
-if (is_bandcamp($LINK)) {
+if (is_bandcamp_track($LINK)) {
   my @choices = (
     ['Download', \&download_bandcamp],
     ['Play', sub {
@@ -244,6 +249,13 @@ if (is_bandcamp($LINK)) {
       my $selected_ref = menu(\@choices);
       $selected_ref->($link);
     }]
+  );
+  my $selected_ref = menu(\@choices);
+  $selected_ref->($LINK);
+}
+elsif (is_bandcamp_album($LINK)) {
+  my @choices = (
+    ['Download', \&download_bandcamp]
   );
   my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
