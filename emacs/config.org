@@ -1534,6 +1534,13 @@ And a way to toggle those side windows:
 #+begin_src emacs-lisp
   (za/global-set-key (kbd "C-c W") #'window-toggle-side-windows)
 #+end_src
+** Eldoc
+When editing Elisp and other supported major-modes, Eldoc will display useful information about the construct at point in the echo area.
+
+#+begin_src emacs-lisp
+  (global-eldoc-mode 1)
+#+end_src
+
 * Editor
 ** Overwrite selection on typing
 Normally, when I select something and start typing, Emacs clears the selection, i.e. it deselects and inserts text after the cursor.
