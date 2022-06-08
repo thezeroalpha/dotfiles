@@ -61,6 +61,7 @@ surfraw: ~/.config/surfraw
 khard: ~/.config/khard
 khal: ~/.config/khal
 vdirsyncer: ~/.config/vdirsyncer
+helix: ~/.config/helix
 
 # Email: these won't exist when you clone the repo
 mbsync: ~/.config/mbsync

@@ -1,0 +1,7 @@
+theme = "everforest_light"
+
+[keys.normal]
+0 = "goto_line_start"
+"$" = "goto_line_end"
+";" = "command_mode"
+":" = "collapse_selection"
