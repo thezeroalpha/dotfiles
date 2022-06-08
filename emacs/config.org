@@ -400,6 +400,12 @@ Link settings:
         org-link-elisp-skip-confirm-regexp "^org-noter$")
 #+end_src
 
+Clock sound:
+
+#+begin_src emacs-lisp
+  (setq org-clock-sound (concat user-emacs-directory "notification.wav"))
+#+end_src
+
 *** Enable linking to email via notmuch
 To be able to link to emails via notmuch, I use ol-notmuch:
 
@@ -1917,6 +1923,30 @@ So I create a keybinding to toggle dedicated on a window:
   ;; followed by `org-roam-db-sync'
   (org-roam-db-sync)
   (org-roam-update-org-id-locations))
+#+end_src
+
+* Sound support
+On macOS, you can use afplay:
+
+#+begin_src emacs-lisp
+  (defun za/play-sound-file-macos (file &optional volume device)
+    "Play sound using `afplay` on macOS"
+    (unless (file-readable-p file)
+      (user-error "File %s not readable." file))
+
+    ;; the `apply` is required here because I need to build a list of arguments
+    (apply 'start-process `("afplay" nil
+                            "afplay"
+                            ,@(if volume (list "-v" (int-to-string volume)))
+                            ,file)))
+#+end_src
+
+Then redefine the play-sound-file function where needed:
+
+#+begin_src emacs-lisp
+  (cond ((and (not (fboundp 'play-sound-internal))
+              (eq system-type 'darwin))
+         (advice-add 'play-sound-file :override #'za/play-sound-file-macos)))
 #+end_src
 
 * Daemon
