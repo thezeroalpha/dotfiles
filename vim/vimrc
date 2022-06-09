@@ -156,6 +156,9 @@ Plug 'dense-analysis/ale'
 Plug 'Yggdroot/indentLine', { 'for': 'python' }
 
 Plug 'jceb/vim-orgmode', { 'for': 'org' }
+
+" Rust
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 call plug#end()
 
 " quickfix filtering
