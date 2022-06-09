@@ -774,6 +774,11 @@ if has('terminal')
   cnoreabbrev tn terminal ++close joplin
   command! Reddit tab terminal ttrv
 endif
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+command! DiffOrig vert new | set bt=nofile | r# | 0d_ | diffthis
+      \ | wincmd p | diffthis
 " }}}
 " Digraphs {{{1
 let digraphs = {
