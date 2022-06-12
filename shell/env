@@ -214,6 +214,7 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 alias irssi='irssi --home=$XDG_CONFIG_HOME/irssi'
 alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
 alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config -bookmark $XDG_CONFIG_HOME/w3m/bookmark.html'
+alias monero-wallet-cli='monero-wallet-cli --config-file ~/.config/bitmonero/monero-wallet-cli.conf'
 export GOPATH="$XDG_DATA_HOME"/go
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"
