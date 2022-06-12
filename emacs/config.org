@@ -966,6 +966,14 @@ The ~:html-head~ setting comes from my base template for the website.
           ))
 #+end_src
 
+And a function to rsync to my VPS:
+
+#+begin_src emacs-lisp
+  (defun za/publish-upload-to-website ()
+    "Upload my website to my VPS"
+    (interactive)
+    (async-shell-command (format "cd %s && zola build && yes|publish" za/my-website-dir) "*Async Shell publish*"))
+#+end_src
 ** calfw
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
@@ -1563,7 +1571,7 @@ use in order for displaying the list, and then options for those functions (each
                            (side . right)
                            (slot . -1)
                            (inhibit-same-window . t))
-                          (,(rx "*Async Shell Command*")
+                          (,(rx "*Async Shell " (* anything) "*")
                            (display-buffer-reuse-window display-buffer-in-side-window)
                            (side . right)
                            (slot . 0)
