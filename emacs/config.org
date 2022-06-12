@@ -2013,6 +2013,19 @@ So I create a keybinding to toggle dedicated on a window:
   (org-roam-update-org-id-locations))
 #+end_src
 
+** Info manual functions
+For some reason, these things don't show up in the index:
+
+#+begin_src emacs-lisp
+  (defun elisp-info (&optional node)
+    "Read documentation for Elisp in the info system.
+  With optional NODE, go directly to that node."
+    (interactive)
+    (info (format "(elisp)%s" (or node ""))))
+#+end_src
+
+Though I can also just use ~info-display-manual~.
+
 * Sound support
 On macOS, you can use afplay:
 
