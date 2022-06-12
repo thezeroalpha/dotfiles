@@ -1,0 +1,14 @@
+#!/bin/sh
+# Tells you whether a word in Dutch is "de" or "het". Uses welklidwoord.nl as a
+# backend.
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps curl pup tr
+
+curl -sL https://welklidwoord.nl/"$1" \
+  | pup 'h2.nieuwH2 > span text{}' \
+  | tr -dC '[[:alpha:]]'
