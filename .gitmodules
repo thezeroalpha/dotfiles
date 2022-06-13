@@ -51,18 +51,18 @@
 [submodule "tools/pipe-viewer"]
 	path = tools/pipe-viewer
 	url = https://github.com/trizen/pipe-viewer.git
-[submodule "tools/go-readability"]
-	path = tools/go-readability
-	url = https://github.com/go-shiori/go-readability
 [submodule "shell/osx-zsh-completions"]
 	path = shell/osx-zsh-completions
 	url = https://github.com/nilsonholger/osx-zsh-completions
-[submodule "tools/translate-shell"]
-	path = tools/translate-shell
-	url = https://github.com/soimort/translate-shell
 [submodule "tools/speedread"]
 	path = tools/speedread
 	url = https://github.com/pasky/speedread.git
 [submodule "tools/radio"]
 	path = tools/radio
 	url = https://github.com/thezeroalpha/radio
+[submodule "tools/go-readability"]
+	path = tools/go-readability
+	url = https://github.com/go-shiori/go-readability
+[submodule "tools/translate-shell"]
+	path = tools/translate-shell
+	url = https://github.com/soimort/translate-shell
