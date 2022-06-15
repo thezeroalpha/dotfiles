@@ -125,6 +125,7 @@ brew "lsusb"
 brew "man-db"
 brew "mas"
 brew "meson"
+brew "monero"
 brew "mosh"
 brew "mp3gain"
 brew "mp3val"
@@ -296,6 +297,3 @@ cask "wireshark"
 cask "xld"
 cask "xquartz"
 cask "zeronet"
-mas "eduVPN", id: 1317704208
-mas "Pocket", id: 568494494
-mas "Trello", id: 1278508951
