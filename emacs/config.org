@@ -375,7 +375,8 @@ In org mode, I want to use bullets instead of stars, so I also install ~org-supe
    '((emacs-lisp . t)
      (R . t)
      (python . t)
-     (ruby . t)))
+     (ruby . t)
+     (shell . t)))
 
   (setq org-babel-python-command "python3")
   (setq org-confirm-babel-evaluate nil)
