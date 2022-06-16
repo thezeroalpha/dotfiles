@@ -825,16 +825,14 @@ If you use the ~sender~ option, notifications don't show
 unless the app is in the background. [[https://github.com/julienXX/terminal-notifier/issues/68][See this Github issue.]]
 
 #+begin_src emacs-lisp
-  (if (and (not (featurep 'dbus))
-           (eq system-type 'darwin)
-           (executable-find "terminal-notifier"))
-      (setq org-show-notification-handler
-            (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
-                                         "-title" "Timer done"
-                                         "-message" str
-                                         "-group" "org.gnu.Emacs"
-                                         "-ignoreDnD"
-                                         "-activate" "org.gnu.Emacs"))))
+  ;; on mac without dbus:
+      ;; (setq org-show-notification-handler
+      ;;       (lambda (str) (start-process "terminal-notifier" nil (executable-find "terminal-notifier")
+      ;;                                    "-title" "Timer done"
+      ;;                                    "-message" str
+      ;;                                    "-group" "org.gnu.Emacs"
+      ;;                                    "-ignoreDnD"
+      ;;                                    "-activate" "org.gnu.Emacs"))))
 #+end_src
 
 *** org-caldav
@@ -1889,6 +1887,39 @@ Let a period followed by a single space be treated as end of sentence:
     (interactive "r")
     (with-silent-modifications
       (remove-text-properties begin end '(read-only t))))
+#+end_src
+** Open line like in Vim
+I prefer to open-line the way o/O works in Vim:
+
+#+begin_src emacs-lisp
+  ;; Autoindent open-*-lines
+  (defvar za/open-line-newline-and-indent t
+    "Modify the behavior of the open-*-line functions to cause them to autoindent.")
+
+  (defun za/open-line (prefix)
+    "Open line like `o`/`O` in Vim. Negative prefix for line above, positive for below."
+    (interactive "p")
+    (cond ((< prefix 0)
+           (beginning-of-line)
+           (open-line (abs prefix)))
+          (t
+           (end-of-line)
+           (open-line prefix)
+           (forward-line 1)))
+    (when za/open-line-newline-and-indent
+      (indent-according-to-mode)))
+
+  (defun za/open-line-keep-point (prefix)
+    "Open line like `o`/`O` in Vim but don't move point. Negative prefix for line above, positive for below."
+    (interactive "p")
+    (save-mark-and-excursion (za/open-line prefix)))
+#+end_src
+
+And keybindings:
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-o") #'za/open-line)
+  (za/global-set-key (kbd "C-M-o") #'za/open-line-keep-point)
 #+end_src
 
 * Markdown
