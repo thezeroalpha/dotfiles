@@ -123,7 +123,7 @@ organize_files() {
     while read -r i; do
       artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?"\\>' '_' | sed 's/\.\.*$//')"
       [ -n "$artist" ] || { mv "$i" _failed/ && continue; }
-      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?>\\"' '_' | sed 's/\.\.*$//')"
+      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?>\\/"' '_' | sed 's/\.\.*$//')"
       [ -n "$album" ] || { mv "$i" _failed/ && continue; }
       mkdir -p "$artist/$album"
       printf "%s -> %s\n" "$i" "$artist/$album"
