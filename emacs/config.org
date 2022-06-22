@@ -411,6 +411,11 @@ Clock sound:
   (setq org-clock-sound (concat user-emacs-directory "notification.wav"))
 #+end_src
 
+Abbrev mode:
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook #'abbrev-mode)
+#+end_src
 *** Enable linking to email via notmuch
 To be able to link to emails via notmuch, I use ol-notmuch:
 
