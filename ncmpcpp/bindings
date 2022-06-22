@@ -77,7 +77,17 @@ def_key "?"
 # Bound to ctrl-/, didn't accept by name but accepts non-ascii chars, so that's what I use.
 def_key ""
   select_found_items
+
 # Global {{{1
+def_key "y"
+  save_tag_changes
+
+def_key "y"
+  start_searching
+
+def_key "y"
+  toggle_single
+
 def_key "="
   volume_up
 
