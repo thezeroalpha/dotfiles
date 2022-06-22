@@ -72,6 +72,7 @@
         `(show-paren-match-face ((,class (:background ,warning))))
         `(isearch ((,class (:bold t :foreground ,warning :background ,bg3))))
         `(mode-line ((,class (:foreground "#e5e5e5" :background "#005f77" :bold nil))))
+        `(tooltip ((,class (:foreground "#e5e5e5" :background "#0087af"))))
         `(mode-line-buffer-id ((,class (:foreground "#e5e5e5" :background "#0087af" :bold nil))))
         `(mode-line-inactive ((,class (:foreground "#e5e5e5" :background "#0087af"))))
         `(mode-line-emphasis ((,class (:inherit mode-line :bold t))))

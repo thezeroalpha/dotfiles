@@ -1159,6 +1159,45 @@ Save position and jump back:
 
 *** TODO this clobbers register x. Find a way to not clobber a register
 
+*** Fix up arrow
+The arrow tooltip does not show properly when jumping to a location.
+Maybe this is a Mac-only thing. See here: https://github.com/politza/pdf-tools/issues/145
+
+This ~:override~ advice fixes it, color is customized via ~tooltip~ face:
+
+#+begin_src emacs-lisp
+  (defun za/pdf-util-tooltip-arrow (image-top &optional timeout)
+    "Fix up `pdf-util-tooltip-arrow`, the original doesn't show the arrow."
+    (pdf-util-assert-pdf-window)
+    (when (floatp image-top)
+      (setq image-top
+            (round (* image-top (cdr (pdf-view-image-size))))))
+    (let* (x-gtk-use-system-tooltips ;allow for display property in tooltip
+           (dx (+ (or (car (window-margins)) 0)
+                  (car (window-fringes))))
+           (dy image-top)
+           (pos (list dx dy dx (+ dy (* 2 (frame-char-height)))))
+           (vscroll
+            (pdf-util-required-vscroll pos))
+           (tooltip-frame-parameters
+            `((border-width . 0)
+              (internal-border-width . 0)
+              ,@tooltip-frame-parameters))
+           (tooltip-hide-delay (or timeout 3)))
+      (when vscroll
+        (image-set-window-vscroll vscroll))
+      (setq dy (max 0 (- dy
+                         (cdr (pdf-view-image-offset))
+                         (window-vscroll nil t)
+                         (frame-char-height))))
+      (when (overlay-get (pdf-view-current-overlay) 'before-string)
+        (let* ((e (window-inside-pixel-edges))
+               (xw (pdf-util-with-edges (e) e-width)))
+          (cl-incf dx (/ (- xw (car (pdf-view-image-size t))) 2))))
+      (pdf-util-tooltip-in-window "\u2192" dx dy)))
+  (advice-add #'pdf-util-tooltip-arrow :override #'za/pdf-util-tooltip-arrow)
+#+end_src
+
 ** virtualenvwrapper
 Like virtualenvwrapper.sh, but for Emacs.
 
@@ -1458,6 +1497,7 @@ Hide some messages I don't need, and add a list of recent files.
 
 #+end_src
 
+*** TODO maybe look into fancy-startup-text and fancy-splash-image
 ** Appearance
 *** Cursor line
 Highlight the current line:
