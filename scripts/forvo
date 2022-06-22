@@ -1,0 +1,22 @@
+#!/bin/sh
+# Play the top pronunciation from forvo.com for a phrase & language
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+checkdeps() {
+  for com in "$@"; do
+    command -v "$com" >/dev/null 2>&1 \
+      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+  done
+}
+checkdeps curl pup awk base64 mpv
+
+[ $# -eq 2 ] || die "Usage: forvo PHRASE ISO_LANG_CODE"
+phrase_encoded="$(printf '%s' "$1" | sed 's/ /%20/g')"
+lang="$2"
+search_url="https://forvo.com/search/$phrase_encoded/$lang"
+audio_path="$(curl -sL "$search_url" \
+  | pup '.results_match li span.play:first-of-type attr{onclick}' \
+  | awk -F '&#39;' '{print $2 }' \
+  | base64 -d)"
+[ -z "$audio_path" ] && die "Not found."
+audio_url="https://audio.forvo.com/mp3/$audio_path"
+mpv -loop "$audio_url"
