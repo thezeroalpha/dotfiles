@@ -142,11 +142,6 @@ snippet ;3 "subsubsection{}" b
 $0
 endsnippet
 
-snippet ;4 "subsubsubsection{}" b
-\subsubsubsection{$1}
-$0
-endsnippet
-
 snippet mk "Inline math" w
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
@@ -241,6 +236,14 @@ endsnippet
 
 snippet par "Paragraph heading" b
 \paragraph{$1}$0
+endsnippet
+
+snippet c "Cite" w
+\cite{$1}$0
+endsnippet
+
+snippet tc "Cite (text)" w
+\textcite{$1}$0
 endsnippet
 # }}}
 
