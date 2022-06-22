@@ -60,14 +60,8 @@ talon-user: ~/.talon/user
 surfraw: ~/.config/surfraw
 khard: ~/.config/khard
 khal: ~/.config/khal
-vdirsyncer: ~/.config/vdirsyncer
 helix: ~/.config/helix
 bitmonero: ~/.config/bitmonero
-
-# Email: these won't exist when you clone the repo
-mbsync: ~/.config/mbsync
-msmtp: ~/.config/msmtp
-notmuch: ~/.config/notmuch
 
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
