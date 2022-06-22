@@ -1,7 +1,10 @@
 #!/bin/sh
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+
 set -x
 # script to find and download wallpapers from wallhaven
 
+[ -z "$HOME" ] && die '$HOME not set.'
 walldir="$HOME/.local/share/wallhaven"
 cachedir="$HOME/.cache/wallhaven"
 mkdir -p "$walldir"
