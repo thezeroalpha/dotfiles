@@ -305,7 +305,8 @@ let g:fzf_preview_window = 'right:60%'
 let g:fzf_buffers_jump = 1
 
 nnoremap <leader>F :Files<CR>
-nnoremap <leader><c-f> :Files<space>
+nnoremap <leader><c-f><c-f> :Files<space>
+nnoremap <expr> <leader><c-f>. ":Files " .. expand("%:h") .. "<CR>"
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
 nnoremap <leader>W :BLines<CR>
