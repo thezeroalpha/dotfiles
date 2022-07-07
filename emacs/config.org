@@ -787,6 +787,23 @@ Fix column alignment in agenda.
           (org-evaluate-time-range)))))
 #+end_src
 
+*** Priorities
+I usually have a lot of 'next' actions, so I prefer 4 priority levels instead of the default 3: A (urgent, ASAP), B (important),  C (not super important), D (do in free time):
+
+#+begin_src emacs-lisp
+  (setq org-priority-highest ?A
+        org-priority-lowest ?D
+        org-priority-default ?C)
+#+end_src
+
+Faces for priorities in agenda:
+
+#+begin_src emacs-lisp
+  (setq org-priority-faces `((?A . (:foreground ,(face-foreground 'error)))
+                             (?B . (:foreground ,(face-foreground 'org-todo)))
+                             (?C . (:foreground ,(face-foreground 'font-lock-constant-face) :weight semi-light))
+                             (?D . (:foreground ,(face-foreground 'font-lock-string-face) :slant italic :weight light))))
+#+end_src
 *** Custom functions
 **** Get number of headlines in a file
 #+begin_src emacs-lisp
