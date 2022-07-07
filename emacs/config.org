@@ -618,7 +618,8 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
         '(("n" "Next actions"
-           ((todo "NEXT" ((org-agenda-overriding-header "Next actions:")))))
+           todo "NEXT" ((org-agenda-overriding-header "Next actions:")
+                        (org-agenda-sorting-strategy '(priority-down alpha-up))))
           ("W" "Waiting"
            ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
           ("S" . "Saved for later...")
