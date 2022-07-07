@@ -47,6 +47,8 @@
 (defconst za/manually-installed-package-dir (concat user-emacs-directory "lisp/") "The directory for packages (.lisp) that I manually install.")
 (make-directory za/manually-installed-package-dir t)
 (add-to-list 'load-path za/manually-installed-package-dir)
+(let ((default-directory  za/manually-installed-package-dir))
+  (normal-top-level-add-subdirs-to-load-path))
 
 ;; Install and load use-package
 (unless (package-installed-p 'use-package)
