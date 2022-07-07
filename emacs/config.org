@@ -1976,6 +1976,12 @@ And keybindings:
 #+begin_src emacs-lisp
   (repeat-mode 1)
 #+end_src
+** Toggle auto-revert-mode
+Sometimes I want to toggle auto reverting (or autoread) of buffer:
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-c q a") #'auto-revert-mode)
+#+end_src
 
 * Markdown
 Markdown mode settings.
