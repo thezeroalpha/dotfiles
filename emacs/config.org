@@ -106,6 +106,13 @@ The second one actually loads them.
   (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
   (load custom-file)
 #+end_src
+** Delete by trash
+#+begin_src emacs-lisp
+  (setq delete-by-moving-to-trash t)
+  (unless (fboundp 'system-move-file-to-trash)
+    (setq trash-directory "~/.Trash"))
+#+end_src
+
 * Theme
 Icons required for some parts of the doom theme:
 
@@ -422,7 +429,6 @@ To be able to link to emails via notmuch, I use ol-notmuch:
 #+begin_src emacs-lisp
   (use-package ol-notmuch :quelpa)
 #+end_src
-
 *** Agenda & GTD
 **** Agenda mode settings
 Fix tag display by dynamically calculating the column.
@@ -2039,6 +2045,26 @@ I like to be able to kill a buffer instantly:
 
 #+begin_src emacs-lisp
   (za/global-set-key (kbd "s-<backspace>") 'kill-current-buffer)
+#+end_src
+
+** Delete this file (and kill the buffer)
+#+begin_src emacs-lisp
+  (defun za/delete-this-file ()
+    "Kill the current buffer and delete its associated file."
+    (interactive)
+    (let ((fname (buffer-file-name))
+          (buf (current-buffer)))
+      (unless (and fname (file-exists-p fname))
+        (user-error (format "Buffer has no associated file.")))
+
+      (unless (y-or-n-p (format "Really delete %s and its buffer?" fname))
+        (user-error "User cancelled."))
+
+      (delete-file fname 'trash-if-enabled)
+      (kill-buffer buf)
+      (message "Deleted %s and killed its buffer." fname)))
+
+  (za/global-set-key (kbd "C-c s-<backspace>") #'za/delete-this-file)
 #+end_src
 
 ** Toggle fullscreen
