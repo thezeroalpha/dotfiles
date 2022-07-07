@@ -937,6 +937,20 @@ So I settled on HTML export.
 The ~:html-head~ setting comes from my base template for the website.
 
 #+begin_src emacs-lisp
+  (defconst za/org-roam-top-name "Top" "The name of the top-level Org-roam node.")
+  (defun za/org-roam-sitemap-function (title list)
+    "Customized function to generate sitemap for org-roam, almost the same as `org-publish-sitemap-default`."
+    (concat "#+TITLE: " title "\n\n"
+            (format "[[file:%s][%s]]\n\n"
+                    (file-name-nondirectory (org-roam-node-file
+                                             (org-roam-node-from-title-or-alias za/org-roam-top-name)))
+                    "Click here for entrypoint.")
+            (org-list-to-org list)))
+
+
+#+end_src
+
+#+begin_src emacs-lisp
   (require 'ox-publish)
   (setq org-publish-project-alist
         `(
@@ -950,6 +964,7 @@ The ~:html-head~ setting comes from my base template for the website.
            :auto-preamble t
            :sitemap-filename "index.org"
            :sitemap-title "Org Roam"
+           :sitemap-function za/org-roam-sitemap-function
            :auto-sitemap t
            :html-head "
         <script type=\"text/javascript\">
