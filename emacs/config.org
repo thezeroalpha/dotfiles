@@ -1972,6 +1972,10 @@ And keybindings:
   (za/global-set-key (kbd "C-o") #'za/open-line)
   (za/global-set-key (kbd "C-M-o") #'za/open-line-keep-point)
 #+end_src
+** Repeat mode: easy repeating of commans
+#+begin_src emacs-lisp
+  (repeat-mode 1)
+#+end_src
 
 * Markdown
 Markdown mode settings.
