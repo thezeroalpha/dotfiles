@@ -57,6 +57,12 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+;; Replace built-in Org with newest Org
+;; See here: https://github.com/jwiegley/use-package/issues/319
+(assq-delete-all 'org package--builtins)
+(assq-delete-all 'org package--builtin-versions)
+(use-package org)
+
 ;; Follow symlinks without prompting (the org file is a symlink)
 (setq vc-follow-symlinks t)
 
