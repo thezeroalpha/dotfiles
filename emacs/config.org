@@ -838,6 +838,11 @@ Faces for priorities in agenda:
   (add-to-list 'org-structure-template-alist '("ss" . "src sh"))
 #+end_src
 
+*** Exporting
+#+begin_src emacs-lisp
+(custom-set-variables '(org-export-backends '(ascii html icalendar latex md odt org)))
+#+end_src
+
 *** Catch invisible edits
 Sometimes when text is folded away, I might accidentally edit text inside of it.
 This option prevents that.
