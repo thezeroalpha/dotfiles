@@ -209,9 +209,15 @@ ex=:\
 "
 # Force use of XDG Base Directory {{{1
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+[ -d "$XDG_CONFIG_HOME" ] || mkdir -p "$XDG_CONFIG_HOME"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+[ -d "$XDG_DATA_HOME" ] || mkdir -p "$XDG_DATA_HOME"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-alias irssi='irssi --home=$XDG_CONFIG_HOME/irssi'
+[ -d "$XDG_CACHE_HOME" ] || mkdir -p "$XDG_CACHE_HOME"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+[ -d "$XDG_STATE_HOME" ] || mkdir -p "$XDG_STATE_HOME"
+
+alias irssi='irssi --config="$XDG_CONFIG_HOME"/irssi/config --home="$XDG_DATA_HOME"/irssi'
 alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
 alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config -bookmark $XDG_CONFIG_HOME/w3m/bookmark.html'
 alias monero-wallet-cli='monero-wallet-cli --config-file ~/.config/bitmonero/monero-wallet-cli.conf'
@@ -224,7 +230,8 @@ export HTTPIE_CONFIG_DIR="$XDG_CONFIG_HOME/httpie"
 export CABAL_DIR="$XDG_CONFIG_HOME/cabal"
 export GHCUP_INSTALL_BASE_PREFIX="$XDG_CONFIG_HOME"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export GEM_HOME="$XDG_DATA_HOME/gems"
+export GEM_HOME="$XDG_DATA_HOME/gem"
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch/config"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export R_PROFILE_USER="$XDG_CONFIG_HOME/R/Rprofile"
@@ -235,4 +242,13 @@ export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export RBENV_ROOT="$XDG_DATA_HOME/rbenv"
-
+export ANDROID_HOME="$XDG_DATA_HOME/android"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
+alias gdb='gdb -n -x $XDG_CONFIG_HOME/gdb/init'
+export GDBHISTFILE="$XDG_CONFIG_HOME"/gdb/.gdb_history
+export SCREENRC="$XDG_CONFIG_HOME"/screen/screenrc
+export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+export STACK_ROOT="$XDG_DATA_HOME"/stack
+export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant

@@ -11,7 +11,7 @@ mailcap: ~/.config/mailcap
 compton: ~/.config/compton
 ctags: ~/.config/ctags
 gdb:
-- gdbinit: ~/.gdbinit
+- gdbinit: ~/.config/gdb/init
 git:
 - gitconfig: ~/.config/git/config
 i3: ~/.config/regolith/i3
@@ -73,11 +73,11 @@ gtk-2.0/gtkrc: ~/.gtkrc-2.0
 
 # Config: Emacs
 emacs:
-- config.org: ~/.emacs.d/config.org
-- init.el: ~/.emacs.d/init.el
-- jokull-theme.el: ~/.emacs.d/jokull-theme.el
-- junipero-theme.el: ~/.emacs.d/junipero-theme.el
-- notification.wav: ~/.emacs.d/notification.wav
+- config.org: ~/.config/emacs/config.org
+- init.el: ~/.config/emacs/init.el
+- jokull-theme.el: ~/.config/emacs/jokull-theme.el
+- junipero-theme.el: ~/.config/emacs/junipero-theme.el
+- notification.wav: ~/.config/emacs/notification.wav
 
 # Config: shell
 shell:
