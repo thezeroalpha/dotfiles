@@ -1007,7 +1007,7 @@ The ~:html-head~ setting comes from my base template for the website.
            )
           ("org-notes-data"
            :base-directory ,za/org-roam-dir
-           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :base-extension any
            :publishing-directory ,(concat za/my-website-dir "static/org-roam/")
            :recursive t
            :publishing-function org-publish-attachment)
