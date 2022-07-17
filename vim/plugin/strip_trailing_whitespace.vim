@@ -1,4 +1,7 @@
 function s:StripTrailingWhitespace()
+  if exists('b:keep_trailing_space')
+    return
+  endif
   if &filetype != 'diff'
     normal m`
     %s/\s\+$//e
