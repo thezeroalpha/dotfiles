@@ -111,8 +111,23 @@ function! statusline#StatuslineWordCount()
 endfunction
 
 function! statusline#StatuslineVimtexCompiler()
-    if exists('b:vimtex') && b:vimtex->has_key('compiler') && b:vimtex['compiler']['is_running']()
-        return '⚙︎ {'.(fnamemodify(b:vimtex['tex'], ":p:.")).'}'
+    " From vimtex documentation:
+    let VIMTEX_SUCCESS = 2
+    let VIMTEX_FAIL = 3
+
+    if exists('b:vimtex') && b:vimtex->has_key('compiler')
+      let l:str = ""
+      if b:vimtex['compiler']['continuous']
+        let l:str ..= "🔄 "
+      endif
+
+      if b:vimtex['compiler']['status'] ==# VIMTEX_SUCCESS
+        return l:str..'✅ {'.(fnamemodify(b:vimtex['tex'], ":p:.")).'}'
+      elseif b:vimtex['compiler']['status'] ==# VIMTEX_FAIL
+        return l:str..'❌ {'.(fnamemodify(b:vimtex['tex'], ":p:.")).'}'
+      elseif b:vimtex['compiler']['is_running']()
+        return l:str..'🔨  {'.(fnamemodify(b:vimtex['tex'], ":p:.")).'}'
+      endif
     endif
     return ''
 endfunction
