@@ -627,12 +627,21 @@ endif
 
 " Change cursor shape between insert and normal mode in iTerm2.app and
 " Alacritty
+" '\e[n q' with n: 0 blinking block, 1 blinking block, 2 steady block, 3
+" blinking underline, 4 steady underline, 5 blinking bar, 6 steady bar
+" If this doesn't work, you might need a different escape sequence:
+" - t_SI = "\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+" - t_EI = "\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+" (test them with e.g. `printf '\e[6 q'`)
 if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  " NOTE: For tmux >= version 3.3, you need 'allow-passthrough' set.
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\" " Vertical bar in insert mode
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\" " Block in normal mode
+  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\" " Underline in replace mode
 else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+  let &t_SI = "\<Esc>[6 q" " Vertical bar in insert mode
+  let &t_SR = "\<Esc>[4 q" " Underline in replace mode
+  let &t_EI = "\<Esc>[2 q" " Block in normal mode
 endif
 
 " Highlight current line
