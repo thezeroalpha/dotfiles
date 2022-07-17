@@ -9,6 +9,8 @@ inoremap <buffer> ; ;<c-g>u
 inoremap <buffer> - -<c-g>u
 setlocal formatoptions-=cat wrap
 
+command! -buffer Todo Ag \\?((TO ?DO)|FIXME)[:{]<space>?
+
 " Set up folding. By default use indent, fdm=expr can be set in modeline.
 setlocal foldmethod=indent
 setlocal foldexpr=vimtex#fold#level(v:lnum)

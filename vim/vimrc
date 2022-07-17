@@ -321,7 +321,7 @@ nmap <leader>J <Plug>FzfChangesJumpsJumps
 nmap <leader>C <Plug>FzfChangesJumpsChanges
 
 " Search for Todos/Fixmes
-command! Todo Ag ((TO ?DO)|FIXME):?<space>?
+command! Todo Ag ((TO ?DO)|FIXME):<space>
 nnoremap <leader>! :Todo<CR>
 
 " Set a filetype
