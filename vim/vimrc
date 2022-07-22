@@ -618,6 +618,12 @@ set sessionoptions=buffers,curdir,folds,globals,localoptions,options,resize,tabp
 " Use ag for grepping
 set grepprg=ag\ --vimgrep
 set updatetime=100
+
+" Make <esc> faster.
+" Note: this disables arrow keys in insert mode, because arrow keys start with <esc> (e.g. `\eOD` for left arrow).
+" However, I don't use arrow keys anyway, so that's fine.
+set noesckeys
+
 " }}}1
 " Editor {{{1
 " In general, don't conceal anything
@@ -648,7 +654,7 @@ endif
 set cursorline
 
 " Reduce waiting on keys (like esc)
-set timeoutlen=1000 ttimeoutlen=50
+set timeoutlen=1000 ttimeoutlen=5
 
 " Wrap settings - no wrap by default
 set nowrap
