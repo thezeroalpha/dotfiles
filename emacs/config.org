@@ -757,7 +757,7 @@ I want column view to look like this:
 | ...          | ...       | ...  | ...                 | ...                            |
 
 #+begin_src emacs-lisp
-  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %8Effort(Effort){:}")
+  (setq org-columns-default-format "%7TODO (To Do) %32ITEM(Task) %TAGS(Tags) %11CLOCKSUM_T(Clock) %10Difficulty(Difficulty) %8Effort(Effort){:}")
 #+end_src
 
 Fix column alignment in agenda.
@@ -787,7 +787,7 @@ Fix column alignment in agenda.
           (org-evaluate-time-range)))))
 #+end_src
 
-*** Priorities
+*** Priorities: how important something is
 I usually have a lot of 'next' actions, so I prefer 4 priority levels instead of the default 3: A (urgent, ASAP), B (important),  C (not super important), D (do in free time):
 
 #+begin_src emacs-lisp
@@ -803,6 +803,11 @@ Faces for priorities in agenda:
                              (?B . (:foreground ,(face-foreground 'org-todo)))
                              (?C . (:foreground ,(face-foreground 'font-lock-constant-face) :weight semi-light))
                              (?D . (:foreground ,(face-foreground 'font-lock-string-face) :slant italic :weight light))))
+#+end_src
+
+*** Energy requirement: how difficult something is
+#+begin_src emacs-lisp
+  (add-to-list 'org-global-properties '("Difficulty_ALL" . "low medium high"))
 #+end_src
 *** Custom functions
 **** Get number of headlines in a file
