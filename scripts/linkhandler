@@ -1,5 +1,6 @@
 #!/usr/bin/env perl
 # vim: foldmethod=marker
+use 5.006;
 use strict;
 use warnings;
 
@@ -126,7 +127,6 @@ sub menu {
   push @$tableref, ['Open (system)', sub {
     my ($link) = @_;
     system('open', $link);
-    notify 'Opening...', $link;
   }];
 
   # Global copy -- should be available for every link
