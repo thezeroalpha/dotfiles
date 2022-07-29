@@ -2048,6 +2048,20 @@ Sometimes I want to toggle auto reverting (or autoread) of buffer:
 #+begin_src emacs-lisp
   (za/global-set-key (kbd "C-c q a") #'auto-revert-mode)
 #+end_src
+** Unfill region/paragraph
+Taken from here: https://www.emacswiki.org/emacs/UnfillParagraph
+
+#+begin_src emacs-lisp
+  (defun za/unfill-paragraph (&optional region)
+    "Takes a multi-line paragraph and makes it into a single line of text."
+    (interactive (progn (barf-if-buffer-read-only) '(t)))
+    (let ((fill-column (point-max))
+          ;; This would override `fill-column' if it's an integer.
+          (emacs-lisp-docstring-fill-column t))
+      (fill-paragraph nil region)))
+
+  (za/global-set-key (kbd "M-Q") #'za/unfill-paragraph)
+#+end_src
 
 * Markdown
 Markdown mode settings.
