@@ -32,8 +32,8 @@ map d scroll half-down
 map D toggle_page_mode
 map r reload
 map R rotate
-map K zoom in
-map J zoom out
+map J zoom in
+map K zoom out
 map i recolor
 map P print
 map p snap_to_page
