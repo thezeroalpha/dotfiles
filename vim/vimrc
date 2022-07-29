@@ -453,6 +453,19 @@ let g:ale_c_clangformat_options = '-std=gnu99 -Wall'
 let g:ale_c_clangtidy_options = '-std=gnu99 -Wall'
 let g:ale_c_clangtidy_extra_options = '-std=gnu99 -Wall'
 let g:ale_perl_perlcritic_options = '--brutal'
+
+call ale#Set('tex_textidote_executable', 'textidote')
+call ale#Set('tex_textidote_options', '--no-color --output singleline')
+" TODO get language from spell spelllang
+call ale#Set('tex_textidote_check_lang', '')
+call ale#linter#Define('tex', {
+\   'name': 'textidote',
+\   'output_stream': 'stdout',
+\   'executable': {b -> ale#Var(b, 'tex_textidote_executable')},
+\   'command': function('ale_linters#tex#textidote#GetExecutable'),
+\   'callback': 'ale_linters#tex#textidote#Handle',
+\})
+
 " indentLine {{{3
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_enable = 0 " off by default
