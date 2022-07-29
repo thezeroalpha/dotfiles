@@ -24,6 +24,7 @@ set statusline+=\ %{statusline#StatuslineBuildCwd()}\                 " Current 
 set statusline+=%#statuslinefile#                                     " Highlight same as filename
 set statusline+=%(\ %{&spell?'📖\ ':''}%)                             " Show spellcheck status
 set statusline+=%(\ %{statusline#StatuslineVimtexCompiler()}%)        " Vimtex compiler status
+set statusline+=%(\ %{statusline#StatuslineAle()}%)                   " ALE status
 set statusline+=%(\ %y\ \|%)                                          " File type
 set statusline+=\ %{&expandtab?'⤻':'⥅'}\                              " Using spaces or tabs
 set statusline+=%{statusline#StatuslineSpacesUsed()}                  " Spaces in a tab

@@ -132,6 +132,19 @@ function! statusline#StatuslineVimtexCompiler()
     return ''
 endfunction
 
+" Naive implementation, should improve with stuff from :h ale
+function! statusline#StatuslineAle()
+  if !exists('g:loaded_ale')
+    return ''
+  endif
+
+  if g:ale_enabled
+    return '[linting]'
+  else
+    return ''
+  endif
+endfunction
+
 function! statusline#StatuslineRemoteFile()
     if exists('b:netrw_lastfile')
         return ' ('.b:netrw_lastfile.')'
