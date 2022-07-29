@@ -2227,6 +2227,15 @@ For some reason, these things don't show up in the index:
 
 Though I can also just use ~info-display-manual~.
 
+** View webp and other formats
+Emacs handles common image formats internally, but for stuff like webp, you need an external converter:
+
+#+begin_src emacs-lisp
+  (setq image-use-external-converter t)
+#+end_src
+
+You also need imagemagick installed.
+
 * Sound support
 On macOS, you can use afplay:
 
