@@ -1547,6 +1547,22 @@ I want a custom keybinding to easily toggle:
   (use-package try)
 #+end_src
 
+** dumb-jump
+"jump to definition" package, minimal configuration with no stored indexes.
+Uses The Silver Searcher ag, ripgrep rg, or grep to find potential definitions of a function or variable under point.
+
+#+begin_src emacs-lisp
+  (use-package dumb-jump)
+#+end_src
+
+Enable xref backend:
+
+#+begin_src emacs-lisp
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+#+end_src
+
+
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
