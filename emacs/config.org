@@ -2081,6 +2081,14 @@ Taken from here: https://www.emacswiki.org/emacs/UnfillParagraph
 
   (za/global-set-key (kbd "M-Q") #'za/unfill-paragraph)
 #+end_src
+** Insert macro as Lisp
+From here: https://www.masteringemacs.org/article/keyboard-macros-are-misunderstood
+
+#+begin_src emacs-lisp
+  (require 'kmacro)
+  (defalias 'kmacro-insert-macro 'insert-kbd-macro)
+  (define-key kmacro-keymap (kbd "I") #'kmacro-insert-macro)
+#+end_src
 
 * Markdown
 Markdown mode settings.
