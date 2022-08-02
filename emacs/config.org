@@ -1945,18 +1945,20 @@ When opening a file in a git repo, try to discover the etags file:
 There's probably a better way to write this. I need to ask Reddit for feedback at some point.
 
 ** Semantic mode
+Disabled for now, don't use it much.
+
 Set default submodes:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode ; reparse buffer when idle
                                     global-semanticdb-minor-mode ; maintain database
                                     global-semantic-idle-summary-mode)) ; show information (e.g. types) about tag at point
-  ;; global-semantic-stickyfunc-mode)) ; show current func in header line
+  global-semantic-stickyfunc-mode)) ; show current func in header line
 #+end_src
 
 Add some keybindings:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (with-eval-after-load 'semantic
     (define-key semantic-mode-map (kbd "C-c , .") #'semantic-ia-show-summary))
 #+end_src
@@ -1965,12 +1967,13 @@ SemanticDB is written into ~/.emacs.d/semanticdb/.
 
 Enable semantic mode for major modes:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun za/settings-c-mode ()
     "C mode settings"
     (semantic-mode 1))
 #+end_src
-#+begin_src emacs-lisp
+
+#+begin_src emacs-lisp :tangle no
   (let ((mode-hooks [c-mode-common-hook]))
     (mapc (lambda (mode-name)
             (add-hook mode-name #'za/settings-c-mode))
@@ -2108,7 +2111,7 @@ In Python, I want to enable flycheck and semantic mode:
 
 #+begin_src emacs-lisp
   (add-hook 'python-mode-hook #'flycheck-mode)
-  (add-hook 'python-mode-hook #'semantic-mode)
+  ;;(add-hook 'python-mode-hook #'semantic-mode)
 #+end_src
 
 * Misc settings
