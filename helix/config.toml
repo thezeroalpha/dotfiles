@@ -5,3 +5,9 @@ theme = "everforest_light"
 "$" = "goto_line_end"
 ";" = "command_mode"
 ":" = "collapse_selection"
+
+[keys.select]
+0 = "goto_line_start"
+"$" = "goto_line_end"
+";" = "command_mode"
+":" = "collapse_selection"
