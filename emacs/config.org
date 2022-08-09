@@ -1575,6 +1575,16 @@ Simple real-time logger of commands.
   (use-package command-log-mode)
 #+end_src
 
+** package-lint
+Linter for the metadata in Emacs Lisp files which are intended to be packages.
+
+#+begin_src emacs-lisp
+  (use-package package-lint)
+  (use-package flycheck-package)
+  (eval-after-load 'flycheck
+    '(flycheck-package-setup))
+#+end_src
+
 
 * Interface
 ** Start debugger on error
