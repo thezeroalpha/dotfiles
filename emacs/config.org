@@ -1149,7 +1149,8 @@ Install flycheck, and enable it by default in certain major modes:
 
 #+begin_src emacs-lisp
   (use-package flycheck
-    :hook (sh-mode . flycheck-mode))
+    :hook (sh-mode . flycheck-mode)
+    (emacs-lisp-mode . flycheck-mode))
 #+end_src
 
 ** anki-editor
