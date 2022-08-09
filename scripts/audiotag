@@ -27,6 +27,10 @@ while [ $(($#)) -ne 0 ]; do
       number="$2"
       shift 2
       ;;
+    -i|--image)
+      image="$2"
+      shift 2
+      ;;
     -x|--extract)
       spec="$2"
       shift 2
@@ -37,7 +41,7 @@ while [ $(($#)) -ne 0 ]; do
       ;;
     -h|--help)
       printf 'Supported usage\n'
-      printf '%s -b albumartist -t title -l album -r artist -n tracknumber FILE\n' "$0"
+      printf '%s -b albumartist -t title -l album -r artist -n tracknumber -i IMG_PATH:DESCRIPTION \n' "$0"
       printf '%s [--extract|-x] "filename_spec" FILE\n' "$0"
       printf '%s [--clear|-c] FILE\n' "$0"
       exit 0
@@ -85,6 +89,12 @@ printf '%s\n' "$FILES" | while IFS='' read -r file; do
         [ -n "$album" ] && set -- "$@" -A "$album"
         [ -n "$artist" ] && set -- "$@" -a "$artist"
         [ -n "$number" ] && set -- "$@" -n "$number"
+
+        if [ -n "$image" ]; then
+          img_path="${image%%:*}"
+          img_desc="${image##*:}"
+          set -- "$@" --add-image "${img_path}:FRONT_COVER:${img_desc}"
+        fi
         eyeD3 "$@" "$file"
       fi
       ;;
@@ -124,6 +134,12 @@ printf '%s\n' "$FILES" | while IFS='' read -r file; do
         [ -n "$album" ] && set -- "$@" --set-tag=ALBUM="$album"
         [ -n "$artist" ] && set -- "$@" --set-tag=ARTIST="$artist"
         [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER "$number"
+
+        if [ -n "$image" ]; then
+          img_path="${image%%:*}"
+          img_desc="${image##*:}"
+          set -- "$@" --import-picture-from="3||${img_desc}||${img_path}"
+        fi
 
         metaflac "$@" "$file"
       fi
