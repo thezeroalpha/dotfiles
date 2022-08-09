@@ -95,6 +95,7 @@ verify_recently_added() {
 embed_lyrics() {
   LYRICS_DIR="$HOME/.local/share/lyrics"
   [ -d "$LYRICS_DIR" ] || die "Lyrics dir $LYRICS_DIR not found."
+  find "$LYRICS_DIR" -type f -size 0 -delete
 
   find "$LYRICS_DIR" -type f \
     | while read -r lyricsfile; do
@@ -129,6 +130,7 @@ organize_files() {
       printf "%s -> %s\n" "$i" "$artist/$album"
       mv "$i" "$artist/$album"
     done
+    mpc -w update >/dev/null 2>&1
     rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
 }
 
