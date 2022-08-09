@@ -218,6 +218,7 @@ brew "zbar"
 brew "zola"
 brew "zsh"
 brew "charmbracelet/tap/glow"
+brew "charmbracelet/tap/gum"
 brew "daviderestivo/emacs-head/emacs-head@28", args: ["with-cocoa", "with-dbus", "with-native-comp", "with-xwidgets"]
 brew "helix-editor/helix/helix"
 brew "heroku/brew/heroku"
