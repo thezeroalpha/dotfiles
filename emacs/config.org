@@ -920,6 +920,7 @@ Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I h
 #+end_src
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
+
 ** org-contrib
 #+begin_src emacs-lisp
   (use-package org-contrib
@@ -1011,7 +1012,7 @@ The ~:html-head~ setting comes from my base template for the website.
           var sheet = (hour >= 20 || hour < 6) ? \"/dark.css\" : \"/light.css\";
           document.head.insertAdjacentHTML(
             'beforeend',
-            '<link rel=\"stylesheet\" type=\"text/css\" href=\"'+sheet+'\" onload=\"document.documentElement.style.display = \'\'\">'
+            '<link rel=\"stylesheet\" type=\"text/css\" href=\"'+sheet+'\" onload=\"document.documentElement.style.display = \\\'\\\'\">'
           );
         }
       </script>
