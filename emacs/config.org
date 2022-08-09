@@ -1568,6 +1568,13 @@ Enable xref backend:
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 #+end_src
 
+** (disabled) command-log-mode
+Simple real-time logger of commands.
+
+#+begin_src emacs-lisp :tangle no
+  (use-package command-log-mode)
+#+end_src
+
 
 * Interface
 ** Start debugger on error
