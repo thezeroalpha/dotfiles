@@ -1585,6 +1585,10 @@ Linter for the metadata in Emacs Lisp files which are intended to be packages.
     '(flycheck-package-setup))
 #+end_src
 
+** outline-mode
+#+begin_src emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
+#+end_src
 
 * Interface
 ** Start debugger on error
