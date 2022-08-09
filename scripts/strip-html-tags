@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr//bin/env ruby
 text = File.read("text.txt")
 newtext = text.gsub(/<\/?[^>]+(>|$)/, "")
 File.open("text.txt","w") { |file| file.puts newtext}
