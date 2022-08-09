@@ -1049,6 +1049,18 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
     (setq calendar-week-start-day 1))
 #+end_src
 
+** vanish: hide parts of the file
+#+begin_src emacs-lisp
+  (use-package vanish
+    :quelpa (vanish :repo "thezeroalpha/vanish.el" :fetcher github)
+    :ensure nil)
+#+end_src
+
+Customize the prefix:
+
+#+begin_src emacs-lisp
+  (custom-set-variables '(vanish-prefix (kbd "C-c q h") 'now))
+#+end_src
 ** lean-mode
 Specifically for the Lean prover.
 I also install company-lean and helm-lean, which are suggested on the [[https://github.com/leanprover/lean-mode][Github page]].
