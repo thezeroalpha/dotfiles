@@ -475,12 +475,13 @@ Convenience functions to make opening the main file faster:
 Bind keys to those functions:
 
 #+begin_src emacs-lisp
-  (za/global-set-key (kbd "C-c g i") #'gtd-inbox)
-  (za/global-set-key (kbd "C-c g g") #'gtd)
-  (za/global-set-key (kbd "C-c g a") #'gtd-archive)
-  (za/global-set-key (kbd "C-c g s") #'gtd-someday)
-  (za/global-set-key (kbd "C-c g t") #'gtd-tickler)
+  (za/global-set-key (kbd "M-g t i") #'gtd-inbox)
+  (za/global-set-key (kbd "M-g t g") #'gtd)
+  (za/global-set-key (kbd "M-g t a") #'gtd-archive)
+  (za/global-set-key (kbd "M-g t s") #'gtd-someday)
+  (za/global-set-key (kbd "M-g t t") #'gtd-tickler)
 #+end_src
+
 **** Refiling & archiving
 Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining):
 
