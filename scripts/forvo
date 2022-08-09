@@ -13,10 +13,16 @@ checkdeps curl pup awk base64 mpv
 phrase_encoded="$(printf '%s' "$1" | sed 's/ /%20/g')"
 lang="$2"
 search_url="https://forvo.com/search/$phrase_encoded/$lang"
-audio_path="$(curl -sL "$search_url" \
-  | pup '.results_match li span.play:first-of-type attr{onclick}' \
+search_result="$(curl -sL "$search_url")"
+audio_path="$(printf '%s' "$search_result" \
+  | pup '.results_match li div.play:first-of-type attr{onclick}' \
   | awk -F '&#39;' '{print $2 }' \
   | base64 -d)"
-[ -z "$audio_path" ] && die "Not found."
+if [ -z "$audio_path" ]; then
+  if [ "$(printf '%s' "$search_result" | pup '.results_match li span.lang_rec text{}')" = "Pending pronunciation" ]; then
+    die "Not yet recorded."
+  fi
+  die "Not found."
+fi
 audio_url="https://audio.forvo.com/mp3/$audio_path"
 mpv -loop "$audio_url"
