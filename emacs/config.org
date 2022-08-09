@@ -220,7 +220,7 @@ Minor mode for Emacs that displays the key bindings following your currently ent
     (which-key-mode))
 #+end_src
 
-** counsel + ivy + swiper
+** counsel + ivy + swiper + prescient
 Better incremental completion and selection narrowing.
 And a bunch more.
 Generally makes for nicer interactivity, like ido mode on steroids.
@@ -230,28 +230,34 @@ The components:
 - ivy: generic completion mechanism
 - counsel: collection of common Emacs commands enhanced using ivy
 - swiper: search enhanced using ivy
+- prescient: scoring system for M-x
 
 #+begin_src emacs-lisp
-  (use-package counsel :demand
-    :config
-    (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
-          ivy-height 20                   ; set height of the ivy window
-          ivy-count-format "(%d/%d) "     ; count format, from the ivy help page
-          ivy-display-style 'fancy
-          ivy-format-function 'ivy-format-function-line)
-    (ivy-mode)
-    (counsel-mode)
+      (use-package counsel :demand
+        :config
+        (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
+              ivy-height 20                   ; set height of the ivy window
+              ivy-count-format "(%d/%d) "     ; count format, from the ivy help page
+              ivy-display-style 'fancy
+              ivy-format-function 'ivy-format-function-line)
+        (ivy-mode)
+        (counsel-mode)
 
-    (defun edit-script ()
-      "Edit a file in ~/.scripts/"
-      (interactive)
-      (let ((input (ivy--input)))
-        (ivy-quit-and-run (counsel-file-jump nil "~/.scripts/"))))
-    (defun edit-config ()
-      "Edit a file in ~/.dotfiles/"
-      (interactive)
-      (let ((input (ivy--input)))
-        (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
+        (defun edit-script ()
+          "Edit a file in ~/.scripts/"
+          (interactive)
+          (let ((input (ivy--input)))
+            (ivy-quit-and-run (counsel-file-jump nil "~/.scripts/"))))
+        (defun edit-config ()
+          "Edit a file in ~/.dotfiles/"
+          (interactive)
+          (let ((input (ivy--input)))
+            (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
+
+      (use-package prescient :config (prescient-persist-mode))
+      (use-package ivy-prescient :config
+        (setq ivy-prescient-retain-classic-highlighting t)
+        (ivy-prescient-mode))
 #+end_src
 
 Set the key bindings:
