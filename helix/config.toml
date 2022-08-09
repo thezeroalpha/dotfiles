@@ -1,10 +1,17 @@
 theme = "everforest_light"
 
 [keys.normal]
-0 = "goto_line_start"
-"$" = "goto_line_end"
 ";" = "command_mode"
 ":" = "collapse_selection"
+
+# Muscle memory
+"{" = ["goto_prev_paragraph", "collapse_selection"]
+"}" = ["goto_next_paragraph", "collapse_selection"]
+0 = "goto_line_start"
+"$" = "goto_line_end"
+"^" = "goto_first_nonwhitespace"
+G = "goto_file_end"
+"%" = "match_brackets"
 
 [keys.select]
 0 = "goto_line_start"
