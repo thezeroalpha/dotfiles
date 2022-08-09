@@ -951,6 +951,21 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
 #+begin_src emacs-lisp
   (use-package org-roam-ui)
 #+end_src
+** org-download
+Drag-and-drop images to Emacs Org mode.
+
+#+begin_src emacs-lisp
+    (use-package org-download
+      :config
+      (setq org-download-method 'attach
+            org-download-backend 'curl))
+#+end_src
+** org-sticky-header
+Displays in the header-line the Org heading for the node that’s at the top of the window.
+
+#+begin_src emacs-lisp
+  (use-package org-sticky-header)
+#+end_src
 ** org publishing
 I decided, after trying many different thing, to settle on org-publish.
 Markdown export didn't let me add a preamble, which Zola requires; there's no proper backend for Zola.
