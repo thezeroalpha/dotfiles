@@ -1589,7 +1589,12 @@ Linter for the metadata in Emacs Lisp files which are intended to be packages.
 #+begin_src emacs-lisp
   (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
 #+end_src
+** prism
+Prism changes the color of text depending on their depth. Makes it easier to see where something is at a glance.
 
+#+begin_src emacs-lisp
+(use-package prism)
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
