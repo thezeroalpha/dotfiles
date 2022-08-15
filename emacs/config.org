@@ -2174,6 +2174,8 @@ From here: https://www.masteringemacs.org/article/keyboard-macros-are-misunderst
 #+begin_src emacs-lisp
   (require 'kmacro)
   (defalias 'kmacro-insert-macro 'insert-kbd-macro)
+  ;; Add advice to ignore errors on `kmacro-keyboard-macro-p`, it was messing up because of some entry in `obarray`
+  (advice-add #'kmacro-keyboard-macro-p :around (lambda (fun sym) "Ignore errors." (ignore-errors (funcall fun sym))))
   (define-key kmacro-keymap (kbd "I") #'kmacro-insert-macro)
 #+end_src
 
