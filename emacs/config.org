@@ -969,10 +969,7 @@ Displays in the header-line the Org heading for the node that’s at the top of 
   (use-package org-sticky-header)
 #+end_src
 ** org publishing
-I decided, after trying many different thing, to settle on org-publish.
-Markdown export didn't let me add a preamble, which Zola requires; there's no proper backend for Zola.
-So I settled on HTML export.
-The ~:html-head~ setting comes from my base template for the website.
+I decided, after trying many different things, to settle on org-publish.
 
 #+begin_src emacs-lisp
   (defconst za/org-roam-top-name "Top" "The name of the top-level Org-roam node.")
@@ -982,68 +979,86 @@ The ~:html-head~ setting comes from my base template for the website.
             (format "[[file:%s][%s]]\n\n"
                     (file-name-nondirectory (org-roam-node-file
                                              (org-roam-node-from-title-or-alias za/org-roam-top-name)))
-                    "Click here for entrypoint.")
-            (org-list-to-org list)))
-
+                    "Click here for entrypoint.")))
+  ;; (org-list-to-org list)))  <-- this is taken care of by Zola
 
 #+end_src
 
+To make this work with Zola, I need to export Github-flavored markdown (fenced code blocks with language):
+
 #+begin_src emacs-lisp
   (require 'ox-publish)
+  (use-package ox-gfm)
+#+end_src
+
+First difficulty: Zola needs front matter with ~+++...+++~.
+The default Markdown backend doesn't provide that, so need to customize it by advising the default ~org-md-template~.
+
+#+begin_src emacs-lisp
+  (defun za/org-md-template-zola (contents info)
+    "Markdown template compatible with Zola (generates the necessary front matter from CONTENTS and INFO)."
+    (let ((title (org-md-plain-text (org-element-interpret-data (plist-get info :title)) info)))
+      (concat "+++\n"
+              (format "title = \"%s\"" (string-replace "\"" "'" title))
+              "\n+++\n"
+              (format "# %s\n" title)
+              contents)))
+#+end_src
+
+Second difficulty: links need to be reformatted and changed for static data (like images).
+This function filters the return value of ~org-md-link~.
+
+#+begin_src emacs-lisp
+  (defun za/org-md-link-zola (linkstr)
+    "A filter function for the return value of
+          `org-md-link` (LINKSTR) to generate a link compatible with Zola."
+    (cond ((string-match-p (rx ".md") linkstr)
+           (let* ((linkstr (replace-regexp-in-string (rx ".md" (group-n 1(? "#" (* (not ")")))) ")")
+                                                     "\\1/)" linkstr))
+                  (linkstr (string-replace "_" "-" linkstr))
+                  (linkstr (string-replace "](" "](/org-roam/" linkstr)))
+             linkstr))
+          ((string-match-p (rx "](/") linkstr)
+           (replace-regexp-in-string (rx "](/" (* any) "/org-roam/data") "](/org-roam-data" linkstr))
+          (t linkstr)))
+#+end_src
+
+And here's the custom publish function that adds/removes the necessary advice:
+
+#+begin_src emacs-lisp
+  (defun za/org-gfm-publish-to-gfm-zola (plist filename pub-dir)
+    "Runs `org-gfm-publish-to-gfm`, advising the necessary functions to generate Zola-compatible markdown."
+    (advice-add #'org-md-template :override #'za/org-md-template-zola)
+    (advice-add #'org-md-link :filter-return #'za/org-md-link-zola)
+    (org-gfm-publish-to-gfm plist filename pub-dir)
+    (advice-remove #'org-md-link #'za/org-md-link-zola)
+    (advice-remove #'org-md-template #'za/org-md-template-zola))
+#+end_src
+
+Finally, the list of things we can publish with their respective publishin functions:
+
+#+begin_src emacs-lisp
   (setq org-publish-project-alist
         `(
-          ("org-roam" :components ("org-notes" "org-notes-data"))
           ("org-notes"
            :base-directory ,za/org-roam-dir
            :base-extension "org"
-           :publishing-directory ,(concat za/my-website-dir "static/org-roam/")
+           :publishing-directory ,(concat za/my-website-dir "content/org-roam/")
+           :publishing-function za/org-gfm-publish-to-gfm-zola
            :recursive t
-           :publishing-function org-html-publish-to-html
-           :auto-preamble t
-           :sitemap-filename "index.org"
+           :sitemap-filename "_index.md"
            :sitemap-title "Org Roam"
            :sitemap-function za/org-roam-sitemap-function
-           :auto-sitemap t
-           :html-head "
-        <script type=\"text/javascript\">
-        if (window.matchMedia('(prefers-color-scheme: dark)').media === 'not all') {
-          document.documentElement.style.display = 'none';
-          var hour = new Date().getHours();
-          var sheet = (hour >= 20 || hour < 6) ? \"/dark.css\" : \"/light.css\";
-          document.head.insertAdjacentHTML(
-            'beforeend',
-            '<link rel=\"stylesheet\" type=\"text/css\" href=\"'+sheet+'\" onload=\"document.documentElement.style.display = \\\'\\\'\">'
-          );
-        }
-      </script>
-      <!-- For browsers without JS, load the light theme -->
-      <noscript><link rel=\"stylesheet\" type=\"text/css\" href=\"/light.css\"></noscript>
-      <!-- For browsers supporting prefers-color-scheme, use that -->
-      <link rel=\"stylesheet\" type=\"text/css\" href=\"/dark.css\" media=\"(prefers-color-scheme: dark)\">
-      <link rel=\"stylesheet\" type=\"text/css\" href=\"/light.css\" media=\"(prefers-color-scheme: light)\">
+           :auto-sitemap t)
 
-      <!-- PWA stuff -->
-      <link rel=\"manifest\" href=\"/manifest.json\">
-      <script src=\"/sw.js\"></script>
-      <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
-              console.log('Registration successful, scope is:', registration.scope);
-            })
-            .catch(function(error) {
-              console.log('Service worker registration failed, error:', error);
-            });
-        }
-      </script>
-  "
-           )
           ("org-notes-data"
-           :base-directory ,za/org-roam-dir
+           :base-directory ,(concat za/org-roam-dir "/data")
            :base-extension any
-           :publishing-directory ,(concat za/my-website-dir "static/org-roam/")
+           :publishing-directory ,(concat za/my-website-dir "static/org-roam-data/")
            :recursive t
            :publishing-function org-publish-attachment)
+
+          ("org-roam" :components ("org-notes" "org-notes-data"))
           ))
 #+end_src
 
@@ -1055,6 +1070,7 @@ And a function to rsync to my VPS:
     (interactive)
     (async-shell-command (format "cd %s && zola build && yes|publish" za/my-website-dir) "*Async Shell publish*"))
 #+end_src
+*** TODO the path for org-roam export and data export should be configurable, not hard-coded
 ** calfw
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
