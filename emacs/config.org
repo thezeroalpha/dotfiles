@@ -447,6 +447,18 @@ Fix tag display by dynamically calculating the column.
   (add-hook 'org-agenda-mode-hook #'za/settings-org-agenda-mode)
 #+end_src
 
+Binding to show current agenda thing as narrowed subtree
+
+#+begin_src emacs-lisp
+  (defun za/org-agenda-goto-narrowed-subtree ()
+    "Jump to current agenda item and narrow to its subtree."
+    (interactive)
+    (delete-other-windows)
+    (org-agenda-goto)
+    (org-narrow-to-subtree)
+    (other-window 1))
+  (define-key org-agenda-mode-map (kbd "C-c TAB") #'za/org-agenda-goto-narrowed-subtree)
+#+end_src
 **** Set file locations
 Which files should be included in the agenda (I have to use ~list~ to evaluate the variables, because org-agenda-files expects strings):
 
