@@ -223,6 +223,7 @@ brew "daviderestivo/emacs-head/emacs-head@28", args: ["with-cocoa", "with-dbus",
 brew "helix-editor/helix/helix"
 brew "heroku/brew/heroku"
 brew "keith/formulae/reminders-cli"
+brew "thezeroalpha/formulae/academic-writing-check", args: ["HEAD"]
 brew "thezeroalpha/formulae/choice", args: ["HEAD"]
 brew "thezeroalpha/formulae/conf"
 brew "thezeroalpha/formulae/czkawka-gui"
@@ -238,7 +239,7 @@ brew "thezeroalpha/formulae/xe", args: ["HEAD"]
 brew "tzvetkoff/extras/im2a"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "vitorgalvao/tiny-scripts/cask-repair"
-brew "zegervdv/zathura/girara", args: ["HEAD"]
+brew "zegervdv/zathura/girara", args: ["HEAD"], link: false
 brew "zegervdv/zathura/zathura"
 brew "zegervdv/zathura/zathura-pdf-poppler"
 cask "adobe-digital-editions"
