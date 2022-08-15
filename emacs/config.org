@@ -1085,14 +1085,14 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
 ** vanish: hide parts of the file
 #+begin_src emacs-lisp
   (use-package vanish
-    :quelpa (vanish :repo "thezeroalpha/vanish.el" :fetcher github)
+    :quelpa (vanish :fetcher github :repo "thezeroalpha/vanish.el" :branch "develop")
     :ensure nil)
 #+end_src
 
 Customize the prefix:
 
 #+begin_src emacs-lisp
-  (custom-set-variables '(vanish-prefix (kbd "C-c q h") 'now))
+  (define-key vanish-mode-map (kbd "C-c q h") #'vanish-toggle)
 #+end_src
 ** lean-mode
 Specifically for the Lean prover.
@@ -1534,6 +1534,7 @@ Then, a way to jump forward and backward in the window:
           (let ((buf (ring-ref buf-ring index)))
             (if (buffer-live-p buf) (cl-return buf)))
           (ring-remove buf-ring index)))))
+
 
   (defun za/helpful--previous (&optional buffer)
     "Return the previous live Helpful buffer relative to BUFFER."
