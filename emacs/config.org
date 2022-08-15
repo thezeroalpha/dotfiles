@@ -1025,11 +1025,7 @@ This function filters the return value of ~org-md-link~.
     "A filter function for the return value of
           `org-md-link` (LINKSTR) to generate a link compatible with Zola."
     (cond ((string-match-p (rx ".md") linkstr)
-           (let* ((linkstr (replace-regexp-in-string (rx ".md" (group-n 1(? "#" (* (not ")")))) ")")
-                                                     "\\1/)" linkstr))
-                  (linkstr (string-replace "_" "-" linkstr))
-                  (linkstr (string-replace "](" "](/org-roam/" linkstr)))
-             linkstr))
+           (string-replace "](" "](@/org-roam/" linkstr))
           ((string-match-p (rx "](/") linkstr)
            (replace-regexp-in-string (rx "](/" (* any) "/org-roam/data") "](/org-roam-data" linkstr))
           (t linkstr)))
