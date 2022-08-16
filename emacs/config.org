@@ -1035,12 +1035,15 @@ And here's the custom publish function that adds/removes the necessary advice:
 
 #+begin_src emacs-lisp
   (defun za/org-gfm-publish-to-gfm-zola (plist filename pub-dir)
-    "Runs `org-gfm-publish-to-gfm`, advising the necessary functions to generate Zola-compatible markdown."
-    (advice-add #'org-md-template :override #'za/org-md-template-zola)
-    (advice-add #'org-md-link :filter-return #'za/org-md-link-zola)
-    (org-gfm-publish-to-gfm plist filename pub-dir)
-    (advice-remove #'org-md-link #'za/org-md-link-zola)
-    (advice-remove #'org-md-template #'za/org-md-template-zola))
+    "Run `org-gfm-publish-to-gfm`, advising the necessary
+  functions to generate Zola-compatible markdown."
+    (let ((advice '((org-md-template :override za/org-md-template-zola)
+                    (org-md-link :filter-return za/org-md-link-zola)
+                    (org-gfm-table :override org-md--convert-to-html)))) ; Zola uses CommonMark, so doesn't support Markdown tables
+
+      (mapc (lambda (orig-type-new) (apply #'advice-add orig-type-new)) advice)
+      (org-gfm-publish-to-gfm plist filename pub-dir)
+      (mapc (lambda (orig-type-new) (advice-remove (nth 0 orig-type-new) (nth 2 orig-type-new))) advice)))
 #+end_src
 
 Finally, the list of things we can publish with their respective publishin functions:
