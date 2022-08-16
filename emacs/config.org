@@ -1000,7 +1000,7 @@ To make this work with Zola, I need to export Github-flavored markdown (fenced c
 
 #+begin_src emacs-lisp
   (require 'ox-publish)
-  (use-package ox-gfm)
+  (use-package ox-gfm :after ox)
 #+end_src
 
 First difficulty: Zola needs front matter with ~+++...+++~.
