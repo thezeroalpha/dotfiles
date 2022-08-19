@@ -50,7 +50,7 @@ Then a way to retrieve keybindings:
 #+begin_src emacs-lisp
   (defun za/get-personal-keybinds ()
     "Return the contents of za/personal-keybinds as a string."
-    (let (result
+    (let ((result nil)
           (format-entry (lambda (k v)
                           (let ((get-func (lambda (e) (nth 0 e)))
                                 (get-prev-func (lambda (e) (nth 1 e))))
@@ -146,14 +146,14 @@ Define the themes I want:
   (defun za/dark-theme ()
     "Switch to dark theme"
     (interactive)
-    (mapcar #'disable-theme custom-enabled-themes)
+    (mapc #'disable-theme custom-enabled-themes)
     (load-theme za/dark-theme-name t)
     (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 
   (defun za/light-theme ()
     "Switch to light theme"
     (interactive)
-    (mapcar #'disable-theme custom-enabled-themes)
+    (mapc #'disable-theme custom-enabled-themes)
     (load-theme za/light-theme-name t)
     (remove-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode))
 #+end_src
@@ -433,7 +433,7 @@ Abbrev mode:
 To be able to link to emails via notmuch, I use ol-notmuch:
 
 #+begin_src emacs-lisp
-  (use-package ol-notmuch :quelpa)
+  (use-package ol-notmuch :quelpa (:upgrade t))
 #+end_src
 *** Agenda & GTD
 **** Agenda mode settings
@@ -1046,9 +1046,11 @@ And here's the custom publish function that adds/removes the necessary advice:
                     (org-md-link :filter-return za/org-md-link-zola)
                     (org-gfm-table :override org-md--convert-to-html)))) ; Zola uses CommonMark, so doesn't support Markdown tables
 
-      (mapc (lambda (orig-type-new) (apply #'advice-add orig-type-new)) advice)
+      (dolist (orig-type-new advice) (apply #'advice-add orig-type-new))
       (org-gfm-publish-to-gfm plist filename pub-dir)
-      (mapc (lambda (orig-type-new) (advice-remove (nth 0 orig-type-new) (nth 2 orig-type-new))) advice)))
+      (dolist (orig-type-new advice)
+        (advice-remove (nth 0 orig-type-new)
+                       (nth 2 orig-type-new)))))
 #+end_src
 
 Finally, the list of things we can publish with their respective publishin functions:
@@ -1210,8 +1212,7 @@ Install flycheck, and enable it by default in certain major modes:
 
 #+begin_src emacs-lisp
   (use-package flycheck
-    :hook (sh-mode . flycheck-mode)
-    (emacs-lisp-mode . flycheck-mode))
+    :hook (sh-mode . flycheck-mode))
 #+end_src
 
 ** anki-editor
@@ -1239,8 +1240,7 @@ anki-editor doesn't provide a keymap so I have to set one up here:
 'rainbow-mode' lets you visualise hex colors:
 
 #+begin_src emacs-lisp
-  (use-package rainbow-mode
-    :hook (emacs-lisp-mode . rainbow-mode))
+  (use-package rainbow-mode)
 #+end_src
 
 ** pdf-tools
@@ -1648,10 +1648,6 @@ Linter for the metadata in Emacs Lisp files which are intended to be packages.
     '(flycheck-package-setup))
 #+end_src
 
-** outline-mode
-#+begin_src emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
-#+end_src
 ** prism
 Prism changes the color of text depending on their depth. Makes it easier to see where something is at a glance.
 
@@ -1772,7 +1768,7 @@ I want to hide certain modes from the modeline, they're always on:
   (use-package diminish
     :config
     (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode undo-tree-mode ivy-posframe-mode git-gutter-mode)))
-      (mapc (lambda (mode-name) (diminish mode-name)) modes-to-hide))
+      (mapc #'diminish modes-to-hide))
     (diminish 'view-mode " 👓"))
 #+end_src
 *** Transparent title bar
@@ -2078,10 +2074,9 @@ Enable semantic mode for major modes:
 #+end_src
 
 #+begin_src emacs-lisp :tangle no
-  (let ((mode-hooks [c-mode-common-hook]))
-    (mapc (lambda (mode-name)
-            (add-hook mode-name #'za/settings-c-mode))
-          mode-hooks))
+  (let ((mode-hooks '(c-mode-common-hook)))
+    (dolist (mode-name mode-hooks)
+      (add-hook mode-name #'za/settings-c-mode)))
 #+end_src
 
 ** Forward-word and forward-to-word
@@ -2369,6 +2364,17 @@ Emacs handles common image formats internally, but for stuff like webp, you need
 
 You also need imagemagick installed.
 
+* Language-specific
+#+begin_src emacs-lisp
+  (let ((modes '((emacs-lisp-mode-hook . (flycheck-mode
+                                          rainbow-mode
+                                          outline-minor-mode
+                                          company-mode)))))
+    (dolist (major-minorlist modes)
+      (let ((major (car major-minorlist))
+            (minor-modes (cdr major-minorlist)))
+        (dolist (minor minor-modes) (add-hook major minor)))))
+#+end_src
 * Sound support
 On macOS, you can use afplay:
 
