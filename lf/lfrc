@@ -316,6 +316,11 @@ cmd scroll_parent_down :{{
   updir; down
   %[ -d "$f" ] && lf -remote "send $id open"
 }}
+
+cmd qrsend ${{
+  clear
+  qrcp send $fx || { clear; qrcp send --interface en0 $fx; }
+}}
 # }}}
 # Mappings {{{
 # Mouse
@@ -435,3 +440,5 @@ map td pgp_decrypt
 map ts. pgp_sign
 map tsc pgp_sign_clear
 map tsd pgp_sign_detach
+
+map tq qrsend
