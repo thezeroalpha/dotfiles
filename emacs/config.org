@@ -1653,6 +1653,15 @@ Prism changes the color of text depending on their depth. Makes it easier to see
 #+begin_src emacs-lisp
 (use-package prism)
 #+end_src
+** olivetti: distraction-free writing
+#+begin_src emacs-lisp
+  (use-package olivetti)
+#+end_src
+** nov.el: EPUB support
+#+begin_src emacs-lisp
+  (use-package nov)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+#+end_src
 * Interface
 ** Start debugger on error
 #+begin_src emacs-lisp
