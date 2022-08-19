@@ -130,7 +130,6 @@ organize_files() {
       printf "%s -> %s\n" "$i" "$artist/$album"
       mv "$i" "$artist/$album"
     done
-    mpc -w update >/dev/null 2>&1
     rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
 }
 
