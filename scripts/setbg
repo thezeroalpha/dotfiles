@@ -53,7 +53,7 @@ else
 fi
 
 # Choose an image
-imgpath="$(sxiv -o "$img_dir" | head -n 1)"
+imgpath="$(find "$img_dir" -type f -maxdepth 1 -exec stat -f "%SB %N" -t '%s' {} \; | sort -rn | cut -d' ' -f2- | sxiv -io | head -n 1)"
 [ -z "$imgpath" ] && die 'Nothing selected, quitting.'
 [ -f "$imgpath" ] || die "$imgpath does not exist or is not readable."
 
