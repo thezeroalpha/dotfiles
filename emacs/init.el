@@ -1,7 +1,6 @@
 ;; Initial bootstrap
 ;; Start in fullscreen mode
 (message (concat "Starting: " (emacs-uptime)))
-(toggle-frame-fullscreen)
 
 ;; Get rid of all bars
 ;; Note: this hinders discoverability! Not a problem for me, because
@@ -27,9 +26,9 @@
   "Use ~/.scripts/open to open a file"
   (shell-command (concat "~/.scripts/open " what)))
 
-;; For some reason, my macOS has a problem verifying certs.
-(when (string-equal system-type "darwin")
-  (setq package-check-signature nil))
+;; If there's a problem verifying certs:
+;; (when (string-equal system-type "darwin")
+;;   (setq package-check-signature nil))
 
 ;; Also some problems connecting to package repos on Mac & a specific version
 ;; https://emacs.stackexchange.com/questions/68288/error-retrieving-https-elpa-gnu-org-packages-archive-contents
@@ -44,6 +43,8 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
+
+;; Custom lisp files directory
 (defconst za/manually-installed-package-dir (concat user-emacs-directory "lisp/") "The directory for packages (.lisp) that I manually install.")
 (make-directory za/manually-installed-package-dir t)
 (add-to-list 'load-path za/manually-installed-package-dir)

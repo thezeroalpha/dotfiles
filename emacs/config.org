@@ -1,4 +1,4 @@
-* Info
+* macOS installation info
 On macOS, I use Homebrew to install Emacs from daviderestivo/emacs-head/emacs-head@28.
 I install with ~--HEAD --with-dbus --with-cocoa --with-xwidgets --with-native-comp~.
 
@@ -233,31 +233,33 @@ The components:
 - prescient: scoring system for M-x
 
 #+begin_src emacs-lisp
-      (use-package counsel :demand
-        :config
-        (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
-              ivy-height 20                   ; set height of the ivy window
-              ivy-count-format "(%d/%d) "     ; count format, from the ivy help page
-              ivy-display-style 'fancy
-              ivy-format-function 'ivy-format-function-line)
-        (ivy-mode)
-        (counsel-mode)
+  (use-package counsel :demand
+    :config
+    (setq ivy-use-virtual-buffers t       ; extend searching to bookmarks and
+          ivy-height 20                   ; set height of the ivy window
+          ivy-count-format "(%d/%d) "     ; count format, from the ivy help page
+          ivy-display-style 'fancy
+          ivy-format-function 'ivy-format-function-line)
+    (ivy-mode)
+    (counsel-mode)
 
-        (defun edit-script ()
-          "Edit a file in ~/.scripts/"
-          (interactive)
-          (let ((input (ivy--input)))
-            (ivy-quit-and-run (counsel-file-jump nil "~/.scripts/"))))
-        (defun edit-config ()
-          "Edit a file in ~/.dotfiles/"
-          (interactive)
-          (let ((input (ivy--input)))
-            (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
+    (defun edit-script ()
+      "Edit a file in ~/.scripts/"
+      (interactive)
+      (let ((input (ivy--input)))
+        (ivy-quit-and-run (counsel-file-jump nil "~/.scripts/"))))
+    (defun edit-config ()
+      "Edit a file in ~/.dotfiles/"
+      (interactive)
+      (let ((input (ivy--input)))
+        (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
 
-      (use-package prescient :config (prescient-persist-mode))
-      (use-package ivy-prescient :config
-        (setq ivy-prescient-retain-classic-highlighting t)
-        (ivy-prescient-mode))
+  (use-package prescient :config (prescient-persist-mode))
+  (use-package ivy-prescient
+    :after counsel
+    :config
+    (setq ivy-prescient-retain-classic-highlighting t)
+    (ivy-prescient-mode))
 #+end_src
 
 Set the key bindings:
@@ -315,6 +317,18 @@ Also, accidentally pressing shift-space deletes input, because by default, shift
   (define-key ivy-minibuffer-map (kbd "<backtab>") #'ivy-restrict-to-matches)
 #+end_src
 
+Custom Ivy actions:
+
+#+begin_src emacs-lisp
+  (ivy-add-actions
+   'counsel-dired
+   '(("f" (lambda (dir) (counsel-fzf nil dir)) "Fzf in directory")
+     ("g" (lambda (dir) (counsel-ag nil dir)) "Ag in directory")))
+  (ivy-add-actions
+   'dired
+   '(("f" (lambda (dir) (ivy-exit-with-action (counsel-fzf nil dir))) "Fzf in directory")
+     ("g" (lambda (dir) (ivy-exit-with-action (counsel-ag nil dir))) "Ag in directory")))
+#+end_src
 ** company
 Good completion.
 
@@ -358,6 +372,7 @@ Global:
 #+end_src
 
 Org mode:
+
 #+begin_src emacs-lisp
   (defun za/keybinds-org-mode ()
     "Function to set org-mode keybindings, run via org-mode-hook."
@@ -368,6 +383,12 @@ Org mode:
     (define-key org-mode-map (kbd "C-c q t") #'org-timestone-set-org-current-time-effective))
 
   (add-hook 'org-mode-hook #'za/keybinds-org-mode)
+#+end_src
+
+Easier link following. Actual enter is still possible with ~C-q C-j~.
+[[https://google.com][Goggles]]
+#+begin_src emacs-lisp
+  (setq org-return-follows-link t)
 #+end_src
 *** Nicer bullets
 In org mode, I want to use bullets instead of stars, so I also install ~org-superstar~.
@@ -424,11 +445,6 @@ Clock sound:
   (setq org-clock-sound (concat user-emacs-directory "notification.wav"))
 #+end_src
 
-Abbrev mode:
-
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook #'abbrev-mode)
-#+end_src
 *** Enable linking to email via notmuch
 To be able to link to emails via notmuch, I use ol-notmuch:
 
@@ -2190,6 +2206,15 @@ From here: https://www.masteringemacs.org/article/keyboard-macros-are-misunderst
   (advice-add #'kmacro-keyboard-macro-p :around (lambda (fun sym) "Ignore errors." (ignore-errors (funcall fun sym))))
   (define-key kmacro-keymap (kbd "I") #'kmacro-insert-macro)
 #+end_src
+** Show local help at point when idling
+#+begin_src emacs-lisp
+  (defun za/echo-area-tooltips ()
+    "Show tooltips in the echo area automatically for current buffer."
+    (setq-local help-at-pt-display-when-idle t
+                help-at-pt-timer-delay 0)
+    (help-at-pt-cancel-timer)
+    (help-at-pt-set-timer))
+#+end_src
 
 * Markdown
 Markdown mode settings.
@@ -2364,17 +2389,52 @@ Emacs handles common image formats internally, but for stuff like webp, you need
 
 You also need imagemagick installed.
 
+** Rotate windows horizontal ↔ vertical
+#+begin_src emacs-lisp
+  (defun za/rotate-windows ()
+    (interactive)
+    (if (= (count-windows) 2)
+        (let* ((this-win-buffer (window-buffer))
+               (next-win-buffer (window-buffer (next-window)))
+               (this-win-edges (window-edges (selected-window)))
+               (next-win-edges (window-edges (next-window)))
+               (this-win-2nd (not (and (<= (car this-win-edges)
+                                           (car next-win-edges))
+                                       (<= (cadr this-win-edges)
+                                           (cadr next-win-edges)))))
+               (splitter
+                (if (= (car this-win-edges)
+                       (car (window-edges (next-window))))
+                    'split-window-horizontally
+                  'split-window-vertically)))
+          (delete-other-windows)
+          (let ((first-win (selected-window)))
+            (funcall splitter)
+            (if this-win-2nd (other-window 1))
+            (set-window-buffer (selected-window) this-win-buffer)
+            (set-window-buffer (next-window) next-win-buffer)
+            (select-window first-win)
+            (if this-win-2nd (other-window 1))))))
+#+end_src
+
+#+begin_src emacs-lisp
+  (za/global-set-key (kbd "C-x 7") #'za/rotate-windows)
+#+end_src
+
 * Language-specific
 #+begin_src emacs-lisp
   (let ((modes '((emacs-lisp-mode-hook . (flycheck-mode
                                           rainbow-mode
                                           outline-minor-mode
-                                          company-mode)))))
+                                          company-mode))
+                 (org-mode-hook . (abbrev-mode
+                                   za/echo-area-tooltips)))))
     (dolist (major-minorlist modes)
       (let ((major (car major-minorlist))
             (minor-modes (cdr major-minorlist)))
         (dolist (minor minor-modes) (add-hook major minor)))))
 #+end_src
+
 * Sound support
 On macOS, you can use afplay:
 
