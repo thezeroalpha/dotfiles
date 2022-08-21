@@ -156,12 +156,30 @@ sub menu {
 # How to play {{{1
 sub play_audio_mpd {
   my $link = shift;
+
   detach sub {
-    system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
-      title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
-      printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
-    system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
-  };
+    if (checkstr($link, 'includes', ['youtube.com/playlist'])) {
+      system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd"));
+      open(my $playlist, '-|', qq(youtube-dl --flat-playlist -j '$link' | jq -r '.url')) or die "Couldn't read playlist $link";
+      while (my $song = <$playlist>) {
+        chomp $song;
+        system(qq(
+          title=\$(youtube-dl --ignore-config --get-title '$song' 2>/dev/null);
+          printf "%b\n" "\$title\t$song" >> "$HOME/.cache/mpd/linkarchive";
+          mpc add "\$(youtube-dl -x -g "$song")";
+          done));
+      }
+      close($playlist) or die "Could not close handle.";
+
+      notify 'Added playlist', $link;
+    }
+    else {
+      system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
+        title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
+        printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
+      system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+    };
+  }
 }
 
 sub play_audio_mpv {
