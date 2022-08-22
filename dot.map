@@ -101,6 +101,9 @@ vim:
 - spell: ~/.vim/spell
 - vimrc: ~/.vim/vimrc
 
+# Config: nvim
+nvim: ~/.config/nvim
+
 # Thirdparty tools
 tools:
 - solvitaire:

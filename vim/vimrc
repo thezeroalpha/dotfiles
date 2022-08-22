@@ -47,6 +47,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-fugitive'
 
 " Undo tree visualiser
+" TODO: consider mbbill/undotree instead?
 Plug 'simnalamburt/vim-mundo'
 
 " Repeat everything with '.'
@@ -482,7 +483,11 @@ let g:smoothie_remapped_commands = ['<C-D>', '<C-U>', '<C-F>', '<C-B>']
 " }}}1
 " General {{{1
 " Put viminfo in ~/.cache
-set viminfofile=~/.cache/vim/viminfo
+if has('nvim')
+  set viminfofile=~/.cache/nvim/viminfo
+else
+  set viminfofile=~/.cache/vim/viminfo
+endif
 
 " Set the colors
 " Use true color
@@ -534,17 +539,31 @@ silent! command! -bar -nargs=* Man
 set binary
 
 " Save swapfiles to ~/.local/share/vim/swap
-if !isdirectory($HOME.'/.local/share/vim/swap')
-  silent call mkdir($HOME.'/.local/share/vim/swap', 'p')
+if has('nvim')
+  if !isdirectory($HOME.'/.local/share/nvim/swap')
+    silent call mkdir($HOME.'/.local/share/nvim/swap', 'p')
+  endif
+  set directory=~/.local/share/nvim/swap//
+else
+  if !isdirectory($HOME.'/.local/share/vim/swap')
+    silent call mkdir($HOME.'/.local/share/vim/swap', 'p')
+  endif
+  set directory=~/.local/share/vim/swap//
 endif
-set directory=~/.local/share/vim/swap//
 set swapfile
 
 " Save backups to ~/.local/share/vim/backup
-if !isdirectory($HOME.'/.local/share/vim/backup')
-  silent call mkdir($HOME.'/.local/share/vim/backup', 'p')
+if has('nvim')
+  if !isdirectory($HOME.'/.local/share/nvim/backup')
+    silent call mkdir($HOME.'/.local/share/nvim/backup', 'p')
+  endif
+  set backupdir=~/.local/share/nvim/backup//
+else
+  if !isdirectory($HOME.'/.local/share/vim/backup')
+    silent call mkdir($HOME.'/.local/share/vim/backup', 'p')
+  endif
+  set backupdir=~/.local/share/vim/backup//
 endif
-set backupdir=~/.local/share/vim/backup//
 set nobackup writebackup
 
 " make regexes consistent with other programs (extended)
@@ -565,7 +584,11 @@ set wildignorecase
 
 " Persistent undos (useful for plugins too){{{
 if has('persistent_undo')
-  let myUndoDir = $HOME . '/.local/share/vim/undo'
+  if has('nvim')
+    let myUndoDir = $HOME . '/.local/share/nvim/undo'
+  else
+    let myUndoDir = $HOME . '/.local/share/vim/undo'
+  endif
   silent! call mkdir(myUndoDir, 'p')
   let &undodir = myUndoDir
   set undofile
@@ -600,10 +623,12 @@ set wildmenu
 " Allow the mouse, good for e.g. resizing splits
 set mouse=a
 " fix issue with not being able to drag resize split windows in tmux
-if &term =~# '^screen' || $TMUX !=# ""
-  set ttymouse=xterm2
-elseif &term =~# '^st-' || &term =~# '^alacritty'
-  set ttymouse=sgr
+if !has('nvim')
+  if &term =~# '^screen' || $TMUX !=# ""
+    set ttymouse=xterm2
+  elseif &term =~# '^st-' || &term =~# '^alacritty'
+    set ttymouse=sgr
+  endif
 endif
 
 " How to split new windows
@@ -635,7 +660,9 @@ set updatetime=100
 " Make <esc> faster.
 " Note: this disables arrow keys in insert mode, because arrow keys start with <esc> (e.g. `\eOD` for left arrow).
 " However, I don't use arrow keys anyway, so that's fine.
-set noesckeys
+if !has('nvim')
+  set noesckeys
+endif
 
 " }}}1
 " Editor {{{1
