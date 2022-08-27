@@ -2320,6 +2320,16 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
       (when-let (buf (za/helpful--previous))
         (funcall helpful-switch-buffer-function buf))))
 #+end_src
+** Tex-mode
+#+begin_src emacs-lisp
+  (use-package tex-mode
+    :ensure nil ; installed with Emacs
+    :hook (tex-mode . za/settings-on-tex-mode)
+    :config
+    (defun za/settings-on-tex-mode ()
+      "Settings on enabling helpful mode"
+      (setq comment-add 0)))
+#+end_src
 * References
 Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
