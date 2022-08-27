@@ -1269,6 +1269,19 @@ Install Org and require additional components that I use.
       ;; Realign tags
       (org-set-tags-command '(4)))
 
+    (defcustom za/org-inline-images-desired-screen-proportion (/ (float 3) 4)
+      "Percentage of the window (as a float) that Org inline images should take up."
+      :type 'float)
+
+    (defun za/org-display-inline-images-set-width (&rest _)
+      "Set `org-image-actual-width` dynamically before displaying images."
+      (if (window-system)
+          (let* ((total-width (window-pixel-width))
+                 (image-width (round (* total-width za/org-inline-images-desired-screen-proportion))))
+            (setq-local org-image-actual-width image-width))))
+
+    (advice-add 'org-display-inline-images :before #'za/org-display-inline-images-set-width)
+
     (require 'org-tempo)
     (require 'org-habit)
     (require 'org-id)
