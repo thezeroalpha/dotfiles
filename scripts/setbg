@@ -89,13 +89,17 @@ is_equal_aspect_ratio="$(printf '%s == %s\n' "$img_aspect_ratio" "$SCREEN_ASPECT
 if [ "$is_equal_aspect_ratio" -eq 0 ]; then
   printf 'Resizing to %s aspect ratio\n' "$SCREEN_ASPECT_RATIO"
   mkdir -p "$img_dir/$ORIGINALS_DIR_NAME" 2>/dev/null
-  [ -f "$img_dir/$ORIGINALS_DIR_NAME/$imgname" ] && die "Could not back up $imgpath, already exists in originals folder."
+  [ -f "$img_dir/$ORIGINALS_DIR_NAME/$imgname" ] \
+    && rm "$img_dir/$imgname" \
+    && mv "$img_dir/$ORIGINALS_DIR_NAME/$imgname"  "$img_dir/$imgname"
+
   printf 'convert %s -> %s/%s.%s\n' "$imgpath" "$img_dir" "$imgname" "$$"
   convert "$imgpath" -resize "$SCREEN_ASPECT_RATIO" "$img_dir/$imgname.$$"
   printf '%s -> %s/%s/\n' "$imgpath" "$img_dir" "$ORIGINALS_DIR_NAME"
   mv "$imgpath" "$img_dir/$ORIGINALS_DIR_NAME/"
   printf '%s/%s.%s -> %s/%s\n' "$img_dir" "$imgname" "$$" "$img_dir" "$imgname"
   mv "$img_dir/$imgname.$$" "$img_dir/$imgname"
+  touch -r "$img_dir/$ORIGINALS_DIR_NAME/$imgname" "$img_dir/$imgname" # modify file times for proper sorting
 fi
 
 # Copy the image to some pre-defined location
