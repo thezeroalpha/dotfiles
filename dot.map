@@ -63,6 +63,11 @@ khal: ~/.config/khal
 helix: ~/.config/helix
 bitmonero: ~/.config/bitmonero
 
+# Config: sioyek
+# for macOS:
+sioyek:
+- keys_user.config: ~/Library/Application Support/sioyek/keys_user.config
+- prefs_user.config: ~/Library/Application Support/sioyek/prefs_user.config
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
 xprofile: ~/.xprofile
