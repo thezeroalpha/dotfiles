@@ -575,6 +575,19 @@ Some functions to start/stop syncthing.
       (user-error "Syncthing is not running."))
     (async-shell-command "syncthing cli operations shutdown"))
 #+end_src
+** Replace typographic quotes
+#+begin_src emacs-lisp
+  (defun za/replace-typographic-quotes ()
+    "Replace typographic quotes with plain quotes"
+    (interactive)
+    (save-mark-and-excursion
+      (goto-char (point-min))
+      (while (re-search-forward (rx (any ?“ ?”)) nil 'noerror)
+        (replace-match "\""))
+      (goto-char (point-min))
+      (while (re-search-forward (rx (any "‘" "’")) nil 'noerror)
+        (replace-match "'"))))
+#+end_src
 * Interface
 ** Theme
 Icons required for some parts of the doom theme:
