@@ -2024,6 +2024,7 @@ A better replacement for DocView:
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
+    :magic ("%PDF" . pdf-view-mode)
     :custom
     (pdf-annot-default-annotation-properties '((t
                                                 (label . "Alex Balgavy"))
@@ -2050,7 +2051,7 @@ A better replacement for DocView:
     (pdf-view-mode . (lambda () (display-line-numbers-mode 0)))
 
     :config
-    (pdf-tools-install)
+    (pdf-tools-install :no-query)
 
     ;; The arrow tooltip does not show properly when jumping to a
     ;; location. Maybe this is a Mac-only thing. See here:
@@ -2086,7 +2087,6 @@ A better replacement for DocView:
                  (xw (pdf-util-with-edges (e) e-width)))
             (cl-incf dx (/ (- xw (car (pdf-view-image-size t))) 2))))
         (pdf-util-tooltip-in-window "\u2192" dx dy))))
-
 #+end_src
 
 *** TODO this clobbers register x. Find a way to not clobber a register
