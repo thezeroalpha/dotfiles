@@ -1672,7 +1672,7 @@ Fix column alignment in agenda.
 #+end_src
 
 *** Priorities: how important something is
-I usually have a lot of 'next' actions, so I prefer 4 priority levels instead of the default 3: A (urgent, ASAP), B (important),  C (not super important), D (do in free time):
+I usually have a lot of 'next' actions, so I prefer 4 priority levels instead of the default 3: A (urgent, ASAP), B (important),  C (if you have nothing else, do this), D (do in free time):
 
 #+begin_src emacs-lisp
   (setq org-priority-highest ?A
@@ -1774,7 +1774,7 @@ And here's the custom publish function that adds/removes the necessary advice:
   (defun za/org-gfm-publish-to-gfm-zola (plist filename pub-dir)
     "Run `org-gfm-publish-to-gfm`, advising the necessary
   functions to generate Zola-compatible markdown."
-    (let ((advice '((org-md-template :override za/org-md-template-zola)
+    (let ((advice '((org-gfm-template :override za/org-md-template-zola)
                     (org-md-link :filter-return za/org-md-link-zola)
                     (org-gfm-table :override org-md--convert-to-html)))) ; Zola uses CommonMark, so doesn't support Markdown tables
 
