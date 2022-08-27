@@ -56,7 +56,19 @@ bind generic,pager \; enter-command
 bind generic : tag-prefix
 
 set date_format = "%d/%m"
-set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c) %> [%g]"
+
+set index_format="%2C %Z %?X?A& ? %?[1y?%[%b %d]&%[%F]? %-15.15F %s (%-4.4c) %> [%g]"
+# this is:
+#   current message number (width 2)
+#   message status flags
+#   if (num_mime_attachments != 0) ("A") (" ")
+#   if (message_date within 1y) (abbrev_month, day of month) (ISO format)
+#   author/recipient name (left aligned, width 15 chars, max 15 chars)
+#   subject
+#   num characters in body (left aligned, width 4 chars, max 4 chars)
+#   align right
+#   message tags
+# conditionals are: %?condition?if non-zero&else?
 
 # Github issue was fixed, yay!
 # Threads should be sorted by date, top-to-botom.
