@@ -1,0 +1,84 @@
+#!/bin/sh
+# Convert between time zones.
+# Depends on GNU date because of the `-d` switch, and fzf for choosing.
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+
+command -v fzf >/dev/null 2>&1 || die 'fzf required for timezone selection.'
+
+# Check for GNU date
+if command -v gdate >/dev/null 2>&1; then
+  datecmd='gdate'
+elif command -v date --version >/dev/null 2>&1; then
+  datecmd='date'
+else
+  die 'GNU `date` required but not detected.'
+fi
+
+# Get path to timezones
+zonedir="$(realpath /usr/share/zoneinfo)"
+
+PARAMS=""
+
+while [ $(($#)) -ne 0 ]; do
+  case "$1" in
+    -tc|--target-current)
+      tzhere="$(realpath /etc/localtime | sed "s!$zonedir/!!")"
+      target="$tzhere"
+      shift
+      ;;
+    -sc|--source-current)
+      tzhere="$(realpath /etc/localtime | sed "s!$zonedir/!!")"
+      src="$tzhere"
+      shift
+      ;;
+    -s|--source)
+      src="$2"
+      shift 2
+      ;;
+    -t|--target)
+      target="$2"
+      shift 2
+      ;;
+    -h|--help)
+      printf 'USAGE\n'
+      printf 'Switches:\n'
+      printf '%s\t%s\n' '-tc|--target-current' 'use current time zone as target'
+      printf '%s\t%s\n' '-sc|--source-current' 'use current time zone as source'
+      printf '%s\t%s\n' '-s|--source TZ' 'use TZ as source'
+      printf '%s\t%s\n' '-t|--target TZ' 'use TZ as target'
+      printf '\nExamples:\n'
+      printf '%s\n' '- What time is it right now in some time zone? Run: `tz -sc`, choose target time zone interactively.'
+      printf '%s\n' '- What is 3 PM Eastern Standard Time in Amsterdam? Run: `tz -s "EST" -t "Europe/Amsterdam" "3pm"`'
+      printf '%s\n' '- What is 11 AM in one time zone when converted to another time zone? Run: `tz "11am"`, choose source and target time zone interactively.'
+      exit 0
+      ;;
+    --) # end arg parsing
+      shift
+      break
+      ;;
+    -*) # unsupported flags
+      echo "Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      # if params is set, add space.
+      PARAMS="$PARAMS${PARAMS:+ }$1"
+      shift
+      ;;
+  esac
+done
+set -- "$PARAMS"
+
+if [ -z "$src" ]; then # we have to interactively prompt for source
+  src="$(find "$zonedir" -type f | sed "s!$zonedir/!!" | fzf --prompt='Source > ' --layout=reverse)"
+  [ -z "$src" ] && exit 0
+fi
+if [ -z "$target" ]; then # we have to interactively prompt for target
+  target="$(find "$zonedir" -type f | sed "s!$zonedir/!!" | fzf --prompt='Target > ' --layout=reverse)"
+  [ -z "$target" ] && exit 0
+fi
+
+
+time="${1:-now}"
+TZ="$target" "$datecmd" -d "TZ=\"$src\" $time"
+printf 'From: %s (%s)\nTo: %s' "$time" "$src" "$target"
