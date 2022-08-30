@@ -33,10 +33,12 @@ while [ $(($#)) -ne 0 ]; do
       ;;
     -s|--source)
       src="$2"
+      stat "$zonedir"/"$src" >/dev/null 2>&1 || die "Source time zone $src invalid."
       shift 2
       ;;
     -t|--target)
       target="$2"
+      stat "$zonedir"/"$target" >/dev/null 2>&1 || die "Source time zone $target invalid."
       shift 2
       ;;
     -h|--help)
