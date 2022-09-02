@@ -37,6 +37,21 @@ playlist_editor_display_mode = columns
 browser_display_mode = columns
 search_engine_display_mode = columns
 
+## Note: You can choose default search mode for search engine. Available modes
+## are:
+##
+## - 1 - use mpd built-in searching (no regexes, pattern matching)
+##
+## - 2 - use ncmpcpp searching (pattern matching with support for regexes, but
+##       if your mpd is on a remote machine, downloading big database to process
+##       it can take a while
+##
+## - 3 - match only exact values (this mode uses mpd function for searching in
+##       database and local one for searching in current playlist)
+##
+#
+search_engine_default_search_mode = 2
+
 progressbar_look = ->
 now_playing_prefix = "> "
 modified_item_prefix = "~ "
