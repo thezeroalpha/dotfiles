@@ -1,17 +1,18 @@
 #!/bin/sh
+prompt="${1:-Choose > }"
 case "$TERM" in
   # 'dumb' works to determine when running from a plumbing script via bettertouchtool
   dumb)
     a=$(mktemp)
     b=$(mktemp)
     trap 'rm $a $b' INT TERM EXIT
-    cat - > $a
-    alacritty -e sh -c "fzf --prompt='Choose > ' --layout=reverse <$a >$b"
-    cat $b
-    rm $a $b
+    cat - > "$a"
+    alacritty -e sh -c "fzf --prompt='$prompt' --layout=reverse <$a >$b"
+    cat "$b"
+    rm "$a" "$b"
     trap - INT TERM EXIT
     ;;
   *)
-    fzf-tmux --prompt="Choose > " --layout=reverse
+    fzf-tmux --prompt="$prompt" --layout=reverse
     ;;
 esac
