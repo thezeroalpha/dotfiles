@@ -1,5 +1,9 @@
 theme = "everforest_light"
 
+[editor]
+cursorline = true
+color-modes = true
+
 [keys.normal]
 ";" = "command_mode"
 ":" = "collapse_selection"
