@@ -160,6 +160,10 @@ Plug 'jceb/vim-orgmode', { 'for': 'org' }
 
 " Rust
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+
+if has('nvim')
+  Plug 'neovim/nvim-lspconfig'
+endif
 call plug#end()
 
 " quickfix filtering
