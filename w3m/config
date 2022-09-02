@@ -6,7 +6,7 @@ target_self 0
 open_tab_blank 0
 open_tab_dl_list 1
 display_link 1
-display_link_number 1
+display_link_number 0
 decode_url 1
 display_lineinfo 1
 ext_dirlist 0

@@ -74,6 +74,13 @@ keymap SPCu COMMAND 'DOWNLOAD /tmp/w3m_source.html; READ_SHELL ~/.config/w3m/cgi
 keymap SPC, COMMAND 'SHELL "vim -o ~/.config/w3m/{keymap,config}"; REINIT'
 keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/goto-target-url.cgi'
 
+# Link hinting
+keymap f-SPC COMMAND 'SET_OPTION display_link_number=toggle; RESHAPE'
+keymap ff COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN'
+keymap ft COMMAND 'SET_OPTION display_link_number=0; RESHAPE; TAB_LINK'
+keymap fo COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; GOTO_LINK'
+keymap fn COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; TAB_LINK'
+
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ALARM         Set alarm
