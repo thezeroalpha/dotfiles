@@ -239,6 +239,7 @@
         `(web-mode-html-attr-value-face ((,class (:foreground ,keyword))))
         `(web-mode-warning-face ((,class (:inherit ,font-lock-warning-face))))
         `(web-mode-html-tag-face ((,class (:foreground ,builtin))))
+        `(table-cell ((,class (:inherit ivy-action))))
         `(jde-java-font-lock-package-face ((t (:foreground ,var))))
         `(jde-java-font-lock-public-face ((t (:foreground ,keyword))))
         `(jde-java-font-lock-private-face ((t (:foreground ,keyword))))
@@ -246,6 +247,7 @@
         `(jde-java-font-lock-modifier-face ((t (:foreground ,fg2))))
         `(jde-jave-font-lock-protected-face ((t (:foreground ,keyword))))
         `(jde-java-font-lock-number-face ((t (:foreground ,var))))
+
         )
   ;; emacs >= 26.1
   (when (>= emacs-major-version 26)
