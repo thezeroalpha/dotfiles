@@ -2330,6 +2330,13 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
       "Settings on enabling helpful mode"
       (setq comment-add 0)))
 #+end_src
+** Quail
+#+begin_src emacs-lisp
+  (use-package quail
+    :ensure nil ; provided by Emacs
+    :config
+    (require 'slovak-qwerty))
+#+end_src
 * References
 Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]

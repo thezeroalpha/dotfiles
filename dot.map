@@ -83,6 +83,7 @@ emacs:
 - jokull-theme.el: ~/.config/emacs/jokull-theme.el
 - junipero-theme.el: ~/.config/emacs/junipero-theme.el
 - notification.wav: ~/.config/emacs/notification.wav
+- lisp: ~/.config/emacs/lisp
 
 # Config: shell
 shell:
