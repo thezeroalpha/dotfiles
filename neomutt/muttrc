@@ -52,6 +52,7 @@ bind index t tag-entry
 # Switch ; and : keys
 unbind generic,pager :
 unbind generic,pager ;
+bind generic,compose,attach \Cl refresh
 bind generic,pager \; enter-command
 bind generic : tag-prefix
 
@@ -102,6 +103,9 @@ bind pager g noop
 bind pager gg top
 bind pager G  bottom
 
+macro index ZY "<enter-command>set use_threads=yes<Enter>"
+macro index ZN "<enter-command>set use_threads=no<Enter>"
+
 macro index,pager,attach,compose U "\
 <enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
 <pipe-message> urlview<Enter>\
@@ -130,6 +134,7 @@ bind index,pager m mail
 bind compose p postpone-message
 bind compose l view-attach
 bind compose h exit
+bind compose L edit-language
 bind index p recall-message
 bind index g noop
 bind index gg       first-entry
