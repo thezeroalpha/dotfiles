@@ -1025,6 +1025,13 @@ This lets me jump to any position in Emacs rather quickly, sometimes it's useful
     (("C-:" . avy-goto-char-timer)))
 #+end_src
 
+** calendar
+#+begin_src emacs-lisp
+  (use-package calendar
+    :ensure nil ; comes with Emacs
+    :custom
+    (calendar-week-start-day 1))
+#+end_src
 ** DISABLED calfw: graphical calendar
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
@@ -1033,8 +1040,7 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
     :config
     (use-package calfw-org)
     :custom
-    (cfw:org-overwrite-default-keybinding t)
-    (calendar-week-start-day 1))
+    (cfw:org-overwrite-default-keybinding t))
 #+end_src
 
 ** vanish: hide parts of the file
