@@ -71,7 +71,7 @@ urimethodmap ~/.config/w3m/urimethodmap, /usr/local/Cellar/w3m/0.5.3_6/etc/w3m/u
 editor /usr/local/bin/vim
 mailto_options 1
 mailer
-extbrowser open
+extbrowser linkhandler
 extbrowser2 url=%s && printf %s "$url" | clc
 extbrowser3 url=%s && pocket save "$url" && notify "Saved to pocket" "URL: $url" w3m
 extbrowser4
