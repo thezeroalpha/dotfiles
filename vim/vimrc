@@ -161,6 +161,9 @@ Plug 'jceb/vim-orgmode', { 'for': 'org' }
 " Rust
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
+" Show context
+Plug 'wellle/context.vim'
+
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
 endif
