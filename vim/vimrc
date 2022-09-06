@@ -331,6 +331,7 @@ nnoremap <expr> <leader><c-f>. ":Files " .. expand("%:h") .. "<CR>"
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>G :Lines<CR>
 nnoremap <leader>W :BLines<CR>
+nnoremap <expr> <leader>Z ':BLines '..&foldmarker->split(',')[0]..'<CR>'
 nnoremap <leader>? :Helptags<CR>
 nnoremap <leader>T :Tags<CR>
 nnoremap <leader>/ :Ag<CR>
