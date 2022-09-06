@@ -31,5 +31,4 @@ alias bwl="rbw lock"
 alias yt="pipe-viewer"
 alias gotop='sudo gotop -C $XDG_CONFIG_HOME/gotop/gotop.conf'
 [ -n "$VIM_TERMINAL" ] && alias vim=vimsend
-{ [ -f ~/.config/dark-theme ] && alias bat="bat --theme=1337 --color=always"; } || alias bat="bat --theme=GitHub --color=always"
 [ -f "$DOTFILES"/docs/pbib/README.md ] && alias pbib='vim +$(nl -b a '$DOTFILES"/docs/pbib/README.md | fzf --with-nth 2.. -e -q '^# ' | sed 's/[^0-9]//g') "$DOTFILES"/docs/pbib/README.md"
