@@ -342,7 +342,7 @@ I like to be able to kill a buffer instantly:
       (unless (and fname (file-exists-p fname))
         (user-error (format "Buffer has no associated file.")))
 
-      (unless (y-or-n-p (format "Really delete %s and its buffer?" fname))
+      (unless (yes-or-no-p (format "Really delete %s and its buffer?" fname))
         (user-error "User cancelled."))
 
       (delete-file fname 'trash-if-enabled)
@@ -727,14 +727,15 @@ And to set the modeline format:
                                    "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
 #+end_src
 
-I want to hide certain modes from the modeline, they're always on:
+I want to hide certain modes from the modeline.
+For that, ~delight~ is a useful package; unlike ~diminish~, it can also change the display of /major/ modes (~diminish~ only does minor modes).
 
 #+begin_src emacs-lisp
-  (use-package diminish
-    :config
-    (let ((modes-to-hide '(ivy-mode counsel-mode which-key-mode hl-todo-mode undo-tree-mode ivy-posframe-mode git-gutter-mode)))
-      (mapc #'diminish modes-to-hide))
-    (diminish 'view-mode " 👓"))
+    (use-package delight
+      :config
+      (delight 'visual-line-mode " ↩" 'simple)
+      (delight 'auto-revert-mode " AR" 'autorevert)
+      (delight 'abbrev-mode " Abv" 'abbrev))
 #+end_src
 ** Transparent title bar
 #+begin_src emacs-lisp
@@ -805,7 +806,11 @@ And a way to toggle those side windows:
 When editing Elisp and other supported major-modes, Eldoc will display useful information about the construct at point in the echo area.
 
 #+begin_src emacs-lisp
-  (global-eldoc-mode 1)
+  (use-package eldoc
+    :ensure nil ; installed with Emacs
+    :delight
+    :config
+    (global-eldoc-mode 1))
 #+end_src
 
 ** Pulse line
@@ -892,6 +897,7 @@ Minor mode for Emacs that displays the key bindings following your currently ent
 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
+    :delight
     :config
     (which-key-mode))
 #+end_src
@@ -905,6 +911,7 @@ Switched to this from Helm, it's more lightweight.
 *** ivy: generic completion mechanism
 #+begin_src emacs-lisp
   (use-package ivy
+    :delight
     :custom
     (ivy-use-virtual-buffers t "extend searching to bookmarks")
     (ivy-height 20 "set height of the ivy window")
@@ -951,6 +958,7 @@ Switched to this from Helm, it's more lightweight.
 #+begin_src emacs-lisp
   (use-package counsel
     :demand
+    :delight
     :config
     (counsel-mode)
     :bind (("M-x" . counsel-M-x)
@@ -994,6 +1002,7 @@ Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --wit
   (if (and (version< emacs-version "28") (equal system-type 'darwin))
       (message "ivy-posframe won't work properly, run `brew install daviderestivo/emacs-head/emacs-head@28 --with-cocoa`")
     (use-package ivy-posframe
+      :delight
       :custom
       (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
       (ivy-posframe-parameters
@@ -1133,6 +1142,7 @@ Sometimes it's better to look at undo history as a tree:
 
 #+begin_src emacs-lisp
   (use-package undo-tree
+    :delight
     :custom
     (undo-tree-history-directory-alist
      (progn (let ((undo-tree-dir (concat user-emacs-directory "undo-tree/")))
@@ -1254,6 +1264,7 @@ Install Org and require additional components that I use.
 
 #+begin_src emacs-lisp
   (use-package org
+    :delight org-indent-mode
     :custom
     (org-return-follows-link t "Easier link following. Actual enter is still possible with ~C-q C-j~.")
     (org-babel-python-command "python3")
