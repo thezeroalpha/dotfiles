@@ -2136,6 +2136,7 @@ Like virtualenvwrapper.sh, but for Emacs.
        ("reg" "%(binary) -f %(ledger-file) --start-of-week=1 reg")
        ("payee" "%(binary) -f %(ledger-file) --start-of-week=1 reg @%(payee)")
        ("account" "%(binary) -f %(ledger-file) --start-of-week=1 reg %(account)")
+       ("reg-org-table" "%(binary) -f %(ledger-file) csv --csv-format '|%(scrub(date))|%(scrub(display_account))|%(scrub(payee))|%(scrub(display_amount))|%(scrub(display_total))|\n' %(account)")
        ("degiro-changes" "%(binary) -f %(ledger-file) --start-of-week=1 reg Investments:Degiro -X eur"))))
 #+end_src
 
