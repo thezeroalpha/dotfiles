@@ -1264,7 +1264,6 @@ Install Org and require additional components that I use.
 
 #+begin_src emacs-lisp
   (use-package org
-    :delight org-indent-mode
     :custom
     (org-return-follows-link t "Easier link following. Actual enter is still possible with ~C-q C-j~.")
     (org-babel-python-command "python3")
@@ -1292,6 +1291,7 @@ Install Org and require additional components that I use.
            (org-mode . org-indent-mode)
            (org-mode . za/settings-on-org-mode))
     :config
+    (delight 'org-indent-mode nil 'org-indent)
     (defun za/settings-on-org-mode ()
       "Settings on enabling org mode"
       (za/toggle-wrap t)
@@ -1389,7 +1389,7 @@ Bind keys to those functions:
              :prefix-map za/gtd-files-map
              :prefix-docstring "Visit GTD file"
              ("i" . gtd-inbox)
-             ("g" . gtd)
+             ("l" . gtd)
              ("a" . gtd-archive)
              ("s" . gtd-someday)
              ("t" . gtd-tickler))
@@ -1901,6 +1901,11 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
     :custom
     (org-roam-directory za/org-roam-dir)
     (org-roam-completion-everywhere t)
+    (org-roam-dailies-capture-templates
+     '(("d" "default" entry
+        "* %U\n%?"
+        :target (file+head "%<%Y-%m-%d>.org"
+                           "#+title: %<%Y-%m-%d>\n"))))
 
     :config
     (org-roam-setup)
@@ -1911,6 +1916,22 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
                ("f" . org-roam-node-find)
                ("w" . org-roam-buffer-toggle)
                ("i" . org-roam-node-insert))
+    (bind-keys :prefix "C-c j"
+               :prefix-map za/org-roam-dailies-map
+               :prefix-docstring "Org roam dailies"
+               ("s" . za/org-roam-dailies-select)
+               ("n" . org-roam-dailies-capture-today)
+               ("j" . org-roam-dailies-goto-today)
+               ("+" . org-roam-dailies-goto-tomorrow)
+               ("-" . org-roam-dailies-goto-yesterday)
+               ("g" . org-roam-dailies-goto-date)
+               ("." . org-roam-dailies-find-directory))
+    (defun za/org-roam-dailies-select ()
+      "Select an org-roam-dailies folder."
+      (interactive)
+      (let* ((choices (cons '(?0 nil) za/org-roam-dailies-dirs))
+             (choice (read-multiple-choice "org-roam-dailies dir" choices)))
+        (setq org-roam-dailies-directory (nth 1 choice))))
     (require 'org-roam-export))
 #+end_src
 
