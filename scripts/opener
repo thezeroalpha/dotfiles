@@ -7,7 +7,7 @@ case "$1" in
   *)
     case $(file --mime-type "$1" -bL) in
       text/*|application/json|inode/x-empty) { [ -n "$VIM_TERMINAL" ] && vimsend "$1"; } || ${EDITOR:-vim} "$1";;
-      image/*) setsid -f nsxiv -a "$@" 2>&1;;
+      image/*) setsid -f sxiv -a "$@" 2>&1;;
       application/epub*) setsid -f ebook-viewer "$1" >/dev/null 2>&1;;
       application/pdf*) setsid -f /Applications/sioyek.app/Contents/MacOS/sioyek "$1" >/dev/null 2>&1;;
       application/x-sc|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) sc-im "$1";;

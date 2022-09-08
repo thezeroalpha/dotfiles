@@ -1,8 +1,8 @@
 #!/usr/bin/env perl
 # vim: foldmethod=marker
-use 5.006;
 use strict;
 use warnings;
+use 5.006; # checked with `perlver`
 
 use constant EXIT_USER_CANCELLED => 130;
 

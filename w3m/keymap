@@ -13,6 +13,9 @@ keymap w NEXT_WORD
 keymap b PREV_WORD
 keymap G END
 
+keymap C-m GOTO_LINK
+keymap M-i VIEW_IMAGE
+
 # Scrolling
 keymap C-e UP
 keymap C-y DOWN
@@ -81,6 +84,10 @@ keymap ft COMMAND 'SET_OPTION display_link_number=0; RESHAPE; TAB_LINK'
 keymap fo COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; GOTO_LINK'
 keymap fn COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; TAB_LINK'
 
+keymap m MARK
+keymap } NEXT_MARK
+keymap { PREV_MARK
+keymap \" REG_MARK
 # ABORT         Quit at once
 # ACCESSKEY     Pop up accesskey menu
 # ALARM         Set alarm
