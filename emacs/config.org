@@ -1033,10 +1033,10 @@ This lets me jump to any position in Emacs rather quickly, sometimes it's useful
     :custom
     (calendar-week-start-day 1))
 #+end_src
-** DISABLED calfw: graphical calendar
+** calfw: graphical calendar
 Basically provides a way to show the org agenda as a standard GUI calendar app would.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package calfw
     :config
     (use-package calfw-org)
