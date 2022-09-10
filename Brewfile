@@ -17,6 +17,7 @@ tap "keith/formulae"
 tap "makeworld-the-better-one/tap"
 tap "nrlquaker/createzap"
 tap "thezeroalpha/formulae"
+tap "trashhalo/brews"
 tap "tzvetkoff/extras"
 tap "universal-ctags/universal-ctags"
 tap "vitorgalvao/tiny-scripts"
@@ -41,10 +42,11 @@ brew "gmp"
 brew "coreutils"
 brew "bats-core"
 brew "bfg"
-brew "boost"
 brew "mpfr"
 brew "libmpc"
 brew "gcc"
+brew "binwalk"
+brew "boost"
 brew "btop"
 brew "catimg"
 brew "chafa"
@@ -240,6 +242,7 @@ brew "thezeroalpha/formulae/reddio", args: ["HEAD"]
 brew "thezeroalpha/formulae/upd", args: ["HEAD"]
 brew "thezeroalpha/formulae/vbox"
 brew "thezeroalpha/formulae/xe", args: ["HEAD"]
+brew "trashhalo/brews/imgcat"
 brew "tzvetkoff/extras/im2a"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "vitorgalvao/tiny-scripts/cask-repair"
@@ -327,3 +330,6 @@ cask "wireshark"
 cask "xld"
 cask "xquartz"
 cask "zeronet"
+mas "eduVPN", id: 1317704208
+mas "Pocket", id: 568494494
+mas "Trello", id: 1278508951
