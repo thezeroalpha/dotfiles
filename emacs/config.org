@@ -1898,8 +1898,12 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
         "* %U\n%?"
         :target (file+head "%<%Y-%m-%d>.org"
                            "#+title: %<%Y-%m-%d>\n"))))
+    (org-roam-dailies-directory nil "We'll choose this interactively")
 
     :config
+    ; can't use nil because org-roam-ui checks for boundp on this and
+    ; errors if bound but nil.
+    (makunbound 'org-roam-dailies-directory)
     (org-roam-setup)
     (bind-keys :prefix "C-c w"
                :prefix-map za/org-roam-map
@@ -1911,19 +1915,31 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
     (bind-keys :prefix "C-c j"
                :prefix-map za/org-roam-dailies-map
                :prefix-docstring "Org roam dailies"
-               ("s" . za/org-roam-dailies-select)
+               ("s" . za/org-roam-dailies-select-dir)
                ("n" . org-roam-dailies-capture-today)
                ("j" . org-roam-dailies-goto-today)
                ("+" . org-roam-dailies-goto-tomorrow)
                ("-" . org-roam-dailies-goto-yesterday)
                ("g" . org-roam-dailies-goto-date)
                ("." . org-roam-dailies-find-directory))
-    (defun za/org-roam-dailies-select ()
+    (defun za/org-roam-dailies-select-dir ()
       "Select an org-roam-dailies folder."
       (interactive)
       (let* ((choices (cons '(?0 nil) za/org-roam-dailies-dirs))
-             (choice (read-multiple-choice "org-roam-dailies dir" choices)))
-        (setq org-roam-dailies-directory (nth 1 choice))))
+             (choice (nth 1 (read-multiple-choice "org-roam-dailies dir" choices))))
+        (if choice
+            (progn (setq org-roam-dailies-directory choice)
+                   (message "Selected org-roam-dailies directory: %s" org-roam-dailies-directory))
+          (makunbound 'org-roam-dailies-directory))))
+
+    ;; Before doing anything journal-related, check that a journal is
+    ;; selected, or prompt for one.
+    (defun za/org-roam-dailies--capture-check-non-nil-dailies-dir (&rest _)
+      (unless (boundp 'org-roam-dailies-directory)
+        (za/org-roam-dailies-select-dir))
+      (unless (boundp 'org-roam-dailies-directory)
+        (user-error "No org-roam-dailies-directory selected!")))
+    (advice-add #'org-roam-dailies--capture :before #'za/org-roam-dailies--capture-check-non-nil-dailies-dir)
     (require 'org-roam-export))
 #+end_src
 
