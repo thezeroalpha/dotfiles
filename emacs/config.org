@@ -485,6 +485,10 @@ The "(interactive)" means that it can be called from a keybinding or from M-x.
 #+begin_src emacs-lisp
   (bind-key "C-c E" 'za/edit-config-org)
 #+end_src
+** Visible mode
+#+begin_src emacs-lisp
+  (bind-key (kbd "C-c q v") #'visible-mode)
+#+end_src
 * Custom functions
 ** Make region readonly or writable
 #+begin_src emacs-lisp
