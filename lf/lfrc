@@ -298,7 +298,7 @@ cmd rmempty %find .  -type d -empty -depth -delete
 cmd xld %open -a XLD $f
 
 # fzf files
-cmd fuzzy_select $lf -remote "send $id select \"$(fzf)\""
+cmd fuzzy_select $lf -remote "send $id select \"$(fzf --layout reverse)\""
 
 # Show file info with exiftool
 cmd file_info $LESSOPEN='| exiftool %s' LESS='-cRiX' less $f
