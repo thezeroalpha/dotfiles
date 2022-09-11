@@ -1955,6 +1955,7 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
       (unless (boundp 'org-roam-dailies-directory)
         (user-error "No org-roam-dailies-directory selected!")))
     (advice-add #'org-roam-dailies--capture :before #'za/org-roam-dailies--capture-check-non-nil-dailies-dir)
+    (advice-add #'org-roam-dailies-goto-date :before #'za/org-roam-dailies--capture-check-non-nil-dailies-dir)
     (require 'org-roam-export))
 #+end_src
 
