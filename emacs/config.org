@@ -1794,6 +1794,19 @@ This function filters the return value of ~org-md-link~.
           (t linkstr)))
 #+end_src
 
+A wrapper to set the right image link:
+
+#+begin_src emacs-lisp
+  (defun za/org-html--format-image (args)
+    "Modify source image link to work with my Org roam setup"
+    (let ((source (nth 0 args))
+          (_attributes (nth 1 args))
+          (_info (nth 2 args)))
+      (list (replace-regexp-in-string (rx bos "data/") "/org-roam-data/" source)
+            _attributes
+            _info)))
+#+end_src
+
 And here's the custom publish function that adds/removes the necessary advice:
 
 #+begin_src emacs-lisp
@@ -1802,6 +1815,7 @@ And here's the custom publish function that adds/removes the necessary advice:
   functions to generate Zola-compatible markdown."
     (let ((advice '((org-gfm-template :override za/org-md-template-zola)
                     (org-md-link :filter-return za/org-md-link-zola)
+                    (org-html--format-image :filter-args za/org-html--format-image)
                     (org-gfm-table :override org-md--convert-to-html)))) ; Zola uses CommonMark, so doesn't support Markdown tables
 
       (dolist (orig-type-new advice) (apply #'advice-add orig-type-new))
@@ -1834,8 +1848,7 @@ Finally, the list of things we can publish with their respective publishin funct
            :recursive t
            :publishing-function org-publish-attachment)
 
-          ("org-roam" :components ("org-notes" "org-notes-data"))
-          ))
+          ("org-roam" :components ("org-notes" "org-notes-data"))))
 #+end_src
 
 And a function to rsync to my VPS:
