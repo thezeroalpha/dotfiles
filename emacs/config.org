@@ -1715,6 +1715,11 @@ Faces for priorities in agenda:
                              (?D . (:foreground ,(face-foreground 'font-lock-string-face) :slant italic :weight light))))
 #+end_src
 
+And to be able to bulk-set priorities in agenda:
+
+#+begin_src emacs-lisp
+  (setq org-agenda-bulk-custom-functions '((?P (lambda nil (org-agenda-priority 'set)))))
+#+end_src
 *** Energy requirement: how difficult something is
 #+begin_src emacs-lisp
   (add-to-list 'org-global-properties '("Difficulty_ALL" . "low medium high"))
