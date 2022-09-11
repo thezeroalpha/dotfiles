@@ -1902,8 +1902,6 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
         "* %U\n%?"
         :target (file+head "%<%Y-%m-%d>.org"
                            "#+title: %<%Y-%m-%d>\n"))))
-    (org-roam-dailies-directory nil "We'll choose this interactively")
-
     :config
     ; can't use nil because org-roam-ui checks for boundp on this and
     ; errors if bound but nil.
