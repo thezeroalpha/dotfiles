@@ -1256,6 +1256,27 @@ Prism changes the color of text depending on their depth. Makes it easier to see
   (use-package nov)
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+end_src
+** god-mode: reduce the need to hold down modifier keys
+- All commands are assumed to use the control modifier (C-) unless otherwise indicated.
+- g is used to indicate the meta modifier
+- G is used to indicate both the control and meta modifiers
+#+begin_src emacs-lisp
+  (use-package god-mode
+    :bind
+    (("s-<escape>" . god-local-mode)
+     :map god-local-mode-map
+     ("z" . repeat)
+     ("i" . god-local-mode))
+    :hook    (post-command . za/god-mode-update-mode-line)
+    :config
+    (setq za/god-mode-active-modeline-bg "#770085")
+    (setq za/god-mode-inactive-modeline-bg (face-attribute 'mode-line :background))
+    (defun za/god-mode-update-mode-line ()
+      (cond (god-local-mode (set-face-attribute 'mode-line nil
+                                                :background za/god-mode-active-modeline-bg))
+            (t (set-face-attribute 'mode-line nil
+                                   :background za/god-mode-inactive-modeline-bg)))))
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Installation
