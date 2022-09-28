@@ -1269,13 +1269,20 @@ Prism changes the color of text depending on their depth. Makes it easier to see
      ("i" . god-local-mode))
     :hook    (post-command . za/god-mode-update-mode-line)
     :config
-    (setq za/god-mode-active-modeline-bg "#770085")
-    (setq za/god-mode-inactive-modeline-bg (face-attribute 'mode-line :background))
     (defun za/god-mode-update-mode-line ()
-      (cond (god-local-mode (set-face-attribute 'mode-line nil
-                                                :background za/god-mode-active-modeline-bg))
-            (t (set-face-attribute 'mode-line nil
-                                   :background za/god-mode-inactive-modeline-bg)))))
+      "Update the color of the modeline depending on god-mode."
+      (cond (god-local-mode
+             (set-face-attribute 'mode-line nil :background "#770085"))
+            (t
+             (let* ((current-theme (car custom-enabled-themes))
+                     (theme-settings (get current-theme 'theme-settings)))
+                (dolist (theme-setting theme-settings)
+                  (if (and (eq (car theme-setting) 'theme-face)
+                           (eq (cadr theme-setting) 'mode-line))
+                      (let* ((face-def (caar (last theme-setting)))
+                             (properties (car (last face-def)))
+                             (bg (plist-get properties :background)))
+                        (set-face-attribute 'mode-line nil :background bg)))))))))
 #+end_src
 * Mode/language specific packages
 ** Org
