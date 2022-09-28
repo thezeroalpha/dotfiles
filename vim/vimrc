@@ -463,7 +463,7 @@ let g:ale_c_clangformat_options = '-std=gnu99 -Wall'
 let g:ale_c_clangtidy_options = '-std=gnu99 -Wall'
 let g:ale_c_clangtidy_extra_options = '-std=gnu99 -Wall'
 let g:ale_perl_perlcritic_options = '--brutal'
-
+let g:ale_python_flake8_options = '--max-line-length=130'
 call ale#Set('tex_textidote_executable', 'textidote')
 call ale#Set('tex_textidote_options', '--no-color --output singleline')
 " TODO get language from spell spelllang
