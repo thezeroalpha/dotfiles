@@ -1054,7 +1054,10 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
     :quelpa (vanish :fetcher github :repo "thezeroalpha/vanish.el" :branch "develop")
     :ensure nil
     :bind (:map vanish-mode-map
-                ("C-c q h" . vanish-toggle)))
+                ("C-c q h h" . vanish-hide-dwim)
+                ("C-c q h u r" . vanish-show-all-regions)
+                ("C-c q h u e" . vanish-elt-unhide)
+                ("C-c q h u u" . vanish-show-all)))
 #+end_src
 ** magit
 #+begin_src emacs-lisp
