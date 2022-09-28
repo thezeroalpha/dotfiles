@@ -1945,9 +1945,10 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
         :target (file+head "%<%Y-%m-%d>.org"
                            "#+title: %<%Y-%m-%d>\n"))))
     :config
-    ; can't use nil because org-roam-ui checks for boundp on this and
-    ; errors if bound but nil.
-    (makunbound 'org-roam-dailies-directory)
+                                          ; can't use nil because org-roam-ui checks for boundp on this and
+                                          ; errors if bound but nil.
+    (with-eval-after-load 'org-roam-dailies
+      (makunbound 'org-roam-dailies-directory))
     (org-roam-setup)
     (bind-keys :prefix "C-c w"
                :prefix-map za/org-roam-map
@@ -1963,9 +1964,26 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
                ("n" . org-roam-dailies-capture-today)
                ("j" . org-roam-dailies-goto-today)
                ("+" . org-roam-dailies-goto-tomorrow)
+               (">" . org-roam-dailies-goto-next-note)
                ("-" . org-roam-dailies-goto-yesterday)
+               ("<" . org-roam-dailies-goto-previous-note)
                ("g" . org-roam-dailies-goto-date)
                ("." . org-roam-dailies-find-directory))
+
+    (defun za/org-roam-dailies--daily-note-p (&optional file)
+      "Replacement of default function. Return t if FILE is an Org-roam daily-note, nil otherwise.
+  If FILE is not specified, use the current buffer's file-path."
+      (when-let ((path (expand-file-name
+                        (or file
+                            (buffer-file-name (buffer-base-buffer)))))
+                 (directory (expand-file-name org-roam-dailies-directory org-roam-directory)))
+        (setq path (expand-file-name path))
+        (save-match-data
+          (and
+           ;; (org-roam-file-p path) ; don't want this, dailies might not be in org-roam path
+           (org-roam-descendant-of-p path directory)))))
+    (advice-add #'org-roam-dailies--daily-note-p :override #'za/org-roam-dailies--daily-note-p)
+
     (defun za/org-roam-dailies-select-dir ()
       "Select an org-roam-dailies folder."
       (interactive)
@@ -1976,6 +1994,11 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
                    (message "Selected org-roam-dailies directory: %s" org-roam-dailies-directory))
           (makunbound 'org-roam-dailies-directory))))
 
+    (defun za/org-roam-dailies-calendar-mark-entries-p ()
+      "Only mark dailies entries in calendar if a dailies directory is set."
+      (boundp 'org-roam-dailies-directory))
+    (advice-add #'org-roam-dailies-calendar-mark-entries :before-while #'za/org-roam-dailies-calendar-mark-entries-p)
+
     ;; Before doing anything journal-related, check that a journal is
     ;; selected, or prompt for one.
     (defun za/org-roam-dailies--capture-check-non-nil-dailies-dir (&rest _)
@@ -1983,6 +2006,7 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
         (za/org-roam-dailies-select-dir))
       (unless (boundp 'org-roam-dailies-directory)
         (user-error "No org-roam-dailies-directory selected!")))
+
     (advice-add #'org-roam-dailies--capture :before #'za/org-roam-dailies--capture-check-non-nil-dailies-dir)
     (advice-add #'org-roam-dailies-goto-date :before #'za/org-roam-dailies--capture-check-non-nil-dailies-dir)
     (require 'org-roam-export))
