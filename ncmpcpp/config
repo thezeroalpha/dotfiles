@@ -20,13 +20,24 @@ visualizer_type = "spectrum"
 visualizer_spectrum_smooth_look = yes
 visualizer_autoscale = yes
 
-song_list_format = {$4%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
+# How songs are listed...
+# ...in a playlist
+playlist_display_mode = columns
+playlist_editor_display_mode = columns
+song_columns_list_format = (20)[]{A|a} (5)[green]{NE} (40)[white]{t|f:Title} (20)[cyan]{b} (10)[magenta]{g:Genre} (5)[magenta]{l}
+
+# ...in the currently playing line
 song_status_format = $b{{$8"%t"}} $3by {$4%a{ $3in $7%b{ (%y)}} $3}|{$8%f}
+
+# ...in library view
+browser_display_mode = columns
 song_library_format = {%t}|{%f}
-# song_columns_list_format = (20)[]{A|a} (6f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
-song_columns_list_format = (20)[]{A|a} (6f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (20f)[magenta]{g:Genre} (7f)[magenta]{l}
+
+user_interface = alternative
 alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
 alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($4%y$9)}{ - $7%g$9}}|{%D}
+
+search_engine_display_mode = columns
 
 # Here's how colors work:
 # start $(fg_bg), end $(end)
@@ -40,10 +51,6 @@ current_item_suffix = $(end)
 current_item_inactive_column_prefix = $(blue)$b$u
 current_item_inactive_column_suffix = $/u$/b$(end)
 
-playlist_display_mode = columns
-playlist_editor_display_mode = columns
-browser_display_mode = columns
-search_engine_display_mode = columns
 
 ## Note: You can choose default search mode for search engine. Available modes
 ## are:
@@ -78,4 +85,3 @@ progressbar_elapsed_color = blue:b
 statusbar_color = red
 statusbar_time_color = cyan:b
 colors_enabled = "yes"
-user_interface = "alternative"
