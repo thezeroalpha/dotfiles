@@ -139,6 +139,35 @@ unless the app is in the background. [[https://github.com/julienXX/terminal-noti
                                 "-ignoreDnD"
                                 "-activate" "org.gnu.Emacs")))
 #+end_src
+* Custom notification functions
+#+begin_src emacs-lisp
+  (defun za/notify (title message)
+    "Show notification with TITLE and MESSAGE."
+    (ignore-errors (require 'notifications))
+    (cond ((fboundp 'ns-do-applescript)
+           (ns-do-applescript
+            (format "display notification \"%s\" with title \"%s\""
+                    (replace-regexp-in-string "\"" "#" message)
+                    (replace-regexp-in-string "\"" "#" title))))
+          (t (error "No notification handler defined!"))))
+
+  (defun za/send-notification-interactivity-required (&rest _)
+    "Notify that a function needs action."
+    (za/notify "Interactivity required" "A function requires interactivity."))
+
+  (defun za/notify-on-interactivity (func &rest r)
+    "Send a notification whenever FUNC requires interactivity.
+  Used as :around advice, calling FUNC with arguments R."
+    (advice-add #'y-or-n-p :before #'za/send-notification-interactivity-required)
+    (advice-add #'yes-or-no-p :before #'za/send-notification-interactivity-required)
+    (advice-add #'error :before #'za/send-notification-interactivity-required)
+    (advice-add #'user-error :before #'za/send-notification-interactivity-required)
+    (with-demoted-errors (format "Error in %s: %%s" func) (apply func r))
+    (advice-remove #'y-or-n-p #'za/send-notification-interactivity-required)
+    (advice-remove #'yes-or-no-p #'za/send-notification-interactivity-required)
+    (advice-remove #'error #'za/send-notification-interactivity-required)
+    (advice-remove #'user-error #'za/send-notification-interactivity-required))
+#+end_src
 
 * Editing
 ** Overwrite selection on typing
@@ -1925,7 +1954,9 @@ This way, I can just check my calendar.
     (org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
     (org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
     (org-caldav-exclude-tags '("HABIT")
-                             "I don't want to export habits, because those will just clutter up my calendar. The calendar is supposed to be for one-off stuff, or rarely repeating stuff. Yes, I have to manually add the HABIT tag to every habit. Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet."))
+                             "I don't want to export habits, because those will just clutter up my calendar. The calendar is supposed to be for one-off stuff, or rarely repeating stuff. Yes, I have to manually add the HABIT tag to every habit. Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.")
+    :config
+    (advice-add #'org-caldav-sync :around #'za/notify-on-interactivity))
 #+end_src
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
