@@ -319,7 +319,12 @@ Use hippie expand instead of dabbrev-expand:
 It's more useful for me to be able to delete up to a character instead of to and including a character:
 
 #+begin_src emacs-lisp
-  (bind-key "M-z" #'zap-up-to-char)
+  (defun za/zap-up-to-char-icase ()
+    "Ignore case for zap-up-to-char"
+    (interactive)
+    (let ((case-fold-search nil))
+      (call-interactively #'zap-up-to-char)))
+  (bind-key "M-z" #'za/zap-up-to-char-icase)
 #+end_src
 
 ** Forward-word and forward-to-word
