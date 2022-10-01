@@ -1400,26 +1400,27 @@ Install Org and require additional components that I use.
 *** Agenda & GTD
 **** Agenda mode settings
 #+begin_src emacs-lisp
-  (use-package org-agenda
-    :ensure org
-    :bind (:map org-agenda-mode-map
-                ("C-c TAB" . za/org-agenda-goto-narrowed-subtree))
-    :custom
-    (org-agenda-files (list za/org-life-main
-                            za/org-life-inbox
-                            za/org-life-tickler))
-    (org-agenda-text-search-extra-files
-     (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
-     "I want to search all Org files in the life directory")
+    (use-package org-agenda
+      :ensure org
+      :bind (:map org-agenda-mode-map
+                  ("C-c TAB" . za/org-agenda-goto-narrowed-subtree))
+      :custom
+      (org-agenda-files (list za/org-life-main
+                              za/org-life-inbox
+                              za/org-life-tickler
+                              za/org-life-braindead))
+      (org-agenda-text-search-extra-files
+       (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
+       "I want to search all Org files in the life directory")
 
-    :config
-    (defun za/org-agenda-goto-narrowed-subtree ()
-      "Jump to current agenda item and narrow to its subtree."
-      (interactive)
-      (delete-other-windows)
-      (org-agenda-goto)
-      (org-narrow-to-subtree)
-      (other-window 1)))
+      :config
+      (defun za/org-agenda-goto-narrowed-subtree ()
+        "Jump to current agenda item and narrow to its subtree."
+        (interactive)
+        (delete-other-windows)
+        (org-agenda-goto)
+        (org-narrow-to-subtree)
+        (other-window 1)))
 
 #+end_src
 
@@ -1441,6 +1442,7 @@ Convenience functions to make opening the main file faster:
   (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
   (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
   (defun gtd-tickler () "GTD: tickler" (interactive) (find-file za/org-life-tickler))
+  (defun gtd-braindead () "GTD: braindead" (interactive) (find-file za/org-life-braindead))
 #+end_src
 
 Bind keys to those functions:
@@ -1458,21 +1460,22 @@ Bind keys to those functions:
 
 *** Refiling & archiving
 #+begin_src emacs-lisp
-  (use-package org-refile
-    :ensure org
-    :custom
-    (org-refile-targets `((,za/org-life-main :maxlevel . 3)
-                          (,za/org-life-someday :level . 1)
-                          (,za/org-life-tickler :maxlevel . 2))
-                        "Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining)")
-    (org-archive-location (concat za/org-life-archive "::datetree/")
-                          "I want to archive to a specific file, in a date tree")
-    (org-refile-use-outline-path 'file
-                                 "Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself")
-    (org-outline-path-complete-in-steps nil
-                                        "Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy)")
-    (org-refile-allow-creating-parent-nodes 'confirm
-                                            "Allow me to tack new heading names onto the end of my outline path, and if I am asking to create new ones, make me confirm it"))
+    (use-package org-refile
+      :ensure org
+      :custom
+      (org-refile-targets `((,za/org-life-main :maxlevel . 3)
+                            (,za/org-life-someday :level . 1)
+                            (,za/org-life-tickler :maxlevel . 2)
+                            (,za/org-life-braindead :maxlevel . 1))
+                          "Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining)")
+      (org-archive-location (concat za/org-life-archive "::datetree/")
+                            "I want to archive to a specific file, in a date tree")
+      (org-refile-use-outline-path 'file
+                                   "Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself")
+      (org-outline-path-complete-in-steps nil
+                                          "Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy)")
+      (org-refile-allow-creating-parent-nodes 'confirm
+                                              "Allow me to tack new heading names onto the end of my outline path, and if I am asking to create new ones, make me confirm it"))
 #+end_src
 
 *** Quick capture
@@ -1500,11 +1503,12 @@ Apart from the logging-on-done configured [[*Logging][below]], I also want to lo
 In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
 
 #+begin_src emacs-lisp
-  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)")))
+  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "BRAINDEAD(b)" "|" "DONE(d)" "CANCELLED(c)")))
                         '(org-todo-keyword-faces '(("TODO" . org-todo)
                                                    ("NEXT" . org-todo)
                                                    ("WAITING" . org-todo)
                                                    ("STARTED" . org-todo)
+                                                   ("BRAINDEAD" . org-todo)
                                                    ("DONE" . org-done)
                                                    ("CANCELLED" . org-done))))
 #+end_src
