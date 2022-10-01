@@ -1878,7 +1878,7 @@ And here's the custom publish function that adds/removes the necessary advice:
   (defun za/org-gfm-publish-to-gfm-zola (plist filename pub-dir)
     "Run `org-gfm-publish-to-gfm`, advising the necessary
   functions to generate Zola-compatible markdown."
-    (let ((advice '((org-gfm-template :override za/org-md-template-zola)
+    (let ((advice '((org-gfm-inner-template :override za/org-md-template-zola)
                     (org-md-link :filter-return za/org-md-link-zola)
                     (org-html--format-image :filter-args za/org-html--format-image)
                     (org-gfm-table :override org-md--convert-to-html)))) ; Zola uses CommonMark, so doesn't support Markdown tables
