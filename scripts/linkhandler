@@ -5,6 +5,8 @@ use warnings;
 use 5.006; # checked with `perlver`
 
 use constant EXIT_USER_CANCELLED => 130;
+use constant MPD_HOST => 'localhost';
+use constant MPD_PORT => 6600;
 
 if ( @ARGV != 1 ) {
   die 'Link necessary.';
@@ -166,8 +168,15 @@ sub play_audio_mpd {
         system(qq(
           title=\$(youtube-dl --ignore-config --get-title '$song' 2>/dev/null);
           printf "%b\n" "\$title\t$song" >> "$HOME/.cache/mpd/linkarchive";
-          mpc add "\$(youtube-dl -x -g "$song")";
-          done));
+
+          send_mpd_command() {
+            (printf '%s\n' "\$1"; sleep 1) | telnet ${\MPD_HOST} ${\MPD_PORT} 2>/dev/null
+          }
+
+          url="\$(youtube-dl -x -g "$song")"
+          res="\$(send_mpd_command "addid \$url")"
+          song_id="\$(printf '%s' "\$res" | awk -F': ' '/^Id: / { print \$2 }')"
+          send_mpd_command "\$(printf 'addtagid %s Artist "%s"\naddtagid %s Title "%s"' "\$song_id" "Youtube" "\$song_id" "\$title")" >/dev/null));
       }
       close($playlist) or die "Could not close handle.";
 
@@ -176,8 +185,16 @@ sub play_audio_mpd {
     else {
       system(qq([ -d "$HOME/.cache/mpd" ] || mkdir -p "$HOME/.cache/mpd";
         title=\$(youtube-dl --ignore-config --get-title "$link" 2>/dev/null);
-        printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";));
-      system(qq(mpc add "\$(youtube-dl -x -g '$link')"));
+        printf "%b\n" "\$title\t$link" >> "$HOME/.cache/mpd/linkarchive";
+
+        send_mpd_command() {
+          (printf '%s\n' "\$1"; sleep 1) | telnet ${\MPD_HOST} ${\MPD_PORT} 2>/dev/null
+        }
+
+        url="\$(youtube-dl -x -g "$link")"
+        res="\$(send_mpd_command "addid \$url")"
+        song_id="\$(printf '%s' "\$res" | awk -F': ' '/^Id: / { print \$2 }')"
+        send_mpd_command "\$(printf 'addtagid %s Artist "%s"\naddtagid %s Title "%s"' "\$song_id" "Youtube" "\$song_id" "\$title")" >/dev/null));
     };
   }
 }
