@@ -2186,7 +2186,9 @@ A better replacement for DocView:
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :magic ("%PDF" . pdf-view-mode)
+    :init
+    (pdf-tools-install 'noquery)
+
     :custom
     (pdf-annot-default-annotation-properties '((t
                                                 (label . "Alex Balgavy"))
@@ -2213,8 +2215,6 @@ A better replacement for DocView:
     (pdf-view-mode . (lambda () (display-line-numbers-mode 0)))
 
     :config
-    (pdf-tools-install :no-query)
-
     ;; The arrow tooltip does not show properly when jumping to a
     ;; location. Maybe this is a Mac-only thing. See here:
     ;; https://github.com/politza/pdf-tools/issues/145
