@@ -58,7 +58,8 @@ bind generic : tag-prefix
 
 set date_format = "%d/%m"
 
-set index_format="%2C %Z %?X?A& ? %?[1y?%[%b %d]&%[%F]? %-15.15F %s (%-4.4c) %> [%g]"
+set index_format="%2C %Z %?X?A& ? %?[1y?%[%b %d %H:%M]&%[%F %H:%M]? %-15.15F %s (%-4.4c) %> [%g]"
+set pager_format="-%Z- %C/%m: %-20.20n   %?[1y?%[%b %d %H:%M]&%[%F %H:%M]?   %s%*  -- (%P)"
 # this is:
 #   current message number (width 2)
 #   message status flags
