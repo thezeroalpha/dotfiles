@@ -160,12 +160,10 @@ unless the app is in the background. [[https://github.com/julienXX/terminal-noti
   Used as :around advice, calling FUNC with arguments R."
     (advice-add #'y-or-n-p :before #'za/send-notification-interactivity-required)
     (advice-add #'yes-or-no-p :before #'za/send-notification-interactivity-required)
-    (advice-add #'error :before #'za/send-notification-interactivity-required)
     (advice-add #'user-error :before #'za/send-notification-interactivity-required)
     (with-demoted-errors (format "Error in %s: %%s" func) (apply func r))
     (advice-remove #'y-or-n-p #'za/send-notification-interactivity-required)
     (advice-remove #'yes-or-no-p #'za/send-notification-interactivity-required)
-    (advice-remove #'error #'za/send-notification-interactivity-required)
     (advice-remove #'user-error #'za/send-notification-interactivity-required))
 #+end_src
 
@@ -1297,7 +1295,7 @@ Prism changes the color of text depending on their depth. Makes it easier to see
 #+begin_src emacs-lisp
   (use-package god-mode
     :bind
-    (("s-<escape>" . god-local-mode)
+    (("s-<escape>" . god-mode-all)
      :map god-local-mode-map
      ("z" . repeat)
      ("i" . god-local-mode))
@@ -1407,8 +1405,7 @@ Install Org and require additional components that I use.
       :custom
       (org-agenda-files (list za/org-life-main
                               za/org-life-inbox
-                              za/org-life-tickler
-                              za/org-life-braindead))
+                              za/org-life-tickler))
       (org-agenda-text-search-extra-files
        (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
        "I want to search all Org files in the life directory")
@@ -1442,7 +1439,6 @@ Convenience functions to make opening the main file faster:
   (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
   (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
   (defun gtd-tickler () "GTD: tickler" (interactive) (find-file za/org-life-tickler))
-  (defun gtd-braindead () "GTD: braindead" (interactive) (find-file za/org-life-braindead))
 #+end_src
 
 Bind keys to those functions:
@@ -1460,22 +1456,21 @@ Bind keys to those functions:
 
 *** Refiling & archiving
 #+begin_src emacs-lisp
-    (use-package org-refile
-      :ensure org
-      :custom
-      (org-refile-targets `((,za/org-life-main :maxlevel . 3)
-                            (,za/org-life-someday :level . 1)
-                            (,za/org-life-tickler :maxlevel . 2)
-                            (,za/org-life-braindead :maxlevel . 1))
-                          "Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining)")
-      (org-archive-location (concat za/org-life-archive "::datetree/")
-                            "I want to archive to a specific file, in a date tree")
-      (org-refile-use-outline-path 'file
-                                   "Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself")
-      (org-outline-path-complete-in-steps nil
-                                          "Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy)")
-      (org-refile-allow-creating-parent-nodes 'confirm
-                                              "Allow me to tack new heading names onto the end of my outline path, and if I am asking to create new ones, make me confirm it"))
+  (use-package org-refile
+    :ensure org
+    :custom
+    (org-refile-targets `((,za/org-life-main :maxlevel . 3)
+                          (,za/org-life-someday :level . 1)
+                          (,za/org-life-tickler :maxlevel . 3))
+                        "Where I want to be able to move subtrees (doesn't include inbox because I never refile to that, and the archive has its own keybining)")
+    (org-archive-location (concat za/org-life-archive "::datetree/")
+                          "I want to archive to a specific file, in a date tree")
+    (org-refile-use-outline-path 'file
+                                 "Include the destination file as an element in the path to a heading, and to use the full paths as completion targets rather than just the heading text itself")
+    (org-outline-path-complete-in-steps nil
+                                        "Tell Org that I don’t want to complete in steps; I want Org to generate all of the possible completions and present them at once (necessary for Helm/Ivy)")
+    (org-refile-allow-creating-parent-nodes 'confirm
+                                            "Allow me to tack new heading names onto the end of my outline path, and if I am asking to create new ones, make me confirm it"))
 #+end_src
 
 *** Quick capture
@@ -1493,7 +1488,7 @@ Templates for quick capture:
                               "* TODO %i%?")
 
                              ("s" "Save for read/watch/listen" entry
-                              (file+headline ,za/org-life-tickler "Read/watch/listen")
+                              (file+headline ,za/org-life-someday "Read/watch/listen")
                               "* TODO %?[[%^{link}][%^{description}]] %^G"))))
 #+end_src
 
@@ -1503,12 +1498,11 @@ Apart from the logging-on-done configured [[*Logging][below]], I also want to lo
 In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
 
 #+begin_src emacs-lisp
-  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "BRAINDEAD(b)" "|" "DONE(d)" "CANCELLED(c)")))
+  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)")))
                         '(org-todo-keyword-faces '(("TODO" . org-todo)
                                                    ("NEXT" . org-todo)
                                                    ("WAITING" . org-todo)
                                                    ("STARTED" . org-todo)
-                                                   ("BRAINDEAD" . org-todo)
                                                    ("DONE" . org-done)
                                                    ("CANCELLED" . org-done))))
 #+end_src
@@ -2070,7 +2064,7 @@ Drag-and-drop images to Emacs Org mode.
   (use-package org-download
     :custom
     (org-download-method 'attach)
-    (org-download-backend 'curl))
+    (org-download-backend "curl"))
 #+end_src
 
 *** org-sticky-header
@@ -2273,45 +2267,47 @@ Like virtualenvwrapper.sh, but for Emacs.
     :custom
     (ledger-clear-whole-transactions t)
     (ledger-reconcile-default-commodity "eur")
-    (ledger-amount-regex
-     (rx (group (or (= 2 " ") ?\t (seq " " ?\t)))
-         (zero-or-more (any " " ?\t))
-         (opt "-")
-         (opt "(")
-         (one-or-more (opt (group (one-or-more (any "A-Z" "$(_£€₹")) (zero-or-more " ")))
-                      (group (opt "-") (or (one-or-more (any "0-9")) (+\? (any "0-9" ",."))))
-                      (opt (group (any ",.") (one-or-more (any "0-9" ")"))))
-                      (opt (group (zero-or-more " ") (one-or-more (any "\"_£€₹" word))))
-                      (opt (zero-or-more (any "	 ")) (any "*+/-") (zero-or-more (any "	 "))))
-         (opt ")")
-         (opt (group (zero-or-more (any "	 "))
-                     (any "=@{")
-                     (opt "@")
-                     (+? (not (any ?\xA ";")))))
-         (opt (group (or (seq (one-or-more (any "	 ")) ";" (+\? nonl))
-                         (zero-or-more (any "	 ")))))
-         eol))
     (ledger-reports
      '(("budget-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses")
        ("budget-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" budget ^expenses")
-       ("expenses-this-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses --budget")
-       ("expenses-last-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses --budget")
-       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
-       ("expenses-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur")
-       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur")
-       ("expenses-vs-income-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur")
-       ("expenses-vs-income-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"last month\" --period-sort \"(amount)\" bal ^expenses ^income -X eur")
-       ("bal-assets-czk" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X czk")
-       ("bal-assets" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities")
-       ("bal" "%(binary) -f %(ledger-file) --start-of-week=1 bal -B")
-       ("bal-assets-eur" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X eur")
-       ("monthly-balance-abn-checking" "%(binary) -f %(ledger-file) --start-of-week=1 --effective reg --monthly 'Assets:ABN Checking'")
-       ("monthly-expenses" "%(binary) -f %(ledger-file) --monthly register ^expenses --collapse -X eur")
-       ("reg" "%(binary) -f %(ledger-file) --start-of-week=1 reg")
-       ("payee" "%(binary) -f %(ledger-file) --start-of-week=1 reg @%(payee)")
-       ("account" "%(binary) -f %(ledger-file) --start-of-week=1 reg %(account)")
-       ("reg-org-table" "%(binary) -f %(ledger-file) csv --csv-format '|%(scrub(date))|%(scrub(display_account))|%(scrub(payee))|%(scrub(display_amount))|%(scrub(display_total))|\n' %(account)")
-       ("degiro-changes" "%(binary) -f %(ledger-file) --start-of-week=1 reg Investments:Degiro -X eur"))))
+       ("expenses-this-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses --budget -R")
+       ("expenses-last-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses --budget -R")
+       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur -R")
+       ("expenses-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur -R")
+       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur -R")
+       ("expenses-vs-income-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur -R")
+       ("expenses-vs-income-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"last month\" --period-sort \"(amount)\" bal ^expenses ^income -X eur -R")
+       ("bal-assets-czk" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X czk -R")
+       ("bal-assets" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -R")
+       ("bal" "%(binary) -f %(ledger-file) --start-of-week=1 bal -B -R")
+       ("bal-assets-eur" "%(binary) -f %(ledger-file) --start-of-week=1 bal Assets Liabilities -X eur -R")
+       ("monthly-balance-abn-checking" "%(binary) -f %(ledger-file) --start-of-week=1 --effective reg --monthly 'Assets:ABN Checking' -R")
+       ("monthly-expenses" "%(binary) -f %(ledger-file) --monthly register ^expenses --collapse -X eur -R")
+       ("reg" "%(binary) -f %(ledger-file) --start-of-week=1 reg -R")
+       ("payee" "%(binary) -f %(ledger-file) --start-of-week=1 reg @%(payee) -R")
+       ("account" "%(binary) -f %(ledger-file) --start-of-week=1 reg %(account) -R")
+       ("reg-org-table" "%(binary) -f %(ledger-file) csv --csv-format '|%(scrub(date))|%(scrub(display_account))|%(scrub(payee))|%(scrub(display_amount))|%(scrub(display_total))|\n' %(account) -R")
+       ("degiro-changes" "%(binary) -f %(ledger-file) --start-of-week=1 reg Investments:Degiro -X eur -R")))
+    :config
+    (with-eval-after-load 'ledger-mode
+      (setq ledger-amount-regex
+            (rx (group (or (= 2 " ") ?\t (seq " " ?\t)))
+                (zero-or-more (any " " ?\t))
+                (opt "-")
+                (opt "(")
+                (one-or-more (opt (group (one-or-more (any "A-Z" "$(_£€₹")) (zero-or-more " ")))
+                             (group (opt "-") (or (one-or-more (any "0-9")) (+\? (any "0-9" ",."))))
+                             (opt (group (any ",.") (one-or-more (any "0-9" ")"))))
+                             (opt (group (zero-or-more " ") (one-or-more (any "\"_£€₹" word))))
+                             (opt (zero-or-more (any "	 ")) (any "*+/-") (zero-or-more (any "	 "))))
+                (opt ")")
+                (opt (group (zero-or-more (any "	 "))
+                            (any "=@{")
+                            (opt "@")
+                            (+? (not (any ?\xA ";")))))
+                (opt (group (or (seq (one-or-more (any "	 ")) ";" (+\? nonl))
+                                (zero-or-more (any "	 ")))))
+                eol))))
 #+end_src
 
 org-capture lets me add transactions from anywhere in Emacs:
@@ -2518,6 +2514,13 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
     :config
     (require 'slovak-qwerty))
 #+end_src
+* Shortdoc
+Set a better keybinding (I'm never gonna use ~view-hello-file~ anyways):
+
+#+begin_src emacs-lisp
+  (bind-key "C-h h" #'shortdoc-display-group)
+#+end_src
+
 * References
 Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
