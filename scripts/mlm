@@ -15,7 +15,6 @@ MPD_LOGFILE="$XDG_DATA_HOME"/mpd/mpd.log
 [ -f "$MPD_LOGFILE" ] || die "$MPD_LOGFILE does not exist or is not a readable file."
 [ -z "$MUSIC_DIR" ] && die 'MUSIC_DIR not set.'
 [ -d "$MUSIC_DIR" ] || die "$MUSIC_DIR does not exist or is not a readable directory."
-RECENTLY_ADDED_PLAYLIST="$MUSIC_DIR"/recently-added.m3u
 
 import() {
   if [ -n "$(find . -mindepth 1 -maxdepth 1 -name '*.mp3')" ]; then
@@ -80,17 +79,19 @@ PLAYLIST_END
   printf "Done!\n"
 }
 
-verify_recently_added() {
-  lns="$(wc -l < "$RECENTLY_ADDED_PLAYLIST" | tr -d '[:space:]')"
+verify_playlist() {
+  playlist_path="$MUSIC_DIR/$1"
+  [ -f "$playlist_path" ] || die "Playlist $playlist_path not found."
+
+  lns="$(wc -l < "$playlist_path" | tr -d '[:space:]')"
   ctr=1;
   while read -r f; do
     printf '%s' "$f" | grep '^#' >/dev/null 2>&1 && { ctr=$((ctr+1)); continue; }
     printf "\r%d/%d" $ctr "$lns"
     stat "$MUSIC_DIR/$f" >/dev/null 2>&1 || printf "\t%s\n" "$f";
     ctr=$((ctr+1));
-  done < "$RECENTLY_ADDED_PLAYLIST"
+  done < "$playlist_path"
 }
-
 
 embed_lyrics() {
   LYRICS_DIR="$HOME/.local/share/lyrics"
@@ -135,8 +136,9 @@ organize_files() {
 
 case "$1" in
   import) import;;
-  check-recent) verify_recently_added;;
+  check-recent) verify_playlist 'recently-added.m3u';;
+  check-playlist) verify_playlist "$2";;
   embed-lyrics) embed_lyrics;;
   organise|organize) organize_files "$2" "$3";;
-  *) printf "Supported commands: import, check-recent, embed-lyrics, organise\n"; exit 0;;
+  *) printf "Supported commands: import, check-recent, check-playlist, embed-lyrics, organise\n"; exit 0;;
 esac
