@@ -1842,8 +1842,17 @@ The default Markdown backend doesn't provide that, so need to customize it by ad
     "Markdown template compatible with Zola (generates the necessary front matter from CONTENTS and INFO)."
     (let ((title (org-md-plain-text (org-element-interpret-data (plist-get info :title)) info)))
       (concat "+++\n"
-              (format "title = \"%s\"" (string-replace "\"" "'" title))
-              "\n+++\n"
+              (format "title = \"%s\"\n" (string-replace "\"" "'" title))
+
+              ;; If the note contains a #+MATH: t
+              (when (org-element-map
+                        (plist-get info :parse-tree)
+                        'keyword
+                      (lambda (k) (when (equal (org-element-property :key k) "MATH")
+                                    (org-element-property :value k))))
+                 "template = \"page-math.html\"\n")
+
+              "+++\n"
               (format "# %s\n" title)
               contents)))
 #+end_src
