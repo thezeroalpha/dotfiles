@@ -2510,9 +2510,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 ** Quail
 #+begin_src emacs-lisp
   (use-package quail
-    :ensure nil ; provided by Emacs
-    :config
-    (require 'slovak-qwerty))
+    :ensure nil) ; provided by Emacs
 #+end_src
 * Shortdoc
 Set a better keybinding (I'm never gonna use ~view-hello-file~ anyways):
