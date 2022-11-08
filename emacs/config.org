@@ -1037,12 +1037,14 @@ Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --wit
        '((left-fringe . 8)
          (right-fringe . 8)))
       (ivy-posframe-border-width 3)
+      (ivy-truncate-lines nil) ;; otherwise the cursor gets hidden by long lines in posframe
       :custom-face
       (ivy-posframe-border ((t (:inherit mode-line-inactive))))
       :config
       (ivy-posframe-mode 1)))
 #+end_src
 
+[[https://github.com/tumashu/ivy-posframe/issues/123][See here]] for cursor going offscreen in the posframe. Currently 'solved' with ~ivy-truncate-lines~ nil.
 ** company: completion mechanism
 #+begin_src emacs-lisp
   (use-package company)
