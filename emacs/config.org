@@ -1521,47 +1521,57 @@ Apart from the logging-on-done configured [[*Logging][below]], I also want to lo
 In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
 
 #+begin_src emacs-lisp
-  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)")))
+  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "PROJ(p)" "|" "DONE(d)" "CANCELLED(c)")))
                         '(org-todo-keyword-faces '(("TODO" . org-todo)
                                                    ("NEXT" . org-todo)
                                                    ("WAITING" . org-todo)
                                                    ("STARTED" . org-todo)
+                                                   ("PROJ" . org-todo)
                                                    ("DONE" . org-done)
                                                    ("CANCELLED" . org-done))))
 #+end_src
 
-I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).
++I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).+
+In the end, I want NEXT items that are part of a project to be shown as such (so inherit that PROJECT tag), but projects themselves will have a PROJ todo keyword.
+This function converts an item to a project.
 
 #+begin_src emacs-lisp
   (defun za/mark-as-project ()
     "This function makes sure that the current heading has
       (1) the tag PROJECT
-      (2) the property COOKIE_DATA set to \"todo recursive\"
-      (3) a leading progress indicator"
+      (2) the todo keyword PROJ
+      (3) the property COOKIE_DATA set to \"todo recursive\"
+      (4) a progress indicator"
     (interactive)
-    (org-set-property "TODO" "")
-    (org-toggle-tag "PROJECT" 'on)
-    (org-set-property "COOKIE_DATA" "todo recursive")
     (org-back-to-heading t)
     (forward-whitespace 1)
     (insert "[/] ")
+    (org-set-property "TODO" "PROJ")
+    (org-toggle-tag "PROJECT" 'on)
+    (org-set-property "COOKIE_DATA" "todo recursive")
     (org-update-statistics-cookies nil))
 #+end_src
 
-Only the top-level project headlines should be tagged as projects, so disable inheritance of that tag:
+And a keybinding for it:
 
 #+begin_src emacs-lisp
-  (custom-set-variables '(org-tags-exclude-from-inheritance '("PROJECT")))
+  (bind-key "C-c g p" #'za/mark-as-project 'org-mode-map)
+#+end_src
+
+Want all tags to be inherited:
+
+#+begin_src emacs-lisp
+  (custom-set-variables '(org-tags-exclude-from-inheritance nil))
 #+end_src
 
 Define a function to skip items if they're part of a project (i.e. one of their parents has a "PROJECT" tag).
-The problem is, the "PROJECT" tag isn't inherited. So, we temporarily disable excluding from inheritance, just for the ~org-get-tags~ call. Then check if "PROJECT" is one of the tags.
++The problem is, the "PROJECT" tag isn't inherited. So, we temporarily disable excluding from inheritance, just for the ~org-get-tags~ call. Then check if "PROJECT" is one of the tags.+ That tag is now inherited.
 
 #+begin_src emacs-lisp
   (defun za/skip-if-in-project ()
     "Skip items that are part of a project"
     (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-          (item-tags (let ((org-tags-exclude-from-inheritance nil)) (org-get-tags))))
+          (item-tags (org-get-tags)))
       (if (member "PROJECT" item-tags)
           subtree-end
         nil)))
@@ -1657,9 +1667,10 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
             (todo "NEXT" ((org-agenda-overriding-header "To do:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))))
 
           ("p" "Projects"
-           ((tags "PROJECT" ((org-agenda-overriding-header "Projects:")
-                             (org-agenda-prefix-format '((tags . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
-                             (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
+           ((todo "PROJ" ((org-agenda-overriding-header "Projects:")
+                          (org-agenda-prefix-format '((todo . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
+                          (org-agenda-dim-blocked-tasks nil)
+                          (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
 
           ("f" "Finished tasks that aren't in a project"
            ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
