@@ -1791,9 +1791,60 @@ Fix column alignment in agenda.
           (insert timestamp
                   "--"
                   (org-time-stamp '(16)))
-          (org-evaluate-time-range)))))
+          (s-trim (org-evaluate-time-range))))))
 #+end_src
 
+Also a method to add overlays with that timestamp:
+
+#+begin_src emacs-lisp
+      (defvar-local za/org-timestamp-overlays--list nil "Buffer-local list of overlays with timestamps")
+      (defvar-local za/org-timestamp-overlays--show nil "Buffer-local boolean to show overlays.")
+      (defun za/org-timestamp-overlays-clear ()
+        "Clear all overlays with timestamps in current buffer."
+        (dolist (ov za/org-timestamp-overlays--list)
+          (delete-overlay ov))
+        (setq-local za/org-timestamp-overlays--list nil))
+
+      (defun za/org-timestamp-overlays-add ()
+        "Add overlays for active timestamps in current buffer.
+      TODO this should be more easily distinguishable, like with a background."
+        (save-excursion
+          (let* ((beg (point-min))
+                 (end (point-max)))
+            (goto-char beg)
+            (while (re-search-forward (org-re-timestamp 'active) end t)
+              (let ((ov (make-overlay (point) (point))))
+                (overlay-put ov 'before-string (format "{%s}" (za/org-time-since)))
+                (add-to-list 'za/org-timestamp-overlays--list ov))))))
+
+      (defun za/org-timestamp-overlays-redraw ()
+        "Redraw all overlays for active timestamps."
+        (za/org-timestamp-overlays-clear)
+        (za/org-timestamp-overlays-add))
+
+      (defun za/org-timestamp-hook-fn (&rest _)
+        (za/org-timestamp-overlays-redraw))
+
+      (defun za/org-timestamp-overlays-toggle ()
+        (interactive)
+        (cond (za/org-timestamp-overlays--show
+               (za/org-timestamp-overlays-clear)
+               (remove-hook 'org-cycle-hook #'za/org-timestamp-hook-fn)
+               (setq za/org-timestamp-overlays--show nil)
+               (message "Overlays hidden."))
+              (t
+               (za/org-timestamp-overlays-redraw)
+               (add-hook 'org-cycle-hook #'za/org-timestamp-hook-fn)
+               (setq za/org-timestamp-overlays--show t)
+               (message "Overlays showing."))))
+#+end_src
+
+Bind a key:
+
+#+begin_src emacs-lisp
+  (bind-key "C-c q d" #'za/org-timestamp-overlays-toggle 'org-mode-map)
+  (bind-key "C-c q d" #'za/org-timestamp-overlays-toggle 'org-agenda-mode-map)
+#+end_src
 *** Priorities: how important something is
 I usually have a lot of 'next' actions, so I prefer 4 priority levels instead of the default 3: A (urgent, ASAP), B (important),  C (if you have nothing else, do this), D (do in free time):
 
