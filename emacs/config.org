@@ -1400,26 +1400,28 @@ Install Org and require additional components that I use.
 *** Agenda & GTD
 **** Agenda mode settings
 #+begin_src emacs-lisp
-    (use-package org-agenda
-      :ensure org
-      :bind (:map org-agenda-mode-map
-                  ("C-c TAB" . za/org-agenda-goto-narrowed-subtree))
-      :custom
-      (org-agenda-files (list za/org-life-main
-                              za/org-life-inbox
-                              za/org-life-tickler))
-      (org-agenda-text-search-extra-files
-       (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
-       "I want to search all Org files in the life directory")
+  (use-package org-agenda
+    :ensure org
+    :bind (:map org-agenda-mode-map
+                ("C-c TAB" . za/org-agenda-goto-narrowed-subtree))
+    :custom
+    (org-agenda-files (list za/org-life-main
+                            za/org-life-inbox
+                            za/org-life-tickler))
+    (org-agenda-text-search-extra-files
+     (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
+     "I want to search all Org files in the life directory")
 
-      :config
-      (defun za/org-agenda-goto-narrowed-subtree ()
-        "Jump to current agenda item and narrow to its subtree."
-        (interactive)
-        (delete-other-windows)
-        (org-agenda-goto)
-        (org-narrow-to-subtree)
-        (other-window 1)))
+    :config
+    (defun za/org-agenda-goto-narrowed-subtree ()
+      "Jump to current agenda item and narrow to its subtree."
+      (interactive)
+      (delete-other-windows)
+      (org-agenda-goto)
+      (org-narrow-to-subtree)
+      (org-show-children 3)
+      (other-window 1)))
+
 
 #+end_src
 
@@ -1454,6 +1456,25 @@ Bind keys to those functions:
              ("a" . gtd-archive)
              ("s" . gtd-someday)
              ("t" . gtd-tickler))
+#+end_src
+
+*** Processing inbox
+I made a function for processing the inbox, focusing on one item at a time:
+
+#+begin_src emacs-lisp
+  (defun za/gtd-inbox-next-item ()
+    (interactive)
+    (unless (string= (buffer-file-name) (file-truename za/org-life-inbox))
+      (user-error "You're not in your GTD inbox file."))
+    (widen)
+    (org-first-headline-recenter)
+    (org-narrow-to-subtree))
+#+end_src
+
+And a conditional binding:
+
+#+begin_src emacs-lisp
+  (bind-key "C-c g n" #'za/gtd-inbox-next-item 'org-mode-map (string= (buffer-file-name) (file-truename za/org-life-inbox)))
 #+end_src
 
 *** Refiling & archiving
