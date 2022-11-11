@@ -1005,7 +1005,8 @@ Switched to this from Helm, it's more lightweight.
            ("C-c o" . counsel-outline)
            ("C-h f" . counsel-describe-function)
            ("C-h v" . counsel-describe-variable)
-           ("C-h o" . counsel-describe-symbol)))
+           ("C-h o" . counsel-describe-symbol)
+           ("C-c g j" . counsel-org-agenda-headlines)))
 #+end_src
 *** swiper: search enhanced using ivy
 #+begin_src emacs-lisp
@@ -1463,6 +1464,22 @@ Bind keys to those functions:
              ("t" . gtd-tickler))
 #+end_src
 
+To improve jumping to any headline via counsel, filter returned candidates to include source file.
+
+#+begin_src emacs-lisp
+  (defun za/counsel-org-agenda-headlines--candidates-with-filename (candidates)
+    "Convert CANDIDATES to include source filename for each candidate."
+    (mapcar (lambda (candidate)
+              (let ((name (nth 0 candidate))
+                    (path (nth 1 candidate))
+                    (pos (nth 2 candidate)))
+                (list (format "%s/%s" (file-name-nondirectory path) name)
+                      path
+                      pos)))
+            candidates))
+
+  (advice-add #'counsel-org-agenda-headlines--candidates :filter-return #'za/counsel-org-agenda-headlines--candidates-with-filename)
+#+end_src
 *** Processing inbox
 I made a function for processing the inbox, focusing on one item at a time:
 
