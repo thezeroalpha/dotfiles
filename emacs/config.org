@@ -1406,29 +1406,38 @@ Install Org and require additional components that I use.
 *** Agenda & GTD
 **** Agenda mode settings
 #+begin_src emacs-lisp
-  (use-package org-agenda
-    :ensure org
-    :bind (:map org-agenda-mode-map
-                ("C-c TAB" . za/org-agenda-goto-narrowed-subtree))
-    :custom
-    (org-agenda-files (list za/org-life-main
-                            za/org-life-inbox
-                            za/org-life-tickler))
-    (org-agenda-text-search-extra-files
-     (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
-     "I want to search all Org files in the life directory")
+    (use-package org-agenda
+      :ensure org
+      :bind (:map org-agenda-mode-map
+                  ("C-c TAB" . za/org-agenda-goto-narrowed-subtree)
+                  ("W" . za/org-agenda-show-context-tags))
+      :custom
+      (org-agenda-files (list za/org-life-main
+                              za/org-life-inbox
+                              za/org-life-tickler))
+      (org-agenda-text-search-extra-files
+       (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
+       "I want to search all Org files in the life directory")
 
-    :config
-    (defun za/org-agenda-goto-narrowed-subtree ()
-      "Jump to current agenda item and narrow to its subtree."
-      (interactive)
-      (delete-other-windows)
-      (org-agenda-goto)
-      (org-narrow-to-subtree)
-      (org-show-children 3)
-      (other-window 1)))
-
-
+      :config
+      (defun za/org-agenda-show-context-tags ()
+        "Show the context tags (e.g. @computer) applicable to the current item."
+        (interactive)
+        (let* ((tags (org-get-at-bol 'tags))
+               (context-tag-p (lambda (tag) (string-prefix-p "@" tag)))
+               (context-tags (seq-filter context-tag-p tags)))
+          (if context-tags
+              (message "Contexts are :%s:"
+                       (org-no-properties (mapconcat #'identity context-tags ":")))
+            (message "No contexts associated with this line"))))
+      (defun za/org-agenda-goto-narrowed-subtree ()
+        "Jump to current agenda item and narrow to its subtree."
+        (interactive)
+        (delete-other-windows)
+        (org-agenda-goto)
+        (org-narrow-to-subtree)
+        (org-show-children 3)
+        (other-window 1)))
 #+end_src
 
 Fix tag display by dynamically calculating the column.
@@ -1565,6 +1574,8 @@ This function converts an item to a project.
       (3) the property COOKIE_DATA set to \"todo recursive\"
       (4) a progress indicator"
     (interactive)
+    (org-set-property "TODO" "")
+    (org-set-property "PRIORITY" "")
     (org-back-to-heading t)
     (forward-whitespace 1)
     (insert "[/] ")
