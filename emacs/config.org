@@ -1703,7 +1703,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((todo "PROJ" ((org-agenda-overriding-header "Projects:")
                           (org-agenda-prefix-format '((todo . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
                           (org-agenda-dim-blocked-tasks nil)
-                          (org-agenda-sorting-strategy '((tags deadline-up alpha-down)))))))
+                          (org-agenda-sorting-strategy '((todo deadline-up alpha-down)))))))
 
           ("f" "Finished tasks that aren't in a project"
            ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
