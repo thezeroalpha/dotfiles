@@ -2,6 +2,11 @@
 ;; Start in fullscreen mode
 (message (concat "Starting: " (emacs-uptime)))
 
+;; prevent emacs trying to resize itself. maybe a startup time boost.
+;; see here
+;; https://tony-zorman.com/posts/2022-10-22-emacs-potpourri.html
+(setq frame-inhibit-implied-resize t)
+
 ;; Get rid of all bars
 ;; Note: this hinders discoverability! Not a problem for me, because
 ;; counsel-M-x gives discoverability with fuzzy-finding and
