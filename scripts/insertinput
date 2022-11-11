@@ -1,0 +1,17 @@
+#!/bin/sh
+read -r ipt
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+case "$os" in
+  linux*)
+    # code for Linux
+    ;;
+  darwin*)
+    osascript -e "tell application \"System Events\" to keystroke \"$ipt\""
+    ;;
+  msys*|cygwin*|mingw*|nt|win*)
+    # code for Windows
+    ;;
+  *)
+    printf "Operating system %s is unknown.\n" "$os"
+    ;;
+esac
