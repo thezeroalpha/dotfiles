@@ -919,6 +919,11 @@ Hide some messages I don't need.
   (setq inhibit-startup-message t)
 #+end_src
 
+** WAITING Pixel scroll mode
+Only from Emacs 29...
+#+begin_src emacs-lisp :tangle no
+(pixel-scroll-precision-mode)
+#+end_src
 * General packages
 ** which-key
 Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
