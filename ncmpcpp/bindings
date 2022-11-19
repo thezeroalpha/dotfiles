@@ -24,6 +24,9 @@ def_key "t"
 def_key "v"
   show_visualizer
 
+def_key "v"
+  toggle_visualization_type
+
 def_key "s"
   show_search_engine
 
