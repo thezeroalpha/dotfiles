@@ -1552,7 +1552,7 @@ Apart from the logging-on-done configured [[*Logging][below]], I also want to lo
 In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ means note+timestamp on state entry and timestamp on leave.
 
 #+begin_src emacs-lisp
-  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@)" "STARTED(s)" "PROJ(p)" "|" "DONE(d)" "CANCELLED(c)")))
+  (custom-set-variables '(org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "WAITING(w@)" "PROJ(p)" "|" "DONE(d)" "CANCELLED(c)")))
                         '(org-todo-keyword-faces '(("TODO" . org-todo)
                                                    ("NEXT" . org-todo)
                                                    ("WAITING" . org-todo)
@@ -1574,9 +1574,18 @@ This function converts an item to a project.
       (3) the property COOKIE_DATA set to \"todo recursive\"
       (4) a progress indicator"
     (interactive)
-    (org-set-property "TODO" "")
-    (org-set-property "PRIORITY" "")
     (org-back-to-heading t)
+    ;; Step 1: clear out everything
+    (org-set-property "TODO" "")
+
+    ;; org-set-property errors via org-priority if you try to clear
+    ;; priority of an item that doesn't have priority. Stupid design,
+    ;; but I can't change that so we gotta jump through hoops:
+    (let ((have-priority (org-element-property :priority (org-element-at-point))))
+      (when have-priority
+        (org-set-property "PRIORITY" "")))
+
+    ;; Step 2: set info (stats cookie, todo, tag, properties drawer)
     (forward-whitespace 1)
     (insert "[/] ")
     (org-set-property "TODO" "PROJ")
