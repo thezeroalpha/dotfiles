@@ -58,7 +58,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
 " Better CSV editing
-Plug 'chrisbra/csv.vim'
+Plug 'mechatroner/rainbow_csv'
 
 " Display ANSI color codes
 Plug 'vim-scripts/AnsiEsc.vim'
@@ -90,9 +90,6 @@ Plug 'airblade/vim-gitgutter'
 
 " Bracket bindings for filetypes
 Plug 'arp242/jumpy.vim'
-
-" Substitute preview
-Plug 'markonm/traces.vim'
 
 " Omnifuncs
 Plug 'myhere/vim-nodejs-complete'
@@ -164,16 +161,21 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " Show context
 Plug 'wellle/context.vim'
 
-if has('nvim')
-  Plug 'neovim/nvim-lspconfig'
+" Vim-only
+if !has('nvim')
+  " Substitute preview
+  Plug 'markonm/traces.vim'
 endif
+
 call plug#end()
 
 " quickfix filtering
 packadd cfilter
 
-" matchit.vim is default, why not enable it
-packadd matchit
+if !has('nvim')
+  " matchit.vim is default, why not enable it
+  packadd matchit
+endif
 
 " }}}2
 " Config {{{2
@@ -536,6 +538,7 @@ set dictionary+=/usr/share/dict/words
 " thesaurus file
 set thesaurus=~/.vim/words/thesaurus/mthesaur.txt
 
+if !has('nvim')
 " same with :Man
 " I'm lazy-loading this because it really affects my startup time.
 " I'm not the only one: https://www.reddit.com/r/vim/comments/emx856/lazy_loading_man_page_plugin/
@@ -543,6 +546,7 @@ silent! command! -bar -nargs=* Man
       \ delcommand Man |
       \ runtime ftplugin/man.vim |
       \ Man <args>
+endif
 
 " For editing binaries
 set binary
@@ -957,19 +961,21 @@ nnoremap gV `[v`]
 " Save in insert mode
 inoremap <C-Z> <C-o>:w<CR>
 
-" Config edit mappings
-" Why :drop? It uses the file if it's already open.
-" Also have to map c-c to no-op first, otherwise doesn't work
-nnoremap <C-c> <nop>
-nnoremap <leader><C-E><C-V> :DropToFoldedVimrc<CR>zXgg
-nnoremap <leader><C-E><C-A> :DropToFoldedVimrc<CR>zXgg/^" Autocommands {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-C> :DropToFoldedVimrc<CR>zXgg/Commands {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-E> :DropToFoldedVimrc<CR>zXgg/Editor {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-G> :DropToFoldedVimrc<CR>zXgg/General {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-M> :DropToFoldedVimrc<CR>zXgg/Mappings {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-P><C-I> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-P><C-C> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
-nnoremap <leader><C-E><C-U> :UltiSnipsEdit<CR>
+if !has('nvim')
+  " Config edit mappings
+  " Why :drop? It uses the file if it's already open.
+  " Also have to map c-c to no-op first, otherwise doesn't work
+  nnoremap <C-c> <nop>
+  nnoremap <leader><C-E><C-V> :DropToFoldedVimrc<CR>zXgg
+  nnoremap <leader><C-E><C-A> :DropToFoldedVimrc<CR>zXgg/^" Autocommands {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-C> :DropToFoldedVimrc<CR>zXgg/Commands {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-E> :DropToFoldedVimrc<CR>zXgg/Editor {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-G> :DropToFoldedVimrc<CR>zXgg/General {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-M> :DropToFoldedVimrc<CR>zXgg/Mappings {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-P><C-I> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Installation {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-P><C-C> :DropToFoldedVimrc<CR>zXgg/Plugins {{<CR>:noh<CR>za/Config {{<CR>:noh<CR>za
+  nnoremap <leader><C-E><C-U> :UltiSnipsEdit<CR>
+endif
 
 " Yank to clipboard
 nnoremap <leader>d "+d
