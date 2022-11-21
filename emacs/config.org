@@ -1350,8 +1350,7 @@ Install Org and require additional components that I use.
            ("C-M-<return>" . org-insert-todo-heading)
            ("C-c M-y" . org-yank-link-url)
            ("C-c N" . org-noter)
-           ("C-M-i" . completion-at-point)
-           ("C-c q t" . org-timestone-set-org-current-time-effective))
+           ("C-M-i" . completion-at-point))
     :hook ((org-mode . abbrev-mode)
            (org-mode . za/echo-area-tooltips)
            (org-mode . org-superstar-mode)
@@ -1406,38 +1405,39 @@ Install Org and require additional components that I use.
 *** Agenda & GTD
 **** Agenda mode settings
 #+begin_src emacs-lisp
-    (use-package org-agenda
-      :ensure org
-      :bind (:map org-agenda-mode-map
-                  ("C-c TAB" . za/org-agenda-goto-narrowed-subtree)
-                  ("W" . za/org-agenda-show-context-tags))
-      :custom
-      (org-agenda-files (list za/org-life-main
-                              za/org-life-inbox
-                              za/org-life-tickler))
-      (org-agenda-text-search-extra-files
-       (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
-       "I want to search all Org files in the life directory")
+  (use-package org-agenda
+    :ensure org
+    :bind (:map org-agenda-mode-map
+                ("C-c TAB" . za/org-agenda-goto-narrowed-subtree)
+                ("W" . za/org-agenda-show-context-tags))
+    :custom
+    (org-agenda-files (list za/org-life-main
+                            za/org-life-inbox
+                            za/org-life-tickler))
+    (org-agenda-text-search-extra-files
+     (directory-files za/org-life-dir t (rx bol (not ?.) (* anything) ".org"))
+     "I want to search all Org files in the life directory")
 
-      :config
-      (defun za/org-agenda-show-context-tags ()
-        "Show the context tags (e.g. @computer) applicable to the current item."
-        (interactive)
-        (let* ((tags (org-get-at-bol 'tags))
-               (context-tag-p (lambda (tag) (string-prefix-p "@" tag)))
-               (context-tags (seq-filter context-tag-p tags)))
-          (if context-tags
-              (message "Contexts are :%s:"
-                       (org-no-properties (mapconcat #'identity context-tags ":")))
-            (message "No contexts associated with this line"))))
-      (defun za/org-agenda-goto-narrowed-subtree ()
-        "Jump to current agenda item and narrow to its subtree."
-        (interactive)
-        (delete-other-windows)
-        (org-agenda-goto)
-        (org-narrow-to-subtree)
-        (org-show-children 3)
-        (other-window 1)))
+    :config
+    (defun za/org-agenda-show-context-tags ()
+      "Show the context tags (e.g. @computer) applicable to the current item."
+      (interactive)
+      (let* ((tags (org-get-at-bol 'tags))
+             (context-tag-p (lambda (tag) (string-prefix-p "@" tag)))
+             (context-tags (seq-filter context-tag-p tags)))
+        (if context-tags
+            (message "Contexts are :%s:"
+                     (org-no-properties (mapconcat #'identity context-tags ":")))
+          (message "No contexts associated with this line"))))
+    (defun za/org-agenda-goto-narrowed-subtree ()
+      "Jump to current agenda item and narrow to its subtree."
+      (interactive)
+      (delete-other-windows)
+      (org-agenda-goto)
+      (org-narrow-to-subtree)
+      (outline-hide-subtree)
+      (org-show-children 1)
+      (other-window 1)))
 #+end_src
 
 Fix tag display by dynamically calculating the column.
@@ -2237,6 +2237,9 @@ Displays in the header-line the Org heading for the node that’s at the top of 
   (use-package org-timestone
     :quelpa (org-timestone :repo "thezeroalpha/org-timestone.el" :fetcher github)
     :after org
+    :bind (:map org-mode-map
+                ("C-c q t" . org-timestone-set-org-current-time-effective)
+                ("C-c C-t" . org-timestone-org-todo-wrapper))
     :ensure nil)
 #+end_src
 *** org-noter
