@@ -2343,7 +2343,7 @@ A better replacement for DocView:
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :init
-    (pdf-tools-install 'noquery)
+    (pdf-tools-install)
 
     :custom
     (pdf-annot-default-annotation-properties '((t

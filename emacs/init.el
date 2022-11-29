@@ -65,11 +65,16 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; Replace built-in Org with newest Org
-;; See here: https://github.com/jwiegley/use-package/issues/319
-(assq-delete-all 'org package--builtins)
-(assq-delete-all 'org package--builtin-versions)
-(use-package org)
+(defun za/ignore-builtin (pkg)
+  "Ignore built-in package PKG."
+  (assq-delete-all pkg package--builtins)
+  (assq-delete-all pkg package--builtin-versions))
+(za/ignore-builtin 'org)
+
+;; :pin does not actually install from GNU. See
+;; https://github.com/jwiegley/use-package/issues/319 and
+;; https://github.com/jwiegley/use-package/issues/955
+(use-package org :pin gnu)
 
 ;; Follow symlinks without prompting (the org file is a symlink)
 (setq vc-follow-symlinks t)
