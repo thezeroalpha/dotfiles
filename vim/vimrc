@@ -831,6 +831,7 @@ command! Hardwrap setlocal nowrap formatoptions+=cat
 command! Syncwin windo set scrollbind! cursorbind!
 command! EF exe "split $HOME/.vim/after/ftplugin/".&filetype.".vim"
 command! FD filetype detect
+command! D smile
 command! -nargs=? Browser exe 'terminal ++close w3m -config '.getenv("XDG_CONFIG_HOME").'/w3m/config -bookmark '.getenv("XDG_CONFIG_HOME").'/w3m/bookmark.html '.<q-args>
 command! -nargs=1 Img
       \ exe "r! find ".shellescape(expand("%:p:h"))." -maxdepth ".<args>." -type f -exec file --mime-type '{}' \\+"
