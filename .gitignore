@@ -45,6 +45,7 @@ ncmpcpp/patterns.list
 # Misc
 *.pyc
 vim/autoload/plug.vim*
+nvim/plugin/packer_compiled.lua
 karabiner/automatic_backups/
 /tools/solvitaire
 bin/geckodriver
