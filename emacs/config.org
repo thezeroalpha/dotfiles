@@ -919,10 +919,10 @@ Hide some messages I don't need.
   (setq inhibit-startup-message t)
 #+end_src
 
-** WAITING Pixel scroll mode
-Only from Emacs 29...
-#+begin_src emacs-lisp :tangle no
-(pixel-scroll-precision-mode)
+** Pixel scroll mode
+#+begin_src emacs-lisp
+  (unless (version< emacs-version "29")
+    (pixel-scroll-precision-mode))
 #+end_src
 * General packages
 ** which-key
@@ -1409,7 +1409,7 @@ Install Org and require additional components that I use.
     :ensure org
     :bind (:map org-agenda-mode-map
                 ("C-c TAB" . za/org-agenda-goto-narrowed-subtree)
-                ("W" . za/org-agenda-show-context-tags))
+                ("@" . za/org-agenda-show-context-tags))
     :custom
     (org-agenda-files (list za/org-life-main
                             za/org-life-inbox
@@ -1611,12 +1611,15 @@ Define a function to skip items if they're part of a project (i.e. one of their 
 
 #+begin_src emacs-lisp
   (defun za/skip-if-in-project ()
-    "Skip items that are part of a project"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-          (item-tags (org-get-tags)))
-      (if (member "PROJECT" item-tags)
-          subtree-end
-        nil)))
+    "Skip items that are part of a project but not a project themselves."
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil)
+          (item-tags (let ((org-use-tag-inheritance t)) (org-get-tags)))
+          (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags))))
+      (if (and (member "PROJECT" item-tags)
+               (not (member "PROJECT" item-tags-without-inherited)))
+          skip
+        keep)))
 
 #+end_src
 
@@ -1625,10 +1628,11 @@ Also, define a function to skip tasks (trees) that are not habits (i.e. don't ha
 #+begin_src emacs-lisp
   (defun za/skip-unless-habit ()
     "Skip trees that are not habits"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil))
       (if (string= (org-entry-get nil "STYLE") "habit")
-          nil
-        subtree-end)))
+          keep
+        skip)))
 #+end_src
 
 And one to skip tasks that /are/ habits:
@@ -1636,10 +1640,11 @@ And one to skip tasks that /are/ habits:
 #+begin_src emacs-lisp
   (defun za/skip-if-habit ()
     "Skip trees that are not habits"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil))
       (if (string= (org-entry-get nil "STYLE") "habit")
-          subtree-end
-        nil)))
+          skip
+        keep)))
 #+end_src
 
 
@@ -1648,10 +1653,11 @@ And another function, to skip tasks that are blocked:
 #+begin_src emacs-lisp
   (defun za/skip-if-blocked ()
     "Skip trees that are blocked by previous tasks"
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil))
       (if (org-entry-blocked-p)
-          subtree-end
-        nil)))
+          skip
+        keep)))
 #+end_src
 
 Create custom agenda view based on those keywords.
@@ -2238,7 +2244,6 @@ Displays in the header-line the Org heading for the node that’s at the top of 
     :quelpa (org-timestone :repo "thezeroalpha/org-timestone.el" :fetcher github)
     :after org
     :bind (:map org-mode-map
-                ("C-c q t" . org-timestone-set-org-current-time-effective)
                 ("C-c C-t" . org-timestone-org-todo-wrapper))
     :ensure nil)
 #+end_src
@@ -2248,6 +2253,18 @@ Displays in the header-line the Org heading for the node that’s at the top of 
     :config
     ;; Fix disabling of line wrap by no-opping set-notes-scroll
     (advice-add 'org-noter--set-notes-scroll :override 'za/no-op))
+#+end_src
+*** el-easydraw
+Lets you draw stuff in org mode documents.
+
+#+begin_src emacs-lisp
+  (use-package edraw-org
+    :quelpa (el-easydraw :repo "misohena/el-easydraw" :fetcher github)
+    :after org
+    :ensure nil
+    :config
+    (edraw-org-setup-default)
+    :bind ("C-c q c" . edraw-color-picker-insert-color))
 #+end_src
 
 *** TODO the path for org-roam export and data export should be configurable, not hard-coded
@@ -2430,7 +2447,9 @@ Like virtualenvwrapper.sh, but for Emacs.
     (ledger-clear-whole-transactions t)
     (ledger-reconcile-default-commodity "eur")
     (ledger-reports
-     '(("budget-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses")
+     '(("unreconciled" "ledger [[ledger-mode-flags]] -f /Users/alex/Documents/Finance/finance.ledger --start-of-week=1 reg --uncleared")
+       ("net-worth-changes" "ledger [[ledger-mode-flags]] -f /Users/alex/Documents/Finance/finance.ledger reg ^Assets ^Liabilities -R -M -X eur --effective -n")
+       ("budget-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses")
        ("budget-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" budget ^expenses")
        ("expenses-this-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses --budget -R")
        ("expenses-last-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses --budget -R")
@@ -2448,7 +2467,8 @@ Like virtualenvwrapper.sh, but for Emacs.
        ("reg" "%(binary) -f %(ledger-file) --start-of-week=1 reg -R")
        ("payee" "%(binary) -f %(ledger-file) --start-of-week=1 reg @%(payee) -R")
        ("account" "%(binary) -f %(ledger-file) --start-of-week=1 reg %(account) -R")
-       ("reg-org-table" "%(binary) -f %(ledger-file) csv --csv-format '|%(scrub(date))|%(scrub(display_account))|%(scrub(payee))|%(scrub(display_amount))|%(scrub(display_total))|\n' %(account) -R")
+       ("reg-org-table" "%(binary) -f %(ledger-file) csv --csv-format '|%(scrub(date))|%(scrub(display_account))|%(scrub(payee))|%(scrub(display_amount))|%(scrub(display_total))|
+  ' %(account) -R")
        ("degiro-changes" "%(binary) -f %(ledger-file) --start-of-week=1 reg Investments:Degiro -X eur -R")))
     :config
     (with-eval-after-load 'ledger-mode
