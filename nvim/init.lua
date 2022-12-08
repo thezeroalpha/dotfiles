@@ -25,7 +25,22 @@ end
 require'lspconfig'.rust_analyzer.setup({
   on_attach = custom_lsp_attach
 })
+
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, {noremap = true})
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {noremap = true})
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {noremap = true})
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {noremap = true})
 require'lspconfig'.pyright.setup{}
+
+require'lint'.linters_by_ft = {
+  -- python = {'flake8',},
+  sh = {'shellcheck',}
+}
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
 
 require'nvim-treesitter.configs'.setup {
   -- Automatically install missing parsers when entering buffer
