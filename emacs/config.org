@@ -6,15 +6,34 @@ I install with ~--HEAD --with-dbus --with-cocoa --with-xwidgets --with-native-co
 - provides bind-key by default
 - is mostly just macros that wrap the needed stuff from package.el. can check that with ~macroexpand~.
 - adds a bunch of performance improvements
-* quelpa
-use-package downloads from ELPA/MELPA, sometimes I need to get stuff that's not in those repos.
-Quelpa lets you install from local or remote source (like git). 'Quelle', like source, get it?
-With quelpa-use-package, I can use the keyword ~:quelpa~ to install via quelpa.
+* Install from source
+Emacs 29 ships with a way to install packages from source, here's a small wrapper around it.
 
 #+begin_src emacs-lisp
-  (use-package quelpa)
-  (use-package quelpa-use-package)
+  (cl-defun za/package-vc-install (&key (fetcher "github") repo name rev backend)
+    "Install a package from a remote if it's not already installed.
+  This is a thin wrapper around `package-vc-install' in order to
+  make non-interactive usage more ergonomic.  Takes the following
+  named arguments:
+
+  - FETCHER the remote where to get the package (e.g., \"gitlab\").
+    If omitted, this defaults to \"github\".
+
+  - REPO should be the name of the repository (e.g.,
+  \"slotThe/arXiv-citation\".
+
+  - NAME, REV, and BACKEND are as in `package-vc-install' (which
+    see)."
+    (let* ((url (cond ((string-match-p (rx bos "http" (? ?s) "://") repo)
+                       repo)
+                      (t (format "https://www.%s.com/%s" fetcher repo))))
+           (iname (when name (intern name)))
+           (pac-name (or iname (intern (file-name-base repo)))))
+      (unless (package-installed-p pac-name)
+        (package-vc-install url iname rev backend))))
 #+end_src
+
+You can use this in use-package with an ~:init~ clause.
 
 * exec-path-from-shell (macOS)
 In macOS, the path is not set correctly (i.e. as it is in the terminal) in the GUI app. This fixes it.
@@ -94,13 +113,6 @@ Furthermore, I want to set the theme correctly whenever I connect with 'emacscli
   (if (daemonp)
       (add-hook 'after-make-frame-functions #'za/auto-select-theme))
 #+end_src
-* Garbage collection
-Garbage-collect on focus-out, Emacs /should/ feel snappier.
-
-#+begin_src emacs-lisp
-  (add-hook 'focus-out-hook #'garbage-collect)
-#+end_src
-
 * Sound support
 On macOS, you can use afplay:
 
@@ -161,7 +173,7 @@ unless the app is in the background. [[https://github.com/julienXX/terminal-noti
     (advice-add #'y-or-n-p :before #'za/send-notification-interactivity-required)
     (advice-add #'yes-or-no-p :before #'za/send-notification-interactivity-required)
     (advice-add #'user-error :before #'za/send-notification-interactivity-required)
-    (with-demoted-errors (format "Error in %s: %%s" func) (apply func r))
+    (with-demoted-errors "Error in %s" (apply func r))
     (advice-remove #'y-or-n-p #'za/send-notification-interactivity-required)
     (advice-remove #'yes-or-no-p #'za/send-notification-interactivity-required)
     (advice-remove #'user-error #'za/send-notification-interactivity-required))
@@ -372,7 +384,7 @@ I like to be able to kill a buffer instantly:
     (let ((fname (buffer-file-name))
           (buf (current-buffer)))
       (unless (and fname (file-exists-p fname))
-        (user-error (format "Buffer has no associated file.")))
+        (user-error "Buffer has no associated file."))
 
       (unless (yes-or-no-p (format "Really delete %s and its buffer?" fname))
         (user-error "User cancelled."))
@@ -1091,7 +1103,9 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
 ** vanish: hide parts of the file
 #+begin_src emacs-lisp
   (use-package vanish
-    :quelpa (vanish :fetcher github :repo "thezeroalpha/vanish.el" :branch "develop")
+    :init
+    (za/package-vc-install :repo "thezeroalpha/vanish.el" :rev "develop")
+    (require 'vanish)
     :ensure nil
     :bind (:map vanish-mode-map
                 ("C-c q h h" . vanish-hide-dwim)
@@ -1239,15 +1253,11 @@ This lets me select a window to jump to using a single key, sort of like ~avy~.
 ** decide-mode for dice rolling
 #+begin_src emacs-lisp
   (use-package decide
-    :quelpa (decide :repo "lifelike/decide-mode" :fetcher github)
-    :ensure nil)
+    :init (za/package-vc-install :repo "lifelike/decide-mode" :name "decide")
+    :ensure nil
+    :bind ("C-c q ?" . decide-mode))
 #+end_src
 
-I want a custom keybinding to easily toggle:
-
-#+begin_src emacs-lisp
-  (bind-key "C-c q ?" #'decide-mode)
-#+end_src
 ** try: try out different packages
 #+begin_src emacs-lisp
   (use-package try)
@@ -1394,7 +1404,7 @@ Install Org and require additional components that I use.
       (org-superstar-leading-bullet ?\s))
 
     ;; Linking to emails via notmuch
-    (use-package ol-notmuch :quelpa)
+    (use-package ol-notmuch)
 
     ;; Tempo expansions
     (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
@@ -2131,9 +2141,7 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
 
 *** org-contrib
 #+begin_src emacs-lisp
-  (use-package org-contrib
-    :config
-    (require 'org-checklist))
+  (use-package org-checklist :after org-contrib :ensure org-contrib)
 #+end_src
 *** org-ref
 #+begin_src emacs-lisp
@@ -2241,11 +2249,11 @@ Displays in the header-line the Org heading for the node that’s at the top of 
 *** org-timestone
 #+begin_src emacs-lisp
   (use-package org-timestone
-    :quelpa (org-timestone :repo "thezeroalpha/org-timestone.el" :fetcher github)
+    :init (za/package-vc-install :repo "thezeroalpha/org-timestone.el")
+    :ensure nil
     :after org
     :bind (:map org-mode-map
-                ("C-c C-t" . org-timestone-org-todo-wrapper))
-    :ensure nil)
+                ("C-c C-t" . org-timestone-org-todo-wrapper)))
 #+end_src
 *** org-noter
 #+begin_src emacs-lisp
@@ -2259,7 +2267,7 @@ Lets you draw stuff in org mode documents.
 
 #+begin_src emacs-lisp
   (use-package edraw-org
-    :quelpa (el-easydraw :repo "misohena/el-easydraw" :fetcher github)
+    :init (za/package-vc-install :repo "thezeroalpha/el-easydraw" :name "edraw" :rev "add-package-version")
     :after org
     :ensure nil
     :config

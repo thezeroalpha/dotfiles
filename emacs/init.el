@@ -2,6 +2,10 @@
 ;; Start in fullscreen mode
 (message (concat "Starting: " (emacs-uptime)))
 
+;; Garbage collection
+(setq gc-cons-percentage 1.0)
+(add-hook 'focus-out-hook #'garbage-collect)
+
 ;; prevent emacs trying to resize itself. maybe a startup time boost.
 ;; see here
 ;; https://tony-zorman.com/posts/2022-10-22-emacs-potpourri.html
