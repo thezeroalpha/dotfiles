@@ -4,6 +4,9 @@ ncmpcpp_directory = "~/.config/ncmpcpp"
 lyrics_directory = "~/.local/share/lyrics"
 follow_now_playing_lyrics = yes
 fetch_lyrics_for_current_song_in_background = yes
+# systems to fetch lyrics, in order of priority.
+# for tags lyrics fetcher, you need my fork of ncmpcpp: https://github.com/thezeroalpha/ncmpcpp
+lyrics_fetchers = tags, azlyrics, genius, musixmatch, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
 
 mpd_music_dir = "~/Music/Libraries/Mine/"
 system_encoding = "utf-8"
