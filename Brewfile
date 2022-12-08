@@ -213,6 +213,7 @@ brew "topgrade"
 brew "translate-shell", args: ["HEAD"]
 brew "transmission-cli"
 brew "tree"
+brew "typespeed"
 brew "up"
 brew "urlview"
 brew "util-linux"
