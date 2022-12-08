@@ -149,8 +149,6 @@ Plug 'skanehira/gh.vim'
 " Minesweeper
 Plug 'iqxd/vim-mine-sweeping'
 
-Plug 'dense-analysis/ale'
-
 Plug 'Yggdroot/indentLine', { 'for': 'python' }
 
 Plug 'jceb/vim-orgmode', { 'for': 'org' }
@@ -165,6 +163,8 @@ Plug 'wellle/context.vim'
 if !has('nvim')
   " Substitute preview
   Plug 'markonm/traces.vim'
+
+  Plug 'dense-analysis/ale'
 endif
 
 call plug#end()
@@ -457,26 +457,28 @@ let g:ada_omni_with_keywords = 1
 " gh.vim {{{3
 let g:gh_token = getenv("GITHUB_AUTH_TOKEN")
 " ALE {{{3
-let g:airline#extensions#ale#enabled = 0
-let g:ale_enabled = 0
-let g:ale_c_cc_options = '-std=gnu99 -Wall'
-let g:ale_c_clangd_options = '-std=gnu99 -Wall'
-let g:ale_c_clangformat_options = '-std=gnu99 -Wall'
-let g:ale_c_clangtidy_options = '-std=gnu99 -Wall'
-let g:ale_c_clangtidy_extra_options = '-std=gnu99 -Wall'
-let g:ale_perl_perlcritic_options = '--brutal'
-let g:ale_python_flake8_options = '--max-line-length=130'
-call ale#Set('tex_textidote_executable', 'textidote')
-call ale#Set('tex_textidote_options', '--no-color --output singleline')
-" TODO get language from spell spelllang
-call ale#Set('tex_textidote_check_lang', '')
-call ale#linter#Define('tex', {
-\   'name': 'textidote',
-\   'output_stream': 'stdout',
-\   'executable': {b -> ale#Var(b, 'tex_textidote_executable')},
-\   'command': function('ale_linters#tex#textidote#GetExecutable'),
-\   'callback': 'ale_linters#tex#textidote#Handle',
-\})
+if exists('g:loaded_ale')
+  let g:airline#extensions#ale#enabled = 0
+  let g:ale_enabled = 0
+  let g:ale_c_cc_options = '-std=gnu99 -Wall'
+  let g:ale_c_clangd_options = '-std=gnu99 -Wall'
+  let g:ale_c_clangformat_options = '-std=gnu99 -Wall'
+  let g:ale_c_clangtidy_options = '-std=gnu99 -Wall'
+  let g:ale_c_clangtidy_extra_options = '-std=gnu99 -Wall'
+  let g:ale_perl_perlcritic_options = '--brutal'
+  let g:ale_python_flake8_options = '--max-line-length=130'
+  call ale#Set('tex_textidote_executable', 'textidote')
+  call ale#Set('tex_textidote_options', '--no-color --output singleline')
+  " TODO get language from spell spelllang
+  call ale#Set('tex_textidote_check_lang', '')
+  call ale#linter#Define('tex', {
+        \   'name': 'textidote',
+        \   'output_stream': 'stdout',
+        \   'executable': {b -> ale#Var(b, 'tex_textidote_executable')},
+        \   'command': function('ale_linters#tex#textidote#GetExecutable'),
+        \   'callback': 'ale_linters#tex#textidote#Handle',
+        \})
+endif
 
 " indentLine {{{3
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
