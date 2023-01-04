@@ -1,5 +1,6 @@
 " vim: foldmethod=marker foldlevel=0
 let mapleader=" "   " Set the mapleader to be space
+let maplocalleader=" "
 
 " Plugins {{{1
 " Installation {{{2
@@ -18,9 +19,6 @@ Plug 'junegunn/vader.vim'
 
 " A color table with xterm color codes
 Plug 'guns/xterm-color-table.vim'
-
-" Simple commenting
-Plug 'tpope/vim-commentary'
 
 " Faster HTML
 Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'markdown'] }
@@ -69,13 +67,6 @@ Plug 'romainl/vim-cool'
 " Vim + latex
 Plug 'lervag/vimtex'
 
-" Snippets
-Plug 'SirVer/ultisnips'
-
-" Fuzzy finder in vim
-Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish'}
-Plug 'junegunn/fzf.vim'
-
 " Better abbrevation and substitution
 Plug 'tpope/vim-abolish'
 
@@ -84,9 +75,6 @@ Plug 'chrisbra/colorizer'
 
 " Pywal scheme in vim
 Plug 'dylanaraps/wal.vim'
-
-" Show git changes in the sign column
-Plug 'airblade/vim-gitgutter'
 
 " Bracket bindings for filetypes
 Plug 'arp242/jumpy.vim'
@@ -149,8 +137,6 @@ Plug 'skanehira/gh.vim'
 " Minesweeper
 Plug 'iqxd/vim-mine-sweeping'
 
-Plug 'Yggdroot/indentLine', { 'for': 'python' }
-
 Plug 'jceb/vim-orgmode', { 'for': 'org' }
 
 " Rust
@@ -165,8 +151,23 @@ if !has('nvim')
   Plug 'markonm/traces.vim'
 
   Plug 'dense-analysis/ale'
+
+  " Show git changes in the sign column
+  Plug 'airblade/vim-gitgutter'
+
+  Plug 'Yggdroot/indentLine', { 'for': 'python' }
+
+  " Simple commenting
+  Plug 'tpope/vim-commentary'
+
+  " Fuzzy finder in vim
+  Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish'}
+  Plug 'junegunn/fzf.vim'
+
 endif
 
+" Snippets
+Plug 'SirVer/ultisnips'
 call plug#end()
 
 " quickfix filtering
@@ -304,55 +305,57 @@ set completefunc=ultisnips_complete#ListSnippets
 " NOTE: performance improvement. autotrigger leads to slow typing in markdown
 " mode.
 augroup ultisnips_no_auto_expansion
-    au!
-    au VimEnter * au! UltiSnips_AutoTrigger
+  au!
+  au VimEnter * au! UltiSnips_AutoTrigger
 augroup END
 " Abolish {{{3
 " Work with variants of words easily
 let g:abolish_save_file = '"$HOME"/.dotfiles/vim/abolish_save_file.vim'
 " Fzf {{{3
-set rtp+="$HOME"/.dotfiles/tools/fzf
-function! s:build_quickfix_list(lines)
-  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-  copen
-  cc
-endfunction
-let g:fzf_action = {
-      \ 'ctrl-f': function('s:build_quickfix_list'),
-      \ 'ctrl-t': 'tabedit',
-      \ 'ctrl-p': 'split',
-      \ 'ctrl-v': 'vsplit' }
-let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
-let g:fzf_preview_window = 'right:60%'
-" Jump to existing buffer/window if possible
-let g:fzf_buffers_jump = 1
+if exists('g:loaded_fzf')
+  set rtp+="$HOME"/.dotfiles/tools/fzf
+  function! s:build_quickfix_list(lines)
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
+  endfunction
+  let g:fzf_action = {
+        \ 'ctrl-f': function('s:build_quickfix_list'),
+        \ 'ctrl-t': 'tabedit',
+        \ 'ctrl-p': 'split',
+        \ 'ctrl-v': 'vsplit' }
+  let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
+  let g:fzf_preview_window = 'right:60%'
+  " Jump to existing buffer/window if possible
+  let g:fzf_buffers_jump = 1
 
-nnoremap <leader>F :Files<CR>
-nnoremap <leader><c-f><c-f> :Files<space>
-nnoremap <expr> <leader><c-f>. ":Files " .. expand("%:h") .. "<CR>"
-nnoremap <leader>B :Buffers<CR>
-nnoremap <leader>G :Lines<CR>
-nnoremap <leader>W :BLines<CR>
-nnoremap <expr> <leader>Z ':BLines '..&foldmarker->split(',')[0]..'<CR>'
-nnoremap <leader>? :Helptags<CR>
-nnoremap <leader>T :Tags<CR>
-nnoremap <leader>/ :Ag<CR>
-nnoremap <leader>M :Marks<CR>
-nnoremap <leader>; :History:<CR>
+  nnoremap <leader>F :Files<CR>
+  nnoremap <leader><c-f><c-f> :Files<space>
+  nnoremap <expr> <leader><c-f>. ":Files " .. expand("%:h") .. "<CR>"
+  nnoremap <leader>B :Buffers<CR>
+  nnoremap <leader>G :Lines<CR>
+  nnoremap <leader>W :BLines<CR>
+  nnoremap <expr> <leader>Z ':BLines '..&foldmarker->split(',')[0]..'<CR>'
+  nnoremap <leader>? :Helptags<CR>
+  nnoremap <leader>T :Tags<CR>
+  nnoremap <leader>/ :Ag<CR>
+  nnoremap <leader>M :Marks<CR>
+  nnoremap <leader>; :History:<CR>
 
-" My extensions
-nmap <leader>J <Plug>FzfChangesJumpsJumps
-nmap <leader>C <Plug>FzfChangesJumpsChanges
+  " My extensions
+  nmap <leader>J <Plug>FzfChangesJumpsJumps
+  nmap <leader>C <Plug>FzfChangesJumpsChanges
 
-" Search for Todos/Fixmes
-command! Todo Ag ((TO ?DO)|FIXME):<space>
-nnoremap <leader>! :Todo<CR>
+  " Search for Todos/Fixmes
+  command! Todo Ag ((TO ?DO)|FIXME):<space>
+  nnoremap <leader>! :Todo<CR>
 
-" Set a filetype
-cabbrev setf Filetypes
+  " Set a filetype
+  cabbrev setf Filetypes
 
-command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
-command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
+  command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
+  command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
+endif
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
@@ -481,9 +484,11 @@ if exists('g:loaded_ale')
 endif
 
 " indentLine {{{3
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-let g:indentLine_enable = 0 " off by default
-let g:indentLine_fileType = ['python'] " enable for python
+if !has('nvim')
+  let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+  let g:indentLine_enable = 0 " off by default
+  let g:indentLine_fileType = ['python'] " enable for python
+endif
 " Emmet {{{3
 let g:user_emmet_settings = {
       \ 'markdown': {
@@ -824,6 +829,7 @@ command! Fuckwindows %s///g
 command! Hexedit %!xxd
 command! Unhex %!xxd -r
 command! JsonSimplifyObject %s/^\(\s\{10}\){\n\s\{12\}\(.*\)\n\s\{10\}}\(,\?\)/\1{ \2 }\3
+command! UnsmartQuotes silent %s/[“”]/"/ge | %s/[‘’]/'/ge
 command! BeautifyJson %!python -m json.tool
 command! Dos2unix %!dos2unix
 command! -nargs=1 Cheat terminal curl cheat.sh/<args>
@@ -925,6 +931,7 @@ nnoremap <leader><c-l> :syntax sync fromstart<CR>:redraw!<CR>:diffupdate<CR><c-l
 
 " urlview
 nnoremap <silent> U :w !urlview<CR>
+nnoremap <leader>U U
 
 " 'zoom to head level'
 nnoremap zh mzzt10<c-u>`z
