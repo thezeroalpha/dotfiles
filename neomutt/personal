@@ -29,13 +29,13 @@ virtual-mailboxes \
   "Spam (P)" "notmuch://?query=folder:$my_personal_email/Spam" \
   "Archive (All) (P)" "notmuch://?query=folder:$my_personal_email/Archive"
 
-set spoolfile = "Inbox (P)"
+set spool_file = "Inbox (P)"
 
 set header_cache = '~/.cache/neomutt/$my_personal_email/headers'
 set message_cachedir = '~/.cache/neomutt/$my_personal_email/bodies'
 
 # Send
-set realname=$my_name
+set real_name=$my_name
 set from=$my_personal_email
 set sendmail="msmtp -a $my_personal_email"
 set sendmail_wait = 0

@@ -26,13 +26,13 @@ virtual-mailboxes \
   "Spam (S)" "notmuch://?query='folder:\"$my_school_email/Junk Email\"'" \
   "Archive (All) (S)" "notmuch://?query=folder:$my_school_email/Archive"
 
-set spoolfile = "Inbox (S)"
+set spool_file = "Inbox (S)"
 
 set header_cache = ~/.cache/neomutt/$my_school_email/headers
 set message_cachedir = ~/.cache/neomutt/$my_school_email/bodies
 
 # Send
-set realname=$my_name
+set real_name=$my_name
 set from=$my_school_email
 set sendmail="msmtp -a $my_school_email"
 set sendmail_wait = 0
