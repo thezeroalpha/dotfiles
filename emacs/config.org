@@ -1575,6 +1575,25 @@ In ~org-todo-keywords~, ~@~ means note+timestamp, ~!~ means timestamp, ~@/!~ mea
                                                    ("CANCELLED" . org-done))))
 #+end_src
 
+
+Something is a habit if: it has a HABIT tag, STYLE is habit, LOGGING is logrepeat, it has a scheduled repeater from today.
+
+#+begin_src emacs-lisp
+  (defun za/mark-as-habit ()
+    "This function makes sure that the current heading has:
+  (1) a HABIT tag
+  (2) todo set to TODO
+  (3) LOGGING property set to logrepeat
+  (4) a scheduled repeater from today"
+    (interactive)
+    (org-back-to-heading t)
+    (org-set-property "TODO" "TODO")
+    (org-set-property "LOGGING" "logrepeat")
+    (org-set-property "STYLE" "habit")
+    (org-toggle-tag "HABIT" 'on)
+    (org-schedule nil))
+#+end_src
+
 +I decided that projects will not be TODO items, but their progress will be tracked with a progress cookie ([x/y]). This function converts an item to a project: it adds a PROJECT tag, sets the progress indicator to count all checkboxes in sub-items (only TODO items), and removes any existing TODO keywords. Finally, PROJECT tags shouldn't be inherited (i.e. subtasks shouldn't be marked as projects).+
 In the end, I want NEXT items that are part of a project to be shown as such (so inherit that PROJECT tag), but projects themselves will have a PROJ todo keyword.
 This function converts an item to a project.
