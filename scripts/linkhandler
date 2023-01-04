@@ -8,10 +8,28 @@ use constant EXIT_USER_CANCELLED => 130;
 use constant MPD_HOST => 'localhost';
 use constant MPD_PORT => 6600;
 
-if ( @ARGV != 1 ) {
-  die 'Link necessary.';
+sub urlize {
+  my ($rv) = @_;
+  $rv =~ s/([^A-Za-z0-9])/sprintf("%%%2.2X", ord($1))/ge;
+  return $rv;
 }
-my ($LINK) = @ARGV;
+
+sub un_urlize {
+  my ($rv) = @_;
+  $rv =~ s/\+/ /g;
+  $rv =~ s/%(..)/pack("c",hex($1))/ge;
+  return $rv;
+}
+
+sub untrack {
+  my ($orig_link) = @_;
+  if ($orig_link =~ /(https?(?::|%3A)%2F%2F.*)/) {
+    my $new_link = $1;
+    return un_urlize($new_link);
+  }
+  return $orig_link;
+}
+
 my $CHOOSER = $ENV{'CHOOSER'};
 unless (length $CHOOSER) {
   die 'Must set CHOOSER in environment.';
@@ -19,6 +37,12 @@ unless (length $CHOOSER) {
 
 my $HOME = $ENV{'HOME'};
 my $TERM = $ENV{'TERM'};
+
+if ( @ARGV != 1 ) {
+  die 'Link necessary.';
+}
+my ($LINK) = @ARGV;
+$LINK = untrack($LINK);
 
 =begin
 This subroutine takes a subroutine reference and executes the dereferenced subroutine in a fork.
