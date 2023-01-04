@@ -61,6 +61,7 @@
     p = push
     pushf = push --force-with-lease
     pf = pull --ff-only
+    pff = pull --ff-only
     fuckit = reset --hard HEAD
     fuckitall = reset --hard origin/master
     ssh = "!git remote get-url origin | sed -E 's|^https?://([^/]+)/(.+)|git@\\1:\\2|' | tr -d '\n'"
