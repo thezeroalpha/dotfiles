@@ -1367,6 +1367,9 @@ Install Org and require additional components that I use.
            (org-mode . org-indent-mode)
            (org-mode . za/settings-on-org-mode))
     :config
+    (za/package-vc-install :repo "https://git.sr.ht/~bzg/org-contrib" :load "lisp/")
+    (require 'org-contrib)
+    (require 'org-checklist)
     (delight 'org-indent-mode nil 'org-indent)
     (defun za/settings-on-org-mode ()
       "Settings on enabling org mode"
