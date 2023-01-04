@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'open3'
+abort 'bitwarden-cli (bw) required but not found.' unless system("command -v bw >/dev/null 2>&1")
+out = `bw list items`
+abort "User cancelled" if out.chomp.empty?
+items = JSON.load out
+query_str = items.map do |r|
+  s = [r['name']]
+  s << " (#{r['login']['username']})" if r.has_key? 'login'
+  s << "\t" + r['id']
+  s.join
+end.join("\n")
+out = Open3.popen2("fzf -d '\t' --with-nth 1") do |i,o|
+  i.puts query_str
+  i.close
+  o.gets.chomp
+end
+abort "User cancelled" if out.empty?
+_, chosen_id = out.split("\t")
+chosen_item = items.find { |x| x['id'] == chosen_id }
+list = []
+list += chosen_item['fields'].reduce([]) { |acc, x| acc << [x['name'],x['value']] } if chosen_item.has_key? 'fields'
+list += chosen_item['login'].slice('username', 'password').to_a
+query_str = list.map.with_index { |r, i| "#{r[0]}\t#{i}" }.join("\n")
+out = Open3.popen2("fzf -d '\t' --with-nth 1") do |i,o|
+  i.puts query_str
+  i.close
+  o.gets.chomp
+end
+abort "User cancelled" if out.empty?
+_, chosen_i = out.split("\t")
+print list[chosen_i.to_i][1]
