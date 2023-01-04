@@ -1750,6 +1750,25 @@ In calfw, I don't want to show habits:
   (add-hook 'cfw:calendar-mode-hook (setq-local org-agenda-skip-function 'za/skip-if-habit))
 #+end_src
 
+*** Automatically mark next project item as NEXT
+Unless the current item is a project, when a project item is done, the next item in the project should be marked "NEXT".
+I tried org-edna but I couldn't get it working after an hour of effort. So a bit of lisp is the easier solution.
+
+#+begin_src emacs-lisp
+  (defun za/gtd-auto-next ()
+    "Automatically mark project item as next."
+    (save-excursion
+      (org-back-to-heading)
+      (when (and (member org-state org-done-keywords)
+                 (not (member "PROJECT" (org-get-tags nil 'local)))
+                 (member "PROJECT" (let ((org-use-tag-inheritance t))
+                                     (org-get-tags nil))))
+        (when (org-goto-sibling)
+          (org-entry-put (point) "TODO" "NEXT")))))
+
+  (add-hook #'org-after-todo-state-change-hook #'za/gtd-auto-next)
+#+end_src
+
 *** Logging for tasks
 I want to log into the LOGBOOK drawer (useful when I want to take quick notes):
 
@@ -2142,10 +2161,6 @@ This way, I can just check my calendar.
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
 
-*** org-contrib
-#+begin_src emacs-lisp
-  (use-package org-checklist :after org-contrib :ensure org-contrib)
-#+end_src
 *** org-ref
 #+begin_src emacs-lisp
   (use-package org-ref)
