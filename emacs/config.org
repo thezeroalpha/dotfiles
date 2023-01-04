@@ -10,7 +10,7 @@ I install with ~--HEAD --with-dbus --with-cocoa --with-xwidgets --with-native-co
 Emacs 29 ships with a way to install packages from source, here's a small wrapper around it.
 
 #+begin_src emacs-lisp
-  (cl-defun za/package-vc-install (&key (fetcher "github") repo name rev backend)
+  (cl-defun za/package-vc-install (&key (fetcher "github") repo name rev backend load)
     "Install a package from a remote if it's not already installed.
   This is a thin wrapper around `package-vc-install' in order to
   make non-interactive usage more ergonomic.  Takes the following
@@ -23,14 +23,25 @@ Emacs 29 ships with a way to install packages from source, here's a small wrappe
   \"slotThe/arXiv-citation\".
 
   - NAME, REV, and BACKEND are as in `package-vc-install' (which
-    see)."
+    see).
+
+  - LOAD is optionally a subdirectory that should be added to `load-path'."
     (let* ((url (cond ((string-match-p (rx bos "http" (? ?s) "://") repo)
                        repo)
                       (t (format "https://www.%s.com/%s" fetcher repo))))
            (iname (when name (intern name)))
-           (pac-name (or iname (intern (file-name-base repo)))))
+           (pac-name (or iname (intern (file-name-base repo))))
+           (to-load (when load
+                      (format "%s/%s"
+                              (package-desc-dir (package-get-descriptor pac-name))
+                              load))))
       (unless (package-installed-p pac-name)
-        (package-vc-install url iname rev backend))))
+        (package-vc-install url iname rev backend))
+      (when load
+        (unless (file-directory-p to-load)
+          (user-error "Not a readable dir: %s" to-load))
+        (add-to-list 'load-path to-load))
+      (message "%s" pac-name)))
 #+end_src
 
 You can use this in use-package with an ~:init~ clause.
@@ -1334,6 +1345,11 @@ Prism changes the color of text depending on their depth. Makes it easier to see
                              (bg (plist-get properties :background)))
                         (set-face-attribute 'mode-line nil :background bg)))))))))
 #+end_src
+** academic-phrases
+Gives ideas for phrases to use in academic writing.
+#+begin_src emacs-lisp
+  (use-package academic-phrases)
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Installation
@@ -1467,7 +1483,10 @@ Convenience functions to make opening the main file faster:
 
 #+begin_src emacs-lisp
   (defun gtd () "GTD: main file" (interactive) (find-file za/org-life-main))
-  (defun gtd-inbox () "GTD: inbox" (interactive) (find-file za/org-life-inbox))
+  (defun gtd-inbox () "GTD: inbox" (interactive)
+         (find-file za/org-life-inbox)
+         (dired-other-window za/org-life-doc-inbox)
+         (dired-revert))
   (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
   (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
   (defun gtd-tickler () "GTD: tickler" (interactive) (find-file za/org-life-tickler))
@@ -1728,11 +1747,10 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((agenda "" ((org-agenda-overriding-header "Month agenda:")
                         (org-agenda-span 'month)))))
 
-          ("d" "Day Agenda + Next Actions + Habits"
+          ("d" "Day Agenda + Habits + Waiting"
            ((agenda "" ((org-agenda-overriding-header "Day:")
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
-            (todo "NEXT" ((org-agenda-overriding-header "Next actions:")))
             (agenda "" ((org-agenda-overriding-header "Habits:")
                         (org-agenda-span 'day)
                         (org-agenda-use-time-grid nil)
@@ -2174,6 +2192,13 @@ This way, I can just check my calendar.
     (org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
     (org-caldav-exclude-tags '("HABIT")
                              "I don't want to export habits, because those will just clutter up my calendar. The calendar is supposed to be for one-off stuff, or rarely repeating stuff. Yes, I have to manually add the HABIT tag to every habit. Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.")
+    (org-caldav-todo-percent-states '((0 "TODO")
+                                      (0 "WAITING")
+                                      (1 "NEXT")
+                                      (2 "STARTED")
+                                      (0 "PROJ")
+                                      (100 "DONE")
+                                      (100 "CANCELLED")))
     :config
     (advice-add #'org-caldav-sync :around #'za/notify-on-interactivity))
 #+end_src
@@ -2304,7 +2329,7 @@ Lets you draw stuff in org mode documents.
 
 #+begin_src emacs-lisp
   (use-package edraw-org
-    :init (za/package-vc-install :repo "thezeroalpha/el-easydraw" :name "edraw" :rev "add-package-version")
+    :init (za/package-vc-install :repo "misohena/el-easydraw" :name "edraw")
     :after org
     :ensure nil
     :config
