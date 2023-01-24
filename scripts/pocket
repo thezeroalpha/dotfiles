@@ -1,109 +1,5 @@
 #!/usr/bin/env ruby
-# frozen_string_literal: true
-
-require 'open-uri'
-require 'json'
-require 'net/http'
-
-def die(message)
-  warn "error: #{message}"
-  exit 1
-end
-
-# The Pocket API authentication system
-class PocketAuth
-  def initialize
-    die 'Please set the POCKET_CONSUMER_KEY environment variable.' unless ENV['POCKET_CONSUMER_KEY']
-    @consumer_key = ENV['POCKET_CONSUMER_KEY']
-    @base = 'https://getpocket.com/v3'
-    @headers = { 'Content-Type' => 'application/json; charset=UTF8', 'X-Accept' => 'application/json' }
-    @access_token = read_access_token
-  end
-
-  def credentials
-    { consumer_key: @consumer_key, access_token: @access_token }
-  end
-
-  private
-
-  ACCESS_TOKEN_FILE = "#{ENV['HOME']}/.cache/pocket-access-token"
-
-  def read_access_token
-    if File.exist? ACCESS_TOKEN_FILE
-      @access_token = File.read ACCESS_TOKEN_FILE
-    else
-      @access_token = request_access_token
-      puts "Writing access token to #{ACCESS_TOKEN_FILE}, remove this file to revoke authorization."
-      File.write ACCESS_TOKEN_FILE, @access_token
-    end
-  end
-
-  def generate_auth_uri
-    query = { consumer_key: @consumer_key, redirect_uri: 'https://google.com' }
-    response = Net::HTTP.post URI("#{@base}/oauth/request"), query.to_json, @headers
-    if response.code == '200'
-      @pocket_code = JSON.parse(response.body)['code']
-    else
-      die 'Could not retrieve code.'
-    end
-    "https://getpocket.com/auth/authorize?request_token=#{@pocket_code}&redirect_uri=#{query['redirect_uri']}"
-  end
-
-  def authenticate
-    query = { consumer_key: @consumer_key, code: @pocket_code }
-    response = Net::HTTP.post URI("#{@base}/oauth/authorize"), query.to_json, @headers
-    return nil unless response.code == '200'
-
-    JSON.parse(response.body)
-  end
-
-  def request_access_token
-    puts "Please open: #{generate_auth_uri}"
-    # TODO: start a temp server, react when receive request (URL passed in redirect_uri above)
-    print 'Press enter when done.'
-    STDIN.getc
-    auth_response = authenticate
-    die 'Could not authenticate' unless auth_response
-    puts "Authenticated for username #{body['username']}"
-    @access_token = body['access_token']
-  end
-end
-
-# The Pocket API interface class
-class Pocket
-  def initialize
-    @base = 'https://getpocket.com/v3'
-    @headers = { 'Content-Type' => 'application/json; charset=UTF8', 'X-Accept' => 'application/json' }
-    @security_params = PocketAuth.new.credentials
-  end
-
-  def api_call(url_string, params)
-    response = Net::HTTP.post URI(url_string), params.merge(@security_params).to_json, @headers
-    if response.code == '200'
-      yield response if block_given?
-    else
-      die "Could not add, code #{response.code}"
-    end
-  end
-
-  def save(url)
-    api_call("#{@base}/add", url: url)
-  end
-
-  def retrieve_list(query)
-    # merge overwrites sort key if needed
-    api_call("#{@base}/get", { sort: 'newest' }.merge(query)) { |resp| parse_article_list(resp.body).join("\n") }
-  end
-
-  private
-
-  def parse_article_list(response_body)
-    JSON.parse(response_body)['list'].inject([]) do |lines, (_id, data)|
-      lines << "#{data['resolved_title']}\t#{data['resolved_url']}"
-    end
-  end
-end
-
+require_relative './libpocket.rb'
 def usage
   puts <<~HEREDOC
     Usage: pocket command [arg1 [arg2...]]
@@ -132,6 +28,12 @@ def get_count_sort(args)
 
   { count: count.abs }
 end
+def article_list_to_s(article_list)
+  article_list.to_a.inject([]) do |lines, article|
+    lines << "#{article['resolved_title']}\t#{article['resolved_url']}"
+  end.join("\n")
+end
+
 
 pocket = Pocket.new
 if ARGV[0] == 'save'
@@ -145,22 +47,22 @@ if ARGV[0] == 'save'
   end
 elsif ARGV[0].start_with? 'audio'
   params = { domain: '*.bandcamp.com', contentType: 'article' }.merge(get_count_sort(ARGV))
-  print pocket.retrieve_list(params)
+  print article_list_to_s(pocket.retrieve_list(params))
 elsif ARGV[0].start_with? 'video'
   params = { contentType: 'video' }.merge(get_count_sort(ARGV))
-  print pocket.retrieve_list(params)
+  print article_list_to_s(pocket.retrieve_list(params))
 elsif ARGV[0].start_with? 'article'
   if ARGV[1]
     params = { contentType: 'article' }.merge(get_count_sort(ARGV))
-    print pocket.retrieve_list(params)
+    print article_list_to_s(pocket.retrieve_list(params))
   else
-    print pocket.retrieve_list(contentType: 'article')
+    print article_list_to_s(pocket.retrieve_list(contentType: 'article'))
   end
 elsif ARGV[0].start_with? 'list'
   if ARGV[1]
-    print pocket.retrieve_list(get_count_sort(ARGV))
+    print article_list_to_s(pocket.retrieve_list(get_count_sort(ARGV)))
   else
-    print pocket.retrieve_list({})
+    print article_list_to_s(pocket.retrieve_list({}))
   end
 else
   die "Command '#{ARGV[0]}' not recognised."
