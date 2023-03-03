@@ -1,0 +1,13 @@
+snippet undo_ftplugin Undo an ftplugin config
+	let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin.'|' : '')
+	let b:undo_ftplugin .= '${1:changes to make}'
+
+snippet compiler Compiler boilerplate
+	if exists("current_compiler")
+      		finish
+	endif
+	let current_compiler = "${1:compiler name}"
+	if exists(":CompilerSet") != 2		" older Vim always used :setlocal
+		command -nargs=* CompilerSet setlocal <args>
+	endif
+	CompilerSet makeprg=$0

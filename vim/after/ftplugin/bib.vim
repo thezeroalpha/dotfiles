@@ -1,6 +1,10 @@
 command! BibOpenFile exe 'call system("open '.findfile(expand("<cfile>")).'")'
 nnoremap go :BibOpenFile<CR>
 
+setlocal suffixesadd+=.pdf
+let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin.'|' : '')
+let b:undo_ftplugin .= 'setlocal suffixesadd<'
+
 function! s:NextSection(backwards, visual)
   if a:visual
     normal! gv

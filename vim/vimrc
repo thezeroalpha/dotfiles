@@ -1,6 +1,5 @@
 " vim: foldmethod=marker foldlevel=0
 let mapleader=" "   " Set the mapleader to be space
-let maplocalleader=" "
 
 " Plugins {{{1
 " Installation {{{2
@@ -145,6 +144,13 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " Show context
 Plug 'wellle/context.vim'
 
+" Fuzzy finder in vim
+Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish'}
+Plug 'junegunn/fzf.vim'
+
+" Additional text objects
+Plug 'wellle/targets.vim'
+
 " Vim-only
 if !has('nvim')
   " Substitute preview
@@ -160,14 +166,7 @@ if !has('nvim')
   " Simple commenting
   Plug 'tpope/vim-commentary'
 
-  " Fuzzy finder in vim
-  Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish'}
-  Plug 'junegunn/fzf.vim'
-
 endif
-
-" Snippets
-Plug 'SirVer/ultisnips'
 call plug#end()
 
 " quickfix filtering
@@ -180,6 +179,12 @@ endif
 
 " }}}2
 " Config {{{2
+" Say {{{3
+let g:say_wpm = 230
+nmap gs <Plug>Say
+vmap gs <Plug>Say
+nmap gsl <Plug>SayLine
+nmap gss <Plug>SayBuffer
 " Tagbar {{{3
 " Maps
 nnoremap <leader>tt :TagbarToggle<CR>
@@ -261,9 +266,29 @@ let g:doge_mapping = '<leader>gd'
 let g:goyo_width = "80%"
 let g:goyo_height = "85%"
 " Vimtex {{{3
+let g:vimtex_view_automatic=0
+let g:vimtex_quickfix_open_on_warning = 0
+let g:vimtex_quickfix_ignore_filters = [ '[Ww]arning', '\(Under\|Over\)full', 'Missing ".* in' ]
 let g:tex_flavor='latex'
+let g:vimtex_toc_config = {
+      \ 'todo_sorted': 0,
+      \ 'show_help': 0
+      \ }
 let g:vimtex_view_method='sioyek'
 let g:vimtex_view_sioyek_exe='/Applications/sioyek.app/Contents/MacOS/sioyek'
+let g:vimtex_syntax_custom_cmds = [
+      \ {'name': 'fullref', 'argspell': 0},
+      \ {'name': 'citea', 'argspell': 0},
+      \ {'name': 'citen', 'argspell': 0, 'arggreedy': 1},
+      \ {'name': 'citet', 'argspell': 0, 'arggreedy': 1}
+      \ ]
+let g:vimtex_complete_ref = {
+      \ 'custom_patterns': ['\\fullref\*\?{[^}]*']
+      \ }
+let g:vimtex_complete_bib = {
+      \ 'custom_patterns': ['\\citen\*\?{[^}]*}{[^}]*',
+                          \ '\\citea\*\?{[^}]*']
+      \ }
 let g:tex_comment_nospell=1
 let g:vimtex_syntax_nospell_comments=1
 let g:vimtex_quickfix_mode=0
@@ -291,71 +316,52 @@ let g:vimtex_compiler_tectonic = {
       \   '--keep-intermediates'
       \ ],
       \}
-" Ultisnips {{{3
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsSnippetDirectories = ['~/.dotfiles/vim/ultisnips']
-let g:UltiSnipsEditSplit = "vertical"
-cabbrev USE UltiSnipsEdit
-" Complete ultisnips with <C-x><C-u>, which is coincidentally the same mapping as user completion
-" (custom function btw)
-set completefunc=ultisnips_complete#ListSnippets
-
-" NOTE: performance improvement. autotrigger leads to slow typing in markdown
-" mode.
-augroup ultisnips_no_auto_expansion
-  au!
-  au VimEnter * au! UltiSnips_AutoTrigger
-augroup END
 " Abolish {{{3
 " Work with variants of words easily
-let g:abolish_save_file = '"$HOME"/.dotfiles/vim/abolish_save_file.vim'
+let g:abolish_save_file = $HOME.."/.dotfiles/vim/abolish_save_file.vim"
 " Fzf {{{3
-if exists('g:loaded_fzf')
-  set rtp+="$HOME"/.dotfiles/tools/fzf
-  function! s:build_quickfix_list(lines)
-    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-    copen
-    cc
-  endfunction
-  let g:fzf_action = {
-        \ 'ctrl-f': function('s:build_quickfix_list'),
-        \ 'ctrl-t': 'tabedit',
-        \ 'ctrl-p': 'split',
-        \ 'ctrl-v': 'vsplit' }
-  let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
-  let g:fzf_preview_window = 'right:60%'
-  " Jump to existing buffer/window if possible
-  let g:fzf_buffers_jump = 1
+set rtp+="$HOME"/.dotfiles/tools/fzf
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+let g:fzf_action = {
+      \ 'ctrl-f': function('s:build_quickfix_list'),
+      \ 'ctrl-t': 'tabedit',
+      \ 'ctrl-p': 'split',
+      \ 'ctrl-v': 'vsplit' }
+let g:fzf_layout = {'window': { 'width': 0.9, 'height': 0.4 } }
+let g:fzf_preview_window = 'right:60%'
+" Jump to existing buffer/window if possible
+let g:fzf_buffers_jump = 1
 
-  nnoremap <leader>F :Files<CR>
-  nnoremap <leader><c-f><c-f> :Files<space>
-  nnoremap <expr> <leader><c-f>. ":Files " .. expand("%:h") .. "<CR>"
-  nnoremap <leader>B :Buffers<CR>
-  nnoremap <leader>G :Lines<CR>
-  nnoremap <leader>W :BLines<CR>
-  nnoremap <expr> <leader>Z ':BLines '..&foldmarker->split(',')[0]..'<CR>'
-  nnoremap <leader>? :Helptags<CR>
-  nnoremap <leader>T :Tags<CR>
-  nnoremap <leader>/ :Ag<CR>
-  nnoremap <leader>M :Marks<CR>
-  nnoremap <leader>; :History:<CR>
+nnoremap <leader>F :Files<CR>
+nnoremap <leader><c-f><c-f> :Files<space>
+nnoremap <expr> <leader><c-f>. ":Files " .. expand("%:h") .. "<CR>"
+nnoremap <leader>B :Buffers<CR>
+nnoremap <leader>G :Lines<CR>
+nnoremap <leader>W :BLines<CR>
+nnoremap <expr> <leader>Z ':BLines '..&foldmarker->split(',')[0]..'<CR>'
+nnoremap <leader>? :Helptags<CR>
+nnoremap <leader>T :Tags<CR>
+nnoremap <leader>/ :Ag<CR>
+nnoremap <leader>M :Marks<CR>
+nnoremap <leader>; :History:<CR>
 
-  " My extensions
-  nmap <leader>J <Plug>FzfChangesJumpsJumps
-  nmap <leader>C <Plug>FzfChangesJumpsChanges
+" My extensions
+nmap <leader>J <Plug>FzfChangesJumpsJumps
+nmap <leader>C <Plug>FzfChangesJumpsChanges
 
-  " Search for Todos/Fixmes
-  command! Todo Ag ((TO ?DO)|FIXME):<space>
-  nnoremap <leader>! :Todo<CR>
+" Search for Todos/Fixmes
+command! Todo Ag ((TO ?DO)|FIXME):<space>
+nnoremap <leader>! :Todo<CR>
 
-  " Set a filetype
-  cabbrev setf Filetypes
+" Set a filetype
+cabbrev setf Filetypes
 
-  command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
-  command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
-endif
+command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
+command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
 " Vimwiki {{{3
 let tlist_vimwiki_settings = 'wiki;h:Headers'
 let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
@@ -373,11 +379,6 @@ let g:vimwiki_ext2syntax = {'.wiki': 'default'}
 
 nnoremap <leader>wc :VimwikiCheckLinks<CR>
 nmap <leader>ww <Plug>VimwikiIndex
-" Sessions {{{3
-nmap <leader>ss <Plug>SaveSession
-nmap <leader>sl <Plug>LoadSession
-nmap <leader>sd <Plug>DeleteSession
-nmap <leader>sq <Plug>CloseSession
 " Haskell {{{3
 let hs_highlight_delimiters = 1
 let hs_highlight_boolean = 1
@@ -971,6 +972,10 @@ nnoremap gV `[v`]
 " Save in insert mode
 inoremap <C-Z> <C-o>:w<CR>
 
+" Allow undo/redo on C-w and C-u in insert mode
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+
 if !has('nvim')
   " Config edit mappings
   " Why :drop? It uses the file if it's already open.
@@ -1006,12 +1011,6 @@ nnoremap Y y$
 " Insert lines without moving cursor and going into insert mode
 nnoremap <leader>o m`o<esc>``
 nnoremap <leader>O m`O<esc>``
-
-" Custom session maps
-nnoremap <leader>ss :call sessions#SaveSession()<CR>
-nnoremap <leader>sl :call sessions#LoadSession()<CR>
-nnoremap <leader>sd :call sessions#DeleteSession()<CR>
-nnoremap <leader>sq :call sessions#CloseSession()<CR>
 
 " native file browsing
 nnoremap <leader>f  :Lexplore<CR>
@@ -1104,6 +1103,7 @@ nnoremap <leader>z{ :setlocal foldmethod=marker<CR>
 nnoremap <leader>zs :setlocal foldmethod=syntax<CR>
 nnoremap <leader>ze :setlocal foldmethod=expr<CR>
 nnoremap <leader>zd :setlocal foldmethod=diff<CR>
+nmap z/ <Plug>SearchFold
 
 " Set the foldlevel
 nnoremap <leader>zn :set foldlevel=
@@ -1122,7 +1122,6 @@ nnoremap <leader>lp :lprevious<CR>
 nnoremap <leader>lb :lbefore<CR>
 nnoremap <leader>la :lafter<CR>
 nnoremap <leader>lf :lfirst<CR>
-
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets

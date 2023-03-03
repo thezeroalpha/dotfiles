@@ -77,6 +77,7 @@ GitGutterAdd          #007822, darkblue.        NONE
 GitGutterChange       #8e830e, darkblue.        NONE
 GitGutterDelete       #6e032e, darkblue.        NONE
 GitGutterChangeDelete #80537e, darkblue.        NONE
+NormalFloat             text, #1a1a33
 
 link   Label,StorageClass,Typedef                               Structure
 link   ConId,Character,VimwikiLink                              Constant

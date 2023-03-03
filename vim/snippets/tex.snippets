@@ -1,0 +1,105 @@
+snippet pre typewriter (monospace) text
+	\\texttt{${1:text}}${0}
+snippet it italic text
+	\\textit{${1:text}}${0}
+snippet b bold face text
+	\\textbf{${1:text}}${0}
+snippet under underline text
+	\\underline{${1:text}}${0}
+snippet over overline text
+	\\overline{${1:text}}${0}
+snippet emp emphasize text
+	\\emph{${1:text}}${0}
+snippet sc small caps text
+	\\textsc{${1:text}}${0}
+snippet fig figure
+	\\begin{figure}[tb]
+		\\centering
+		\\includegraphics[width=${1:\\linewidth}]{${2:filename}}
+		\\caption{${3:caption}}
+		\\label{fig:${4:label}}
+	\\end{figure}
+	${0}
+snippet todo TODO
+	\\TODO{$1}$0
+snippet nc \newcommand
+	\\newcommand{\\${1:cmd}}[${2:opt}]{${3:realcmd}} ${0}
+
+# Section
+snippet sec \section
+	\\section{${1:section name}}
+	\\label{sec:${2:$1}}
+	${0}
+# Section without number
+snippet sec* \section*
+	\\section*{${1:section name}}
+	\\label{sec:${2:$1}}
+	${0}
+# Sub Section
+snippet sub \subsection
+	\\subsection{${1:subsection name}}
+	\\label{sub:${2:$1}}
+	${0}
+# Sub Section without number
+snippet sub* \subsection*
+	\\subsection*{${1:subsection name}}
+	\\label{sub:${2:$1}}
+	${0}
+# Sub Sub Section
+snippet ssub \subsubsection
+	\\subsubsection{${1:subsubsection name}}
+	\\label{ssub:${2:$1}}
+	${0}
+# Sub Sub Section without number
+snippet ssub* \subsubsection*
+	\\subsubsection*{${1:subsubsection name}}
+	\\label{ssub:${2:$1}}
+	${0}
+# Paragraph
+snippet par \paragraph
+	\\paragraph{${1:paragraph name}}
+	\\label{par:${2:$1}}
+	${0}
+# Sub Paragraph
+snippet subp \subparagraph
+	\\subparagraph{${1:subparagraph name}}
+	\\label{subp:${2:$1}}
+	${0}
+
+snippet enum enumerate environment
+	\\begin{enumerate}
+		\\item ${0}
+	\\end{enumerate}
+snippet enuma enumerate environment
+	\\begin{enumerate}[(a)]
+		\\item ${0}
+	\\end{enumerate}
+snippet enumi enumerate environment
+	\\begin{enumerate}[(i)]
+		\\item ${0}
+	\\end{enumerate}
+# Itemize
+snippet item itemize environment
+	\\begin{itemize}
+		\\item ${0}
+	\\end{itemize}
+snippet it \item
+	\\item ${1:${VISUAL}}
+# Description
+snippet desc description environment
+	\\begin{description}
+		\\item[${1}] ${0}
+	\\end{description}
+# Endless new item
+snippet ]i \item (recursive)
+	\\item ${1}
+		${0:]i}
+
+# Code listings
+snippet lst Code listing
+	\\begin{lstlisting}[float=tb,caption={${1}}, label={code:${2}}, language=${3}]
+		${0}
+	\\end{lstlisting}
+snippet lsi
+	\\lstinline|${1}| ${0}
+

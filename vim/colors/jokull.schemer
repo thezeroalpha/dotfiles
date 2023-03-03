@@ -96,6 +96,7 @@ GitGutterAdd           ddarkgreen, bg
 GitGutterChange        gold, bg
 GitGutterDelete        darkred, bg
 GitGutterChangeDelete  offlightred, bg
+NormalFloat             NONE, lightgrey
 
 " link    group1,group2,...                                                 target group
 link     structure                                                          type
