@@ -17,6 +17,8 @@ scrolloff 5
 
 define-filter "read articles" "unread = \"no\""
 define-filter "downloaded" "flags # \"d\""
+define-filter "last 2 days" "age <= 2"
+define-filter "last week" "age between 0:7"
 
 bind-key j down
 bind-key k up
