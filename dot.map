@@ -87,6 +87,7 @@ emacs:
 - junipero-theme.el: ~/.config/emacs/junipero-theme.el
 - notification.wav: ~/.config/emacs/notification.wav
 - lisp: ~/.config/emacs/lisp
+- start.org: ~/.config/emacs/start.org
 
 # Config: shell
 shell:
@@ -110,6 +111,7 @@ vim:
 - words: ~/.vim/words
 - spell: ~/.vim/spell
 - vimrc: ~/.vim/vimrc
+- snippets: ~/.vim/snippets
 
 # Config: nvim
 nvim: ~/.config/nvim
