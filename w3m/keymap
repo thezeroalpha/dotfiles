@@ -14,7 +14,7 @@ keymap b PREV_WORD
 keymap G END
 
 keymap C-m GOTO_LINK
-keymap M-i VIEW_IMAGE
+keymap C-m VIEW_IMAGE
 
 # Scrolling
 keymap C-e UP
