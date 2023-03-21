@@ -10,7 +10,7 @@
 [ -d "$HOME/bin" ] || [ -L "$HOME/bin" ]                                         && [ -n "${PATH##*"$HOME/bin"*}" ]                         && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/.bin" ] || [ -L "$HOME/.bin" ]                                       && [ -n "${PATH##*"$HOME/.bin"*}" ]                        && PATH="$HOME/.bin:$PATH"
 [ -d "$HOME/.scripts" ] || [ -L "$HOME/.scripts" ]                               && [ -n "${PATH##*"$HOME/.scripts"*}" ]                    && PATH="$HOME/.scripts:$PATH"
-[ -d "$XDG_DATA_HOME/gems/bin" ] || [ -L "$XDG_DATA_HOME/gems/bin" ]             && [ -n "${PATH##*"$XDG_DATA_HOME/gems/bin"*}" ]           && PATH="$XDG_DATA_HOME/gems/bin:$PATH"
+[ -d "$XDG_DATA_HOME/gem/bin" ] || [ -L "$XDG_DATA_HOME/gem/bin" ]               && [ -n "${PATH##*"$XDG_DATA_HOME/gem/bin"*}" ]            && PATH="$XDG_DATA_HOME/gem/bin:$PATH"
 [ -d "$HOME/.elan/bin" ]                                                         && [ -n "${PATH##*"$HOME/.elan/bin"*}" ]                   && PATH="$HOME/.elan/bin:$PATH"
 [ -d /usr/local/opt/man-db/libexec/bin ]                                         && [ -n "${PATH##*"/usr/local/opt/man-db/libexec/bin"*}" ] && PATH="/usr/local/opt/man-db/libexec/bin:$PATH"
 [ -d "$DOTFILES/tools/shfm" ]                                                    && [ -n "${PATH##*"$DOTFILES/tools/shfm"*}" ]              && PATH="$DOTFILES/tools/shfm:$PATH"
