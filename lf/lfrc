@@ -205,16 +205,12 @@ cmd edit_config :{{
   source ~/.config/lf/lfrc
 }}
 
-# quickly cd into frecent directories using github.com/rupa/z
 cmd z ${{
   set +u
   if [ $# -gt 0 ]; then
     dest=''
-    # See: https://github.com/skywind3000/z.lua or https://github.com/rupa/z
-    if [ -f "$DOTFILES/shell/z/z.sh" ]; then
-        export _Z_NO_PROMPT_COMMAND=1
-        source "$DOTFILES/shell/z/z.sh"
-        dest="$(_z "$@" && pwd)"
+    if command -v zoxide >/dev/null 2>&1; then
+        dest="$(zoxide query "$@")"
     fi
 
     if test -n "${dest}"; then
