@@ -133,7 +133,7 @@ printf '%s\n' "$FILES" | while IFS='' read -r file; do
         [ -n "$title" ] && set -- "$@" --set-tag=TITLE="$title"
         [ -n "$album" ] && set -- "$@" --set-tag=ALBUM="$album"
         [ -n "$artist" ] && set -- "$@" --set-tag=ARTIST="$artist"
-        [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER "$number"
+        [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER="$number"
 
         if [ -n "$image" ]; then
           img_path="${image%%:*}"
