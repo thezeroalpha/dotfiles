@@ -91,6 +91,7 @@ shell:
 # - zshenv: ~/.config/zsh/.zshenv # Catalina decided that /etc/zprofile should override a custom zshenv...so gotta stick everything in zshrc.
 - zshrc: ~/.config/zsh/.zshrc
 - inputrc: ~/.inputrc
+- starship.toml: ~/.config/starship.toml
 mime.types: ~/.mime.types
 
 # Config: Vim
