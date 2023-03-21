@@ -161,9 +161,8 @@ def_key "p"
 def_key "\\"
   apply_filter
 
-# Toggle mouse support
 def_key "|"
-  toggle_mouse
+ toggle_interface
 
 def_key "mouse"
   mouse_event
