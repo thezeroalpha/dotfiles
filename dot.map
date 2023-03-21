@@ -68,6 +68,9 @@ bitmonero: ~/.config/bitmonero
 sioyek:
 - keys_user.config: ~/Library/Application Support/sioyek/keys_user.config
 - prefs_user.config: ~/Library/Application Support/sioyek/prefs_user.config
+- light.config: ~/Library/Application Support/sioyek/light.config
+- dark.config: ~/Library/Application Support/sioyek/dark.config
+
 # Config: X server (Linux)
 xinitrc: ~/.xinitrc
 xprofile: ~/.xprofile
