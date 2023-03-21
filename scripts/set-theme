@@ -60,7 +60,7 @@ set_sioyek() {
 
 set_emacs() {
   pgrep emacsclient >/dev/null 2>&1 \
-    && emacsclient -nw -e "(progn (za/$1-theme) (kill-terminal))"
+    && emacsclient -d $DISPLAY -nw -e "(progn (za/$1-theme) (kill-terminal))"
 }
 
 # Change the 'colors' setting in the Alacritty config
@@ -133,4 +133,5 @@ esac
 set_p10k "$theme"
 set_tmux "$theme"
 set_emacs "$theme"
+set_sioyek "$theme"
 exit 0
