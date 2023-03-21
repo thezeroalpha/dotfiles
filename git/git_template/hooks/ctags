@@ -5,10 +5,10 @@ dir="$(git rev-parse --git-dir)"
 trap 'rm -f "$dir/$$.tags"' EXIT
 # vim ctags
 git ls-files | \
-    ctags --tag-relative=yes -L - -f "$dir/$$.tags"
+    ctags --tag-relative=yes -L --links=yes - -f "$dir/$$.tags"
 mv "$dir/$$.tags" "$dir/tags"
 
 # emacs etags
 git ls-files | \
-    ctags -e --tag-relative=yes -L - -f "$dir/$$.tags"
+    ctags -e --tag-relative=yes -L --links=yes - -f "$dir/$$.tags"
 mv "$dir/$$.tags" "$dir/etags"
