@@ -1,0 +1,7 @@
+require('dapui').setup()
+vim.keymap.set({'n', 'v'}, '<localleader>dh', function()
+  require('dapui').eval(nil, {})
+end)
+vim.keymap.set('n', '<localleader>do', function()
+  require('dapui').toggle()
+end)

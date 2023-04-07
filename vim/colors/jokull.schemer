@@ -97,6 +97,14 @@ GitGutterChange        gold, bg
 GitGutterDelete        darkred, bg
 GitGutterChangeDelete  offlightred, bg
 NormalFloat             NONE, lightgrey
+DapUIDecoration  offairblue, NONE
+DapUIScope  ddarkblue, NONE
+DapUIStoppedThread  ddarkblue, NONE
+DapUIBreakpointsPath  ddarkblue, NONE
+DapUIBreakpointsCurrentLine darkgreen, NONE
+DapUIWatchesEmpty darkred, NONE
+DapUIModifiedValue offlightred, NONE
+
 
 " link    group1,group2,...                                                 target group
 link     structure                                                          type
@@ -122,3 +130,6 @@ link     ALEWarning                                                         diff
 link     ALEWarningLine                                                     difftext
 link     gitcommitSummary                                                   include
 link     gitcommitOverflow                                                  errormsg
+link DapUIStepOver,DapUIStepInto,DapUIStepBack,DapUIStepOut DapUIScope
+link DapUIPlayPause,DapUIRestart,DapUIWatchesValue darkgreen
+link DapUIWatchesError,DapUIStop DapUIWatchesEmpty

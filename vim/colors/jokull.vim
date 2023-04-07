@@ -53,51 +53,67 @@ hi GitGutterChange guifg=#8e830e guibg=#e4e4e4 ctermfg=100 ctermbg=254 cterm=NON
 hi GitGutterDelete guifg=#6e032e guibg=#e4e4e4 ctermfg=52 ctermbg=254 cterm=NONE gui=NONE
 hi GitGutterChangeDelete guifg=#80537e guibg=#e4e4e4 ctermfg=96 ctermbg=254 cterm=NONE gui=NONE
 hi NormalFloat guifg=NONE guibg=#d0d0d0 ctermfg=NONE ctermbg=252 cterm=NONE gui=NONE
+hi DapUIDecoration guifg=#a8caff guibg=NONE ctermfg=153 ctermbg=NONE cterm=NONE gui=NONE
+hi DapUIScope guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
+hi DapUIStoppedThread guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
+hi DapUIBreakpointsPath guifg=#005f87 guibg=NONE ctermfg=24 ctermbg=NONE cterm=NONE gui=NONE
+hi DapUIBreakpointsCurrentLine guifg=#009051 guibg=NONE ctermfg=29 ctermbg=NONE cterm=NONE gui=NONE
+hi DapUIWatchesEmpty guifg=#6e032e guibg=NONE ctermfg=52 ctermbg=NONE cterm=NONE gui=NONE
+hi DapUIModifiedValue guifg=#80537e guibg=NONE ctermfg=96 ctermbg=NONE cterm=NONE gui=NONE
 " Link definitions
-hi! link precondit include
 hi! link tag delimiter
-hi! link spellbad todo
-hi! link spelllocal string
 hi! link gh_files_dir function
 hi! link conditional statement
-hi! link markdowncode type
-hi! link netrwdir function
-hi! link gitcommitSummary include
 hi! link netrwexe title
-hi! link tabline tablinefill
 hi! link ALEWarningLine difftext
-hi! link mkdlink type
 hi! link signcolumn linenr
-hi! link spellcap string
-hi! link spellrare string
 hi! link netrwMarkFile incsearch
+hi! link pmenusel statusline
+hi! link DapUIWatchesValue darkgreen
+hi! link ALEError errormsg
+hi! link specialcomment delimiter
+hi! link DapUIStepOut DapUIScope
+hi! link precondit include
+hi! link markdowncode type
+hi! link DapUIWatchesError DapUIWatchesEmpty
+hi! link tabline tablinefill
+hi! link DapUIStepBack DapUIScope
+hi! link mkdlink type
+hi! link netrwdir function
+hi! link DapUIStepInto DapUIScope
+hi! link DapUIRestart darkgreen
+hi! link number delimiter
+hi! link typedef structure
+hi! link ALEWarning diffchange
+hi! link macro include
+hi! link modemsg string
+hi! link repeat statement
+hi! link special delimiter
+hi! link operator statement
+hi! link specialchar delimiter
+hi! link label structure
+hi! link ALEErrorLine diffdelete
+hi! link DapUIStop DapUIWatchesEmpty
+hi! link spellrare string
+hi! link define include
+hi! link gitcommitOverflow errormsg
+hi! link DapUIPlayPause darkgreen
+hi! link debug delimiter
+hi! link structure type
+hi! link pmenu statuslinenc
+hi! link vimwikilink type
+hi! link gitcommitSummary include
+hi! link spelllocal string
+hi! link spellcap string
 hi! link markdownUrl string
 hi! link error errormsg
 hi! link preproc include
-hi! link ALEError errormsg
-hi! link number delimiter
-hi! link define include
-hi! link typedef structure
-hi! link repeat statement
-hi! link specialcomment delimiter
-hi! link pmenu statuslinenc
 hi! link storageclass structure
-hi! link ALEWarning diffchange
-hi! link gitcommitOverflow errormsg
-hi! link macro include
-hi! link pmenusel statusline
-hi! link modemsg string
-hi! link ALEErrorLine diffdelete
+hi! link DapUIStepOver DapUIScope
+hi! link spellbad todo
 hi! link character constant
-hi! link structure type
-hi! link debug delimiter
-hi! link special delimiter
-hi! link label structure
-hi! link operator statement
-hi! link vimwikilink type
-hi! link specialchar delimiter
 " Code to clear any groups that are not defined
-let s:DefinedColors=['precondit', 'tag', 'spellbad', 'spelllocal', 'gh_files_dir', 'conditional', 'markdowncode', 'netrwdir', 'gitcommitsummary', 'netrwexe', 'tabline', 'alewarningline', 'mkdlink', 'signcolumn', 'spellcap', 'spellrare', 'netrwmarkfile', 'markdownurl', 'error', 'preproc', 'aleerror', 'number', 'define', 'typedef', 'repeat', 'specialcomment', 'pmenu', 'storageclass', 'alewarning', 'gitcommitoverflow', 'macro', 'pmenusel', 'modemsg', 'aleerrorline', 'character', 'structure', 'debug', 'special', 'label', 'operator', 'vimwikilink', 'specialchar', 'normal', 'keyword', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete', 'normalfloat']
+let s:DefinedColors=['tag', 'gh_files_dir', 'conditional', 'netrwexe', 'alewarningline', 'signcolumn', 'netrwmarkfile', 'pmenusel', 'dapuiwatchesvalue', 'aleerror', 'specialcomment', 'dapuistepout', 'precondit', 'markdowncode', 'dapuiwatcheserror', 'tabline', 'dapuistepback', 'mkdlink', 'netrwdir', 'dapuistepinto', 'dapuirestart', 'number', 'typedef', 'alewarning', 'macro', 'modemsg', 'repeat', 'special', 'operator', 'specialchar', 'label', 'aleerrorline', 'dapuistop', 'spellrare', 'define', 'gitcommitoverflow', 'dapuiplaypause', 'debug', 'structure', 'pmenu', 'vimwikilink', 'gitcommitsummary', 'spelllocal', 'spellcap', 'markdownurl', 'error', 'preproc', 'storageclass', 'dapuistepover', 'spellbad', 'character', 'normal', 'keyword', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete', 'normalfloat', 'dapuidecoration', 'dapuiscope', 'dapuistoppedthread', 'dapuibreakpointspath', 'dapuibreakpointscurrentline', 'dapuiwatchesempty', 'dapuimodifiedvalue']
 function! s:ClearUndefinedColors(colors)
   let undefined_groups = filter(a:colors->keys()->map('tolower(v:val)'), 'index(s:DefinedColors, tolower(v:val)) < 0')
   call map(undefined_groups, "execute('highlight' . ' ' . v:val . ' ' . 'NONE')")
