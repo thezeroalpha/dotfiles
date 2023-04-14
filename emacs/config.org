@@ -942,43 +942,47 @@ Hide some messages I don't need.
   (setq inhibit-startup-message t)
 #+end_src
 
-** Start buffer
+** Start buffer (dashboard)
 #+begin_src emacs-lisp
-  (define-minor-mode za/start-mode
-    "Minor mode for start page: ~/.config/emacs/start.org"
-    :lighter " start"
-    :keymap `((,(kbd "c") . (lambda () (interactive) (find-file (concat user-emacs-directory "config.org"))))
-              (,(kbd "a") . org-agenda)
-              (,(kbd "ii") . gtd-inbox)
-              (,(kbd "im") . gtd-inbox-mobile)
-              (,(kbd "g") . za/start-mode-update)
-              (,(kbd "ss") . za/st)
-              (,(kbd "sk") . za/st-kill)
-              (,(kbd "<tab>") . org-next-link)
-              (,(kbd "S-<tab>") . org-previous-link))
-    :after-hook (za/start-mode-update)
-    (setq-local view-read-only nil)
-    (setq buffer-read-only t))
+  (use-package dashboard
+    :custom
+    (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+    (dashboard-startup-banner 'logo)
+    (dashboard-items '((gtd-inbox-counts . 3)
+                       (recents . 5)
+                       (bookmarks . 5)))
+    :config
+    (dashboard-setup-startup-hook))
 
-  (setq initial-buffer-choice (concat user-emacs-directory "start.org"))
+  (defun dashboard-insert-gtd-inbox-counts (list-size)
+    (require 'org-roam)
+    (let* ((lines-inbox (za/org-count-headlines-in-file 1 za/org-life-inbox))
+           (lines-mobile (za/org-count-headlines-in-file 1 za/org-life-inbox-mobile))
+           (count-docs (length (directory-files za/org-life-doc-inbox nil (rx bos (not ?.)))))
+           (item-list))
 
-  (defun za/start-mode-update ()
-    "Update start dashboard."
-    (interactive)
-    (setq buffer-read-only nil)
-    (org-update-all-dblocks)
-    (setq buffer-read-only t))
+      (when (> lines-inbox 0)
+        (push (list :name "Inbox" :count lines-inbox :file za/org-life-inbox) item-list))
+      (when (> lines-mobile 0)
+        (push (list :name "Mobile" :count lines-mobile :file za/org-life-inbox-mobile) item-list))
+      (when (> count-docs 0)
+        (push (list :name "Scanned" :count count-docs :file za/org-life-doc-inbox) item-list))
 
-  (defun org-dblock-write:gtd-inbox-stats (params)
-    "Get GTD inbox stats for start screen."
+      (dashboard-insert-section
+       ;; Widget title
+       "GTD:"
+       ;; list generated for dashboard
+       item-list
+       list-size
+       'gtd
+       "t"
+       ;; decide what to do when clicked ("el" is automatically assigned)
+       `(lambda (&rest _)
+          (message "%s" (find-file (plist-get ',el :file))))
+       ;; show how list is shown in dashboard ("el" is automatically assigned)
+       (format "%s: %s" (plist-get el :name) (plist-get el :count)))))
 
-    (let ((lines-inbox (za/org-count-headlines-in-file 1 za/org-life-inbox))
-          (lines-mobile (za/org-count-headlines-in-file 1 za/org-life-inbox-mobile))
-          (count-docs (length (directory-files za/org-life-doc-inbox nil (rx bos (not ?.))))))
-      (insert (if (> lines-inbox 0) (format "- [[elisp:(find-file \"%s\")][%s: %s]]\n" za/org-life-inbox "Inbox" lines-inbox) "")
-              (if (> lines-mobile 0) (format "- [[elisp:(find-file \"%s\")][%s: %s]]\n" za/org-life-inbox-mobile "Mobile" lines-mobile) "")
-              (if (> count-docs 0) (format "- [[elisp:(find-file \"%s\")][%s: %s]]" za/org-life-doc-inbox"Scanned" count-docs) ""))))
-
+  (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts))
 #+end_src
 
 ** Pixel scroll mode
