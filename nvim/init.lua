@@ -59,6 +59,14 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
+-- 'i' that indents correctly on empty lines
+vim.keymap.set('n', 'i', function()
+        if #vim.fn.getline(".") == 0 then
+          return [["_cc]]
+        else
+          return "i"
+        end
+end, {expr = true})
 
 vim.cmd ([[
 nnoremap <leader><C-e><C-u> :<c-u>exe "vsplit ~/.vim/snippets/"..&filetype..".snippets"<CR>

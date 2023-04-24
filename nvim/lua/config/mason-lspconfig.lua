@@ -5,13 +5,14 @@ local mason_lspconfig = require 'mason-lspconfig'
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  ruby_ls = {},
   rust_analyzer = {},
+  solargraph = {},
   bashls = {},
   pyright = {},
   jdtls = {},
   jsonls = {},
   texlab = {},
+  clangd = {},
   lua_ls = {
     Lua = {
       runtime = {
