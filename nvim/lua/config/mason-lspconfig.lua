@@ -13,6 +13,7 @@ local servers = {
   jsonls = {},
   texlab = {},
   clangd = {},
+  perlnavigator = {},
   lua_ls = {
     Lua = {
       runtime = {
