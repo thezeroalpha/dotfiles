@@ -170,6 +170,23 @@ sub menu {
       }
     }];
 
+  push @$tableref, ['Archive', sub {
+    my ($link) = @_;
+    detach sub {
+      web_archive($link);
+      notify "Archived", "$link";
+    }
+  }];
+
+  push @$tableref, ['Archive (and copy archived)', sub {
+    my ($link) = @_;
+    detach sub {
+      my $location = web_archive($link);
+      system(qq(printf '%s' '$location' | clc));
+      notify "Archived $link", "Archived location copied to clipboard: $location";
+    }
+  }];
+
   # Choose an option
   my @options = map { $_->[0] } @$tableref;
   my $choice = choose(\@options);
@@ -178,6 +195,14 @@ sub menu {
   my $choice_index = (grep { $options[$_] eq $choice } 0..$#options)[0];
   return $tableref->[$choice_index][1];
 }
+
+# Save in the Internet Archive
+sub web_archive {
+  my $link = shift;
+  my $location = `curl -sI 'https://web.archive.org/save/$link' | awk -F': ' '/^location/ { print \$2 }'`;
+  return $location;
+}
+
 
 # How to play {{{1
 sub play_audio_mpd {
