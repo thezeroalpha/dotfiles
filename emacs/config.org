@@ -1690,10 +1690,15 @@ Convenience functions to make opening the main file faster:
 
 #+begin_src emacs-lisp
   (defun gtd () "GTD: main file" (interactive) (find-file za/org-life-main))
-  (defun gtd-inbox () "GTD: inbox" (interactive)
-         (find-file za/org-life-inbox)
-         (dired-other-window za/org-life-doc-inbox)
-         (dired-revert))
+  (defun gtd-inbox ()
+    "GTD: inbox"
+    (interactive)
+    (let ((count-docs (length (directory-files za/org-life-doc-inbox nil (rx bos (not ?.))))))
+      (find-file za/org-life-inbox)
+      (when (> count-docs 0)
+        (dired-other-window za/org-life-doc-inbox)
+        (dired-revert)
+        (other-window 1))))
   (defun gtd-inbox-mobile () "GTD: mobile inbox" (interactive) (find-file za/org-life-inbox-mobile))
   (defun gtd-archive () "GTD: archive" (interactive) (find-file za/org-life-archive))
   (defun gtd-someday () "GTD: someday" (interactive) (find-file za/org-life-someday))
