@@ -37,9 +37,6 @@ Plug 'tpope/vim-projectionist'
 " A tag overview on the right side
 Plug 'majutsushi/tagbar'
 
-" Personal hypertext files
-Plug 'vimwiki/vimwiki'
-
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
 
@@ -191,16 +188,6 @@ nnoremap <leader>tt :TagbarToggle<CR>
 nnoremap <leader>to :TagbarOpen fj<CR>
 
 " tagbar language definitions
-let g:tagbar_type_vimwiki = {
-      \   'ctagstype':'vimwiki'
-      \ , 'kinds':['h:header']
-      \ , 'sro':'&&&'
-      \ , 'kind2scope':{'h':'header'}
-      \ , 'sort':0
-      \ , 'ctagsbin':'vwtags.py'
-      \ , 'ctagsargs': 'default'
-      \ }
-
 let g:tagbar_type_go = {
       \ 'ctagstype' : 'go',
       \ 'kinds'     : [
@@ -362,23 +349,6 @@ cabbrev setf Filetypes
 
 command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
 command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
-" Vimwiki {{{3
-let tlist_vimwiki_settings = 'wiki;h:Headers'
-let g:vimwiki_table_mappings = 0   " avoid vimwiki conflict with Ultisnips
-
-let wiki = {}
-let wiki.path = '/Users/alex/Documents/Syncthing/vimwiki/'
-let wiki.path_html = '/Users/alex/Documents/Syncthing/vimwiki_html'
-let wiki.template_path = '/Users/alex/Documents/Syncthing/vimwiki/templates'
-let wiki.template_ext = '.tpl'
-let wiki.syntax = 'default'
-let wiki.ext = '.txt'
-let g:vimwiki_list = [wiki]
-let g:vimwiki_global_ext = 1
-let g:vimwiki_ext2syntax = {'.wiki': 'default'}
-
-nnoremap <leader>wc :VimwikiCheckLinks<CR>
-nmap <leader>ww <Plug>VimwikiIndex
 " Haskell {{{3
 let hs_highlight_delimiters = 1
 let hs_highlight_boolean = 1
