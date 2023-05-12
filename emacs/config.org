@@ -2428,6 +2428,31 @@ And a function to rsync to my VPS:
     (org-roam-db-sync)
     (org-roam-update-org-id-locations))
 #+end_src
+*** Sync with OurHome
+API work is handled via an external ruby script.
+
+#+begin_src emacs-lisp
+  (defun za/org-ourhome-sync-tasks ()
+    "Add tasks from OurHome to inbox"
+    (interactive)
+    (unless (json-available-p)
+      (user-error "JSON not available"))
+    (unless (boundp 'za/org-life-inbox)
+      (user-error "Please set za/org-life-inbox"))
+    (let* ((api-data (json-parse-string
+                      (shell-command-to-string "~/.local/share/rbenv/shims/ruby ~/.scripts/ourhome.rb")
+                      :object-type 'alist))
+           (format-data-as-org (lambda (l)
+                                 (format "* TODO %s :ourhome:\n  SCHEDULED: <%s>\n  Points: %d\n"
+                                         (alist-get 'description l)
+                                         (alist-get 'scheduled_due_date l)
+                                         (alist-get 'point_value l))))
+           (org-ourhome-items (mapcar format-data-as-org api-data)))
+      (with-current-buffer (find-file-noselect za/org-life-inbox)
+        (goto-char (point-max))
+        (insert "\n" (string-join org-ourhome-items "\n")))
+      (message "Synced %d OurHome tasks to inbox" (length api-data))))
+#+end_src
 
 *** org-caldav
 This lets me sync my Org agenda to my CalDAV server.
@@ -2595,6 +2620,7 @@ Lets you draw stuff in org mode documents.
 #+end_src
 
 *** TODO the path for org-roam export and data export should be configurable, not hard-coded
+
 ** Mail mode for neomutt
 When editing a message from neomutt, I want to use mail mode.
 Even though I won't be sending the email from there, I like the syntax highlighting :)
