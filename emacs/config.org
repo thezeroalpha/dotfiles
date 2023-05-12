@@ -1753,6 +1753,30 @@ And a conditional binding:
   (bind-key "C-c g n" #'za/gtd-inbox-next-item 'org-mode-map (string= (buffer-file-name) (file-truename za/org-life-inbox)))
 #+end_src
 
+And a function for importing other inboxes:
+
+#+begin_src emacs-lisp
+  (defun za/gtd-inbox-import ()
+    (interactive)
+    (unless (string= (buffer-file-name) (file-truename za/org-life-inbox))
+      (user-error "You're not in your GTD inbox file."))
+    (let ((mobile (file-truename za/org-life-inbox-mobile))
+          (calendar (file-truename za/org-life-calendar-inbox)))
+      (save-mark-and-excursion
+        (goto-char (point-max))
+        (insert-file mobile)
+        (goto-char (point-max))
+        (insert-file calendar)
+        (write-region "" nil mobile)
+        (write-region "" nil calendar)
+        (message "Imported other inboxes."))))
+#+end_src
+
+Also with a conditional binding:
+
+#+begin_src emacs-lisp
+  (bind-key "C-c g i" #'za/gtd-inbox-import 'org-mode-map (string= (buffer-file-name) (file-truename za/org-life-inbox)))
+#+end_src
 *** Refiling & archiving
 #+begin_src emacs-lisp
   (use-package org-refile
