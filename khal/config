@@ -1,10 +1,6 @@
 [calendars]
 [[mine]]
-path = ~/.local/share/calendars/mine
-type = discover
-
-[[web]]
-path = ~/.local/share/calendars/sub
+path = ~/.local/share/calendars/mine/*
 type = discover
 
 [keybindings]

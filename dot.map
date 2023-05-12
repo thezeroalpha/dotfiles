@@ -8,6 +8,7 @@ scripts: ~/.scripts
 mailcap: ~/.config/mailcap
 
 # Config: utilities
+calcure/config.ini: ~/.config/calcure/config.ini
 compton: ~/.config/compton
 ctags: ~/.config/ctags
 gdb:
