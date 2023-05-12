@@ -5,7 +5,7 @@
   "CONSOLE_WIDTH": 80,
   "MAX_RES": 1080,
   "PLAYER": "mpv",
-  "PLAYERARGS": "--volume=50 --config-dir=~/.config/mpv",
+  "PLAYERARGS": "--volume=50 --config-dir=/Users/alex/.config/mpv",
   "ENCODER": 0,
   "NOTIFIER": "notify",
   "CHECKUPDATE": true,
@@ -35,5 +35,6 @@
   "SHOW_QRCODE": false,
   "HISTORY": true,
   "INPUT_HISTORY": true,
-  "VLC_DUMMY_INTERFACE": false
+  "VLC_DUMMY_INTERFACE": false,
+  "SHOW_SUBTITLES": true
 }
