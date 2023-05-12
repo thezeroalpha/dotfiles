@@ -125,5 +125,4 @@ key_bindings:
   - { key: Slash,       mods: Control,         chars: "\x1f"            }
   - { key: Grave,       mods: Alt,             chars: "\x1B`"           }
   - { key: Grave,       mods: Alt|Shift,       chars: "\x1B~"           }
-alt_send_esc: false
 
