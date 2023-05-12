@@ -85,6 +85,14 @@ class Pocket
     end
   end
 
+  def archive_all_pocketbook
+    tagged_pocketbook = api_call('/get', { tag: 'pocketbook', state: :any })
+    ids = tagged_pocketbook['list'].map(&:first)
+    actions = ids.map { |id| [{action: :tags_remove, item_id: id, tags: 'pocketbook'}, {action: :archive, item_id: id}]}.flatten
+    result = api_call('/send', { actions: })
+    warn "Some errors, ids #{ids}" unless result['action_results'].all?
+  end
+
   def save(url)
     api_call("/add", url: url)
   end
