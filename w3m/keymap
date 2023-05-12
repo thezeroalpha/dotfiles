@@ -81,9 +81,10 @@ keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/
 # Link hinting
 keymap f-SPC COMMAND 'SET_OPTION display_link_number=toggle; RESHAPE'
 keymap ff COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN'
-keymap ft COMMAND 'SET_OPTION display_link_number=0; RESHAPE; TAB_LINK'
+keymap ft COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; TAB_LINK'
 keymap fo COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; GOTO_LINK'
 keymap fn COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; TAB_LINK'
+keymap fe COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; EXTERN_LINK'
 
 keymap m MARK
 keymap } NEXT_MARK
