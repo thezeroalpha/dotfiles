@@ -1413,6 +1413,18 @@ Prism changes the color of text depending on their depth. Makes it easier to see
                              (bg (plist-get properties :background)))
                         (set-face-attribute 'mode-line nil :background bg)))))))))
 #+end_src
+** devil: alternative to god-mode that uses a comma
+#+begin_src emacs-lisp
+  (use-package devil
+    :init
+    (za/package-vc-install :repo "susam/devil")
+    (require 'devil)
+    :custom
+    (devil-lighter " \u272A")
+    (devil-prompt "\u272A %t")
+    :config (global-devil-mode)
+    :bind ("C-," . global-devil-mode))
+#+end_src
 ** academic-phrases
 Gives ideas for phrases to use in academic writing.
 #+begin_src emacs-lisp
