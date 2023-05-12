@@ -946,13 +946,38 @@ Hide some messages I don't need.
 #+begin_src emacs-lisp
   (use-package dashboard
     :custom
-    (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
     (dashboard-startup-banner 'logo)
     (dashboard-items '((gtd-inbox-counts . 3)
                        (recents . 5)
                        (bookmarks . 5)))
+
+    ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
+    (dashboard-footer-messages
+     (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
+            ;; Reformat quotes for display in dashboard
+            (file-contents (with-temp-buffer
+                             (insert-file-contents quotes-file)
+                             (re-search-forward (rx bol "> "))
+                             (delete-region (point-min) (pos-bol))
+                             (goto-char (point-min))
+                             (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
+                             (save-excursion (replace-regexp (rx eol "\n") "  "))
+                             (buffer-substring-no-properties (point-min) (point-max))))
+            ;; Split file into individual quotes
+            (quotes (split-string file-contents "  ---  ")))
+       ;; Run each quote through fill-region for better display
+       (require 's)
+       (mapcar (lambda (quote-line)
+                 (with-temp-buffer
+                   (insert (s-trim quote-line))
+                   (fill-region (point-min) (point-max))
+                   (buffer-substring-no-properties (point-min) (point-max))))
+               quotes)))
+    :bind (:map dashboard-mode-map
+                ("ss" . za/st)
+                ("sk" . za/st-kill))
     :config
-    (dashboard-setup-startup-hook))
+    (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts)))
 
   (defun dashboard-insert-gtd-inbox-counts (list-size)
     (require 'org-roam)
@@ -982,8 +1007,10 @@ Hide some messages I don't need.
        ;; show how list is shown in dashboard ("el" is automatically assigned)
        (format "%s: %s" (plist-get el :name) (plist-get el :count)))))
 
-  (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts))
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 #+end_src
+
 
 ** Pixel scroll mode
 #+begin_src emacs-lisp
@@ -1734,6 +1761,7 @@ To improve jumping to any headline via counsel, filter returned candidates to in
 
   (advice-add #'counsel-org-agenda-headlines--candidates :filter-return #'za/counsel-org-agenda-headlines--candidates-with-filename)
 #+end_src
+
 *** Processing inbox
 I made a function for processing the inbox, focusing on one item at a time:
 
