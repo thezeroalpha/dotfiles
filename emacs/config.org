@@ -1125,6 +1125,7 @@ Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --wit
 Alternative to counsel/ivy/swiper, will probably switch to this at some point.
 [[https://old.reddit.com/r/emacs/comments/qfrxgb/using_emacs_episode_80_vertico_marginalia_consult/hi6mfh7/][Here]] is a good comparison.
 
+A [[https://old.reddit.com/r/emacs/comments/11lqkbo/weekly_tips_tricks_c_thread/jbe06qv/][comment here to follow]] when I switch to vertico.
 #+begin_src emacs-lisp :tangle no
   (dolist (pack '(vertico consult marginalia embark vertico-posframe vertico-prescient))
     (unless (package-installed-p pack)
@@ -1453,8 +1454,8 @@ Install Org and require additional components that I use.
            (org-mode . org-pretty-table-mode))
     :config
     (za/package-vc-install :repo "Fuco1/org-pretty-table")
-    (delight 'org-pretty-table nil)
     (require 'org-pretty-table)
+    (delight 'org-pretty-table nil)
 
 
     (za/package-vc-install :repo "https://git.sr.ht/~bzg/org-contrib" :load "lisp/")
@@ -1517,7 +1518,114 @@ Install Org and require additional components that I use.
     (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
     (add-to-list 'org-structure-template-alist '("ss" . "src sh")))
 #+end_src
+*** DISABLED Make it look a bit nicer
+**** TODO freezes emacs-daemon on startup. figure out why.
+From https://binarydigitz01.gitlab.io/blog/ricing-org-mode/
+#+begin_src emacs-lisp :tangle no
+  (let* ((variable-tuple (cond ((x-list-fonts "ETBembo")
+                                '(:font "ETBembo"))))
+         (headline `(:weight bold)))
+    (custom-theme-set-faces
+     'user
+     `(org-level-8 ((t (,@headline ,@variable-tuple))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+     `(org-document-title ((t (,@headline ,@variable-tuple
+                                          :height 2.0 :underline nil))))
+     '(variable-pitch ((t (:family "ETBembo" :height 170 :weight thin))))))
 
+  (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
+    )
+  (eval-after-load "org"
+    '(mapc
+      (lambda (face)
+        (let ((adjoin-to-list-or-symbol
+               (lambda (element list-or-symbol)
+                 (let ((list (if (not (listp list-or-symbol))
+                                 (list list-or-symbol)
+                               list-or-symbol)))
+                   (require 'cl-lib)
+                   (cl-adjoin element list)))))
+          (set-face-attribute
+           face nil
+           :inherit
+           (funcall adjoin-to-list-or-symbol
+                    'fixed-pitch
+                    (face-attribute face :inherit)))))
+        (list 'org-code 'org-block 'org-table)))
+#+end_src
+*** Patch for org-clock-update-time-maybe
+I should make this a proper patch in org-clock.el.
+The function's supposed to return nil if not at clock-line, but the final goto-char returns a value which means it never returns nil.
+Wrap it in a prog1 to return the value we actually want.
+#+begin_src emacs-lisp
+  (advice-add #'org-clock-update-time-maybe :override #'za/org-clock-update-time-maybe)
+  (defun za/org-clock-update-time-maybe ()
+    "If this is a CLOCK line, update it and return t.
+  Otherwise, return nil."
+    (interactive)
+    (when (version< "9.6.5" (org-version))
+      (za/notify "Check org patch" "See if the org-clock-update-time-maybe patch is still needed.")
+      (user-error "Check if org-clock-update-time-maybe patch is still needed - look for prog1 call."))
+    (let ((origin (point))) ;; `save-excursion' may not work when deleting.
+      (prog1 (save-excursion
+               (beginning-of-line 1)
+               (skip-chars-forward " \t")
+               (when (looking-at org-clock-string)
+                 (let ((re (concat "[ \t]*" org-clock-string
+                                   " *[[<]\\([^]>]+\\)[]>]\\(-+[[<]\\([^]>]+\\)[]>]"
+                                   "\\([ \t]*=>.*\\)?\\)?"))
+                       ts te h m s neg)
+                   (cond
+                    ((not (looking-at re))
+                     nil)
+                    ((not (match-end 2))
+                     (when (and (equal (marker-buffer org-clock-marker) (current-buffer))
+                                (> org-clock-marker (point))
+                                (<= org-clock-marker (line-end-position)))
+                       ;; The clock is running here
+                       (setq org-clock-start-time
+                             (org-time-string-to-time (match-string 1)))
+                       (org-clock-update-mode-line)))
+                    (t
+                     ;; Prevent recursive call from `org-timestamp-change'.
+                     (cl-letf (((symbol-function 'org-clock-update-time-maybe) #'ignore))
+                       ;; Update timestamps.
+                       (save-excursion
+                         (goto-char (match-beginning 1)) ; opening timestamp
+                         (save-match-data (org-timestamp-change 0 'day)))
+                       ;; Refresh match data.
+                       (looking-at re)
+                       (save-excursion
+                         (goto-char (match-beginning 3)) ; closing timestamp
+                         (save-match-data (org-timestamp-change 0 'day))))
+                     ;; Refresh match data.
+                     (looking-at re)
+                     (and (match-end 4) (delete-region (match-beginning 4) (match-end 4)))
+                     (end-of-line 1)
+                     (setq ts (match-string 1)
+                           te (match-string 3))
+                     (setq s (- (org-time-string-to-seconds te)
+                                (org-time-string-to-seconds ts))
+                           neg (< s 0)
+                           s (abs s)
+                           h (floor (/ s 3600))
+                           s (- s (* 3600 h))
+                           m (floor (/ s 60))
+                           s (- s (* 60 s)))
+                     (insert " => " (format (if neg "-%d:%02d" "%2d:%02d") h m))
+                     t)))))
+        ;; Move back to initial position, but never beyond updated
+        ;; clock.
+        (unless (< (point) origin)
+          (goto-char origin)))))
+
+#+end_src
 *** Agenda & GTD
 **** Agenda mode settings
 #+begin_src emacs-lisp
@@ -1998,7 +2106,7 @@ Fix column alignment in agenda.
           (insert timestamp
                   "--"
                   (org-time-stamp '(16)))
-          (s-trim (org-evaluate-time-range))))))
+          (org-evaluate-time-range)))))
 #+end_src
 
 Also a method to add overlays with that timestamp:
