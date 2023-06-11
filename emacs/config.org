@@ -1909,6 +1909,18 @@ And another function, to skip tasks that are blocked:
         keep)))
 #+end_src
 
+For listing tasks without a context - skip if it has a context tag:
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-has-context ()
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil)
+          (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags)))
+          (context-tag-p (lambda (s) (eq (aref s 0) ?@))))
+      (if (cl-some context-tag-p item-tags-without-inherited)
+          skip
+        keep)))
+#+end_src
 Create custom agenda view based on those keywords.
 Agenda views are made up of blocks, appearing in the order that you declare them.
 The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
@@ -1918,6 +1930,10 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
         '(("n" "Next actions"
            todo "NEXT" ((org-agenda-overriding-header "Next actions:")
                         (org-agenda-sorting-strategy '(priority-down alpha-up))))
+          ("@" "Next actions missing context"
+           todo "NEXT" ((org-agenda-overriding-header "Missing context:")
+                        (org-agenda-sorting-strategy '(priority-down alpha-up))
+                        (org-agenda-skip-function 'za/skip-if-has-context)))
           ("W" "Waiting"
            ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
           ("S" . "Saved for later...")
