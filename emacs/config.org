@@ -446,6 +446,7 @@ So I create a keybinding to toggle dedicated on a window:
 
 #+end_src
 
+
 ** Rotate windows horizontal ↔ vertical
 #+begin_src emacs-lisp
   (defun za/rotate-windows ()
@@ -1598,73 +1599,6 @@ From https://binarydigitz01.gitlab.io/blog/ricing-org-mode/
                     (face-attribute face :inherit)))))
         (list 'org-code 'org-block 'org-table)))
 #+end_src
-*** Patch for org-clock-update-time-maybe
-I should make this a proper patch in org-clock.el.
-The function's supposed to return nil if not at clock-line, but the final goto-char returns a value which means it never returns nil.
-Wrap it in a prog1 to return the value we actually want.
-#+begin_src emacs-lisp
-  (advice-add #'org-clock-update-time-maybe :override #'za/org-clock-update-time-maybe)
-  (defun za/org-clock-update-time-maybe ()
-    "If this is a CLOCK line, update it and return t.
-  Otherwise, return nil."
-    (interactive)
-    (when (version< "9.6.5" (org-version))
-      (za/notify "Check org patch" "See if the org-clock-update-time-maybe patch is still needed.")
-      (user-error "Check if org-clock-update-time-maybe patch is still needed - look for prog1 call."))
-    (let ((origin (point))) ;; `save-excursion' may not work when deleting.
-      (prog1 (save-excursion
-               (beginning-of-line 1)
-               (skip-chars-forward " \t")
-               (when (looking-at org-clock-string)
-                 (let ((re (concat "[ \t]*" org-clock-string
-                                   " *[[<]\\([^]>]+\\)[]>]\\(-+[[<]\\([^]>]+\\)[]>]"
-                                   "\\([ \t]*=>.*\\)?\\)?"))
-                       ts te h m s neg)
-                   (cond
-                    ((not (looking-at re))
-                     nil)
-                    ((not (match-end 2))
-                     (when (and (equal (marker-buffer org-clock-marker) (current-buffer))
-                                (> org-clock-marker (point))
-                                (<= org-clock-marker (line-end-position)))
-                       ;; The clock is running here
-                       (setq org-clock-start-time
-                             (org-time-string-to-time (match-string 1)))
-                       (org-clock-update-mode-line)))
-                    (t
-                     ;; Prevent recursive call from `org-timestamp-change'.
-                     (cl-letf (((symbol-function 'org-clock-update-time-maybe) #'ignore))
-                       ;; Update timestamps.
-                       (save-excursion
-                         (goto-char (match-beginning 1)) ; opening timestamp
-                         (save-match-data (org-timestamp-change 0 'day)))
-                       ;; Refresh match data.
-                       (looking-at re)
-                       (save-excursion
-                         (goto-char (match-beginning 3)) ; closing timestamp
-                         (save-match-data (org-timestamp-change 0 'day))))
-                     ;; Refresh match data.
-                     (looking-at re)
-                     (and (match-end 4) (delete-region (match-beginning 4) (match-end 4)))
-                     (end-of-line 1)
-                     (setq ts (match-string 1)
-                           te (match-string 3))
-                     (setq s (- (org-time-string-to-seconds te)
-                                (org-time-string-to-seconds ts))
-                           neg (< s 0)
-                           s (abs s)
-                           h (floor (/ s 3600))
-                           s (- s (* 3600 h))
-                           m (floor (/ s 60))
-                           s (- s (* 60 s)))
-                     (insert " => " (format (if neg "-%d:%02d" "%2d:%02d") h m))
-                     t)))))
-        ;; Move back to initial position, but never beyond updated
-        ;; clock.
-        (unless (< (point) origin)
-          (goto-char origin)))))
-
-#+end_src
 *** Agenda & GTD
 **** Agenda mode settings
 #+begin_src emacs-lisp
@@ -1936,7 +1870,6 @@ Define a function to skip items if they're part of a project (i.e. one of their 
                (not (member "PROJECT" item-tags-without-inherited)))
           skip
         keep)))
-
 #+end_src
 
 Also, define a function to skip tasks (trees) that are not habits (i.e. don't have the STYLE property ~habit~):
