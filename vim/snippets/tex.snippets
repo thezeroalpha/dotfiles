@@ -103,3 +103,20 @@ snippet lst Code listing
 snippet lsi
 	\\lstinline|${1}| ${0}
 
+snippet table
+	% Use table* if want to stretch across whole page
+	\\begin{table}[tb]
+		\resizebox{\linewidth}{!}{%
+			\\begin{tabular}{p{0.5\\linewidth} l}
+				\\toprule
+				\\textbf{Header} & \\textbf{Header} \\\\
+				\\midrule
+				Value & Value \\\\
+				\\midrule
+				Value & Value \\\\
+				\\bottomrule
+			\\end{tabular}%
+		} % end resizebox
+		\\caption{Caption}
+		\\label{tab:table}
+	\\end{table}
