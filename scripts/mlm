@@ -79,7 +79,47 @@ PLAYLIST_END
   printf "Done!\n"
 }
 
+verify_playlist_rust() {
+  playlist_path="$MUSIC_DIR/$1"
+  [ -f "$playlist_path" ] || die "Playlist $playlist_path not found."
+
+  tmpbin=$(mktemp)
+  trap 'rm $tmpbin' INT TERM EXIT
+  { rustc - -o "$tmpbin" <<EOF
+use std::path::PathBuf;
+use std::fs::File;
+use std::io::{BufReader, BufRead};
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let music_dir = match std::env::var("MUSIC_DIR") {
+        Ok(v) => PathBuf::from(v),
+        _ => panic!("Variable MUSIC_DIR not set in environment."),
+    };
+    assert!(music_dir.as_path().is_dir());
+
+    let m3u_file_name = args.iter().skip(1).next().expect("No file provided");
+    let m3u_file = File::open(m3u_file_name).expect("Couldn't read file");
+    let reader = BufReader::new(m3u_file);
+    let mut linenum = 1;
+    for line in reader.lines() {
+        let line = line.expect("Couldn't read line");
+        if !line.starts_with('#') {
+            let fpath = music_dir.join(line);
+            if !fpath.is_file() {
+                eprintln!("{}\t{}", linenum, fpath.display());
+            }
+        }
+        linenum += 1;
+    }
+}
+EOF
+  } && "$tmpbin" "$playlist_path"
+  rm "$tmpbin"
+  trap - INT TERM EXIT
+}
+
 verify_playlist() {
+  printf 'Install rustc for faster speeds.\n'
   playlist_path="$MUSIC_DIR/$1"
   [ -f "$playlist_path" ] || die "Playlist $playlist_path not found."
 
@@ -139,8 +179,20 @@ organize_files() {
 
 case "$1" in
   import) import;;
-  check-recent) verify_playlist 'recently-added.m3u';;
-  check-playlist) verify_playlist "$2";;
+  check-recent)
+    if command -v rustc >/dev/null 2>&1; then
+      verify_playlist_rust 'recently-added.m3u'
+    else
+      verify_playlist 'recently-added.m3u'
+    fi
+    ;;
+  check-playlist)
+    if command -v rustc >/dev/null 2>&1; then
+      verify_playlist_rust "$2"
+    else
+      verify_playlist "$2"
+    fi
+    ;;
   embed-lyrics) embed_lyrics;;
   organise|organize) organize_files "$2" "$3";;
   *) printf "Supported commands: import, check-recent, check-playlist, embed-lyrics, organise\n"; exit 0;;
