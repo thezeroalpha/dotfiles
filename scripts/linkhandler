@@ -23,10 +23,12 @@ sub un_urlize {
 
 sub untrack {
   my ($orig_link) = @_;
-  if ($orig_link =~ /(https?(?::|%3A)%2F%2F.*)/) {
-    my $new_link = $1;
-    return un_urlize($new_link);
+  if ($orig_link =~ /(https?(?::|%3A)(?:%2F%2F|\/\/).*)/) {
+    $orig_link = un_urlize($1);
   }
+  $orig_link =~ s/https?(?::|%3A)(?:%2F%2F|\/\/).*(https?(?::|%3A)(?:%2F%2F|\/\/).*)/$1/;
+  $orig_link =~ s/utm_[^&]*&?//g;
+  $orig_link =~ s/\?$//;
   return $orig_link;
 }
 
