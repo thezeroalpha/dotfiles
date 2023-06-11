@@ -65,6 +65,9 @@
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
 
+;; Profiling - enable, then run `use-package-report`
+;; (setq use-package-compute-statistics t)
+
 ;; Always auto-install packages:
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)

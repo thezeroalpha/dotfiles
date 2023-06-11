@@ -1477,6 +1477,7 @@ Install Org and require additional components that I use.
                                "Sometimes when text is folded away, I might accidentally edit text inside of it. This option prevents that. I wanted to do 'smart', but that has a 'fixme' so it might change in the future...Instead, show what's being edited, but don't perform the edit.")
     (org-src-tab-acts-natively t "a tab in a code block indents the code as it should")
     (org-attach-store-link-p 'attached)
+    (org-attach-archive-delete 'query)
 
     :bind (("C-c a" . org-agenda)
            ("C-c n" . org-capture)
@@ -2417,7 +2418,11 @@ API work is handled via an external ruby script.
     (unless (boundp 'za/org-life-inbox)
       (user-error "Please set za/org-life-inbox"))
     (let* ((api-data (json-parse-string
-                      (shell-command-to-string "~/.local/share/rbenv/shims/ruby ~/.scripts/ourhome.rb")
+                      (progn
+                        (require 'exec-path-from-shell)
+                        (exec-path-from-shell-copy-envs
+                         '("OURHOME_CLIENT_ID" "OURHOME_USER" "OURHOME_PASS"))
+                        (shell-command-to-string "~/.local/share/rbenv/shims/ruby ~/.scripts/ourhome.rb"))
                       :object-type 'alist))
            (format-data-as-org (lambda (l)
                                  (format "* TODO %s :ourhome:\n  SCHEDULED: <%s>\n  Points: %d\n"
@@ -2779,11 +2784,10 @@ Like virtualenvwrapper.sh, but for Emacs.
     (ledger-reports
      '(("unreconciled" "ledger [[ledger-mode-flags]] -f /Users/alex/Documents/Finance/finance.ledger --start-of-week=1 reg --uncleared")
        ("net-worth-changes" "ledger [[ledger-mode-flags]] -f /Users/alex/Documents/Finance/finance.ledger reg ^Assets ^Liabilities -R -M -X eur --effective -n")
-       ("budget-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses")
-       ("budget-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" budget ^expenses")
-       ("expenses-this-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses --budget -R")
-       ("expenses-last-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses --budget -R")
-       ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur -R")
+       ("budget-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" budget ^expenses:budgeted")
+       ("budget-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" budget ^expenses:budgeted")
+       ("expenses-this-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses:budgeted --budget -R")
+       ("expenses-last-month-vs-budget" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses:budgeted --budget -R")
        ("expenses-last-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"last month\" --period-sort \"(amount)\" bal ^expenses -X eur -R")
        ("expenses-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --period \"this month\" --period-sort \"(amount)\" bal ^expenses -X eur -R")
        ("expenses-vs-income-this-month" "%(binary) -f %(ledger-file) --start-of-week=1 --effective --period \"this month\" --period-sort \"(amount)\" bal ^income ^expenses -X eur -R")
@@ -2803,23 +2807,34 @@ Like virtualenvwrapper.sh, but for Emacs.
     :config
     (with-eval-after-load 'ledger-mode
       (setq ledger-amount-regex
-            (rx (group (or (= 2 " ") ?\t (seq " " ?\t)))
-                (zero-or-more (any " " ?\t))
-                (opt "-")
-                (opt "(")
-                (one-or-more (opt (group (one-or-more (any "A-Z" "$(_£€₹")) (zero-or-more " ")))
-                             (group (opt "-") (or (one-or-more (any "0-9")) (+\? (any "0-9" ",."))))
-                             (opt (group (any ",.") (one-or-more (any "0-9" ")"))))
-                             (opt (group (zero-or-more " ") (one-or-more (any "\"_£€₹" word))))
-                             (opt (zero-or-more (any "	 ")) (any "*+/-") (zero-or-more (any "	 "))))
-                (opt ")")
-                (opt (group (zero-or-more (any "	 "))
-                            (any "=@{")
-                            (opt "@")
-                            (+? (not (any ?\xA ";")))))
-                (opt (group (or (seq (one-or-more (any "	 ")) ";" (+\? nonl))
-                                (zero-or-more (any "	 ")))))
-                eol))))
+            (rx
+             (group (or (= 2 " ") ?\t (seq " " ?\t)))
+             (zero-or-more (any " " ?\t))
+             (opt "=")
+             (zero-or-more space)
+             (opt "-")
+             (opt "(")
+             (one-or-more (opt (group
+                                (one-or-more (any "A-Z" "$(_£€₹"))
+                                (zero-or-more blank)))
+                          (group (opt "-")
+                                 (or (one-or-more (any "0-9"))
+                                     (+\? (any "0-9" ",."))))
+                          (opt (group (any ",.")
+                                      (one-or-more (any "0-9" ")"))))
+                          (opt (group (zero-or-more blank)
+                                      (one-or-more (any "\"_£€₹" word))))
+                          (opt (zero-or-more (any blank))
+                               (any "*+/-")
+                               (zero-or-more (any blank))))
+             (opt ")")
+             (opt (group (zero-or-more (any blank))
+                         (any "=@{")
+                         (opt "@")
+                         (+? (not (any ?\xA ";")))))
+             (opt (group (or (seq (one-or-more (any blank)) ";" (+\? nonl))
+                             (zero-or-more (any blank)))))
+             eol))))
 #+end_src
 
 org-capture lets me add transactions from anywhere in Emacs:
@@ -2905,6 +2920,8 @@ See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-3
     :custom
     (dired-listing-switches "-alhv")
     (dired-dwim-target t "If I have another dired window open, use that as target")
+    (dired-omit-files
+        (concat dired-omit-files "\\|^\\..+$"))
     ;; By default, hide details (show again by pressing oparen):
     :hook (dired-mode . dired-hide-details-mode))
 #+end_src
@@ -3034,7 +3051,14 @@ Set a better keybinding (I'm never gonna use ~view-hello-file~ anyways):
 #+begin_src emacs-lisp
   (bind-key "C-h h" #'shortdoc-display-group)
 #+end_src
+* Upcoming new features
+In a new version of use-package, I can use the :vc keyword, so check for when that's available.
+See [[https://git.savannah.gnu.org/cgit/emacs.git/commit/?id=2ce279680bf9c1964e98e2aa48a03d6675c386fe][commit]] and [[https://tony-zorman.com/posts/use-package-vc.html][article]].
 
+#+begin_src emacs-lisp
+  (when (fboundp 'use-package-vc-install)
+    (user-error "use-package :vc keyword now available!"))
+#+end_src
 * References
 Here's a list of good articles I encountered about configging emacs:
 - [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs]]
