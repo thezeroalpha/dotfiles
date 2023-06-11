@@ -6,7 +6,7 @@
 
 [alias]
     s = status
-    v = "!vim -c 'Git | only'"
+    v = "!nvim -c 'Git | only'"
     co = checkout
     cob = checkout -b
     f = fetch --all
