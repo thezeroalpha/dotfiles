@@ -48,6 +48,12 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
     imgpreview "$CACHE"
     rm "$CACHE"
     ;;
+  *.db)
+    case $(file --mime-type "$1" -bL) in
+      application/x-sqlite3) command -v sqlite3 >/dev/null && sqlite3 "$1" '.schema';;
+      *) ;;
+    esac
+    ;;
   *)
     case $(file --mime-type "$1" -bL) in
       application/x-executable) readelf -h "$1" ;;
