@@ -341,7 +341,7 @@ nmap <leader>J <Plug>FzfChangesJumpsJumps
 nmap <leader>C <Plug>FzfChangesJumpsChanges
 
 " Search for Todos/Fixmes
-command! Todo Ag ((TO ?DO)|FIXME):<space>
+command! Todo Ag ((TO ?DO)|FIXME):?<space>
 nnoremap <leader>! :Todo<CR>
 
 " Set a filetype
@@ -393,7 +393,7 @@ command! CH ColorHighlight
 command! CC ColorClear
 " Schemer {{{3
 " List color group
-nmap <C-P> <Plug>SchemerSynstack
+nmap <leader><C-p> <Plug>SchemerSynstack
 nmap <leader><C-E><C-L> <Plug>SchemerEdit
 " Relatively complete {{{3
 " Replace default file completion with 'smart' relative complete
