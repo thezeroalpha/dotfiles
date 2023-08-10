@@ -128,6 +128,35 @@ return {
 
   { 'lvimuser/lsp-inlayhints.nvim', config = function()
     require 'config.lsp-inlayhints'
-  end}
+  end},
+
+  { 'Eandrju/cellular-automaton.nvim', config = function()
+    vim.keymap.set('n', 'q:', '<cmd>CellularAutomaton make_it_rain<CR>')
+  end},
+
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "<leader><leader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
+  {
+    "chrisgrieser/nvim-origami",
+    event = "BufReadPost", -- later or on keypress would prevent saving folds
+    opts = true, -- needed even when using default config
+    config = function()
+      require('origami').setup({
+        pauseFoldsOnSearch = true,
+      })
+    end
+  },
 
 }

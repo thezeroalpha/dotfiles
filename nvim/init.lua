@@ -5,6 +5,10 @@ call setenv("MYOLDVIMRC", "~/.vim/vimrc")
 source $MYOLDVIMRC
 ]])
 
+if vim.lsp.buf.inlay_hint then
+  vim.api.nvim_err_writeln("init.lua: inlay hints now available!")
+end
+
 -- Install Lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
