@@ -1,6 +1,6 @@
 #!/bin/sh
-# This script uses `dragon` to provide drag-and-drop functionality.
+# This script uses `ripdrag` to provide drag-and-drop functionality.
 # Provide one or more filenames, and you'll get a window from which you can
 # drag.
-command -v dragon-drag-and-drop || { printf "Install mwh/dragon\n" >&2 && exit 1; }
-setsid -f dragon-drag-and-drop "$@"
+command -v ripdrag || { printf "Install mwh/dragon\n" >&2 && exit 1; }
+setsid -f ripdrag "$@"
