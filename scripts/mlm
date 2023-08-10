@@ -90,14 +90,14 @@ use std::path::PathBuf;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
     let music_dir = match std::env::var("MUSIC_DIR") {
         Ok(v) => PathBuf::from(v),
         _ => panic!("Variable MUSIC_DIR not set in environment."),
     };
     assert!(music_dir.as_path().is_dir());
 
-    let m3u_file_name = args.iter().skip(1).next().expect("No file provided");
+    let args = std::env::args();
+    let m3u_file_name = args.skip(1).next().expect("No file provided");
     let m3u_file = File::open(m3u_file_name).expect("Couldn't read file");
     let reader = BufReader::new(m3u_file);
     let mut linenum = 1;
