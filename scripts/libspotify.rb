@@ -1,0 +1,255 @@
+#!/usr/bin/env ruby
+require 'uri'
+require 'net/http'
+require 'openssl'
+require 'json'
+require 'date'
+require 'yaml'
+require 'webrick'
+
+# Add easy access to hash members for JSON stuff
+class Hash
+  def method_missing(meth, *_args, &_block)
+    raise NoMethodError unless key?(meth.to_s)
+
+    self[meth.to_s]
+  end
+
+  def respond_to_missing?
+    true
+  end
+end
+
+# Client to access Spotify
+class SpotifyClient
+  def set_token
+    client_id = 'c747e580651248da8e1035c88b3d2065'
+    scope = %w[
+      user-read-private
+      playlist-read-collaborative
+      playlist-modify-public
+      playlist-modify-private
+      streaming
+      ugc-image-upload
+      user-follow-modify
+      user-follow-read
+      user-library-read
+      user-library-modify
+      user-read-private
+      user-read-email
+      user-top-read
+      user-read-playback-state
+      user-modify-playback-state
+      user-read-currently-playing
+      user-read-recently-played
+    ].join('%20')
+    redirect_uri = 'http://localhost:4815/callback'
+    url = "https://accounts.spotify.com/authorize?client_id=#{client_id}&response_type=token&scope=#{scope}&show_dialog=false&redirect_uri=#{redirect_uri}"
+    server = WEBrick::HTTPServer.new(Port: 4815,
+                                     Logger: WEBrick::Log.new('/dev/null'),
+                                     AccessLog: [])
+    server.mount_proc '/callback' do |_req, res|
+      res.body = <<-HTML
+        <!DOCTYPE html>
+        <html><body><script>
+          const hash = window.location.hash.substring(1);
+          fetch('/token?'+hash).then(() => {window.close()})
+        </script></body></html>
+      HTML
+    end
+    server.mount_proc '/token' do |req, res|
+      res.status = 200
+      @token = req.query['access_token']
+      server.stop
+    end
+
+    t = Thread.new { server.start }
+    system 'open', url
+    t.join
+  end
+
+  def initialize
+    set_token
+    @base_url = URI('https://api.spotify.com/v1/')
+    @http = Net::HTTP.new(@base_url.host, @base_url.port)
+    @http.use_ssl = true
+    @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  end
+
+  def api_call_get(endpoint, params = {})
+    url = @base_url + endpoint
+    url.query = URI.encode_www_form(params)
+    url_call_get url
+  end
+
+  def api_call_post(endpoint, body)
+    url = @base_url + endpoint
+    url_call_post url, body
+  end
+
+  def api_call_put(endpoint, body, params = {})
+    url = @base_url + endpoint
+    url.query = URI.encode_www_form(params)
+    url_call_put url, body
+  end
+
+  def url_call_get(url)
+    request = Net::HTTP::Get.new(url)
+    request['Authorization'] = "Bearer #{@token}"
+    JSON.parse(@http.request(request).read_body)
+  end
+
+  def url_call_post(url, body)
+    request = Net::HTTP::Post.new(url)
+    request['Authorization'] = "Bearer #{@token}"
+    request.body = JSON.dump(body)
+    request.content_type = 'application/json'
+    JSON.parse(@http.request(request).read_body)
+  end
+
+  def url_call_put(url, body)
+    request = Net::HTTP::Put.new(url)
+    request['Authorization'] = "Bearer #{@token}"
+    request.body = JSON.dump(body)
+    request.content_type = 'application/json'
+    JSON.parse(@http.request(request).read_body)
+  end
+
+  def api_call_get_unpaginate(endpoint, params, results_key = nil)
+    res = api_call_get endpoint, params
+    return res if res.key? 'error'
+
+    if results_key.nil?
+      data = res.items
+      url = res.next
+
+      until url.nil?
+        res = url_call_get url
+        data += res.items
+        url = res.next
+      end
+    else
+      data = res[results_key].items
+      url = res[results_key].next
+
+      until url.nil?
+        res = url_call_get url
+        data += res[results_key].items
+        url = res[results_key].next
+      end
+    end
+
+    data
+  end
+
+  def get_followed_artists
+    api_call_get_unpaginate 'me/following', { type: :artist, limit: 50 }, 'artists'
+  end
+
+  def get_artists_releases(artists)
+    total = artists.size
+    print "Processing 0/#{total}"
+    releases = artists.each.with_index.reduce([]) do |acc, (artist, i)|
+      print "\rProcessing #{i + 1}/#{total}"
+      response = api_call_get "artists/#{artist.id}/albums", { limit: 50, include_groups: 'album,single,appears_on' }
+      albums = response.items
+      albums.each { |album| album['release_date'] = album.release_date.split('-').size == 1 ? Date.iso8601("#{album.release_date}-01") : Date.iso8601(album.release_date) }
+      acc + albums
+    end.reject { |album| album.album_type == 'compilation' }
+
+    puts 'Sorting'
+    releases.sort_by { |rel| rel.release_date }
+  end
+
+  def add_to_playlist_if_not_present(playlist_id, tracks)
+    playlist_track_uris = api_call_get_unpaginate("playlists/#{playlist_id}/tracks", { limit: 50 }).map { |x| x.track.uri }
+    track_uris = tracks.map(&:uri)
+    to_add = track_uris.reject { |t| playlist_track_uris.include? t }
+    puts "Adding #{to_add.size} new tracks to playlist."
+    to_add.each_slice(100) do |uris_slice|
+      body = { 'uris': uris_slice }
+      api_call_post "playlists/#{playlist_id}/tracks", body
+    end
+  end
+end
+
+# Process new releases since the date in ~/.local/share/spot-last-checked, add
+# them to a tracks or albums playlist.
+def process_new_releases
+  tracks_playlist = '4agx19QeJFwPQRWeTViq9d'
+  albums_playlist = '2qYpNB8LDicKjcm5Px1dDQ'
+
+  client = SpotifyClient.new
+  artists = client.get_followed_artists
+  releases = client.get_artists_releases artists
+  last_checked = YAML.load_file("#{ENV['HOME']}/.local/share/spot-last-checked", permitted_classes: [Date, Symbol])
+  albums, others = releases.select { |r| r.release_date >= last_checked }.partition { |x| x.album_type == 'album' }
+
+  albums_tracks = albums.reduce([]) do |acc, album|
+    acc + client.api_call_get_unpaginate("albums/#{album.id}/tracks", { limit: 50 })
+  end
+
+  others_tracks = others.reduce([]) do |acc, album|
+    acc + client.api_call_get_unpaginate("albums/#{album.id}/tracks", { limit: 50 })
+  end
+
+  puts "Processing tracks"
+  client.add_to_playlist_if_not_present tracks_playlist, others_tracks
+  puts "Processing albums"
+  client.add_to_playlist_if_not_present albums_playlist, albums_tracks
+  File.write("#{ENV['HOME']}/.local/share/spot-last-checked", YAML.dump(Date.today))
+end
+
+# Bulk follow artists from mpd, accessed using mpc.
+# Asks you to edit a file with artist names to choose who to follow.
+def bulk_follow_artists
+  require 'tempfile'
+  client = SpotifyClient.new
+  puts 'Getting followed artists...'
+  already_following = client.get_followed_artists
+  puts "Found #{already_following.size}"
+
+  puts 'Getting artists from local library...'
+  all_lines = `mpc listall -f '%albumartist%'`.lines(chomp: true).uniq.reject(&:empty?)
+  puts "Found #{all_lines.size}"
+  puts 'Looking up artists on spotify...'
+  artists = []
+  total = all_lines.size
+  print "Processing 0/#{total}"
+  all_lines.each.with_index do |artist, i|
+    print "\rProcessing #{i + 1}/#{total}: #{artist}"
+    # TODO: in search, maybe look for an artist where I've already liked a song?
+    response = client.api_call_get 'search', { q: artist, type: :artist }
+    found_artist = response['artists']['items'][0]
+    if found_artist.nil?
+      warn "No artist found for #{artist}"
+    else
+      found_artist['search_query'] = artist
+      artists << found_artist unless artists.include?(found_artist)
+    end
+  end
+
+  puts 'Filtering already followed artists...'
+  artists_to_follow = artists.reject { |a| already_following.find { |af| af['uri'] == a['uri'] } }
+
+  tmpfile = Tempfile.new('artists_to_follow')
+  begin
+    tmpfile.write(artists_to_follow.map { |a| [a['name'], a['external_urls']['spotify'], a['search_query']].join("\t") }.join("\n"))
+    tmpfile.close
+    system ENV['EDITOR'], tmpfile.path
+    tmpfile.open
+    artists_to_follow = tmpfile.readlines(chomp: true).reduce([]) do |res, chosen|
+      name, href, _query = chosen.split("\t")
+      res << artists_to_follow.find { |a| a['name'] == name && a['external_urls']['spotify'] == href }
+    end
+  ensure
+    tmpfile.close
+    tmpfile.unlink
+  end
+
+  artists_to_follow.each_slice(50) do |artists_by_50|
+    ids = artists_by_50.map { _1['id'] }
+    response = client.api_call_put 'me/following', { ids: ids }, { type: :artist }
+    puts response
+  end
+end
