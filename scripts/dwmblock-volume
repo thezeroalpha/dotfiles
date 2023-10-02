@@ -1,0 +1,44 @@
+#!/bin/sh
+# dwmblocks script for volume information
+sink="$(pactl get-default-sink)"
+source="$(pactl get-default-source)"
+case "$BUTTON" in
+  1)
+    pgrep -f pulsemixer || setsid -f "$TERMINAL" -e pulsemixer
+    pkill -RTMIN+6 dwmblocks;;
+  4)
+    pactl -- set-sink-volume "$sink" +10%
+    pkill -RTMIN+6 dwmblocks
+    ;;
+  5)
+    pactl -- set-sink-volume "$sink" -10%
+    pkill -RTMIN+6 dwmblocks
+    ;;
+  6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+case $(pactl get-sink-mute "$sink") in
+  "Mute: yes"*)
+    volume_icon='🔇'
+    ;;
+  *)
+    volume_icon='🔊'
+    ;;
+esac
+volume="$(pactl get-sink-volume "$sink" \
+  | head -n 1 \
+  | awk -v volume_icon="$volume_icon" -F ' / ' '{gsub(" ", "", $2); gsub(" ", "", $4); printf("%s %s %s", volume_icon, $2,$4)}')"
+
+case $(pactl get-source-mute "$source") in
+  "Mute: yes"*)
+    mic_icon=''
+    ;;
+  *)
+    mic_icon='🎤'
+    ;;
+esac
+mic="$(pactl get-source-volume "$source" \
+  | head -n 1 \
+  | awk -v mic_icon="$mic_icon" -F ' / ' '{gsub(" ", "", $2); gsub(" ", "", $4); printf("%s %s %s", mic_icon, $2,$4)}')"
+printf "%s %s" "$volume" "$mic"
+

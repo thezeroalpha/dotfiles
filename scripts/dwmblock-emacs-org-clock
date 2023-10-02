@@ -1,0 +1,10 @@
+#!/bin/sh
+# dwmblocks script for battery information
+case "$BUTTON" in
+  1) emacsclient -c -a '' -e '(when (org-clock-is-active) (org-clock-goto))';;
+  6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+if pgrep -f emacs >/dev/null 2>&1 && command -v emacsclient >/dev/null 2>&1; then
+  printf " 🕛 %.40s" "$(emacsclient -e '(if (org-clock-is-active) (substring-no-properties (org-clock-get-clock-string)) "")' | tr -d '"')"
+fi
