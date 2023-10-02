@@ -12,12 +12,26 @@ super + shift + m
   dmenuman
 super + ctrl + space
   dmenusymbols
+super + shift + a
+  j4-dmenu-desktop
 super + l
-  slock -m "$(figlet -f big LOCKED)"
+  /usr/local/bin/slock -m "$(figlet -f big LOCKED)"
+super + e
+  emacsclient -c -a ''
+super + u
+  linkhandler "$(clp)"
 
-ctrl + space
-  dunstctl close
+XF86AudioRaiseVolume
+  pactl -- set-sink-volume "$(pactl get-default-sink)" +10% && pkill -RTMIN+6 dwmblocks
+XF86AudioLowerVolume
+  pactl -- set-sink-volume "$(pactl get-default-sink)" -10% && pkill -RTMIN+6 dwmblocks
+XF86AudioMute
+  pactl -- set-sink-mute "$(pactl get-default-sink)" toggle && pkill -RTMIN+6 dwmblocks
+XF86AudioMicMute
+  pactl -- set-source-mute "$(pactl get-default-source)" toggle && pkill -RTMIN+6 dwmblocks
 ctrl + shift + space
+  dunstctl close
+ctrl + shift + super + space
   dunstctl close-all
 ctrl + grave
   dunstctl history-pop
