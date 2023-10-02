@@ -142,7 +142,7 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'wellle/context.vim'
 
 " Fuzzy finder in vim
-Plug 'junegunn/fzf', { 'dir': '$HOME/.dotfiles/tools/fzf', 'do': './install --all --xdg --no-fish'}
+Plug 'junegunn/fzf', { 'dir': '$DOTFILES/tools/fzf', 'do': './install --all --xdg --no-fish'}
 Plug 'junegunn/fzf.vim'
 
 " Additional text objects
