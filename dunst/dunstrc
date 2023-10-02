@@ -1,7 +1,7 @@
 [global]
     monitor = 0
     follow = keyboard
-    width = 350
+    geometry = "300x5-30+20"
     origin = top-right
     notification_limit = 24
     indicate_hidden = yes
@@ -51,7 +51,7 @@
     show_indicators = yes
     icon_position = left
     max_icon_size = 40
-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/:/usr/share/icons/Adwaita/256x256/status/
+    icon_path = /usr/share/icons/Yaru/16x16/status:/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/:/usr/share/icons/Adwaita/256x256/status/
     sticky_history = yes
     history_length = 20
     dmenu = /usr/local/bin/dmenu
