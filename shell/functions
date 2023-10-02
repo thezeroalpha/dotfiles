@@ -91,7 +91,7 @@ if [ -d ~/.config/fzf ]; then
   # script edit
   se() {
     local files
-    IFS=$'\n' files=($(command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    IFS=$'\n' files=($(command find "$DOTFILES/scripts" -type f -or -type l -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   }
   # script create
@@ -110,14 +110,14 @@ if [ -d ~/.config/fzf ]; then
   # config edit
   ce() {
     local files
-    IFS=$'\n' files=($(command find ~/.dotfiles -type f ! -ipath "*/scripts/*" ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    IFS=$'\n' files=($(command find "$DOTFILES" -type f ! -ipath "*/scripts/*" ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   }
 
   # config find
   cf() {
     local f
-    IFS=$'\n' f=($(command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
+    IFS=$'\n' f=($(command find "$DOTFILES" -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
     [[ -n "$f" ]] && printf "$f"
   }
 
