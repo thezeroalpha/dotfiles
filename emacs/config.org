@@ -172,6 +172,9 @@ unless the app is in the background. [[https://github.com/julienXX/terminal-noti
             (format "display notification \"%s\" with title \"%s\""
                     (replace-regexp-in-string "\"" "#" message)
                     (replace-regexp-in-string "\"" "#" title))))
+          ((string= system-type "gnu/linux")
+           (require 'notifications)
+           (notifications-notify :title title :body message))
           (t (error "No notification handler defined!"))))
 
   (defun za/send-notification-interactivity-required (&rest _)
@@ -953,6 +956,7 @@ Hide some messages I don't need.
                        (bookmarks . 5)))
 
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
+    (if (boundp 'za/my-website-dir)
     (dashboard-footer-messages
      (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
             ;; Reformat quotes for display in dashboard
@@ -973,17 +977,18 @@ Hide some messages I don't need.
                    (insert (s-trim quote-line))
                    (fill-region (point-min) (point-max))
                    (buffer-substring-no-properties (point-min) (point-max))))
-               quotes)))
+               quotes))))
     :bind (:map dashboard-mode-map
                 ("ss" . za/st)
-                ("sk" . za/st-kill))
+                ("sk" . za/st-kill)
+                ("J" . org-clock-goto))
     :config
     (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts)))
 
   (defun dashboard-insert-gtd-inbox-counts (list-size)
     (require 'org-roam)
     (let* ((lines-inbox (za/org-count-headlines-in-file 1 za/org-life-inbox))
-           (lines-mobile (za/org-count-headlines-in-file 1 za/org-life-inbox-mobile))
+           (lines-mobile (if (boundp 'za/org-life-inbox-mobile) (za/org-count-headlines-in-file 1 za/org-life-inbox-mobile) 0))
            (count-docs (length (directory-files za/org-life-doc-inbox nil (rx bos (not ?.)))))
            (item-list))
 
@@ -2364,27 +2369,28 @@ And here's the custom publish function that adds/removes the necessary advice:
 Finally, the list of things we can publish with their respective publishin functions:
 
 #+begin_src emacs-lisp
-  (setq org-publish-project-alist
-        `(
-          ("org-notes"
-           :base-directory ,za/org-roam-dir
-           :base-extension "org"
-           :publishing-directory ,(concat za/my-website-dir "content/org-roam/")
-           :publishing-function za/org-gfm-publish-to-gfm-zola
-           :recursive t
-           :sitemap-filename "_index.md"
-           :sitemap-title "Org Roam"
-           :sitemap-function za/org-roam-sitemap-function
-           :auto-sitemap t)
+  (if (boundp 'za/my-website-dir)
+      (setq org-publish-project-alist
+            `(
+              ("org-notes"
+               :base-directory ,za/org-roam-dir
+               :base-extension "org"
+               :publishing-directory ,(concat za/my-website-dir "content/org-roam/")
+               :publishing-function za/org-gfm-publish-to-gfm-zola
+               :recursive t
+               :sitemap-filename "_index.md"
+               :sitemap-title "Org Roam"
+               :sitemap-function za/org-roam-sitemap-function
+               :auto-sitemap t)
 
-          ("org-notes-data"
-           :base-directory ,(concat za/org-roam-dir "/data")
-           :base-extension any
-           :publishing-directory ,(concat za/my-website-dir "static/org-roam-data/")
-           :recursive t
-           :publishing-function org-publish-attachment)
+              ("org-notes-data"
+               :base-directory ,(concat za/org-roam-dir "/data")
+               :base-extension any
+               :publishing-directory ,(concat za/my-website-dir "static/org-roam-data/")
+               :recursive t
+               :publishing-function org-publish-attachment)
 
-          ("org-roam" :components ("org-notes" "org-notes-data"))))
+              ("org-roam" :components ("org-notes" "org-notes-data")))))
 #+end_src
 
 And a function to rsync to my VPS:
@@ -2443,31 +2449,32 @@ The main reason is because Orgzly doesn't have a calendar view and can't (yet) s
 This way, I can just check my calendar.
 
 #+begin_src emacs-lisp
-  (use-package org-caldav
-    :init
-    (defconst za/org-life-calendar-inbox (concat za/org-life-dir "calendar-inbox.org"))
-    :custom
-    (org-caldav-url za/caldav-url)
-    (org-caldav-calendar-id za/caldav-org-calendar-id)
-    (org-caldav-inbox za/org-life-calendar-inbox)
-    (org-caldav-files (cons (car (split-string org-archive-location "::")) org-agenda-files))
-    (org-caldav-sync-todo t)
-    (org-icalendar-include-todo 'all)
-    (org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
-    (org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
-    (org-caldav-exclude-tags '("HABIT")
-                             "I don't want to export habits, because those will just clutter up my calendar. The calendar is supposed to be for one-off stuff, or rarely repeating stuff. Yes, I have to manually add the HABIT tag to every habit. Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.")
-    (org-caldav-todo-percent-states '((0 "TODO")
-                                      (0 "WAITING")
-                                      (1 "NEXT")
-                                      (2 "STARTED")
-                                      (0 "PROJ")
-                                      (100 "DONE")
-                                      (100 "CANCELLED")))
-    :config
-    (defun za/caldav-after-sync-notify () (za/notify "org-caldav sync complete" "Finished syncing"))
-    (advice-add #'org-caldav-sync :after #'za/caldav-after-sync-notify)
-    (advice-add #'org-caldav-sync :around #'za/notify-on-interactivity))
+  (if (boundp 'za/caldav-url)
+      (use-package org-caldav
+        :init
+        (defconst za/org-life-calendar-inbox (concat za/org-life-dir "calendar-inbox.org"))
+        :custom
+        (org-caldav-url za/caldav-url)
+        (org-caldav-calendar-id za/caldav-org-calendar-id)
+        (org-caldav-inbox za/org-life-calendar-inbox)
+        (org-caldav-files (cons (car (split-string org-archive-location "::")) org-agenda-files))
+        (org-caldav-sync-todo nil)
+        (org-icalendar-include-todo nil)
+        (org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
+        (org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+        (org-caldav-exclude-tags '("HABIT")
+                                 "I don't want to export habits, because those will just clutter up my calendar. The calendar is supposed to be for one-off stuff, or rarely repeating stuff. Yes, I have to manually add the HABIT tag to every habit. Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.")
+        (org-caldav-todo-percent-states '((0 "TODO")
+                                          (0 "WAITING")
+                                          (1 "NEXT")
+                                          (2 "STARTED")
+                                          (0 "PROJ")
+                                          (100 "DONE")
+                                          (100 "CANCELLED")))
+        :config
+        (defun za/caldav-after-sync-notify () (za/notify "org-caldav sync complete" "Finished syncing"))
+        (advice-add #'org-caldav-sync :after #'za/caldav-after-sync-notify)
+        (advice-add #'org-caldav-sync :around #'za/notify-on-interactivity)))
 #+end_src
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
