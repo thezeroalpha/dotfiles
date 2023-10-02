@@ -5,27 +5,50 @@ local mason_lspconfig = require 'mason-lspconfig'
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  rust_analyzer = {},
-  solargraph = {},
-  bashls = {},
-  pyright = {},
-  jdtls = {},
-  jsonls = {},
-  texlab = {},
-  clangd = {},
-  perlnavigator = {},
-  lua_ls = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
+  rust_analyzer = {
+    ['rust-analyzer'] = {
+      cargo = {
+        allFeatures = true,
+        loadOutDirsFromCheck = true,
+        runBuildScripts = true,
       },
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      }
+      -- Add clippy lints for Rust.
+      checkOnSave = {
+        allFeatures = true,
+        -- command = "clippy",
+        -- extraArgs = { "--no-deps" },
+        command = "check",
+      },
+      procMacro = {
+        enable = true,
+        ignored = {
+          ["async-trait"] = { "async_trait" },
+          ["napi-derive"] = { "napi" },
+          ["async-recursion"] = { "async_recursion" },
+        },
+      },
+    },
+    -- solargraph = {},
+    -- bashls = {},
+    -- pyright = {},
+    -- jdtls = {},
+    -- jsonls = {},
+    -- texlab = {},
+    -- clangd = {},
+    -- perlnavigator = {},
+    lua_ls = {
+      Lua = {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+        },
+        workspace = { checkThirdParty = false },
+        telemetry = { enable = false },
+        diagnostics = {
+          -- Get the language server to recognize the `vim` global
+          globals = {'vim'},
+        }
+      },
     },
   },
 }
@@ -53,7 +76,7 @@ local on_attach = function(_, bufnr)
   end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  nmap('<leader>ra', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -79,6 +102,7 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
+
 mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
@@ -88,3 +112,4 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+
