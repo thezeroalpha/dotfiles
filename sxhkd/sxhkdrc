@@ -29,6 +29,10 @@ XF86AudioMute
   pactl -- set-sink-mute "$(pactl get-default-sink)" toggle && pkill -RTMIN+6 dwmblocks
 XF86AudioMicMute
   pactl -- set-source-mute "$(pactl get-default-source)" toggle && pkill -RTMIN+6 dwmblocks
+XF86MonBrightnessDown
+  brightnessctl set 10%-
+XF86MonBrightnessUp
+  brightnessctl set 10%+
 ctrl + shift + space
   dunstctl close
 ctrl + shift + super + space
