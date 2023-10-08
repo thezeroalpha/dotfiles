@@ -78,10 +78,11 @@ return {
 
   { -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
     opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-      filetype = {'python'},
+      indent = {
+        char = '┊',
+      },
     }
   },
 
@@ -154,15 +155,4 @@ return {
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
-  -- {
-  --   "chrisgrieser/nvim-origami",
-  --   event = "BufReadPost", -- later or on keypress would prevent saving folds
-  --   opts = true, -- needed even when using default config
-  --   config = function()
-  --     require('origami').setup({
-  --       pauseFoldsOnSearch = true,
-  --     })
-  --   end
-  -- },
-  --
 }
