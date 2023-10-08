@@ -429,12 +429,15 @@ map tz zip
 map tt tar
 map tu extract
 
+map td &ripdrag $fx
+
 # PGP
-map te pgp_encrypt_recipient
-map tp pgp_encrypt_pass
-map td pgp_decrypt
-map ts. pgp_sign
-map tsc pgp_sign_clear
-map tsd pgp_sign_detach
+map tp
+map tpe pgp_encrypt_recipient
+map tpp pgp_encrypt_pass
+map tpd pgp_decrypt
+map tps. pgp_sign
+map tpsc pgp_sign_clear
+map tpsd pgp_sign_detach
 
 map tq qrsend
