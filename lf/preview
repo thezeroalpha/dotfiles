@@ -12,7 +12,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   *.tar.bz2|*.tbz2) tar tjf "$1";;
   *.tar.txz|*.txz) xz --list "$1";;
   *.tar) tar tf "$1";;
-  *.zip|*.jar|*.war|*.ear|*.oxt|*.apkg) unzip -l "$1";;
+  *.zip|*.jar|*.war|*.ear|*.oxt|*.apkg|*.apk) unzip -l "$1";;
   *.rar) unrar l "$1";;
   *.7z) 7z l "$1";;
   *.[1-8]) man "$1" | col -b ;;
