@@ -29,6 +29,10 @@ sub untrack {
   $orig_link =~ s/https?(?::|%3A)(?:%2F%2F|\/\/).*(https?(?::|%3A)(?:%2F%2F|\/\/).*)/$1/;
   $orig_link =~ s/utm_[^&]*&?//g;
   $orig_link =~ s/\?$//;
+
+  if ($orig_link =~ /lnks\.gd\// or $orig_link =~ /url.*\.creators\.gumroad\.com/) {
+    $orig_link = `curl --silent --head --write-out '%{redirect_url}' --output /dev/null "$orig_link"`;
+  }
   return $orig_link;
 }
 
