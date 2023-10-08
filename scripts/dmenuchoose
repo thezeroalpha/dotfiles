@@ -1,0 +1,2 @@
+#!/bin/sh
+dmenu -i -l 5 -p 'Choose'
