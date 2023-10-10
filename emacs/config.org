@@ -1504,6 +1504,11 @@ Install Org and require additional components that I use.
     (org-src-tab-acts-natively t "a tab in a code block indents the code as it should")
     (org-attach-store-link-p 'attached)
     (org-attach-archive-delete 'query)
+    (org-stuck-projects '("/PROJ"
+                          ("NEXT")
+                          nil nil)
+                        "List projects that are stuck (don't have a next action)")
+
 
     :bind (("C-c a" . org-agenda)
            ("C-c n" . org-capture)
