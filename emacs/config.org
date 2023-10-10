@@ -956,28 +956,29 @@ Hide some messages I don't need.
                        (bookmarks . 5)))
 
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
-    (if (boundp 'za/my-website-dir)
     (dashboard-footer-messages
-     (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
-            ;; Reformat quotes for display in dashboard
-            (file-contents (with-temp-buffer
-                             (insert-file-contents quotes-file)
-                             (re-search-forward (rx bol "> "))
-                             (delete-region (point-min) (pos-bol))
-                             (goto-char (point-min))
-                             (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
-                             (save-excursion (replace-regexp (rx eol "\n") "  "))
-                             (buffer-substring-no-properties (point-min) (point-max))))
-            ;; Split file into individual quotes
-            (quotes (split-string file-contents "  ---  ")))
-       ;; Run each quote through fill-region for better display
-       (require 's)
-       (mapcar (lambda (quote-line)
-                 (with-temp-buffer
-                   (insert (s-trim quote-line))
-                   (fill-region (point-min) (point-max))
-                   (buffer-substring-no-properties (point-min) (point-max))))
-               quotes))))
+     (if (boundp 'za/my-website-dir)
+         (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
+                ;; Reformat quotes for display in dashboard
+                (file-contents (with-temp-buffer
+                                 (insert-file-contents quotes-file)
+                                 (re-search-forward (rx bol "> "))
+                                 (delete-region (point-min) (pos-bol))
+                                 (goto-char (point-min))
+                                 (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
+                                 (save-excursion (replace-regexp (rx eol "\n") "  "))
+                                 (buffer-substring-no-properties (point-min) (point-max))))
+                ;; Split file into individual quotes
+                (quotes (split-string file-contents "  ---  ")))
+           ;; Run each quote through fill-region for better display
+           (require 's)
+           (mapcar (lambda (quote-line)
+                     (with-temp-buffer
+                       (insert (s-trim quote-line))
+                       (fill-region (point-min) (point-max))
+                       (buffer-substring-no-properties (point-min) (point-max))))
+                   quotes))
+       nil))
     :bind (:map dashboard-mode-map
                 ("ss" . za/st)
                 ("sk" . za/st-kill)
