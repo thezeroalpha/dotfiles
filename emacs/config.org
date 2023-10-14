@@ -1754,15 +1754,18 @@ And a function for importing other inboxes:
     (interactive)
     (unless (string= (buffer-file-name) (file-truename za/org-life-inbox))
       (user-error "You're not in your GTD inbox file."))
-    (let ((mobile (file-truename za/org-life-inbox-mobile))
-          (calendar (file-truename za/org-life-calendar-inbox)))
+    (let ((mobile (if (boundp 'za/org-life-inbox-mobile) (file-truename za/org-life-inbox-mobile) nil))
+          (calendar (if (boundp 'za/org-life-calendar-inbox) (file-truename za/org-life-calendar-inbox) nil)))
       (save-mark-and-excursion
         (goto-char (point-max))
-        (insert-file mobile)
-        (goto-char (point-max))
-        (insert-file calendar)
-        (write-region "" nil mobile)
-        (write-region "" nil calendar)
+        (when mobile
+          (insert-file mobile)
+          (goto-char (point-max))
+          (write-region "" nil mobile))
+        (when calendar
+          (insert-file calendar)
+          (write-region "" nil calendar)
+          (goto-char (point-max)))
         (message "Imported other inboxes."))))
 #+end_src
 
