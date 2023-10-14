@@ -46,8 +46,8 @@ EOF
 
 set_gtk() {
   mkdir -p ~/.config/gtk-2.0 ~/.config/gtk-3.0
-  [ -f ~/.dotfiles/gtk-2.0/"$1" ] && ln -sf ~/.dotfiles/gtk-2.0/"$1" ~/.config/gtk-2.0/theme
-  [ -f ~/.dotfiles/gtk-3.0/"$1".ini ] && ln -sf ~/.dotfiles/gtk-3.0/"$1".ini ~/.config/gtk-3.0/settings.ini
+  [ -f $DOTFILES/gtk-2.0/"$1" ] && ln -sf $DOTFILES/gtk-2.0/"$1" ~/.config/gtk-2.0/theme
+  [ -f $DOTFILES/gtk-3.0/"$1".ini ] && ln -sf $DOTFILES/gtk-3.0/"$1".ini ~/.config/gtk-3.0/settings.ini
 }
 
 set_sioyek() {
