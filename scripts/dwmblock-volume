@@ -37,8 +37,10 @@ case $(pactl get-source-mute "$source") in
     mic_icon='🎤'
     ;;
 esac
+
+pgrep -f nerd-dictation >/dev/null 2>&1 && recording=' ⏺'
 mic="$(pactl get-source-volume "$source" \
   | head -n 1 \
   | awk -v mic_icon="$mic_icon" -F ' / ' '{gsub(" ", "", $2); gsub(" ", "", $4); printf("%s %s %s", mic_icon, $2,$4)}')"
-printf "%s %s" "$volume" "$mic"
+printf "%s %s%s" "$volume" "$mic" "$recording"
 
