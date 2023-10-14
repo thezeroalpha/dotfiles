@@ -97,9 +97,11 @@
     df = !git --git-dir=$DOTFILES/.git --work-tree=$DOTFILES
 
 [merge]
-    tool = vimdiff
+    tool = nvimdiff
     conflictstyle = diff3
 
+[mergetool "nvimdiff"]
+    cmd = nvim -d \"$LOCAL\" \"$MERGED\" \"$BASE\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd J\"
 [core]
     autocrlf = input
 
