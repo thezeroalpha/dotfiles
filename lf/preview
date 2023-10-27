@@ -11,6 +11,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
   *.tgz|*.tar.gz) tar tzf "$1";;
   *.tar.bz2|*.tbz2) tar tjf "$1";;
   *.tar.txz|*.txz) xz --list "$1";;
+  *.deb) dpkg -c "$1";;
   *.tar) tar tf "$1";;
   *.zip|*.jar|*.war|*.ear|*.oxt|*.apkg|*.apk) unzip -l "$1";;
   *.rar) unrar l "$1";;
