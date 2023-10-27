@@ -74,6 +74,8 @@ vim.keymap.set('n', 'i', function()
         end
 end, {expr = true})
 
+require('llm')
+
 vim.cmd ([[
 nnoremap <leader><C-e><C-u> :<c-u>exe "vsplit ~/.vim/snippets/"..&filetype..".snippets"<CR>
 ]])
