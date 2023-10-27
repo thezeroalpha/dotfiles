@@ -193,6 +193,13 @@ sub menu {
     }
   }];
 
+  push @$tableref, ['Send via KDEConnect', sub {
+    my ($link) = @_;
+    detach sub {
+      system(qq(kdeconnect-handler "$link"));
+    }
+  }];
+
   # Choose an option
   my @options = map { $_->[0] } @$tableref;
   my $choice = choose(\@options);
