@@ -2,18 +2,17 @@
 # dwmblocks script for brightness information
 case "$BUTTON" in
   1)
-    pgrep -f backlight-brightness || setsid -f "$TERMINAL" -e backlight-brightness
     pkill -RTMIN+3 dwmblocks;;
-  3) backlight-brightness -s 100 ;;
+  3) brightnessctl set '100%';;
   4)
-    backlight-brightness '-10'
+    brightnessctl set '10%-'
     pkill -RTMIN+3 dwmblocks
     ;;
   5)
-    backlight-brightness '+20'
+    brightnessctl set '10%+'
     pkill -RTMIN+3 dwmblocks
     ;;
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-paste -d '/' /sys/class/backlight/*/actual_brightness /sys/class/backlight/*/max_brightness
+printf ' %s' "$(brightnessctl --machine-readable | cut -d, -f4)"

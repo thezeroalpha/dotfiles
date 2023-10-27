@@ -6,7 +6,7 @@
 
 # Interfaces:
 # (list with `nmcli --get-values GENERAL.DEVICE,GENERAL.TYPE device show`)
-wired=enp0s31f6
+wired=enxc84bd604a6e7
 wireless=wlp0s20f3
 # there's probably a way to change these but I'd have to know all files to update...
 
@@ -14,12 +14,20 @@ case "$BUTTON" in
   1)
     pgrep -f nmtui || "$TERMINAL" -e nmtui
     pkill -RTMIN+5 dwmblocks ;;
-  3) notify "Connected to $(/sbin/iwgetid -r)" '' ;;
+  2) notify "Connected to $(/sbin/iwgetid -r)" '' ;;
+  3) notify Wireless "Toggling wireless..."
+    rfkill toggle wlan
+    pkill -RTMIN+5 dwmblocks ;;
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
 case "$(cat /sys/class/net/$wireless/operstate 2>/dev/null)" in
-  down) wifiicon="📡 " ;;
+  down)
+    if rfkill list wlan | grep 'Soft blocked: no' >/dev/null 2>&1; then
+      wifiicon="📡 "
+    else
+      wifiicon="📡🛑 "
+    fi ;;
   up) wifiicon="$(awk -v pat="^\\s*$wireless" '$0 ~ pat { print "📶", int($3) "% " }' /proc/net/wireless)" ;;
   # might need to do some calculations if this doesn't match up with `iwconfig` link quality
   # up) wifiicon="$(awk '/^\s*e/ { print "📶", int($3 * 100 / 70) "% " }' /proc/net/wireless)" ;;

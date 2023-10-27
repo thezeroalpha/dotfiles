@@ -5,6 +5,6 @@ case "$BUTTON" in
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-if pgrep -f emacs >/dev/null 2>&1 && command -v emacsclient >/dev/null 2>&1; then
+if pgrep -xl emacs >/dev/null 2>&1 && command -v emacsclient >/dev/null 2>&1; then
   printf " 🕛 %.40s" "$(emacsclient -e '(if (org-clock-is-active) (substring-no-properties (org-clock-get-clock-string)) "")' | tr -d '"')"
 fi

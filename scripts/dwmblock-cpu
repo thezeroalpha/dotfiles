@@ -35,5 +35,5 @@ echo "$stats" | while read -r row; do
     "7") printf "█";;
     "8") printf "█";;
   esac
-done; printf "\\n"
+done
 echo "$stats" > "$cache"
