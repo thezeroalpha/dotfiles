@@ -955,35 +955,35 @@ Hide some messages I don't need.
                        (recents . 5)
                        (bookmarks . 5)))
 
-    ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
-    (dashboard-footer-messages
-     (if (boundp 'za/my-website-dir)
-         (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
-                ;; Reformat quotes for display in dashboard
-                (file-contents (with-temp-buffer
-                                 (insert-file-contents quotes-file)
-                                 (re-search-forward (rx bol "> "))
-                                 (delete-region (point-min) (pos-bol))
-                                 (goto-char (point-min))
-                                 (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
-                                 (save-excursion (replace-regexp (rx eol "\n") "  "))
-                                 (buffer-substring-no-properties (point-min) (point-max))))
-                ;; Split file into individual quotes
-                (quotes (split-string file-contents "  ---  ")))
-           ;; Run each quote through fill-region for better display
-           (require 's)
-           (mapcar (lambda (quote-line)
-                     (with-temp-buffer
-                       (insert (s-trim quote-line))
-                       (fill-region (point-min) (point-max))
-                       (buffer-substring-no-properties (point-min) (point-max))))
-                   quotes))
-       nil))
+
     :bind (:map dashboard-mode-map
                 ("ss" . za/st)
                 ("sk" . za/st-kill)
                 ("J" . org-clock-goto))
     :config
+    ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
+    (when (boundp 'za/my-website-dir)
+      (setq dashboard-footer-messages
+            (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
+                   ;; Reformat quotes for display in dashboard
+                   (file-contents (with-temp-buffer
+                                    (insert-file-contents quotes-file)
+                                    (re-search-forward (rx bol "> "))
+                                    (delete-region (point-min) (pos-bol))
+                                    (goto-char (point-min))
+                                    (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
+                                    (save-excursion (replace-regexp (rx eol "\n") "  "))
+                                    (buffer-substring-no-properties (point-min) (point-max))))
+                   ;; Split file into individual quotes
+                   (quotes (split-string file-contents "  ---  ")))
+              ;; Run each quote through fill-region for better display
+              (require 's)
+              (mapcar (lambda (quote-line)
+                        (with-temp-buffer
+                          (insert (s-trim quote-line))
+                          (fill-region (point-min) (point-max))
+                          (buffer-substring-no-properties (point-min) (point-max))))
+                      quotes))))
     (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts)))
 
   (defun dashboard-insert-gtd-inbox-counts (list-size)
