@@ -156,4 +156,13 @@ return {
     },
   },
 
+  {
+    'mhartington/formatter.nvim',
+    config = function()
+      require("formatter").setup {
+        filetype = { yaml = { require("formatter.filetypes.yaml").yamlfmt } }
+      }
+    end,
+  },
+
 }

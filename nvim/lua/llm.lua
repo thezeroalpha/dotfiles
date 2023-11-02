@@ -90,11 +90,15 @@ end, { silent = true, desc = "Mistral" })
 ------------------------------------------------------------------
 -- coding
 vim.keymap.set("v", "<leader>cc", function()
+  local context = vim.fn.input("Prompt: ")
+  if context == "" then
+    return
+  end
   local prompt = ollama.get_visual_lines(0)
   plen.clear(win_options.bufnr)
   local float = plen.percentage_range_window(0.8, 0.8, win_options)
   local win_width = vim.api.nvim_win_get_width(float.win_id) - 5
-  ollama.run("codellama:7b", "", prompt, float.bufnr, win_width)
+  ollama.run("codellama:7b", context, prompt, float.bufnr, win_width)
 end, { silent = true, desc = "Codellama" })
 
 ------------------------------------------------------------------
