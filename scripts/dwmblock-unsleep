@@ -1,0 +1,29 @@
+#!/bin/sh
+# dwmblocks script for preventing sleep
+
+# Interfaces:
+# (list with `nmcli --get-values GENERAL.DEVICE,GENERAL.TYPE device show`)
+wired=enp0s31f6
+wireless=wlp0s20f3
+# there's probably a way to change these but I'd have to know all files to update...
+
+case "$BUTTON" in
+  3)
+    if pgrep unsleep >/dev/null 2>&1; then
+      killall unsleep
+      notify 'Enabling sleep' ''
+    else
+      setsid -f unsleep >/dev/null 2>&1
+      notify 'Disabling sleep' ''
+    fi
+    pkill -RTMIN+9 dwmblocks
+    ;;
+  6) "$TERMINAL" -e "$EDITOR" "$0"
+    ;;
+esac
+
+if pgrep unsleep >/dev/null 2>&1; then
+  printf ' '
+else
+  printf '🌙 '
+fi

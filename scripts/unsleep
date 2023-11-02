@@ -1,0 +1,8 @@
+#!/bin/sh
+while :; do
+  oldloc="$(xdotool getmouselocation)"
+  sleep 10
+  if [ "$(xdotool getmouselocation)" = "$oldloc" ]; then
+    xdotool mousemove_relative --sync -- -100 0 mousemove_relative --sync 100 0
+  fi
+done
