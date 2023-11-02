@@ -1,15 +1,17 @@
 super + o
   "$TERMINAL" -e lf "$HOME"
-super + shift + o
-  pcmanfm
 ctrl + shift + r
   pkill -SIGUSR1 sxhkd; notify "sxhkd reloaded" ""
 alt + shift + 3
   scrot -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
 alt + shift + 4
   scrot -s -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
-super + shift + m
+super + shift + m; m
   dmenuman
+
+super + shift + m; d
+  dmenu-displays
+
 super + ctrl + space
   dmenusymbols
 super + shift + a
@@ -21,6 +23,11 @@ super + e
 super + u
   linkhandler "$(clp)"
 
+super + shift + i
+  nerd-dictation begin &; pkill -RTMIN+6 dwmblocks
+super + shift + o
+  nerd-dictation end; pkill -RTMIN+6 dwmblocks
+
 XF86AudioRaiseVolume
   pactl -- set-sink-volume "$(pactl get-default-sink)" +10% && pkill -RTMIN+6 dwmblocks
 XF86AudioLowerVolume
@@ -30,14 +37,14 @@ XF86AudioMute
 XF86AudioMicMute
   pactl -- set-source-mute "$(pactl get-default-source)" toggle && pkill -RTMIN+6 dwmblocks
 XF86MonBrightnessDown
-  brightnessctl set 10%-
+  brightnessctl set 10%- && pkill -RTMIN+3 dwmblocks
 XF86MonBrightnessUp
-  brightnessctl set 10%+
+  brightnessctl set 10%+ && pkill -RTMIN+3 dwmblocks
 ctrl + shift + space
   dunstctl close
 ctrl + shift + super + space
   dunstctl close-all
-ctrl + grave
+super + grave
   dunstctl history-pop
 ctrl + shift + period
   dunstctl context

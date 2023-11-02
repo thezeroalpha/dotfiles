@@ -80,6 +80,8 @@ Xresources: ~/.Xresources
 # Config: GTK
 gtk-2.0/gtkrc: ~/.gtkrc-2.0
 
+keyd: /etc/keyd
+
 # Config: Emacs
 emacs:
 - config.org: ~/.config/emacs/config.org
