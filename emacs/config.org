@@ -962,7 +962,7 @@ Hide some messages I don't need.
                 ("J" . org-clock-goto))
     :config
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
-    (when (boundp 'za/my-website-dir)
+    (if (boundp 'za/my-website-dir)
       (setq dashboard-footer-messages
             (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
                    ;; Reformat quotes for display in dashboard
@@ -983,7 +983,8 @@ Hide some messages I don't need.
                           (insert (s-trim quote-line))
                           (fill-region (point-min) (point-max))
                           (buffer-substring-no-properties (point-min) (point-max))))
-                      quotes))))
+                      quotes)))
+      (warn "za/my-website-dir not bound, not setting custom dashboard messages"))
     (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts)))
 
   (defun dashboard-insert-gtd-inbox-counts (list-size)
@@ -2400,7 +2401,8 @@ Finally, the list of things we can publish with their respective publishin funct
                :recursive t
                :publishing-function org-publish-attachment)
 
-              ("org-roam" :components ("org-notes" "org-notes-data")))))
+              ("org-roam" :components ("org-notes" "org-notes-data"))))
+    (warn "za/my-website-dir not bound, not setting org publishing targets."))
 #+end_src
 
 And a function to rsync to my VPS:
@@ -2459,7 +2461,9 @@ The main reason is because Orgzly doesn't have a calendar view and can't (yet) s
 This way, I can just check my calendar.
 
 #+begin_src emacs-lisp
-  (if (boundp 'za/caldav-url)
+  (if (and (boundp 'za/caldav-url)
+           (boundp 'za/caldav-org-calendar-id)
+           (boundp 'za/org-life-calendar-inbox))
       (use-package org-caldav
         :init
         (defconst za/org-life-calendar-inbox (concat za/org-life-dir "calendar-inbox.org"))
@@ -2484,7 +2488,8 @@ This way, I can just check my calendar.
         :config
         (defun za/caldav-after-sync-notify () (za/notify "org-caldav sync complete" "Finished syncing"))
         (advice-add #'org-caldav-sync :after #'za/caldav-after-sync-notify)
-        (advice-add #'org-caldav-sync :around #'za/notify-on-interactivity)))
+        (advice-add #'org-caldav-sync :around #'za/notify-on-interactivity))
+    (warn "za/caldav-url, za/caldav-org-calendar-id, za/org-life-calendar-inbox not bound, not using org-caldav."))
 #+end_src
 
 Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_useable/e0sb5j0/][this]] for a way to sync on save.
