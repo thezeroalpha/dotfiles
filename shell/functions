@@ -84,7 +84,7 @@ if command -v virtualenv &> /dev/null; then
   }
 fi
 # fzf-reliant functions
-if [ -d ~/.config/fzf ]; then
+if command -v fzf >/dev/null 2>&1; then
   { [ -f ~/.config/dark-theme ] && export BAT_THEME='1337'; } || export BAT_THEME='GitHub'
   export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --theme=$BAT_THEME --color=always {} || cat {}) 2>/dev/null | head -500'"
   export FZF_DEFAULT_COMMAND="ag -l -g \"\""
