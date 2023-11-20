@@ -51,8 +51,8 @@ set_gtk() {
 }
 
 set_sioyek() {
-  if [ -f ~/Library/ApplicationSupport/sioyek/prefs_user.config ]; then
-    sioyek_config="$(realpath "$HOME/Library/ApplicationSupport/sioyek/prefs_user.config")"
+  sioyek_config="$(realpath ~/.config/sioyek/prefs_user.config)"
+  if [ -f "$sioyek_config" ]; then
     sed "/source .*\.config/s!\./.*\.config!./$1.config!" "${sioyek_config}" > "${sioyek_config}.new" \
       && mv "${sioyek_config}.new" "${sioyek_config}"
   fi
