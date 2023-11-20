@@ -17,7 +17,7 @@ super + ctrl + space
 super + shift + a
   j4-dmenu-desktop
 super + l
-  /usr/local/bin/slock -m "$(figlet -f big LOCKED)"
+  /usr/local/bin/slock
 super + e
   emacsclient -c -a ''
 super + u
