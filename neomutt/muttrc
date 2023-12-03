@@ -107,12 +107,6 @@ bind pager G  bottom
 macro index ZY "<enter-command>set use_threads=yes<Enter>"
 macro index ZN "<enter-command>set use_threads=no<Enter>"
 
-macro index,pager,attach,compose U "\
-<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
-<pipe-message> urlview<Enter>\
-<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
-"call urlview to extract URLs out of a message"
-
 # Composing
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
@@ -181,7 +175,19 @@ bind index,pager,browser N search-opposite
 bind index,pager f forward-message
 macro index A "<limit>all<enter>"
 
-macro attach w '<pipe-entry>w3m -T text/html -config ~/.config/w3m/config<enter>'
+# simulate the old url menu
+macro index,pager,attach,compose w "\
+<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+<pipe-message>w3m -T text/html -config ~/.config/w3m/config<enter> \
+<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+"call urlview to extract URLs out of a message"
+
+# simulate the old url menu
+macro index,pager,attach,compose \cb "\
+<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+<pipe-message> urlview<Enter> \
+<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+"call urlview to extract URLs out of a message"
 
 set nm_default_url = "notmuch://`notmuch config get database.path`"
 bind index,pager + entire-thread
