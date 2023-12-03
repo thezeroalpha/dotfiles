@@ -1,5 +1,9 @@
 return {
   {
+    'stevearc/dressing.nvim',
+    opts = {},
+  },
+  {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
@@ -165,4 +169,15 @@ return {
     end,
   },
 
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {},
+    config = function(_, opts) require'lsp_signature'.setup(opts) end
+  },
+
+  -- LSP diagnostics at your corner.
+  { 'RaafatTurki/corn.nvim',
+    opts = {},
+  },
 }
