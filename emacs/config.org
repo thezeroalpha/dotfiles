@@ -1558,8 +1558,8 @@ Install Org and require additional components that I use.
   org-attach."
       (if ; there's no heading
           (not (org-element-lineage (org-element-at-point)
-                                         '(headline inlinetask)
-                                         'include-self))
+                                    '(headline inlinetask)
+                                    'include-self))
           nil ; there's no point attaching a tag
                                           ; otherwise, normal attach
         (apply old/org-attach-tag args)))
@@ -1576,7 +1576,8 @@ Install Org and require additional components that I use.
        (R . t)
        (python . t)
        (ruby . t)
-       (shell . t)))
+       (shell . t)
+       (sqlite . t)))
     (use-package inf-ruby)
     (use-package org-superstar
       :custom
