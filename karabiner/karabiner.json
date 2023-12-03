@@ -1304,6 +1304,26 @@
                                     "key_code": "application"
                                 }
                             ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_option"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_command"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         }
                     ],
                     "treat_as_built_in_keyboard": false
@@ -1317,19 +1337,9 @@
                         "product_id": 12316,
                         "vendor_id": 16700
                     },
-                    "ignore": true,
+                    "ignore": false,
                     "manipulate_caps_lock_led": false,
                     "simple_modifications": [
-                        {
-                            "from": {
-                                "pointing_button": "button5"
-                            },
-                            "to": [
-                                {
-                                    "apple_vendor_keyboard_key_code": "mission_control"
-                                }
-                            ]
-                        },
                         {
                             "from": {
                                 "pointing_button": "button4"
@@ -1337,6 +1347,16 @@
                             "to": [
                                 {
                                     "apple_vendor_keyboard_key_code": "launchpad"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "pointing_button": "button5"
+                            },
+                            "to": [
+                                {
+                                    "apple_vendor_keyboard_key_code": "mission_control"
                                 }
                             ]
                         }
