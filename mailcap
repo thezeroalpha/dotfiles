@@ -1,6 +1,6 @@
 # Mailcap: mainly used for viewing attachments in (Neo)Mutt
 # So that HTML can render automatically in email
-text/html; w3m -config /Users/alex/.config/w3m/config -T text/html %s; copiousoutput
+text/html; w3m -v -F -o display_link_number=1 -I %{charset} -config /Users/alex/.config/w3m/config -T text/html %s; copiousoutput
 
 # Need a pager that doesn't quit automatically for plaintext
 text/plain; LESS="-Ric" less
