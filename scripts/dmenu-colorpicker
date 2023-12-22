@@ -1,0 +1,12 @@
+#!/bin/sh
+die() { printf '%s\n' "$1" >&2 && exit 1; }
+command -v xcolor || die "xcolor not found."
+
+case "$(printf 'Hex\nRGB\n' | dmenu -l 2 -p "Color format> " -i)" in
+  Hex)
+    xcolor --format hex | clc
+    ;;
+  RGB)
+    xcolor --format rgb | clc
+    ;;
+esac
