@@ -28,6 +28,20 @@ super + shift + i
 super + shift + o
   nerd-dictation end; pkill -RTMIN+6 dwmblocks
 
+super + c
+  clipmenu
+
+super + ctrl + i
+  dmenu-colorpicker
+
+XF86AudioNext
+  playerctl next
+XF86AudioPrev
+  playerctl previous
+XF86AudioPause
+  playerctl pause
+XF86AudioPlay
+  playerctl play-pause
 XF86AudioRaiseVolume
   pactl -- set-sink-volume "$(pactl get-default-sink)" +10% && pkill -RTMIN+6 dwmblocks
 XF86AudioLowerVolume
