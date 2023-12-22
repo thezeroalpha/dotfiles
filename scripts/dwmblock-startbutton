@@ -1,0 +1,46 @@
+#!/bin/sh
+# dwmblocks script for do not disturb
+
+case "$BUTTON" in
+  3)
+    case "$(printf 'Toggle DND\nToggle Sleep\nShutdown\nReboot' | dmenu -l 3 -i)" in
+      'Toggle DND')
+        dunstctl set-paused toggle
+        pkill -RTMIN+13 dwmblocks;
+        ;;
+      'Toggle Sleep')
+        if pgrep unsleep >/dev/null 2>&1; then
+          killall unsleep
+          notify 'Enabling sleep' ''
+        else
+          setsid -f unsleep >/dev/null 2>&1
+          notify 'Disabling sleep' ''
+        fi
+        pkill -RTMIN+13 dwmblocks
+        ;;
+      'Shutdown')
+        if [ "$(printf 'Yes\nNo' | dmenu -i)" = "Yes" ]; then
+          systemctl poweroff
+        fi
+        ;;
+      'Reboot')
+        if [ "$(printf 'Yes\nNo' | dmenu -i)" = "Yes" ]; then
+          systemctl reboot
+        fi
+        ;;
+    esac
+    ;;
+  6) "$TERMINAL" -e "$EDITOR" "$0"
+    ;;
+esac
+
+s=' '
+case "$(dunstctl is-paused)" in
+  true)
+    s="$s🔕 ";;
+esac
+
+if pgrep unsleep >/dev/null 2>&1; then
+  s="$s "
+fi
+printf '%s' "$s"

@@ -28,7 +28,7 @@ case "$(cat /sys/class/net/$wireless/operstate 2>/dev/null)" in
     else
       wifiicon="📡🛑 "
     fi ;;
-  up) wifiicon="$(awk -v pat="^\\s*$wireless" '$0 ~ pat { print "📶", int($3) "% " }' /proc/net/wireless)" ;;
+  up) wifiicon="$(awk -v pat="^\\\\s*$wireless" '$0 ~ pat { print "📶", int($3) "% " }' /proc/net/wireless)" ;;
   # might need to do some calculations if this doesn't match up with `iwconfig` link quality
   # up) wifiicon="$(awk '/^\s*e/ { print "📶", int($3 * 100 / 70) "% " }' /proc/net/wireless)" ;;
 esac
