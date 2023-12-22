@@ -5,6 +5,7 @@ local mason_lspconfig = require 'mason-lspconfig'
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
+  ansiblels = {},
   lua_ls = {},
   rust_analyzer = {
     ['rust-analyzer'] = {
@@ -23,6 +24,7 @@ local servers = {
           "-D", "clippy::pedantic",
           "-D", "clippy::nursery",
           "-D", "clippy::restriction",
+          "-A", "clippy::blanket_clippy_restriction_lints",
           "-A", "clippy::missing_docs_in_private_items",
           "-A", "clippy::implicit_return",
           "-A", "clippy::question_mark_used",
@@ -36,10 +38,12 @@ local servers = {
           "-A", "clippy::float_arithmetic",
           "-A", "clippy::pub_use",
           "-A", "clippy::single_char_lifetime_names",
+          "-A", "clippy::missing_trait_methods",
+          "-A", "clippy::multiple_unsafe_ops_per_block",    -- broken on 0.1.74
           "-D", "rust_2018_idioms",
           "-D", "missing_docs",
           "-D", "warnings",
-          "-A", "clippy::too_many_lines"}
+          "-A", "clippy::too_many_lines"},
         -- command = "check",
         -- extraArgs = { "--no-deps" },
       },
@@ -52,6 +56,7 @@ local servers = {
         },
       },
     },
+  },
     -- solargraph = {},
     -- bashls = {},
     -- pyright = {},
@@ -60,7 +65,6 @@ local servers = {
     -- texlab = {},
     -- clangd = {},
     -- perlnavigator = {},
-  },
 }
 
 

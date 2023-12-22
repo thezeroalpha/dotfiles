@@ -40,10 +40,6 @@ Plug 'majutsushi/tagbar'
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
 
-" Undo tree visualiser
-" TODO: consider mbbill/undotree instead?
-Plug 'simnalamburt/vim-mundo'
-
 " Repeat everything with '.'
 Plug 'tpope/vim-repeat'
 
@@ -139,7 +135,7 @@ Plug 'jceb/vim-orgmode', { 'for': 'org' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 " Show context
-Plug 'wellle/context.vim'
+" Plug 'wellle/context.vim'
 
 " Fuzzy finder in vim
 Plug 'junegunn/fzf', { 'dir': '$DOTFILES/tools/fzf', 'do': './install --all --xdg --no-fish'}
@@ -147,6 +143,8 @@ Plug 'junegunn/fzf.vim'
 
 " Additional text objects
 Plug 'wellle/targets.vim'
+
+Plug 'mbbill/undotree'
 
 " Vim-only
 if !has('nvim')
@@ -347,8 +345,8 @@ nnoremap <leader>! :Todo<CR>
 " Set a filetype
 cabbrev setf Filetypes
 
-command! Scripts call fzf#run(fzf#wrap({'source': 'command find "$(readlink ~/.scripts)" -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
-command! Configs call fzf#run(fzf#wrap({'source': 'command find ~/.dotfiles -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
+command! Scripts call fzf#run(fzf#wrap({'source': 'command find $DOTFILES -type f -or -type l -not -ipath "*/.git/*"', 'options': '--multi --reverse --inline-info --prompt="scripts> "', 'sink': 'sp'}))
+command! Configs call fzf#run(fzf#wrap({'source': 'command find $DOTFILES -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store"', 'options': '--multi --reverse --inline-info --prompt="configs> "', 'sink': 'sp'}))
 " Haskell {{{3
 let hs_highlight_delimiters = 1
 let hs_highlight_boolean = 1
