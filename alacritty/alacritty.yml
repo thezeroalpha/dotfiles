@@ -10,6 +10,10 @@ import:
 # environment variables. Some entries may override variables
 # set by alacritty itself.
 window:
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 0.85
+
   # Window padding (changes require restart)
   padding:
     x: 5
@@ -101,53 +105,53 @@ mouse:
 schemes:
     dark: &dark
         primary:
-          background: '#101119'
-          foreground: '#77e1ed'
+          background: '#090909'
+          foreground: '#cccdce'
         cursor:
-          text:       '#101119'
-          cursor:     '#77e1ed'
+          text:       '#090909'
+          cursor:     '#cccdce'
         normal:
-          black:      '#101119'
-          red:        '#605FDD'
-          green:      '#9450AD'
-          yellow:     '#A162DE'
-          blue:       '#C864E3'
-          magenta:    '#058CB0'
-          cyan:       '#04ACD0'
-          white:      '#77e1ed'
+          black:      '#090909'
+          red:        '#712F18'
+          green:      '#747A85'
+          yellow:     '#817F81'
+          blue:       '#7A8692'
+          magenta:    '#918E8E'
+          cyan:       '#9E9EA0'
+          white:      '#cccdce'
         bright:
-          black:      '#539da5'
-          red:        '#605FDD'
-          green:      '#9450AD'
-          yellow:     '#A162DE'
-          blue:       '#C864E3'
-          magenta:    '#058CB0'
-          cyan:       '#04ACD0'
-          white:      '#77e1ed'
+          black:      '#8e8f90'
+          red:        '#A58F78'
+          green:      '#747A85'
+          yellow:     '#817F81'
+          blue:       '#7A8692'
+          magenta:    '#918E8E'
+          cyan:       '#9E9EA0'
+          white:      '#cccdce'
     light: &light
         primary:
-          background: '#fbf8fb'
-          foreground: '#1A1923'
+          background: '#f8f8f6'
+          foreground: '#102237'
         cursor:
-          text:       '#fbf8fb'
-          cursor:     '#1A1923'
+          text:       '#f8f8f6'
+          cursor:     '#102237'
         normal:
-          black:      '#1A1923'
-          red:        '#e75127'
-          green:      '#e83076'
-          yellow:     '#ed64ed'
-          blue:       '#da8992'
-          magenta:    '#f4a2cc'
-          cyan:       '#dda4c7'
-          white:      '#1A1923'
+          black:      '#102237'
+          yellow:     '#eb8d50'
+          green:      '#94b45d'
+          red:        '#e48f5e'
+          blue:       '#174fd3'
+          magenta:    '#2e5ce7'
+          cyan:       '#f2d292'
+          white:      '#102237'
         bright:
-          black:      '#8b7f89'
-          red:        '#e75127'
-          green:      '#e83076'
-          yellow:     '#ed64ed'
-          blue:       '#f399a3'
-          magenta:    '#f4a2cc'
-          cyan:       '#f6b7de'
-          white:      '#1A1923'
+          black:      '#7e7e75'
+          red:        '#eb8d50'
+          green:      '#f1cf84'
+          yellow:     '#f1da85'
+          blue:       '#174fd3'
+          magenta:    '#2e5ce7'
+          cyan:       '#f2d292'
+          white:      '#102237'
 
-colors: *light
+colors: *dark
