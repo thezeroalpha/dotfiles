@@ -37,7 +37,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
     imgpreview "$CACHE.png"
     rm "$CACHE"
     ;;
-  *.bmp|*.jpg|*.jpeg|*.png|*.xpm|*.gif)
+  *.bmp|*.jpg|*.jpeg|*.png|*.xpm|*.gif|*.svg)
     imgpreview "$1"
     ;;
   *.wav|*.mp3|*.flac|*.m4a|*.wma|*.ape|*.ac3|*.og[agx]|*.spx|*.opus|*.as[fx])
