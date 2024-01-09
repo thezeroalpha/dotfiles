@@ -1465,6 +1465,16 @@ Gives ideas for phrases to use in academic writing.
 #+begin_src emacs-lisp
   (use-package academic-phrases)
 #+end_src
+** ediff
+#+begin_src emacs-lisp
+  (use-package ediff
+    :custom
+    ((ediff-keep-variants nil "Prompt to remove unmodifid buffers after session")
+     (ediff-make-buffers-readonly-at-startup nil "Don't make all buffers read-only at startup")
+     (ediff-show-clashes-only t "Only show diff regions where both buffers disagree with ancestor")
+     (ediff-split-window-function 'split-window-horizontally "I want long vertical side-by-side windows")
+     (ediff-window-setup-function 'ediff-setup-windows-plain "Everything in one frame please")))
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Custom functions
@@ -1494,8 +1504,14 @@ Install Org and require additional components that I use.
   (use-package org
     :custom
     (org-return-follows-link t "Easier link following. Actual enter is still possible with ~C-q C-j~.")
+    (org-hide-emphasis-markers t "Don't show italics/bold markers")
     (org-babel-python-command "python3")
     (org-confirm-babel-evaluate nil)
+    (org-file-apps '((auto-mode . emacs)
+                     (directory . emacs)
+                     ("\\.mm\\'" . default)
+                     ("\\.x?html?\\'" . default)
+                     ("\\.pdf\\'" . emacs)))
     (org-link-elisp-confirm-function #'y-or-n-p)
     (org-link-elisp-skip-confirm-regexp "^org-noter$")
     (org-clock-sound (concat user-emacs-directory "notification.wav"))
