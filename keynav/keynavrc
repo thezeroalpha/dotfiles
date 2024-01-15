@@ -46,6 +46,7 @@ shift+b move-left,move-down
 shift+n move-right,move-down
 space warp,click 1,end
 semicolon warp,end
+shift+semicolon warp
 1 click 1
 2 click 2
 3 click 3
@@ -97,6 +98,7 @@ v sh "xdotool key shift+Insert"
 ### Drag examples
 # Start drag holding the left mouse button
 d drag 1
+m drag 1 super
 # Start drag holding middle mouse + control and shift
 #w drag 2 ctrl+shift
 # Dragging with modifiers
@@ -108,6 +110,10 @@ mod+d drag 1 mod
 
 ### History
 a history-back
+
+# Scrolling
+i click 4
+e click 5
 
 ### Example of cut and move without the default values
 #h cut-left .75
