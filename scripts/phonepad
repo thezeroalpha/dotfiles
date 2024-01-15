@@ -1,0 +1,7 @@
+#!/bin/bash
+# Script to print out a phone-like keypad
+column -t <<EOF
+1.	2abc	3def
+4ghi	5jkl	6mno
+7pqrs	8tuv	9wxyz
+EOF
