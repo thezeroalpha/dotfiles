@@ -134,4 +134,5 @@ set_p10k "$theme"
 set_tmux "$theme"
 set_emacs "$theme"
 set_sioyek "$theme"
+pgrep dwm >/dev/null 2>&1 && command -v xdotool >/dev/null 2>&1 && xdotool key 'shift+super+r'
 exit 0
