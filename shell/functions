@@ -103,7 +103,7 @@ if command -v fzf >/dev/null 2>&1; then
   # script find
   sf() {
     local f
-    IFS=$'\n' f=($(command find "$(readlink ~/.scripts)" -type f -not -ipath "*/.git/*" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
+    IFS=$'\n' f=($(command find "$DOTFILES"/scripts -type f -not -ipath "*/.git/*" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
     [[ -n "$f" ]] && printf "$f"
   }
 
@@ -169,7 +169,7 @@ if command -v lf >/dev/null 2>&1; then
     if [ -f "$tmp" ]; then
       dir="$(cat "$tmp")"
       rm "$tmp"
-      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" || return
     fi
   }
 fi
