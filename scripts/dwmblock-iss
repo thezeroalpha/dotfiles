@@ -1,0 +1,37 @@
+#!/bin/sh
+iss_stream="https://www.youtube.com/watch?v=P9C25Un7xaM"
+show_iss_stream() {
+  setsid -f mpv --no-osc --loop=inf --no-terminal --profile=low-latency "$iss_stream" ;
+  notify "ISS Tracker" "Opening stream..."
+}
+
+iss_img="${XDG_CACHE_HOME:-$HOME/.cache}/iss.png"
+
+get_iss_pos() {
+  notify-send "ISS" "Pulling most recent ISS position map."
+  curl -sL "https://heavens-above.com/orbitdisplay.aspx?satid=25544&icon=iss&width=600&height=600" -o "$iss_img"
+}
+
+iss_diagram="${XDG_CACHE_HOME:-$HOME/.cache}/iss.png"
+get_iss_diagram() {
+  notify-send "ISS" "Pulling most recent ISS position map."
+  # From https://www.nasa.gov/international-space-station/space-station-facts-and-figures/
+  curl -sL "https://www.nasa.gov/wp-content/uploads/2023/05/iss-blowout-updated-view-2023-300.png" -o "$iss_diagram"
+}
+
+showimg() { setsid -f nsxiv "$1" ;}
+case $BUTTON in
+      1) case "$(printf 'Map\nStream\nDiagram' | dmenu -i -l 3 -p "Choose:")" in
+        'Map')
+          get_iss_pos && showimg "$iss_img";;
+        'Stream')
+          show_iss_stream;;
+        'Diagram')
+          get_iss_diagram && showimg "$iss_diagram";;
+        *);;
+      esac
+      ;;
+      6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+printf '🛰'

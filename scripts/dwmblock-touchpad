@@ -1,0 +1,25 @@
+#!/bin/sh
+touchpad="VEN_0488:00 0488:1024 Touchpad"
+enabled="$(xinput list-props "$touchpad" | awk -F':\\s*' '/Device Enabled/ { print $2 }')"
+
+case "$BUTTON" in
+  3)
+    case "$enabled" in
+      1)
+        xinput disable "$touchpad"
+        pkill -RTMIN+15 dwmblocks
+        ;;
+      0)
+        xinput enable "$touchpad"
+        pkill -RTMIN+15 dwmblocks
+        ;;
+    esac
+    ;;
+  6) "$TERMINAL" -e "$EDITOR" "$0";;
+esac
+
+case "$enabled" in
+  1) s='🖱';;
+  0) s='🖱 ❌';;
+esac
+printf '%s' "$s"

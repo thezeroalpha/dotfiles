@@ -15,6 +15,6 @@ status="$(battery | tac | tr -d '\n' | sed '
 
 case "$status" in
   ‼*) notify "Battery low" "$status%" battery critical;;
-  # ✅*) notify "Battery charged" "$status%" battery;;
+  ✅*) notify "Battery charged" "$status%" battery;;
 esac
 printf "%s%%\n" "$status"
