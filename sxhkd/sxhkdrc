@@ -9,8 +9,17 @@ alt + shift + 4
 super + shift + m; m
   dmenuman
 
+#button6
+#  case "$(xdotool getwindowfocus getwindowname)" in; *Brave) xdotool key 'ctrl+shift+Tab';; esac
+#
+#button7
+#  case "$(xdotool getwindowfocus getwindowname)" in; *Brave) xdotool key 'ctrl+Tab';; esac
+
 super + shift + m; d
   dmenu-displays
+
+super + shift + m; b
+  dmenu-dwmblocks
 
 super + ctrl + space
   dmenusymbols
