@@ -1522,7 +1522,7 @@ Install Org and require additional components that I use.
     (org-attach-store-link-p 'attached)
     (org-attach-archive-delete 'query)
     (org-stuck-projects '("/PROJ"
-                          ("NEXT")
+                          ("NEXT" "STARTED")
                           nil nil)
                         "List projects that are stuck (don't have a next action)")
 
