@@ -1,0 +1,7 @@
+#!/bin/sh
+[ -z "$DOTFILES" ] && notify "Error" "DOTFILES not set."
+scriptname="$(find "$DOTFILES/scripts/" -name "dwmblock-*" | dmenu -i -l 5 -p "Script to run")"
+[ -z "$scriptname" ] && exit
+button="$(printf '1\n2\n3\n4\n5\n6' | dmenu -i -l 6 -p "Button to press:")"
+[ -z "$button" ] && exit
+BUTTON="$button" "$scriptname"
