@@ -210,6 +210,7 @@ Luckily there's already a function for that, I just need to call it in a hook:
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook #'delete-trailing-whitespace)
 #+end_src
+
 ** Formatting & indentation
 
 Show a tab as 8 spaces:
@@ -651,6 +652,30 @@ Some functions to start/stop syncthing.
       (while (re-search-forward (rx (any "‘" "’")) nil 'noerror)
         (replace-match "'"))))
 #+end_src
+** Distraction-free on current buffer
+#+begin_src emacs-lisp
+  (defun za/buffer-focus-no-distractions ()
+    "Focus on this buffer"
+    (interactive)
+    (cond ((or (not (boundp 'za/no-distractions))
+               (not za/no-distractions))
+           (olivetti-mode 1)
+           (line-number-mode 0)
+           (display-line-numbers-mode 0)
+           (window-configuration-to-register ?w)
+           (delete-other-windows)
+           (setq-local za/tmp/mode-line-format mode-line-format)
+           (setq-local mode-line-format nil)
+           (setq-local za/no-distractions t)
+           (message "Window configuration stored in register W"))
+          (za/no-distractions
+           (olivetti-mode 0)
+           (line-number-mode 0)
+           (display-line-numbers-mode 1)
+           (setq-local mode-line-format za/tmp/mode-line-format)
+           (setq-local za/no-distractions nil)
+           (jump-to-register ?w))))
+#+end_src
 * Interface
 ** Theme
 Icons required for some parts of the doom theme:
@@ -716,12 +741,31 @@ To evaluate a quoted form, use 'eval'.
 #+end_src
 
 ** Font
-I want Menlo, size 14:
+I want Menlo, size 12:
 
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Menlo-14"))
+  (add-to-list 'default-frame-alist '(font . "Menlo-13"))
+  (custom-set-faces
+   ; height = pt * 10
+   '(fixed-pitch ((t (:family "Menlo" :height 130))))
+   '(variable-pitch ((t (:family "ETBembo" :height 140))))
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-table ((t (:foreground "#0087af" :inherit fixed-pitch))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch))))))
+
+  (set-face-font 'fixed-pitch "Menlo-13")
+  (set-face-font 'variable-pitch "ETBembo-14")
 #+end_src
 
+I like nicer list bullets:
+
+#+begin_src emacs-lisp
+  (font-lock-add-keywords
+   'org-mode
+   `((,(rx bol (* blank) (group ?-) " ")  ; list regexp
+      1                                   ; first match
+      '(face nil display "•"))))          ; replace with bullet point, keep same face
+#+end_src
 ** Cursor
 The default box cursor isn't really accurate, because the cursor is actually between letters, not on a letter.
 So, I want a bar instead of a box:
@@ -1540,7 +1584,8 @@ Install Org and require additional components that I use.
            (org-mode . org-superstar-mode)
            (org-mode . org-indent-mode)
            (org-mode . za/settings-on-org-mode)
-           (org-mode . org-pretty-table-mode))
+           (org-mode . org-pretty-table-mode)
+           (org-mode . variable-pitch-mode))
     :config
     (za/package-vc-install :repo "Fuco1/org-pretty-table")
     (require 'org-pretty-table)
@@ -3091,6 +3136,12 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
   (use-package vdirel
     :config
     (vdirel-switch-repository "~/.local/share/contacts/default"))
+#+end_src
+* Override some faces
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org-faces
+    (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch))
 #+end_src
 * Shortdoc
 Set a better keybinding (I'm never gonna use ~view-hello-file~ anyways):
