@@ -14,7 +14,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-plug'
 
 " Vim tester
-Plug 'junegunn/vader.vim'
+Plug 'junegunn/vader.vim', { 'on': 'Vader', 'for': 'vader' }
 
 " A color table with xterm color codes
 Plug 'guns/xterm-color-table.vim'
@@ -34,9 +34,6 @@ Plug 'tpope/vim-eunuch'
 " Project management
 Plug 'tpope/vim-projectionist'
 
-" A tag overview on the right side
-Plug 'majutsushi/tagbar'
-
 " Git wrapper from tpope
 Plug 'tpope/vim-fugitive'
 
@@ -50,9 +47,6 @@ Plug 'junegunn/limelight.vim'
 " Better CSV editing
 Plug 'mechatroner/rainbow_csv'
 
-" Display ANSI color codes
-Plug 'vim-scripts/AnsiEsc.vim'
-
 " Disable hlsearch after finished searching
 Plug 'romainl/vim-cool'
 
@@ -63,19 +57,16 @@ Plug 'lervag/vimtex'
 Plug 'tpope/vim-abolish'
 
 " Highlight hex colors
-Plug 'chrisbra/colorizer'
-
-" Pywal scheme in vim
-Plug 'dylanaraps/wal.vim'
+Plug 'chrisbra/colorizer', { 'on': 'ColorHighlight' }
 
 " Bracket bindings for filetypes
 Plug 'arp242/jumpy.vim'
 
 " Omnifuncs
-Plug 'myhere/vim-nodejs-complete'
-Plug 'othree/html5.vim'
-Plug 'vim-scripts/OmniCppComplete'
-Plug 'vim-scripts/pythoncomplete'
+Plug 'myhere/vim-nodejs-complete', { 'for': 'js' }
+Plug 'othree/html5.vim', { 'for': 'html' }
+Plug 'vim-scripts/OmniCppComplete', { 'for': 'cpp' }
+Plug 'vim-scripts/pythoncomplete', { 'for': 'python' }
 
 " Alignment
 Plug 'junegunn/vim-easy-align'
@@ -93,7 +84,7 @@ Plug 'psliwka/vim-smoothie'
 Plug 'tpope/vim-dispatch'
 
 " Vimscript testing
-Plug 'tpope/vim-scriptease'
+Plug 'tpope/vim-scriptease', { 'on': 'Breakadd' }
 
 " Set 'path', 'suffixesadd', 'include', 'includeexpr', 'define'
 "   automatically for selected filetypes.
@@ -118,13 +109,10 @@ Plug 'thezeroalpha/vim-literate-markdown'
 Plug 'axvr/zepl.vim'
 
 " Center the window vertically (like Goyo but keeps statusline/whatever)
-Plug 'jmckiern/vim-venter'
+Plug 'jmckiern/vim-venter', { 'on': 'Venter' }
 
 " Edit files directly in quickfix window
 Plug 'stefandtw/quickfix-reflector.vim'
-
-" Browse github repositories
-Plug 'skanehira/gh.vim'
 
 " Minesweeper
 Plug 'iqxd/vim-mine-sweeping'
@@ -133,9 +121,6 @@ Plug 'jceb/vim-orgmode', { 'for': 'org' }
 
 " Rust
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-
-" Show context
-" Plug 'wellle/context.vim'
 
 " Fuzzy finder in vim
 Plug 'junegunn/fzf', { 'dir': '$DOTFILES/tools/fzf', 'do': './install --all --xdg --no-fish'}
@@ -148,6 +133,9 @@ Plug 'mbbill/undotree'
 
 " Vim-only
 if !has('nvim')
+  " A tag overview on the right side
+  Plug 'majutsushi/tagbar'
+
   " Substitute preview
   Plug 'markonm/traces.vim'
 
@@ -160,6 +148,9 @@ if !has('nvim')
 
   " Simple commenting
   Plug 'tpope/vim-commentary'
+
+  " Display ANSI color codes
+  Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc' }
 
 endif
 call plug#end()

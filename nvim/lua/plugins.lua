@@ -199,7 +199,11 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
-    opts = {},
+    opts = {
+    search = {
+        trigger = "\\",
+      }
+    },
     -- stylua: ignore
     keys = {
       { "<leader><leader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
@@ -233,6 +237,22 @@ return {
   -- },
   {
     'dgagn/diagflow.nvim',
-    opts = {}
+    opts = {},
+    event = "VeryLazy",
+  },
+
+  {
+    'stevearc/aerial.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    },
+    keys = {
+      { "<leader>tt", "<cmd>AerialToggle!<cr>", desc = "Toggle tagbar" },
+      { "<leader>to", "<cmd>AerialOpen<cr>", desc = "Open and jump to tagbar" },
+    },
+    backends = { "treesitter", "lsp", "markdown", "man" },
   },
 }
