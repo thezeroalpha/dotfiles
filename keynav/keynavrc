@@ -99,6 +99,7 @@ v sh "xdotool key shift+Insert"
 # Start drag holding the left mouse button
 d drag 1
 m drag 1 super
+s drag 3 super
 # Start drag holding middle mouse + control and shift
 #w drag 2 ctrl+shift
 # Dragging with modifiers
