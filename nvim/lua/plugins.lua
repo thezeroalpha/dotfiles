@@ -243,7 +243,10 @@ return {
 
   {
     'stevearc/aerial.nvim',
-    opts = {},
+    opts = {
+      backends = { "lsp", "treesitter", "markdown", "man" },
+      filter_kind = false,
+    },
     -- Optional dependencies
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
@@ -253,6 +256,5 @@ return {
       { "<leader>tt", "<cmd>AerialToggle!<cr>", desc = "Toggle tagbar" },
       { "<leader>to", "<cmd>AerialOpen<cr>", desc = "Open and jump to tagbar" },
     },
-    backends = { "treesitter", "lsp", "markdown", "man" },
   },
 }
