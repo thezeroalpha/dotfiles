@@ -27,7 +27,16 @@ case $(pactl get-sink-mute "$sink") in
 esac
 volume="$(pactl get-sink-volume "$sink" \
   | head -n 1 \
-  | awk -v volume_icon="$volume_icon" -F ' / ' '{gsub(" ", "", $2); gsub(" ", "", $4); printf("%s %s %s", volume_icon, $2,$4)}')"
+  | awk -v volume_icon="$volume_icon" -F ' / ' '{
+      gsub(" ", "", $2);
+      gsub(" ", "", $4);
+      if ($2 == $4) {
+        printf("%s %s", volume_icon, $2);
+      }
+      else {
+        printf("%s %s %s", volume_icon, $2, $4);
+      }
+    }')"
 
 case $(pactl get-source-mute "$source") in
   "Mute: yes"*)
@@ -41,6 +50,15 @@ esac
 pgrep -f nerd-dictation >/dev/null 2>&1 && recording=' ⏺'
 mic="$(pactl get-source-volume "$source" \
   | head -n 1 \
-  | awk -v mic_icon="$mic_icon" -F ' / ' '{gsub(" ", "", $2); gsub(" ", "", $4); printf("%s %s %s", mic_icon, $2,$4)}')"
+  | awk -v mic_icon="$mic_icon" -F ' / ' '{
+      gsub(" ", "", $2);
+      gsub(" ", "", $4);
+      if ($2 == $4) {
+        printf("%s %s", mic_icon, $2);
+      }
+      else {
+        printf("%s %s %s", mic_icon, $2);
+      }
+    }')"
 printf "%s %s%s" "$volume" "$mic" "$recording"
 

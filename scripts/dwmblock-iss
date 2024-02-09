@@ -1,7 +1,8 @@
 #!/bin/sh
-iss_stream="https://www.youtube.com/watch?v=P9C25Un7xaM"
+iss_stream_1="https://www.youtube.com/watch?v=P9C25Un7xaM"
+iss_stream_2="https://www.youtube.com/watch?v=jPTD2gnZFUw"
 show_iss_stream() {
-  setsid -f mpv --no-osc --loop=inf --no-terminal --profile=low-latency "$iss_stream" ;
+  setsid -f mpv --no-osc --loop=inf --no-terminal --profile=low-latency "$1" ;
   notify "ISS Tracker" "Opening stream..."
 }
 
@@ -21,11 +22,13 @@ get_iss_diagram() {
 
 showimg() { setsid -f nsxiv "$1" ;}
 case $BUTTON in
-      1) case "$(printf 'Map\nStream\nDiagram' | dmenu -i -l 3 -p "Choose:")" in
+      1) case "$(printf 'Map\nStream 1\nStream 2\nDiagram' | dmenu -i -l 3 -p "Choose:")" in
         'Map')
           get_iss_pos && showimg "$iss_img";;
-        'Stream')
-          show_iss_stream;;
+        'Stream 1')
+          show_iss_stream "$iss_stream_1";;
+        'Stream 2')
+          show_iss_stream "$iss_stream_2";;
         'Diagram')
           get_iss_diagram && showimg "$iss_diagram";;
         *);;
