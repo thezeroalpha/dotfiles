@@ -296,6 +296,13 @@ cmd xld %open -a XLD $f
 # fzf files
 cmd fuzzy_select $lf -remote "send $id select \"$(fzf --layout reverse)\""
 
+# fuzzy grep files
+cmd fuzzy_grep ${{
+  fpath="$(rg --color=always --line-number --no-heading --smart-case "${*:-}" \
+    | fzf --ansi --delimiter : --preview 'bat --color=always {1} --highlight-line {2}' --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' --bind 'enter:become(printf "%s" {1})')"
+  lf -remote "send $id select $fpath"
+}}
+
 # Show file info with exiftool
 cmd file_info $LESSOPEN='| exiftool %s' LESS='-cRiX' less $f
 
@@ -349,6 +356,7 @@ map U redraw
 
 # Selecting
 map f fuzzy_select
+map \\ fuzzy_grep
 map <esc> unselect; clear
 map <space> :toggle; down
 map F glob-select-wrapper
@@ -404,7 +412,7 @@ map gl cd ~/Downloads
 map gw cd ~/Documents/Syncthing/vimwiki
 map gm cd ~/Music/Libraries/Mine
 map g/ cd /
-map g. cd ~/.dotfiles
+map g. cd $DOTFILES
 map gv cd /Volumes
 map gt cd ~/.Trash/
 
