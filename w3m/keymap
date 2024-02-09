@@ -13,7 +13,7 @@ keymap w NEXT_WORD
 keymap b PREV_WORD
 keymap G END
 
-keymap C-m GOTO_LINK
+keymap C-j GOTO_LINK
 keymap C-m VIEW_IMAGE
 
 # Scrolling
@@ -75,11 +75,11 @@ keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
 keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
 keymap SPCv EXEC_SHELL 'linkhandler "$W3M_CURRENT_LINK"'
 keymap SPCu COMMAND 'DOWNLOAD /tmp/w3m_source.html; READ_SHELL ~/.config/w3m/cgi-bin/fzf-urls.cgi; GOTO /cgi-bin/goto-target-url.cgi'
-keymap SPC, COMMAND 'SHELL "vim -o ~/.config/w3m/{keymap,config}"; REINIT'
+keymap SPC, COMMAND 'SHELL "nvim -o ~/.config/w3m/keymap ~/.config/w3m/config"; REINIT'
 keymap xs COMMAND 'READ_SHELL ~/.config/w3m/cgi-bin/surfraw.cgi ; GOTO /cgi-bin/goto-target-url.cgi'
 
 # Link hinting
-keymap f-SPC COMMAND 'SET_OPTION display_link_number=toggle; RESHAPE'
+keymap f-SPC COMMAND 'MARK m; SET_OPTION display_link_number=toggle; RESHAPE; NEXT_MARK'
 keymap ff COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN'
 keymap ft COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; TAB_LINK'
 keymap fo COMMAND 'SET_OPTION display_link_number=0; RESHAPE; LINK_BEGIN; GOTO_LINK'
