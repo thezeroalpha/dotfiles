@@ -50,7 +50,9 @@
     sd = stash drop
     sl = stash list
 
+    blame = "blame -w -C -C -C" # ignore whitespace, look for code movement, in multiple commits, for all commits
     diffs = "diff --staged"
+    diffw = "diff --word-diff"
     changes = diff --summary --stat
     changess = changes --staged
     mergetest = merge --no-commit
@@ -112,3 +114,12 @@
     required = true
 [init]
 	defaultBranch = master
+
+[rerere]
+        # remember how I solved a merge conflict and reuse it
+	enabled = true
+	# automatically stage the reuse
+	autoUpdate = true
+# Use ssh key to sign commits
+[gpg]
+	format = ssh
