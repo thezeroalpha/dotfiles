@@ -14,7 +14,13 @@ case "$os" in
     fi
     ;;
   darwin*)
-    catimg -H "$HEIGHT" "$1"
+    case "$1" in
+      *.svg)
+        chafa --fill=block --symbols=block -c 256 -s 80x"$HEIGHT" "$1";;
+      *)
+        catimg -H "$HEIGHT" "$1"
+        ;;
+    esac
     ;;
   msys*|cygwin*|mingw*|nt|win*)
     printf "Windows not supported.\n"
