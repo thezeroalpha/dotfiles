@@ -1063,13 +1063,13 @@ Hide some messages I don't need.
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 #+end_src
 
-
 ** Pixel scroll mode
 #+begin_src emacs-lisp
   (unless (version< emacs-version "29")
     (pixel-scroll-precision-mode))
 #+end_src
 * General packages
+
 ** which-key
 Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 
@@ -1573,7 +1573,21 @@ Install Org and require additional components that I use.
                           ("NEXT" "STARTED")
                           nil nil)
                         "List projects that are stuck (don't have a next action)")
-
+    (org-tag-alist (let ((za/org-tag-energy-levels
+                          '((:startgroup)
+                            ("sport" . ?h) ; Sport (deep focus, long tasks, no interruptions, at least an hour)
+                            ("cruise" . ?l) ; Cruise (shallow focus, can be interrupted, can batch lots of quick tasks together)
+                            ("parked" . ?e) ; Parked (take a break, look into the distance, walk the dog, stretch, etc.)
+                            ("errand" . ?o) ; Errand (anything that involves me being out of the house)
+                            (:endgroup)))
+                         (za/org-tag-1-3-5
+                          '(; 1-3-5 tagging
+                            (:startgroup)
+                            ("_1" . ?1) ; 1 big task, 3-4 hrs
+                            ("_3" . ?3) ; 3 medium tasks, 1-2 hrs
+                            ("_5" . ?5) ; 5 small tasks, 30min-1hr
+                            (:endgroup))))
+                     `(,@za/org-tag-contexts ,@za/org-tag-energy-levels ,@za/org-tag-1-3-5)))
 
     :bind (("C-c a" . org-agenda)
            ("C-c n" . org-capture)
@@ -1631,7 +1645,19 @@ Install Org and require additional components that I use.
         (apply old/org-attach-tag args)))
 
     (advice-add #'org-attach-tag :around #'za/org-attach-tag)
-
+    (defun za/org-clear-1-3-5 ()
+      "Clears the _1/_3/_5 daily tags from all antries."
+      (interactive)
+      (let ((number-of-entries
+             (length (org-map-entries
+                      (lambda ()
+                        (let* ((tags-1-3-5 '("_1" "_3" "_5"))
+                               (tags-without-1-3-5 (seq-remove (lambda (e) (member e tags-1-3-5))
+                                                               org-scanner-tags)))
+                          (org-set-tags tags-without-1-3-5)))
+                      "_1|_3|_5"
+                      'agenda-with-archives))))
+        (message "Modified %d entries." number-of-entries)))
 
     (require 'org-tempo)
     (require 'org-habit)
@@ -1656,47 +1682,6 @@ Install Org and require additional components that I use.
     (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
     (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
     (add-to-list 'org-structure-template-alist '("ss" . "src sh")))
-#+end_src
-*** DISABLED Make it look a bit nicer
-**** TODO freezes emacs-daemon on startup. figure out why.
-From https://binarydigitz01.gitlab.io/blog/ricing-org-mode/
-#+begin_src emacs-lisp :tangle no
-  (let* ((variable-tuple (cond ((x-list-fonts "ETBembo")
-                                '(:font "ETBembo"))))
-         (headline `(:weight bold)))
-    (custom-theme-set-faces
-     'user
-     `(org-level-8 ((t (,@headline ,@variable-tuple))))
-     `(org-level-7 ((t (,@headline ,@variable-tuple))))
-     `(org-level-6 ((t (,@headline ,@variable-tuple))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple))))
-     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-     `(org-document-title ((t (,@headline ,@variable-tuple
-                                          :height 2.0 :underline nil))))
-     '(variable-pitch ((t (:family "ETBembo" :height 170 :weight thin))))))
-
-  (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
-    )
-  (eval-after-load "org"
-    '(mapc
-      (lambda (face)
-        (let ((adjoin-to-list-or-symbol
-               (lambda (element list-or-symbol)
-                 (let ((list (if (not (listp list-or-symbol))
-                                 (list list-or-symbol)
-                               list-or-symbol)))
-                   (require 'cl-lib)
-                   (cl-adjoin element list)))))
-          (set-face-attribute
-           face nil
-           :inherit
-           (funcall adjoin-to-list-or-symbol
-                    'fixed-pitch
-                    (face-attribute face :inherit)))))
-        (list 'org-code 'org-block 'org-table)))
 #+end_src
 *** Agenda & GTD
 **** Agenda mode settings
@@ -1998,6 +1983,17 @@ And one to skip tasks that /are/ habits:
         keep)))
 #+end_src
 
+Skip ones with a habit tag:
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-has-habit-tag ()
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil)
+          (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags))))
+      (if (member "HABIT" item-tags-without-inherited)
+          skip
+        keep)))
+#+end_src
 
 And another function, to skip tasks that are blocked:
 
@@ -2023,6 +2019,30 @@ For listing tasks without a context - skip if it has a context tag:
           skip
         keep)))
 #+end_src
+
+For listing tasks without an energy level - skip if it has an energy level:
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-has-energy-level ()
+    (let ((skip (save-excursion (org-end-of-subtree t)))
+          (keep nil)
+          (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags)))
+          (energy-tag-p (lambda (s) (member s '("sport" "cruise" "parked" "errand")))))
+      (if (cl-some energy-tag-p item-tags-without-inherited)
+          skip
+        keep)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun za/skip-if-scheduled-in-future ()
+    (let* ((skip (save-excursion (org-end-of-subtree t)))
+           (keep nil)
+           (scheduled-time (org-get-scheduled-time (point))))
+      (if (and scheduled-time (time-less-p (current-time) scheduled-time))
+          skip
+        keep)))
+#+end_src
+
 Create custom agenda view based on those keywords.
 Agenda views are made up of blocks, appearing in the order that you declare them.
 The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
@@ -2036,6 +2056,10 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            todo "NEXT" ((org-agenda-overriding-header "Missing context:")
                         (org-agenda-sorting-strategy '(priority-down alpha-up))
                         (org-agenda-skip-function 'za/skip-if-has-context)))
+          ("e" "Next actions missing energy"
+           todo "NEXT" ((org-agenda-overriding-header "Missing energy level:")
+                        (org-agenda-sorting-strategy '(priority-down alpha-up))
+                        (org-agenda-skip-function 'za/skip-if-has-energy-level)))
           ("W" "Waiting"
            ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
           ("S" . "Saved for later...")
@@ -2049,9 +2073,16 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("a" . "Agenda with schedule only...")
           ("aw" "This week"
            ((agenda "" ((org-agenda-span 'week)))))
-          ("ad" "Today"
+          ("aD" "Today"
            ((agenda "" ((org-agenda-span 'day)))))
-          ("at" "Tomorrow"
+          ("ad" "Today (no habits)"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-skip-function 'za/skip-if-has-habit-tag)))))
+          ("at" "Tomorrow (no habits)"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-day "+1d")
+                        (org-agenda-skip-function 'za/skip-if-has-habit-tag)))))
+          ("aT" "Tomorrow"
            ((agenda "" ((org-agenda-span 'day)
                         (org-agenda-start-day "+1d")))))
 
@@ -2063,7 +2094,20 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((agenda "" ((org-agenda-overriding-header "Month agenda:")
                         (org-agenda-span 'month)))))
 
-          ("d" "Day Agenda + Habits + Waiting"
+          ("d" "Day Agenda + Habits graph + Waiting"
+           ((agenda "" ((org-agenda-overriding-header "Day:")
+                        (org-agenda-span 'day)
+                        (org-habit-show-habits nil)
+                        (org-agenda-skip-function 'za/skip-if-has-habit-tag)))
+            (todo "STARTED" ((org-agenda-overriding-header "In progress:")))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))
+            (agenda "" ((org-agenda-overriding-header "Habits:")
+                        (org-agenda-span 'day)
+                        (org-agenda-use-time-grid nil)
+                        (org-agenda-skip-function 'za/skip-unless-habit)
+                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
+                        (org-habit-show-all-today t)))))
+          ("D" "Day Agenda with habit tags + Habits + Waiting"
            ((agenda "" ((org-agenda-overriding-header "Day:")
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
@@ -2075,6 +2119,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                         (org-agenda-skip-function 'za/skip-unless-habit)
                         (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
                         (org-habit-show-all-today t)))))
+
 
           ("k" "Kanban view"
            ((todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
@@ -2090,6 +2135,17 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("f" "Finished tasks that aren't in a project"
            ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
                                                       (org-agenda-skip-function 'za/skip-if-in-project)))))
+
+          ("1" "1-3-5"
+           ((tags "_1" ((org-agenda-overriding-header "Big tasks:")
+                        (org-agenda-skip-function 'za/skip-if-scheduled-in-future)
+                        (org-agenda-sorting-strategy '(todo-state-down deadline-up priority-down alpha-up))))
+            (tags "_3" ((org-agenda-overriding-header "Medium tasks:")
+                        (org-agenda-skip-function 'za/skip-if-scheduled-in-future)
+                        (org-agenda-sorting-strategy '(todo-state-down deadline-up priority-down alpha-up))))
+            (tags "_5" ((org-agenda-overriding-header "Small tasks:")
+                        (org-agenda-skip-function 'za/skip-if-scheduled-in-future)
+                        (org-agenda-sorting-strategy '(todo-state-down deadline-up priority-down alpha-up))))))
 
           ;; Useful thread for opening calfw: https://github.com/kiwanami/emacs-calfw/issues/18
           ("c" "Calendar view" (lambda (&rest _)
