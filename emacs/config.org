@@ -2387,6 +2387,11 @@ And to be able to bulk-set priorities in agenda:
 #+begin_src emacs-lisp
   (add-to-list 'org-global-properties '("Difficulty_ALL" . "low medium high"))
 #+end_src
+*** Org export backends
+#+begin_src emacs-lisp
+  (use-package ox-pandoc)
+#+end_src
+
 *** org publishing
 I decided, after trying many different things, to settle on org-publish.
 
