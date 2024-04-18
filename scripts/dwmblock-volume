@@ -53,12 +53,11 @@ mic="$(pactl get-source-volume "$source" \
   | awk -v mic_icon="$mic_icon" -F ' / ' '{
       gsub(" ", "", $2);
       gsub(" ", "", $4);
-      if ($2 == $4) {
+      if (NF <= 4 || $2 == $4) {
         printf("%s %s", mic_icon, $2);
       }
       else {
-        printf("%s %s %s", mic_icon, $2);
+        printf("%s %s %s", mic_icon, $2,$4);
       }
     }')"
 printf "%s %s%s" "$volume" "$mic" "$recording"
-
