@@ -3202,6 +3202,16 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
     :config
     (vdirel-switch-repository "~/.local/share/contacts/default"))
 #+end_src
+** Yaml
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :commands yaml-mode
+    :init
+    (add-hook 'yaml-mode-hook
+              (lambda ()
+                (setq-local outline-regexp (rx (* blank)))
+                (outline-minor-mode))))
+#+end_src
 * Override some faces
 #+begin_src emacs-lisp
   (with-eval-after-load 'org-faces
