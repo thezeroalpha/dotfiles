@@ -28,6 +28,7 @@
 [ -d "/usr/local/opt/sqlite" ]                                                   && [ -n "${PATH##*"/usr/local/opt/sqlite/bin"*}" ]         && PATH="/usr/local/opt/sqlite/bin:$PATH"
 [ -d "$HOME/.rvm/bin" ]                                                   && [ -n "${PATH##*"$HOME/.rvm/bin"*}" ]         && PATH="$HOME/.rvm/bin:$PATH"
 [ -d "$HOME/.local/share/gem/bin" ]                                                   && [ -n "${PATH##*"$HOME/.local/share/gem/bin"*}" ]         && PATH="$HOME/.local/share/gem/bin:$PATH"
+[ -d "$HOME/.local/share/nvim/mason/bin" ]                                                   && [ -n "${PATH##*"$HOME/.local/share/nvim/mason/bin"*}" ]         && PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 command -v rbenv 1>/dev/null 2>&1 && eval "$(rbenv init -)"
 command -v jenv 1>/dev/null 2>&1 && eval "$(jenv init -)"
 command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init -)"
