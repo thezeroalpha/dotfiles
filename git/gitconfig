@@ -25,6 +25,7 @@
     past-week = lgv --since='1 weeks ago'
     cbsr-sprint = lgv --since='last-tuesday' --until='this-tuesday'
     adog = log --all --decorate --oneline --graph
+    dog = log --decorate --oneline --graph
 
     authors = !git log --all --format='%cN <%cE>' | sort -u
 
@@ -98,12 +99,16 @@
 
     df = !git --git-dir=$DOTFILES/.git --work-tree=$DOTFILES
 
+[pull]
+    rebase = true
 [merge]
     tool = nvimdiff
     conflictstyle = diff3
 
 [mergetool "nvimdiff"]
     cmd = nvim -d \"$LOCAL\" \"$MERGED\" \"$BASE\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd J\"
+[diff]
+  algorithm = histogram
 [core]
     autocrlf = input
 
@@ -113,13 +118,18 @@
     process = git-lfs filter-process
     required = true
 [init]
-	defaultBranch = master
-
+    defaultBranch = master
 [rerere]
-        # remember how I solved a merge conflict and reuse it
-	enabled = true
-	# automatically stage the reuse
-	autoUpdate = true
+    # remember how I solved a merge conflict and reuse it
+    enabled = true
+    # automatically stage the reuse
+    autoUpdate = true
 # Use ssh key to sign commits
 [gpg]
-	format = ssh
+    format = ssh
+[transfer]
+    fsckobjects = true
+[fetch]
+    fsckobjects = true
+[receive]
+    fsckobjects = true
