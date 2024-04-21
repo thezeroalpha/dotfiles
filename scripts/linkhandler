@@ -200,6 +200,14 @@ sub menu {
     }
   }];
 
+  push @$tableref, ['Noecho News', sub {
+    my ($link) = @_;
+    detach sub {
+      notify 'Finding different perspectives...', "$link";
+      launch_in_terminal(qq(article-noecho-news "$link"));
+    }
+  }];
+
   # Choose an option
   my @options = map { $_->[0] } @$tableref;
   my $choice = choose(\@options);

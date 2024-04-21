@@ -1,0 +1,16 @@
+#!/bin/sh
+output="$(curl -sL 'https://www.noecho.news/api/edge/analyze-article' \
+ -H 'content-type: application/json' \
+ -H 'origin: https://www.noecho.news' \
+ -H 'accept-language: en-US,en;q=0.6' \
+ -H 'referer: https://www.noecho.news/' \
+ --data-raw "{\"url\":\"$1\"}")"
+
+curl -sL 'https://www.noecho.news/api/edge/find-different-perspectives' \
+ -H 'content-type: application/json' \
+ -H 'accept-language: en-US,en;q=0.6' \
+ -H 'origin: https://www.noecho.news' \
+ -H 'referer: https://www.noecho.news/' \
+ --data-raw "{\"originalArticle\":$output}" \
+ | jq -r '.[] | (["# \(.title)", .url, "=> \(.why)"] | join("\n") + "\n")' \
+ | LESS='' less -X
