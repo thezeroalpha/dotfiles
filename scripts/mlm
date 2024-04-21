@@ -165,9 +165,9 @@ organize_files() {
   mkdir -p _failed
   find "$src" -name '*.mp3' 2>/dev/null | \
     while read -r i; do
-      artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '/+!@#$%^&*:?"\\>' '_' | sed 's/\.\.*$//' | perl -Mopen=locale -Mutf8 -pe 's/[\x{0300}-\x{036F}]//g')"
+      artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '/+!@#$%^&*:?"|\\>' '_' | sed 's/\.\.*$//' | perl -Mopen=locale -Mutf8 -pe 's/[\x{0300}-\x{036F}]//g')"
       [ -n "$artist" ] || { mv "$i" _failed/ && continue; }
-      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?>\\/"' '_' | sed 's/\.\.*$//' | perl -Mopen=locale -Mutf8 -pe 's/[\x{0300}-\x{036F}]//g')"
+      album="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '+!@#$%^&*:?>|\\/"' '_' | sed 's/\.\.*$//' | perl -Mopen=locale -Mutf8 -pe 's/[\x{0300}-\x{036F}]//g')"
       [ -n "$album" ] || { mv "$i" _failed/ && continue; }
       fname="$(printf '%s' "${i##*/}" | perl -Mopen=locale -Mutf8 -pe 's/[\x{0300}-\x{036F}]//g')"
       mkdir -p "$artist/$album"
