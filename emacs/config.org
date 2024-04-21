@@ -1990,7 +1990,8 @@ Skip ones with a habit tag:
     (let ((skip (save-excursion (org-end-of-subtree t)))
           (keep nil)
           (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags))))
-      (if (member "HABIT" item-tags-without-inherited)
+      (if (or (member "HABIT" item-tags-without-inherited)
+              (member "flatastic" item-tags-without-inherited))
           skip
         keep)))
 #+end_src
@@ -2555,8 +2556,8 @@ And a function to rsync to my VPS:
 API work is handled via an external ruby script.
 
 #+begin_src emacs-lisp
-  (defun za/org-ourhome-sync-tasks ()
-    "Add tasks from OurHome to inbox"
+  (defun za/org-flatastic-sync-tasks ()
+    "Add tasks from flatastic to inbox"
     (interactive)
     (unless (json-available-p)
       (user-error "JSON not available"))
@@ -2566,19 +2567,19 @@ API work is handled via an external ruby script.
                       (progn
                         (require 'exec-path-from-shell)
                         (exec-path-from-shell-copy-envs
-                         '("OURHOME_CLIENT_ID" "OURHOME_USER" "OURHOME_PASS"))
-                        (shell-command-to-string "~/.local/share/rbenv/shims/ruby ~/.scripts/ourhome.rb"))
+                         '("FLATASTIC_API_KEY" "FLATASTIC_USER_ID"))
+                        (shell-command-to-string "~/.local/share/rbenv/shims/ruby ~/.scripts/flatastic.rb"))
                       :object-type 'alist))
            (format-data-as-org (lambda (l)
-                                 (format "* TODO %s :ourhome:\n  SCHEDULED: <%s>\n  Points: %d\n"
+                                 (format "* TODO %s :flatastic:\n  SCHEDULED: <%s>\n  Points: %d\n"
                                          (alist-get 'description l)
                                          (alist-get 'scheduled_due_date l)
                                          (alist-get 'point_value l))))
-           (org-ourhome-items (mapcar format-data-as-org api-data)))
+           (org-flatastic-items (mapcar format-data-as-org api-data)))
       (with-current-buffer (find-file-noselect za/org-life-inbox)
         (goto-char (point-max))
-        (insert "\n" (string-join org-ourhome-items "\n")))
-      (message "Synced %d OurHome tasks to inbox" (length api-data))))
+        (insert "\n" (string-join org-flatastic-items "\n")))
+      (message "Synced %d Flatastic tasks to inbox" (length api-data))))
 #+end_src
 
 *** org-caldav
