@@ -1596,7 +1596,8 @@ Install Org and require additional components that I use.
            ("C-M-<return>" . org-insert-todo-heading)
            ("C-c M-y" . org-yank-link-url)
            ("C-c N" . org-noter)
-           ("C-M-i" . completion-at-point))
+           ("C-M-i" . completion-at-point)
+           ("C-c SPC" . org-table-blank-field))
     :hook ((org-mode . abbrev-mode)
            (org-mode . za/echo-area-tooltips)
            (org-mode . org-superstar-mode)
@@ -2195,7 +2196,7 @@ workarounds/tips). And when I reschedule, I want to know the reason.
 I can disable logging on state change for a specific task by adding ~:LOGGING: nil~ to the ~:PROPERTIES:~ drawer.
 
 #+begin_src emacs-lisp
-  (setq org-log-done 'note
+  (setq org-log-done 'time
         org-log-reschedule 'note)
 #+end_src
 
@@ -3212,6 +3213,11 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
               (lambda ()
                 (setq-local outline-regexp (rx (* blank)))
                 (outline-minor-mode))))
+#+end_src
+** casual
+#+begin_src emacs-lisp
+  (use-package casual
+    :bind (:map calc-mode-map ("C-o" . 'casual-main-menu)))
 #+end_src
 * Override some faces
 #+begin_src emacs-lisp
