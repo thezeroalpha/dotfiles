@@ -1563,7 +1563,7 @@ Install Org and require additional components that I use.
     (org-link-elisp-confirm-function #'y-or-n-p)
     (org-link-elisp-skip-confirm-regexp "^org-noter$")
     (org-clock-sound (concat user-emacs-directory "notification.wav"))
-    (org-export-backends '(ascii html icalendar latex md odt org))
+    (org-export-backends '(ascii html icalendar latex md odt org pandoc))
     (org-catch-invisible-edits 'show-and-error
                                "Sometimes when text is folded away, I might accidentally edit text inside of it. This option prevents that. I wanted to do 'smart', but that has a 'fixme' so it might change in the future...Instead, show what's being edited, but don't perform the edit.")
     (org-src-tab-acts-natively t "a tab in a code block indents the code as it should")
