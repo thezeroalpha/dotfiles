@@ -1519,6 +1519,15 @@ Gives ideas for phrases to use in academic writing.
      (ediff-split-window-function 'split-window-horizontally "I want long vertical side-by-side windows")
      (ediff-window-setup-function 'ediff-setup-windows-plain "Everything in one frame please")))
 #+end_src
+** highlight-indent-guides
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :hook (yaml-mode . highlight-indent-guides-mode)
+    :custom
+    ((highlight-indent-guides-method 'character))
+    :custom-face
+    (highlight-indent-guides-character-face ((t (:foreground "#adadad")))))
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Custom functions
