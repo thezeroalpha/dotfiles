@@ -1815,7 +1815,9 @@ And a function for importing other inboxes:
   (defun za/gtd-inbox-import ()
     (interactive)
     (unless (string= (buffer-file-name) (file-truename za/org-life-inbox))
-      (user-error "You're not in your GTD inbox file."))
+      (user-error "You're not in your GTD inbox file"))
+    (when (directory-files za/org-life-dir nil "\\.sync-conflict-")
+        (user-error "Sync conflicts found, please fix them"))
     (let ((mobile (if (boundp 'za/org-life-inbox-mobile) (file-truename za/org-life-inbox-mobile) nil))
           (calendar (if (boundp 'za/org-life-calendar-inbox) (file-truename za/org-life-calendar-inbox) nil)))
       (save-mark-and-excursion
