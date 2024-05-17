@@ -55,6 +55,10 @@ XF86AudioRaiseVolume
   pactl -- set-sink-volume "$(pactl get-default-sink)" +10% && pkill -RTMIN+6 dwmblocks
 XF86AudioLowerVolume
   pactl -- set-sink-volume "$(pactl get-default-sink)" -10% && pkill -RTMIN+6 dwmblocks
+shift + XF86AudioRaiseVolume
+  pactl -- set-sink-volume "$(pactl get-default-sink)" +1% && pkill -RTMIN+6 dwmblocks
+shift + XF86AudioLowerVolume
+  pactl -- set-sink-volume "$(pactl get-default-sink)" -1% && pkill -RTMIN+6 dwmblocks
 XF86AudioMute
   pactl -- set-sink-mute "$(pactl get-default-sink)" toggle && pkill -RTMIN+6 dwmblocks
 XF86AudioMicMute
