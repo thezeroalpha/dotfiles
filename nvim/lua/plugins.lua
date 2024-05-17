@@ -40,7 +40,9 @@ return {
         null_ls.builtins.code_actions.shellcheck,
         null_ls.builtins.diagnostics.vacuum,
         null_ls.builtins.diagnostics.checkmake,
-        null_ls.builtins.diagnostics.flake8,
+        null_ls.builtins.diagnostics.flake8.with({
+          extra_args = { "--max-line-length", "130" },
+        }),
         -- null_ls.builtins.diagnostics.pylint,
       } }
     end,
@@ -51,7 +53,7 @@ return {
     config = function()
       require 'config.nvim-cmp'
     end,
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'zjp-CN/nvim-cmp-lsp-rs' },
   },
 
   { -- Highlight, edit, and navigate code
@@ -126,7 +128,7 @@ return {
     },
     keys = {
       { -- lazy style key map
-        "<leader>u",
+        "<leader>U",
         "<cmd>Telescope undo<cr>",
         desc = "undo history",
       },

@@ -10,6 +10,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'pearofducks/ansible-vim'
 " To get documentation on vim-plug
 Plug 'junegunn/vim-plug'
 
@@ -354,8 +355,8 @@ nmap ga <Plug>(LiveEasyAlign)
 nnoremap <leader>ga :<c-u>ascii<cr>
 " Peekaboo {{{3
 let g:peekaboo_compact=1
-" Mundo {{{3
-nnoremap <leader>u :MundoToggle<CR>
+" Undotree {{{3
+nnoremap <leader>u :UndotreeToggle<CR>
 " Dispatch {{{3
 " Disable default maps
 let g:dispatch_no_maps = 1
