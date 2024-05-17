@@ -99,8 +99,6 @@
 
     df = !git --git-dir=$DOTFILES/.git --work-tree=$DOTFILES
 
-[pull]
-    rebase = true
 [merge]
     tool = nvimdiff
     conflictstyle = diff3
