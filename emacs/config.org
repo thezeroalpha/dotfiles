@@ -1241,6 +1241,8 @@ This lets me jump to any position in Emacs rather quickly, sometimes it's useful
 
 #+begin_src emacs-lisp
   (use-package avy
+    :custom
+    (avy-single-candidate-jump nil "Often I want to perform an action, never jump automatically")
     :bind
     (("C-:" . avy-goto-char-timer)))
 #+end_src
