@@ -1,0 +1,12 @@
+#!/bin/sh
+case "$BUTTON" in
+  1)
+    if command -v cal >/dev/null 2>&1; then
+      setsid -f "$TERMINAL" -e cal
+    elif command -v emacsclient >/dev/null 2>&1; then
+      emacsclient -a '' -c -e '(progn (calendar) (delete-other-windows))'
+    fi
+    ;;
+  6) "$TERMINAL" -e "$EDITOR" "$0";;
+esac
+date '+%b %d (%a) %I:%M%p'

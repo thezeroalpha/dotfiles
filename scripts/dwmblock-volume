@@ -6,6 +6,9 @@ case "$BUTTON" in
   1)
     pgrep -f pulsemixer || setsid -f "$TERMINAL" -e pulsemixer
     pkill -RTMIN+6 dwmblocks;;
+  3)
+    pactl -- set-source-mute "$source" toggle
+    pkill -RTMIN+6 dwmblocks;;
   4)
     pactl -- set-sink-volume "$sink" +10%
     pkill -RTMIN+6 dwmblocks
