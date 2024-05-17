@@ -82,6 +82,7 @@
         `(minibuffer-prompt ((,class (:bold t :foreground ,keyword))))
         `(default-italic ((,class (:italic t))))
 	`(link ((,class (:foreground ,const :underline t))))
+        `(calendar-today ((,class (:inherit font-lock-keyword-face))))
 	`(org-code ((,class (:foreground "#005f87"))))
 	`(org-hide ((,class (:foreground ,bg1))))
         `(org-level-1 ((,class (:bold t :foreground ,fg2 :height 1.1))))
@@ -246,9 +247,7 @@
         `(jde-java-font-lock-constant-face ((t (:foreground ,const))))
         `(jde-java-font-lock-modifier-face ((t (:foreground ,fg2))))
         `(jde-jave-font-lock-protected-face ((t (:foreground ,keyword))))
-        `(jde-java-font-lock-number-face ((t (:foreground ,var))))
-
-        )
+        `(jde-java-font-lock-number-face ((t (:foreground ,var)))))
   ;; emacs >= 26.1
   (when (>= emacs-major-version 26)
     (custom-theme-set-faces

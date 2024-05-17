@@ -666,15 +666,18 @@ Some functions to start/stop syncthing.
            (delete-other-windows)
            (setq-local za/tmp/mode-line-format mode-line-format)
            (setq-local mode-line-format nil)
+           (setq-local za/tmp/internal-border-width (frame-parameter nil 'internal-border-width))
+           (set-frame-parameter nil 'internal-border-width 20)
            (setq-local za/no-distractions t)
            (message "Window configuration stored in register W"))
           (za/no-distractions
-           (olivetti-mode 0)
+           (set-frame-parameter nil 'internal-border-width za/tmp/internal-border-width)
            (line-number-mode 0)
            (display-line-numbers-mode 1)
            (setq-local mode-line-format za/tmp/mode-line-format)
-           (setq-local za/no-distractions nil)
-           (jump-to-register ?w))))
+           (jump-to-register ?w)
+           (olivetti-mode 0)
+           (setq-local za/no-distractions nil))))
 #+end_src
 * Interface
 ** Theme
@@ -1457,7 +1460,8 @@ Prism changes the color of text depending on their depth. Makes it easier to see
 #+end_src
 ** olivetti: distraction-free writing
 #+begin_src emacs-lisp
-  (use-package olivetti)
+  (use-package olivetti
+    :diminish)
 #+end_src
 ** nov.el: EPUB support
 #+begin_src emacs-lisp
@@ -1527,6 +1531,16 @@ Gives ideas for phrases to use in academic writing.
     ((highlight-indent-guides-method 'character))
     :custom-face
     (highlight-indent-guides-character-face ((t (:foreground "#adadad")))))
+#+end_src
+** cc-avy
+#+begin_src emacs-lisp
+  (use-package cc-avy
+    :ensure nil ; local
+    :bind ("C-M-:" . cc/avy-menu))
+#+end_src
+** annotate
+#+begin_src emacs-lisp
+  (use-package annotate)
 #+end_src
 * Mode/language specific packages
 ** Org
@@ -1691,7 +1705,8 @@ Install Org and require additional components that I use.
     ;; Tempo expansions
     (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
     (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
-    (add-to-list 'org-structure-template-alist '("ss" . "src sh")))
+    (add-to-list 'org-structure-template-alist '("ss" . "src sh"))
+    (add-to-list 'org-structure-template-alist '("sy" . "src yaml")))
 #+end_src
 *** Agenda & GTD
 **** Agenda mode settings
@@ -3091,8 +3106,6 @@ See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-3
     :custom
     (dired-listing-switches "-alhv")
     (dired-dwim-target t "If I have another dired window open, use that as target")
-    (dired-omit-files
-        (concat dired-omit-files "\\|^\\..+$"))
     ;; By default, hide details (show again by pressing oparen):
     :hook (dired-mode . dired-hide-details-mode))
 #+end_src
@@ -3236,6 +3249,18 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 #+begin_src emacs-lisp
   (use-package casual
     :bind (:map calc-mode-map ("C-o" . 'casual-main-menu)))
+#+end_src
+** casual-dired
+#+begin_src emacs-lisp
+  (use-package casual-dired
+    :bind (:map dired-mode-map
+                ("C-o" . 'casual-dired-tmenu)
+                ("C-u C-o" . 'dired-display-file)))
+#+end_src
+
+** json
+#+begin_src emacs-lisp
+  (use-package json-mode)
 #+end_src
 * Override some faces
 #+begin_src emacs-lisp
