@@ -156,6 +156,7 @@ class SpotifyClient
       albums.each { |album| album['release_date'] = album.release_date.split('-').size == 1 ? Date.iso8601("#{album.release_date}-01") : Date.iso8601(album.release_date) }
       acc + albums
     end.reject { |album| album.album_type == 'compilation' }
+    print "\n"
 
     puts 'Sorting'
     releases.sort_by { |rel| rel.release_date }
@@ -220,7 +221,12 @@ def bulk_follow_artists
     print "\rProcessing #{i + 1}/#{total}: #{artist}"
     # TODO: in search, maybe look for an artist where I've already liked a song?
     response = client.api_call_get 'search', { q: artist, type: :artist }
-    found_artist = response['artists']['items'][0]
+    found_artists = response['artists']['items']
+    if found_artists.nil?
+      warn "No artist found for #{artist}"
+      next
+    end
+    found_artist = found_artists[0]
     if found_artist.nil?
       warn "No artist found for #{artist}"
     else
