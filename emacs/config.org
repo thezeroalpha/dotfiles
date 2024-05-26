@@ -48,9 +48,11 @@ You can use this in use-package with an ~:init~ clause.
 
 * exec-path-from-shell (macOS)
 In macOS, the path is not set correctly (i.e. as it is in the terminal) in the GUI app. This fixes it.
+Not needed when using emacs-plus, because it has a custom patch for it. It also defines a [[https://github.com/d12frosted/homebrew-emacs-plus?tab=readme-ov-file#system-appearance-change][custom variable]] which hopefully should be enough to detect if we're running emacs-plus.
 
 #+begin_src emacs-lisp
-  (when (string-equal system-type "darwin")
+  (when (and (string-equal system-type "darwin")
+             (not (boundp 'ns-system-appearance-change-functions)))
     (use-package exec-path-from-shell
       :config
       (add-to-list 'exec-path-from-shell-variables "NOTMUCH_CONFIG")
