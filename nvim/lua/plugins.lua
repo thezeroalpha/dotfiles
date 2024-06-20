@@ -39,7 +39,21 @@ return {
         null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.code_actions.shellcheck,
         null_ls.builtins.diagnostics.phpcs,
-        null_ls.builtins.diagnostics.vacuum,
+        -- null_ls.builtins.diagnostics.vacuum,
+        null_ls.builtins.diagnostics.yamllint.with({
+          extra_args = {
+            "-d", [[{
+              extends: default,
+              rules: {
+                line-length: {max: 160},
+                document-start: disable,
+                comments: {
+                  min-spaces-from-content: 1,
+                },
+              }
+              }]]
+          }
+        }),
         null_ls.builtins.diagnostics.checkmake,
         null_ls.builtins.diagnostics.flake8.with({
           extra_args = { "--max-line-length", "130" },
@@ -85,6 +99,7 @@ return {
         vim.keymap.set('n', ']c', function() require('gitsigns').next_hunk() end, {buffer = true})
         vim.keymap.set('n', '[c', function() require('gitsigns').prev_hunk() end, {buffer = true})
         vim.keymap.set('n', ']=', function() require('gitsigns').preview_hunk_inline() end, {buffer = true})
+        vim.keymap.set('n', ']-', function() require('gitsigns').preview_hunk() end, {buffer = true})
         vim.keymap.set('n', ']+', function() require('gitsigns').select_hunk() end, {buffer = true})
       end,
     },

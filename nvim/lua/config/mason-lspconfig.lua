@@ -7,6 +7,7 @@ local mason_lspconfig = require 'mason-lspconfig'
 local servers = {
   ansiblels = {},
   lua_ls = {},
+  docker_compose_language_service = {},
   rust_analyzer = {
     ['rust-analyzer'] = {
       cargo = {
