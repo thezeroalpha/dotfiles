@@ -1546,6 +1546,12 @@ Gives ideas for phrases to use in academic writing.
 #+begin_src emacs-lisp
   (use-package annotate)
 #+end_src
+** yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :config (yas-global-mode)
+    :delight)
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Custom functions
@@ -1575,6 +1581,7 @@ Install Org and require additional components that I use.
   (use-package org
     :custom
     (org-outline-path-complete-in-steps nil "Complete path all at once (needed for completion frameworks")
+    (org-format-latex-options (plist-put org-format-latex-options :scale 2.0) "Larger latex previews")
     (org-goto-interface 'outline-path-completion "Use outline path completion for org-goto, instead of its weird interface")
     (org-insert-heading-respect-content t "Insert headings after current subtree")
     (org-id-link-to-org-use-id 'create-if-interactive "If org-store-link is called directly, create an ID.")
@@ -1690,6 +1697,7 @@ Install Org and require additional components that I use.
     (require 'org-tempo)
     (require 'org-habit)
     (require 'org-id)
+    (use-package ob-rust)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
@@ -1697,7 +1705,8 @@ Install Org and require additional components that I use.
        (python . t)
        (ruby . t)
        (shell . t)
-       (sqlite . t)))
+       (sqlite . t)
+       (rust . t)))
     (use-package inf-ruby)
     (use-package org-superstar
       :custom
@@ -3249,6 +3258,31 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
                 (setq-local outline-regexp (rx (* blank)))
                 (outline-minor-mode))))
 #+end_src
+** calc
+#+begin_src emacs-lisp
+  (use-package calc
+    :custom
+    (math-additional-units
+     ;; elements:
+     ;; - symbol identifying the unit,
+     ;; - expression indicatingv alue of unit or nil for fundamental units
+     ;; - textual description
+     '((b nil "Bit")
+       (B "b * 8" "Bytes")
+       (KiB "1024 * B" "Kibibyte")
+       (MiB "1024 * KiB" "Mebibyte")
+       (GiB "1024 * MiB" "Gibibyte")
+       (KB "1000 * B" "Kilobyte")
+       (MB "1000 * KB" "Megabyte")
+       (GB "1000 * MB" "Gigabyte")
+       (Kib "1024 * b" "Kibibit")
+       (Mib "1024 * Kib" "Mebibit")
+       (Gib "1024 * Mib" "Gibibit")
+       (Kb "1000 * b" "Kilobit")
+       (Mb "1000 * Kb" "Megabit")
+       (Gb "1000 * Mb" "Gigabit")))
+    (math-units-table nil "Rebuild the table"))
+#+end_src
 ** casual
 #+begin_src emacs-lisp
   (use-package casual
@@ -3265,6 +3299,10 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 ** json
 #+begin_src emacs-lisp
   (use-package json-mode)
+#+end_src
+** rust
+#+begin_src emacs-lisp
+  (use-package rust-mode)
 #+end_src
 * Override some faces
 #+begin_src emacs-lisp
