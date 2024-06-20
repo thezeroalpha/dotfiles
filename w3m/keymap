@@ -26,6 +26,7 @@ keymap C-u PREV_HALF_PAGE
 
 # Misc
 keymap H BACK
+keymap L PREV
 keymap ~ GOTO_HOME # specified in $WWW_HOME
 keymap C-l REDRAW
 keymap s PRINT
