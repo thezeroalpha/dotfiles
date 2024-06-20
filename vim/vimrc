@@ -801,6 +801,10 @@ command! Syncwin windo set scrollbind! cursorbind!
 command! EF exe "split $HOME/.vim/after/ftplugin/".&filetype.".vim"
 command! FD filetype detect
 command! D smile
+command! QuickfixAddCurrent call setqflist([{'bufnr': bufnr(), 'lnum': line('.'), 'text': getline('.')}], 'a')
+command! LoclistAddCurrent call setloclist(winnr(), [{'bufnr': bufnr(), 'lnum': line('.'), 'text': getline('.')}], 'a')
+command! QuickfixClear call setqflist([], 'f')
+command! LoclistClear call setloclist(winnr(), [], 'f')
 command! -nargs=? Browser exe 'terminal ++close w3m -config '.getenv("XDG_CONFIG_HOME").'/w3m/config -bookmark '.getenv("XDG_CONFIG_HOME").'/w3m/bookmark.html '.<q-args>
 command! -nargs=1 Img
       \ exe "r! find ".shellescape(expand("%:p:h"))." -maxdepth ".<args>." -type f -exec file --mime-type '{}' \\+"
@@ -1074,6 +1078,8 @@ nnoremap <leader>qf :cwindow<CR>
 nnoremap <leader>qn :cnext<CR>
 nnoremap <leader>qp :cprevious<CR>
 nnoremap <leader>qc :cclose<CR>
+nnoremap <leader>qz :<c-u>QuickfixClear<CR>
+nnoremap <leader>q. :<c-u>QuickfixAddCurrent<CR>
 
 " location
 nnoremap <leader>ll :lwindow<CR>
@@ -1082,6 +1088,8 @@ nnoremap <leader>lp :lprevious<CR>
 nnoremap <leader>lb :lbefore<CR>
 nnoremap <leader>la :lafter<CR>
 nnoremap <leader>lf :lfirst<CR>
+nnoremap <leader>lz :<c-u>LoclistClear<CR>
+nnoremap <leader>l. :<c-u>LoclistAddCurrent<CR>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
