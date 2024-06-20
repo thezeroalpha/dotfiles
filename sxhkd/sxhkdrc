@@ -3,9 +3,9 @@ super + o
 ctrl + shift + r
   pkill -SIGUSR1 sxhkd; notify "sxhkd reloaded" ""
 alt + shift + 3
-  scrot -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
+  scrot -f -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
 alt + shift + 4
-  scrot -s -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
+  scrot -f -s -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
 super + shift + m; m
   dmenuman
 
