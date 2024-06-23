@@ -64,6 +64,7 @@ class SpotifyClient
     end
 
     t = Thread.new { server.start }
+    puts "If it doesn't open automatically, open this in your browser:\n#{url}"
     system 'open', url
     t.join
   end
@@ -159,7 +160,7 @@ class SpotifyClient
     print "\n"
 
     puts 'Sorting'
-    releases.sort_by { |rel| rel.release_date }
+    releases.sort_by(&:release_date)
   end
 
   def add_to_playlist_if_not_present(playlist_id, tracks)
@@ -194,9 +195,9 @@ def process_new_releases
     acc + client.api_call_get_unpaginate("albums/#{album.id}/tracks", { limit: 50 })
   end
 
-  puts "Processing tracks"
+  puts 'Processing tracks'
   client.add_to_playlist_if_not_present tracks_playlist, others_tracks
-  puts "Processing albums"
+  puts 'Processing albums'
   client.add_to_playlist_if_not_present albums_playlist, albums_tracks
   File.write("#{ENV['HOME']}/.local/share/spot-last-checked", YAML.dump(Date.today))
 end
