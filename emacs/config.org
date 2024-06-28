@@ -1590,6 +1590,7 @@ Install Org and require additional components that I use.
     (org-goto-interface 'outline-path-completion "Use outline path completion for org-goto, instead of its weird interface")
     (org-insert-heading-respect-content t "Insert headings after current subtree")
     (org-id-link-to-org-use-id 'create-if-interactive "If org-store-link is called directly, create an ID.")
+    (org-clock-mode-line-total 'today)
     (org-return-follows-link t "Easier link following. Actual enter is still possible with ~C-q C-j~.")
     (org-hide-emphasis-markers t "Don't show italics/bold markers")
     (org-babel-python-command "python3")
