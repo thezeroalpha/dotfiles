@@ -125,6 +125,8 @@
 # Use ssh key to sign commits
 [gpg]
     format = ssh
+[credential]
+	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 [transfer]
     fsckobjects = true
 [fetch]
