@@ -1,0 +1,16 @@
+#!/bin/sh
+tsp_cmd=tsp
+
+case $BUTTON in
+  6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+$tsp_cmd -l | awk --traditional '
+  BEGIN { finished=0 }
+  NR > 1 { total++ }
+  $2 == "finished" { finished++ }
+  END {
+    if (total > 0) {
+      printf("🧵 %s/%s", finished, total)
+    }
+  }'
