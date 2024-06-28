@@ -39,7 +39,7 @@ if [[ "${terminfo[kend]}" != "" ]]; then
   bindkey "${terminfo[kend]}"  end-of-line            # [End] - Go to end of line
 fi
 
-bindkey ' ' magic-space                               # [Space] - do history expansion
+# bindkey ' ' magic-space                               # [Space] - do history expansion
 
 if [[ "${terminfo[kcbt]}" != "" ]]; then
   bindkey "${terminfo[kcbt]}" reverse-menu-complete   # [Shift-Tab] - move through the completion menu backwards
