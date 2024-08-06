@@ -116,6 +116,7 @@ cmd extract ${{
         *.rar) unrar x $f;;
         *.7z) 7z x $f;;
         *.jar) jar -xvf $f;;
+        *.tar) tar xvf $f;;
     esac
 }}
 
@@ -402,9 +403,9 @@ map [ scroll_parent_up
 map ] scroll_parent_down
 map gd. cd ~/Documents
 map gds cd ~/Documents/School
-map gdw cd ~/Documents/Programming/alex.balgavy.eu/
-map gdb cd ~/Documents/Programming/blog.alex.balgavy.eu/
-map gdl cd ~/Documents/Programming/lectures.alex.balgavy.eu/
+map gdw cd ~/Documents/Syncthing/alex.balgavy.eu/
+map gdb cd ~/Documents/Syncthing/blog.alex.balgavy.eu/
+map gdl cd ~/Documents/Syncthing/lectures.alex.balgavy.eu/
 map gb cd ~/Documents/Calibre\ Library/
 map gdp cd ~/Documents/Syncthing/Personal\ documents/
 map gD cd ~/Desktop
