@@ -3066,18 +3066,21 @@ See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-3
      "Define the main screen sections")
     (notmuch-search-oldest-first nil "Show newest mail first")
     (notmuch-archive-tags '("-inbox" "+archive"))
-    (notmuch-show-mark-unread-tags '("+unread"))
-    (notmuch-delete-tags '("-inbox" "+trash"))
     (notmuch-tagging-keys '(("a" notmuch-archive-tags "Archive")
                             ("r" notmuch-show-mark-read-tags "Mark read")
                             ("u" notmuch-show-mark-unread-tags "Mark unread")
                             ("d" notmuch-delete-tags "Delete")))
 
-    :bind ("C-c m" . notmuch)
+    :bind (("C-c m" . notmuch)
+           :map notmuch-show-mode-map
+           ("C-c M-y" . shr-copy-url))
     ;; Run notmuch-hook script on hello refresh, to move messages to
     ;; folders according to their tags:
     :hook (notmuch-hello-refresh . za/notmuch-hook-tags2folders)
+    :init (setenv "NOTMUCH_CONFIG" "/Users/alex/.config/notmuch/config")
     :config
+    (setq notmuch-show-mark-unread-tags '("+unread"))
+    (setq notmuch-delete-tags '("-inbox" "+trash"))
     (defun za/notmuch-hook-tags2folders ()
       "Run notmuch-hook to organise email in folders based on tags."
       (start-process "notmuch-hook" nil "notmuch-hook" "tags2folders")))
