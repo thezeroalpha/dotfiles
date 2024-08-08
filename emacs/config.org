@@ -2692,6 +2692,14 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
                                           ; errors if bound but nil.
     (with-eval-after-load 'org-roam-dailies
       (makunbound 'org-roam-dailies-directory))
+    (defun za/org-roam-dailies-goto-latest-note ()
+      (interactive)
+      (let* ((dailies (org-roam-dailies--list-files))
+             (latest-note (car (last dailies))))
+        (unless latest-note
+          (user-error "Can't find latest note"))
+        (find-file latest-note)
+        (run-hooks 'org-roam-dailies-find-file-hook)))
     (org-roam-setup)
     (bind-keys :prefix "C-c w"
                :prefix-map za/org-roam-map
@@ -2711,6 +2719,7 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
                ("-" . org-roam-dailies-goto-yesterday)
                ("<" . org-roam-dailies-goto-previous-note)
                ("g" . org-roam-dailies-goto-date)
+               ("l" . za/org-roam-dailies-goto-latest-note)
                ("." . org-roam-dailies-find-directory))
 
     (defun za/org-roam-dailies--daily-note-p (&optional file)
