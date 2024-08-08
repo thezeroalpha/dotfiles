@@ -2815,8 +2815,35 @@ Lets you draw stuff in org mode documents.
   (use-package ox-jira)
 #+end_src
 *** org-confluence
+ox-confluence with some custom code to remove the theme & create expandable drawers.
+Add to confluence by pressing ~ctrl + shift + d~ when editing a page and inserting confluence wiki text.
+
 #+begin_src emacs-lisp
   (require 'ox-confluence)
+  (org-export-define-derived-backend 'confluence-ext 'confluence
+    :translate-alist '((drawer . za/org-confluence-drawer))
+     :menu-entry
+    '(?f "Export to Confluence (ext)"
+         ((?f "As Confluence buffer (ext)" za/org-confluence-export-as-confluence))))
+
+  (defun za/org-confluence-export-as-confluence
+    (&optional async subtreep visible-only body-only ext-plist)
+    (interactive)
+    (org-export-to-buffer 'confluence-ext "*org CONFLUENCE Export*"
+      async subtreep visible-only body-only ext-plist (lambda () (text-mode))))
+
+  (defun za/org-confluence--block-remove-theme (s)
+    "Remove the theme from the block"
+    (replace-regexp-in-string (rx "\{code:theme=Emacs" (? "|")) "\{code:" s))
+  (advice-add #'org-confluence--block :filter-return #'za/org-confluence--block-remove-theme)
+
+  (defun za/org-confluence-drawer (drawer contents info)
+    "Handle custom drawers"
+    (let* ((name (org-element-property :drawer-name drawer)))
+      (concat
+       (format "\{expand:%s\}\n" name)
+       contents
+       "\{expand\}")))
 #+end_src
 *** TODO the path for org-roam export and data export should be configurable, not hard-coded
 
