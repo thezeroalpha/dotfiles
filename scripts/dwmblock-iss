@@ -1,6 +1,6 @@
 #!/bin/sh
 iss_stream_1="https://www.youtube.com/watch?v=P9C25Un7xaM"
-iss_stream_2="https://www.youtube.com/watch?v=jPTD2gnZFUw"
+iss_stream_2="https://www.youtube.com/watch?v=VdFK-xs_r-4"
 show_iss_stream() {
   setsid -f mpv --no-osc --loop=inf --no-terminal --profile=low-latency --volume=0 "$1" ;
   notify "ISS Tracker" "Opening stream..."

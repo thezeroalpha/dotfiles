@@ -8,7 +8,7 @@ esac
 $tsp_cmd -l | awk --traditional '
   BEGIN { finished=0 }
   NR > 1 { total++ }
-  $2 == "finished" { finished++ }
+  $2 ~ /finished|skipped/ { finished++ }
   END {
     if (total > 0) {
       printf("🧵 %s/%s", finished, total)
