@@ -134,3 +134,4 @@ link DapUIStepOver,DapUIStepInto,DapUIStepBack,DapUIStepOut DapUIScope
 link DapUIPlayPause,DapUIRestart,DapUIWatchesValue darkgreen
 link DapUIWatchesError,DapUIStop DapUIWatchesEmpty
 link LspInlayHint Comment
+link MarkviewInlineCode,MarkviewCode NormalFloat

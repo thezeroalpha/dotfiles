@@ -101,6 +101,7 @@ hi! link LspInlayHint Comment
 hi! link gitcommitOverflow errormsg
 hi! link gitcommitSummary include
 hi! link debug delimiter
+hi! link MarkviewCode NormalFloat
 hi! link structure type
 hi! link pmenu statuslinenc
 hi! link vimwikilink type
@@ -109,12 +110,13 @@ hi! link spellcap string
 hi! link markdownUrl string
 hi! link error errormsg
 hi! link preproc include
+hi! link MarkviewInlineCode NormalFloat
 hi! link storageclass structure
 hi! link DapUIStepOver DapUIScope
 hi! link spellbad todo
 hi! link character constant
 " Code to clear any groups that are not defined
-let s:DefinedColors=['tag', 'gh_files_dir', 'conditional', 'netrwexe', 'alewarningline', 'signcolumn', 'netrwmarkfile', 'pmenusel', 'dapuiwatchesvalue', 'aleerror', 'specialcomment', 'dapuistepout', 'precondit', 'markdowncode', 'dapuiwatcheserror', 'tabline', 'dapuistepback', 'mkdlink', 'netrwdir', 'dapuistepinto', 'dapuirestart', 'number', 'typedef', 'alewarning', 'macro', 'modemsg', 'repeat', 'special', 'operator', 'specialchar', 'label', 'aleerrorline', 'dapuistop', 'dapuiplaypause', 'spellrare', 'define', 'lspinlayhint', 'gitcommitoverflow', 'gitcommitsummary', 'debug', 'structure', 'pmenu', 'vimwikilink', 'spelllocal', 'spellcap', 'markdownurl', 'error', 'preproc', 'storageclass', 'dapuistepover', 'spellbad', 'character', 'normal', 'keyword', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete', 'normalfloat', 'dapuidecoration', 'dapuiscope', 'dapuistoppedthread', 'dapuibreakpointspath', 'dapuibreakpointscurrentline', 'dapuiwatchesempty', 'dapuimodifiedvalue']
+let s:DefinedColors=['tag', 'gh_files_dir', 'conditional', 'netrwexe', 'alewarningline', 'signcolumn', 'netrwmarkfile', 'pmenusel', 'dapuiwatchesvalue', 'aleerror', 'specialcomment', 'dapuistepout', 'precondit', 'markdowncode', 'dapuiwatcheserror', 'tabline', 'dapuistepback', 'mkdlink', 'netrwdir', 'dapuistepinto', 'dapuirestart', 'number', 'typedef', 'alewarning', 'macro', 'modemsg', 'repeat', 'special', 'operator', 'specialchar', 'label', 'aleerrorline', 'dapuistop', 'dapuiplaypause', 'spellrare', 'define', 'lspinlayhint', 'gitcommitoverflow', 'gitcommitsummary', 'debug', 'markviewcode', 'structure', 'pmenu', 'vimwikilink', 'spelllocal', 'spellcap', 'markdownurl', 'error', 'preproc', 'markviewinlinecode', 'storageclass', 'dapuistepover', 'spellbad', 'character', 'normal', 'keyword', 'cursorline', 'string', 'identifier', 'function', 'statement', 'include', 'type', 'search', 'incsearch', 'folded', 'tablinefill', 'tablinesel', 'wildmenu', 'linenr', 'vertsplit', 'todo', 'nontext', 'statusline', 'statuslinenc', 'statuslinetermnc', 'statuslineterm', 'statuslinefile', 'statuslinenormmode', 'visual', 'title', 'matchparen', 'qffilename', 'delimiter', 'comment', 'errormsg', 'cursorlinenr', 'specialkey', 'constant', 'diffadd', 'diffdelete', 'diffchange', 'difftext', 'gitgutteradd', 'gitgutterchange', 'gitgutterdelete', 'gitgutterchangedelete', 'normalfloat', 'dapuidecoration', 'dapuiscope', 'dapuistoppedthread', 'dapuibreakpointspath', 'dapuibreakpointscurrentline', 'dapuiwatchesempty', 'dapuimodifiedvalue']
 function! s:ClearUndefinedColors(colors)
   let undefined_groups = filter(a:colors->keys()->map('tolower(v:val)'), 'index(s:DefinedColors, tolower(v:val)) < 0')
   call map(undefined_groups, "execute('highlight' . ' ' . v:val . ' ' . 'NONE')")
