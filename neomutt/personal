@@ -3,16 +3,21 @@
 source secret
 set imap_user=$my_personal_email
 set imap_pass=$my_personal_pass_cmd
+# What neomutt uses to access emails. Populated by `mbsync`
 set folder = ~/.local/share/mail/$my_personal_email
+# Draft emails
 set postponed = +Drafts
+# Trashed emails
 set trash = +Trash
+# Record sent emails (providers like Gmail do this automatically; mine doesn't)
 set record = +Sent
 set mbox = +Archive
 
 # The setup with regular mutt
-# set spoolfile = +Inbox
+# Home inbox:
+# set spool_file = +Inbox
 # unmailboxes *
-# mailboxes +Inbox +Archive +Drafts +Tickets +Sent +Trash +Spam
+# mailboxes +Inbox +Archive +Drafts +Jobs +Sent +Trash +Spam
 #
 # But to use notmuch, I need to use virtual mailboxes:
 # (it's on the wishlist - https://github.com/neomutt/neomutt/issues/742)
@@ -23,14 +28,16 @@ virtual-mailboxes \
   "Archive (2M) (P)" "notmuch://?query=folder:$my_personal_email/Archive and date:2M..today" \
   "Drafts (P)" "notmuch://?query=folder:$my_personal_email/Drafts" \
   "Follow-up (P)" "notmuch://?query=folder:/$my_personal_email/ and tag:followup" \
-  "Tickets (P)" "notmuch://?query=folder:$my_personal_email/Tickets" \
+  "Jobs (P)" "notmuch://?query=folder:$my_personal_email/Jobs" \
   "Sent (P)" "notmuch://?query=folder:$my_personal_email/Sent" \
   "Trash (P)" "notmuch://?query=folder:$my_personal_email/Trash" \
   "Spam (P)" "notmuch://?query=folder:$my_personal_email/Spam" \
   "Archive (All) (P)" "notmuch://?query=folder:$my_personal_email/Archive"
 
+# Home inbox:
 set spool_file = "Inbox (P)"
 
+# Caching emails
 set header_cache = '~/.cache/neomutt/$my_personal_email/headers'
 set message_cachedir = '~/.cache/neomutt/$my_personal_email/bodies'
 

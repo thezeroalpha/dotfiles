@@ -2,13 +2,13 @@
 source `{ [ -f ~/.config/dark-theme ] && printf "colors-dark"; } || printf "colors-light";`
 
 # Don't ask to press key on shell commands
-unset wait_key
+set wait_key = no
 
-# Don't move to next message when modifying -- this breaks notmuch macros
+# Don't move to next message when modifying -- it would break notmuch macros
 set resolve = no
 
 set mbox_type = Maildir
-set mail_check=0 # minimum time between scans
+set mail_check=0 # don't want to automatically check new mail (handled by mbsync)
 unset mark_old # it's enough to see whats unread
 set mailcap_path = ~/.config/mailcap
 
@@ -111,7 +111,7 @@ macro index ZN "<enter-command>set use_threads=no<Enter>"
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
 set fcc_attach                       # save attachments with the body
-set mime_forward = no                # forward attachments as part of body, most clients don't easily show attached message
+set mime_forward = no                # forwarded message is sent as part of body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
 set forward_decode                   # decode when forwarding
 set attribution = "On %d, %n wrote:" # format of quoting header
