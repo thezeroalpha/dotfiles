@@ -179,7 +179,7 @@ def playlist_overview playlist_id
   # to download:
   # playlist_id = '52qgFnbZwV36ogaGUquBDt'
   client = SpotifyClient.new
-  playlist_tracks = api_call_get_unpaginate("playlists/#{playlist_id}/tracks", { limit: 50 })
+  playlist_tracks = client.api_call_get_unpaginate("playlists/#{playlist_id}/tracks", { limit: 50 })
   by_artist = playlist_tracks.group_by { _1.track.artists.first.name }
   by_artist_album = by_artist.reduce({}) { |h, (artist, tracks)| h[artist] = tracks.group_by { |t| t.track.album.name }; h }
   res = by_artist_album.reduce({}) do |h, (artist, albums)|
