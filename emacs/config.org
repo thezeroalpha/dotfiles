@@ -6,6 +6,11 @@ I install with ~--HEAD --with-dbus --with-cocoa --with-xwidgets --with-native-co
 - provides bind-key by default
 - is mostly just macros that wrap the needed stuff from package.el. can check that with ~macroexpand~.
 - adds a bunch of performance improvements
+* Let me know when we're at a certain version
+#+begin_src emacs-lisp
+  (when (version<= "30" emacs-version)
+    (message "Check out C-x w d to make windows dedicated."))
+#+end_src
 * Install from source
 Emacs 29 ships with a way to install packages from source, here's a small wrapper around it.
 
@@ -1697,6 +1702,7 @@ Install Org and require additional components that I use.
     (require 'org-tempo)
     (require 'org-habit)
     (require 'org-id)
+    (use-package ob-async)
     (use-package ob-rust)
     (org-babel-do-load-languages
      'org-babel-load-languages
@@ -3083,7 +3089,7 @@ See discussion here: https://github.com/ledger/ledger/issues/1450#issuecomment-3
     (setq notmuch-delete-tags '("-inbox" "+trash"))
     (defun za/notmuch-hook-tags2folders ()
       "Run notmuch-hook to organise email in folders based on tags."
-      (start-process "notmuch-hook" nil "notmuch-hook" "tags2folders")))
+      (start-process "notmuch-hook" nil "notmuch-hook" "--tags2folders")))
 #+end_src
 
 ** MPC
