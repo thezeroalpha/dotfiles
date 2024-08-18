@@ -175,6 +175,23 @@ class SpotifyClient
   end
 end
 
+def playlist_overview playlist_id
+  # to download:
+  # playlist_id = '52qgFnbZwV36ogaGUquBDt'
+  client = SpotifyClient.new
+  playlist_tracks = api_call_get_unpaginate("playlists/#{playlist_id}/tracks", { limit: 50 })
+  by_artist = playlist_tracks.group_by { _1.track.artists.first.name }
+  by_artist_album = by_artist.reduce({}) { |h, (artist, tracks)| h[artist] = tracks.group_by { |t| t.track.album.name }; h }
+  res = by_artist_album.reduce({}) do |h, (artist, albums)|
+    h[artist] = albums.reduce({}) do |h2, (album, tracks)|
+      h2[album] = tracks.map { |track| track.track.name }.uniq
+      h2
+    end
+    h
+  end
+  puts JSON.dump res
+end
+
 # Process new releases since the date in ~/.local/share/spot-last-checked, add
 # them to a tracks or albums playlist.
 def process_new_releases
