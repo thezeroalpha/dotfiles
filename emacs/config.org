@@ -1721,6 +1721,9 @@ Install Org and require additional components that I use.
     ;; Linking to emails via notmuch
     (use-package ol-notmuch)
 
+    ;; Improved search
+    (use-package org-ql)
+
     ;; Tempo expansions
     (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
     (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
@@ -2099,6 +2102,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
         '(("n" "Next actions"
            todo "NEXT" ((org-agenda-overriding-header "Next actions:")
                         (org-agenda-sorting-strategy '(priority-down alpha-up))))
+          ("q" "Query" (lambda (&rest _) (call-interactively #'org-ql-search)))
           ("@" "Next actions missing context"
            todo "NEXT" ((org-agenda-overriding-header "Missing context:")
                         (org-agenda-sorting-strategy '(priority-down alpha-up))
