@@ -4,8 +4,12 @@ ctrl + shift + r
   pkill -SIGUSR1 sxhkd; notify "sxhkd reloaded" ""
 alt + shift + 3
   scrot -f -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
+ctrl + alt + shift + 3
+  scrot -f -u -e 'xclip -selection clipboard -target image/png -i $f;  notify "Screenshot copied" "On clipboard"'
 alt + shift + 4
   scrot -f -s -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
+ctrl + alt + shift + 4
+  scrot -f -s -e 'xclip -selection clipboard -target image/png -i $f;  notify "Screenshot copied" "On clipboard"'
 super + shift + m; m
   dmenuman
 
@@ -23,6 +27,7 @@ super + shift + m; b
 
 super + ctrl + space
   dmenusymbols
+
 super + shift + a
   j4-dmenu-desktop
 super + l
