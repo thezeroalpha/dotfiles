@@ -66,15 +66,18 @@ local servers = {
           "-A", "clippy::pub_use",
           "-A", "clippy::single_char_lifetime_names",
           "-A", "clippy::missing_trait_methods",
-          "-A", "clippy::multiple_unsafe_ops_per_block",    -- broken on 0.1.74
+          "-A", "clippy::multiple_unsafe_ops_per_block", -- broken on 0.1.74
           "-A", "clippy::mod_module_files",
           "-A", "clippy::std_instead_of_alloc",
           "-A", "clippy::integer_division_remainder_used",
           "-D", "rust_2018_idioms",
           "-D", "missing_docs",
           "-D", "warnings",
-          "-A", "clippy::too_many_lines"},
-        -- command = "check" },
+          "-A", "clippy::too_many_lines"
+        },
+        --[[
+        command = "check",
+        ]]
         -- extraArgs = { "--no-deps" },
       },
       procMacro = {
@@ -88,13 +91,13 @@ local servers = {
     },
   },
   pyright = {},
-    -- solargraph = {},
-    -- bashls = {},
-    -- jdtls = {},
-    -- jsonls = {},
-    -- texlab = {},
-    -- clangd = {},
-    -- perlnavigator = {},
+  -- solargraph = {},
+  -- bashls = {},
+  -- jdtls = {},
+  -- jsonls = {},
+  -- texlab = {},
+  -- clangd = {},
+  -- perlnavigator = {},
 }
 
 
@@ -121,6 +124,7 @@ local on_attach = function(_, bufnr)
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ra', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  vim.keymap.set('v', '<leader>ra', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[C]ode [A]ction' })
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')

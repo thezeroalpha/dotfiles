@@ -7,17 +7,20 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      {'williamboman/mason.nvim',
+      {
+        'williamboman/mason.nvim',
         opts = {},
       },
-      { 'williamboman/mason-lspconfig.nvim',
+      {
+        'williamboman/mason-lspconfig.nvim',
         config = function()
           require 'config.mason-lspconfig'
         end,
       },
 
       -- Useful status updates for LSP
-      {'j-hui/fidget.nvim',
+      {
+        'j-hui/fidget.nvim',
         opts = {},
       },
 
@@ -96,11 +99,12 @@ return {
         changedelete = { text = '~' },
       },
       on_attach = function()
-        vim.keymap.set('n', ']c', function() require('gitsigns').next_hunk() end, {buffer = true})
-        vim.keymap.set('n', '[c', function() require('gitsigns').prev_hunk() end, {buffer = true})
-        vim.keymap.set('n', ']=', function() require('gitsigns').preview_hunk_inline() end, {buffer = true})
-        vim.keymap.set('n', ']-', function() require('gitsigns').preview_hunk() end, {buffer = true})
-        vim.keymap.set('n', ']+', function() require('gitsigns').select_hunk() end, {buffer = true})
+        vim.keymap.set('n', ']c', function() require('gitsigns').next_hunk() end, { buffer = true })
+        vim.keymap.set('n', '[c', function() require('gitsigns').prev_hunk() end, { buffer = true })
+        vim.keymap.set('n', ']=', function() require('gitsigns').toggle_deleted() end, { buffer = true })
+        vim.keymap.set('n', ']~', function() require('gitsigns').diffthis() end, { buffer = true })
+        vim.keymap.set('n', ']-', function() require('gitsigns').preview_hunk() end, { buffer = true })
+        vim.keymap.set('n', ']+', function() require('gitsigns').select_hunk() end, { buffer = true })
       end,
     },
   },
@@ -122,7 +126,8 @@ return {
   },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim',
+  {
+    'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       require 'config.telescope'
@@ -130,7 +135,8 @@ return {
   },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
-  { 'nvim-telescope/telescope-fzf-native.nvim',
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',
     cond = vim.fn.executable 'make' == 1
   },
@@ -195,44 +201,57 @@ return {
   },
 
   -- DAP: debugging
-  { 'mfussenegger/nvim-dap', config = function()
-    require 'config.nvim-dap'
-  end
+  {
+    'mfussenegger/nvim-dap',
+    config = function()
+      require 'config.nvim-dap'
+    end
   },
-  {'mfussenegger/nvim-dap-python',
+  {
+    'mfussenegger/nvim-dap-python',
     config = function()
       require('dap-python').setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
     end
   },
-  { "rcarriga/nvim-dap-ui", dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"}, config = function()
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    config = function()
       require 'config.nvim-dap-ui'
-  end
+    end
   },
 
-  {'theHamsta/nvim-dap-virtual-text', dependencies = {"mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter"}, config = function()
-    require("nvim-dap-virtual-text").setup()
-  end},
+  {
+    'theHamsta/nvim-dap-virtual-text',
+    dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("nvim-dap-virtual-text").setup()
+    end
+  },
 
-  { 'Eandrju/cellular-automaton.nvim', config = function()
-    vim.keymap.set('n', 'q:', '<cmd>CellularAutomaton make_it_rain<CR>')
-  end},
+  {
+    'Eandrju/cellular-automaton.nvim',
+    config = function()
+      vim.keymap.set('n', 'q:', '<cmd>CellularAutomaton make_it_rain<CR>')
+    end
+  },
 
   {
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
     opts = {
-    search = {
+      search = {
         trigger = "\\",
       }
     },
     -- stylua: ignore
     keys = {
-      { "<leader><leader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "<leader>S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      { "<leader><leader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "<leader>S",         mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",                 mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",                 mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>",             mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
 
@@ -249,7 +268,7 @@ return {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
     opts = {},
-    config = function(_, opts) require'lsp_signature'.setup(opts) end
+    config = function(_, opts) require 'lsp_signature'.setup(opts) end
   },
 
   -- LSP diagnostics at your corner.
@@ -276,12 +295,12 @@ return {
     },
     keys = {
       { "<leader>tt", "<cmd>AerialToggle!<cr>", desc = "Toggle tagbar" },
-      { "<leader>to", "<cmd>AerialOpen<cr>", desc = "Open and jump to tagbar" },
+      { "<leader>to", "<cmd>AerialOpen<cr>",    desc = "Open and jump to tagbar" },
     },
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
-    dependencies = {"nvim-treesitter/nvim-treesitter"},
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("treesitter-context").setup()
     end
@@ -327,13 +346,17 @@ return {
   },
   {
     "echasnovski/mini.align",
-    config = function(_, opts) require'mini.align'.setup() end,
+    opts = {
+      mappings = {
+        start_with_preview = 'ga',
+      },
+    },
   },
   {
     "m00qek/baleia.nvim",
     version = "*",
     config = function()
-      vim.g.baleia = require("baleia").setup({ })
+      vim.g.baleia = require("baleia").setup({})
 
       -- Command to colorize the current buffer
       vim.api.nvim_create_user_command("BaleiaColorize", function()
@@ -346,11 +369,55 @@ return {
   },
   {
     "OXY2DEV/markview.nvim",
-    lazy = false,      -- Not needed, already handled by plugin
+    lazy = false, -- Not needed, already handled by plugin
 
     dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-        "nvim-tree/nvim-web-devicons"
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
     }
+  },
+  { -- Autoformat
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    keys = {
+      {
+        'gQ',
+        function()
+          require('conform').format { async = true, lsp_fallback = true }
+        end,
+        mode = '',
+        desc = '[F]ormat buffer',
+      },
+    },
+    opts = {
+      notify_on_error = false,
+      format_on_save = function(bufnr)
+        -- Disable "format_on_save lsp_fallback" for languages that don't
+        -- have a well standardized coding style. You can add additional
+        -- languages here or re-enable it for the disabled ones.
+        local disable_filetypes = { c = true, cpp = true }
+        return {
+          timeout_ms = 500,
+          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+        }
+      end,
+      formatters = {
+        ruff = {
+          prepend_args = { "--config", "~/Documents/cdmi/automation/meta-files/ruff.toml" },
+        },
+      },
+      formatters_by_ft = {
+        rust = { "rustfmt", lsp_format = "fallback" },
+        python = { "ruff", lsp_format = "fallback" },
+        -- python = { "black", lsp_format = "fallback" },
+        --   -- lua = { 'stylua' },
+        --   -- Conform can also run multiple formatters sequentially
+        --   -- python = { "isort", "black" },
+        --   --
+        --   -- You can use 'stop_after_first' to run the first available formatter from the list
+        --   -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+    },
   },
 }

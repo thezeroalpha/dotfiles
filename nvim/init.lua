@@ -5,13 +5,9 @@ call setenv("MYOLDVIMRC", "~/.vim/vimrc")
 source $MYOLDVIMRC
 ]])
 
-if vim.lsp.buf.inlay_hint then
-  vim.api.nvim_err_writeln("init.lua: inlay hints now available!")
-end
-
 -- Install Lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -58,10 +54,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end)
-vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end)
+vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end)
+vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end)
+vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR }) end)
+vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR }) end)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', function() vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR }) end)
 
@@ -85,8 +81,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-      vim.notify("Nvim now has support for inlay hints")
-      -- vim.lsp.inlay_hint.enable(ev.buf, true)
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
     end
   end,
 })
