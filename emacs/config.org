@@ -457,7 +457,6 @@ So I create a keybinding to toggle dedicated on a window:
 
 #+end_src
 
-
 ** Rotate windows horizontal ↔ vertical
 #+begin_src emacs-lisp
   (defun za/rotate-windows ()
@@ -555,6 +554,10 @@ The "(interactive)" means that it can be called from a keybinding or from M-x.
 ** Visible mode
 #+begin_src emacs-lisp
   (bind-key (kbd "C-c q v") #'visible-mode)
+#+end_src
+** Clone buffer indirectly by default
+#+begin_src emacs-lisp
+  (bind-key (kbd "C-x x n") #'clone-indirect-buffer)
 #+end_src
 * Custom functions
 ** Make region readonly or writable
@@ -1549,7 +1552,16 @@ Gives ideas for phrases to use in academic writing.
 #+end_src
 ** annotate
 #+begin_src emacs-lisp
-  (use-package annotate)
+  (use-package annotate
+    :custom (annotate-annotation-position-policy :margin)
+    :config
+    (defun za/annotate-initialize-extra-hooks ()
+      (add-hook 'after-save-hook #'annotate-save-annotations t t))
+    (defun za/annotate-shutdown-extra-hooks ()
+      (remove-hook 'after-save-hook #'annotate-save-annotations t))
+    (advice-add 'annotate-initialize :after #'za/annotate-initialize-extra-hooks)
+    (advice-add 'annotate-shutdown :after #'za/annotate-shutdown-extra-hooks))
+
 #+end_src
 ** yasnippet
 #+begin_src emacs-lisp
@@ -1603,7 +1615,7 @@ Install Org and require additional components that I use.
     (org-link-elisp-confirm-function #'y-or-n-p)
     (org-link-elisp-skip-confirm-regexp "^org-noter$")
     (org-clock-sound (concat user-emacs-directory "notification.wav"))
-    (org-export-backends '(ascii html icalendar latex md odt org pandoc confluence jira))
+    (org-export-backends '(ascii html icalendar latex md odt org pandoc confluence-ext jira))
     (org-catch-invisible-edits 'show-and-error
                                "Sometimes when text is folded away, I might accidentally edit text inside of it. This option prevents that. I wanted to do 'smart', but that has a 'fixme' so it might change in the future...Instead, show what's being edited, but don't perform the edit.")
     (org-src-tab-acts-natively t "a tab in a code block indents the code as it should")
@@ -2694,6 +2706,8 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
       (makunbound 'org-roam-dailies-directory))
     (defun za/org-roam-dailies-goto-latest-note ()
       (interactive)
+      (unless (boundp 'org-roam-dailies-directory)
+        (za/org-roam-dailies-select-dir))
       (let* ((dailies (org-roam-dailies--list-files))
              (latest-note (car (last dailies))))
         (unless latest-note
@@ -2823,8 +2837,8 @@ Add to confluence by pressing ~ctrl + shift + d~ when editing a page and inserti
   (org-export-define-derived-backend 'confluence-ext 'confluence
     :translate-alist '((drawer . za/org-confluence-drawer))
      :menu-entry
-    '(?f "Export to Confluence (ext)"
-         ((?f "As Confluence buffer (ext)" za/org-confluence-export-as-confluence))))
+    '(?F "Export to Confluence (ext)"
+         ((?F "As Confluence buffer (ext)" za/org-confluence-export-as-confluence))))
 
   (defun za/org-confluence-export-as-confluence
     (&optional async subtreep visible-only body-only ext-plist)
@@ -3311,8 +3325,8 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 ** calc
 #+begin_src emacs-lisp
   (use-package calc
-    :custom
-    (math-additional-units
+    :config
+    (setq math-additional-units
      ;; elements:
      ;; - symbol identifying the unit,
      ;; - expression indicatingv alue of unit or nil for fundamental units
@@ -3341,7 +3355,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
        (Kb "1000 * b" "Kilobit")
        (Mb "1000 * Kb" "Megabit")
        (Gb "1000 * Mb" "Gigabit")))
-    (math-units-table nil "Rebuild the table"))
+    (setq math-units-table nil))
 #+end_src
 ** casual
 #+begin_src emacs-lisp
