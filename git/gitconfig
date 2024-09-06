@@ -6,6 +6,7 @@
 
 [alias]
     s = status
+    wt = worktree
     v = "!nvim -c 'Git | only'"
     co = checkout
     cob = checkout -b
@@ -99,6 +100,8 @@
 
     df = !git --git-dir=$DOTFILES/.git --work-tree=$DOTFILES
 
+[submodule]
+    recurse = 1
 [merge]
     tool = nvimdiff
     conflictstyle = diff3
@@ -127,6 +130,7 @@
     format = ssh
 [credential]
 	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+	#helper = cache
 [transfer]
     fsckobjects = true
 [fetch]
