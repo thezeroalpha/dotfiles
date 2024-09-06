@@ -803,6 +803,8 @@ command! FD filetype detect
 command! D smile
 command! QuickfixAddCurrent call setqflist([{'bufnr': bufnr(), 'lnum': line('.'), 'text': getline('.')}], 'a')
 command! LoclistAddCurrent call setloclist(winnr(), [{'bufnr': bufnr(), 'lnum': line('.'), 'text': getline('.')}], 'a')
+command! QuickfixDelCurrent call setqflist(getqflist()->filter($'v:val["bufnr"] !=# {bufnr()} || v:val["lnum"] !=# {line(".")}'), 'r')
+command! LoclistDelCurrent call setloclist(winnr(), getloclist(winnr())->filter($'v:val["bufnr"] !=# {bufnr()} || v:val["lnum"] !=# {line(".")}'), 'r')
 command! QuickfixClear call setqflist([], 'f')
 command! LoclistClear call setloclist(winnr(), [], 'f')
 command! -nargs=? Browser exe 'terminal ++close w3m -config '.getenv("XDG_CONFIG_HOME").'/w3m/config -bookmark '.getenv("XDG_CONFIG_HOME").'/w3m/bookmark.html '.<q-args>
@@ -1071,7 +1073,7 @@ nmap z/ <Plug>SearchFold
 
 " Set the foldlevel
 nnoremap <leader>zn :set foldlevel=
-nnoremap <leader>zt :exe "set foldlevel=".foldlevel(line('.'))<CR>
+nnoremap <leader>z. :exe "set foldlevel=".foldlevel(line('.'))<CR>
 
 " quickfix
 nnoremap <leader>qf :cwindow<CR>
@@ -1080,6 +1082,8 @@ nnoremap <leader>qp :cprevious<CR>
 nnoremap <leader>qc :cclose<CR>
 nnoremap <leader>qz :<c-u>QuickfixClear<CR>
 nnoremap <leader>q. :<c-u>QuickfixAddCurrent<CR>
+nnoremap <leader>q- :<c-u>QuickfixDelCurrent<CR>
+nnoremap <leader>qr :<c-u>crewind<CR>
 
 " location
 nnoremap <leader>ll :lwindow<CR>
@@ -1090,6 +1094,7 @@ nnoremap <leader>la :lafter<CR>
 nnoremap <leader>lf :lfirst<CR>
 nnoremap <leader>lz :<c-u>LoclistClear<CR>
 nnoremap <leader>l. :<c-u>LoclistAddCurrent<CR>
+nnoremap <leader>l- :<c-u>LoclistDelCurrent<CR>
 " Autocommands {{{1
 if has('autocmd')
   augroup vimrc_sets
