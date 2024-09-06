@@ -360,7 +360,17 @@ if (is_bandcamp_track($LINK)) {
 }
 elsif (is_bandcamp_album($LINK)) {
   my @choices = (
-    ['Download', \&download_bandcamp]
+    ['Download', \&download_bandcamp],
+    ['Play', sub {
+      my $link = shift;
+      my @choices = (
+        # ['Audio (queue in mpd)', \&play_audio_mpd],
+        ['Audio (mpv)', \&play_audio_mpv]
+      );
+
+      my $selected_ref = menu(\@choices);
+      $selected_ref->($link);
+    }]
   );
   my $selected_ref = menu(\@choices);
   $selected_ref->($LINK);
