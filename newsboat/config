@@ -14,6 +14,7 @@ error-log "~/.config/newsboat/error.log"
 prepopulate-query-feeds yes
 goto-next-feed no
 scrolloff 5
+datetime-format "%b %d %y"
 
 define-filter "read articles" "unread = \"no\""
 define-filter "downloaded" "flags # \"d\""
