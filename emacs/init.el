@@ -49,6 +49,7 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
+(customize-set-variable 'package-install-upgrade-built-in t "Upgrade built-in packages")
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))

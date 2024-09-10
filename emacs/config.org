@@ -2116,14 +2116,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            todo "NEXT" ((org-agenda-overriding-header "Next actions:")
                         (org-agenda-sorting-strategy '(priority-down alpha-up))))
           ("q" "Query" (lambda (&rest _) (call-interactively #'org-ql-search)))
-          ("@" "Next actions missing context"
-           todo "NEXT" ((org-agenda-overriding-header "Missing context:")
-                        (org-agenda-sorting-strategy '(priority-down alpha-up))
-                        (org-agenda-skip-function 'za/skip-if-has-context)))
-          ("e" "Next actions missing energy"
-           todo "NEXT" ((org-agenda-overriding-header "Missing energy level:")
-                        (org-agenda-sorting-strategy '(priority-down alpha-up))
-                        (org-agenda-skip-function 'za/skip-if-has-energy-level)))
+
           ("W" "Waiting"
            ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
           ("S" . "Saved for later...")
@@ -2195,11 +2188,6 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                           (org-agenda-prefix-format '((todo . " %i %-22(let ((deadline (org-entry-get nil \"DEADLINE\"))) (if deadline deadline \"\"))")))
                           (org-agenda-dim-blocked-tasks nil)
                           (org-agenda-sorting-strategy '((todo deadline-up alpha-down)))))))
-
-          ("f" "Finished tasks that aren't in a project"
-           ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
-                                                      (org-agenda-skip-function 'za/skip-if-in-project)))))
-
           ("1" "1-3-5"
            ((tags "_1" ((org-agenda-overriding-header "Big tasks:")
                         (org-agenda-skip-function 'za/skip-if-scheduled-in-future)
@@ -2215,7 +2203,22 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("c" "Calendar view" (lambda (&rest _)
                                  (interactive)
                                  (let ((org-agenda-skip-function 'za/skip-if-habit))
-                                   (cfw:open-org-calendar))))))
+                                   (cfw:open-org-calendar))))
+          ("f" . "Find & fix...")
+          ("f@" "Next actions missing context"
+           todo "NEXT" ((org-agenda-overriding-header "Missing context:")
+                        (org-agenda-sorting-strategy '(priority-down alpha-up))
+                        (org-agenda-skip-function 'za/skip-if-has-context)))
+          ("fe" "Next actions missing energy"
+           todo "NEXT" ((org-agenda-overriding-header "Missing energy level:")
+                        (org-agenda-sorting-strategy '(priority-down alpha-up))
+                        (org-agenda-skip-function 'za/skip-if-has-energy-level)))
+          ("ff" "Finished tasks that aren't in a project"
+           ((tags "TODO=\"DONE\"|TODO=\"CANCELLED\"" ((org-agenda-overriding-header "Finished tasks:")
+                                                      (org-agenda-skip-function 'za/skip-if-in-project)))))
+          ("ft" "Tasks without a scheduled time"
+           alltodo "" ((org-agenda-overriding-header "Missing scheduled time:")
+                       (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline 'timestamp))))))
 #+end_src
 
 In calfw, I don't want to show habits:
