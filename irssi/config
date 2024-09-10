@@ -13,11 +13,11 @@ servers = (
   },
   { address = "irc.rekt.network"; chatnet = "Rekt"; use_tls = "yes"; },
   {
-    address = "irc.libera.chat";
-    chatnet = "liberachat";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
+    address = "alex.balgavy.eu";
+    chatnet = "me";
+    port = "4720";
+    use_tls = "yes";
+    autoconnect = "yes";
   }
 );
 
@@ -35,7 +35,7 @@ chatnets = {
     max_whois = "1";
   };
   Rekt = { type = "IRC"; max_kicks = "1"; max_msgs = "4"; max_whois = "1"; };
-  liberachat = { type = "IRC"; };
+  me = { type = "IRC"; };
 };
 
 channels = (
@@ -46,102 +46,33 @@ channels = (
 );
 
 aliases = {
-  ATAG = "WINDOW SERVER";
-  ADDALLCHANS = "SCRIPT EXEC foreach my \\$channel (Irssi::channels()) { Irssi::command(\"CHANNEL ADD -auto \\$channel->{name} \\$channel->{server}->{tag} \\$channel->{key}\")\\;}";
-  B = "BAN";
-  BACK = "AWAY";
-  BANS = "BAN";
-  BYE = "QUIT";
-  C = "CLEAR";
-  CALC = "EXEC - if command -v bc >/dev/null 2>&1\\; then printf '%s=' '$*'\\; echo '$*' | bc -l\\; else echo bc was not found\\; fi";
-  CHAT = "DCC CHAT";
-  DATE = "TIME";
-  DEHIGHLIGHT = "DEHILIGHT";
-  DESCRIBE = "ACTION";
-  DHL = "DEHILIGHT";
-  EXEMPTLIST = "MODE $C +e";
-  EXIT = "QUIT";
-  GOTO = "SCROLLBACK GOTO";
-  HIGHLIGHT = "HILIGHT";
-  HL = "HILIGHT";
-  HOST = "USERHOST";
-  INVITELIST = "MODE $C +I";
-  J = "JOIN";
-  K = "KICK";
-  KB = "KICKBAN";
-  KN = "KNOCKOUT";
-  LAST = "LASTLOG";
-  LEAVE = "PART";
-  M = "MSG";
-  MUB = "UNBAN *";
-  N = "NAMES";
-  NMSG = "^MSG";
-  P = "PART";
-  Q = "QUERY";
-  RESET = "SET -default";
-  RUN = "SCRIPT LOAD";
-  SAY = "MSG *";
-  SB = "SCROLLBACK";
-  SBAR = "STATUSBAR";
-  SIGNOFF = "QUIT";
-  SV = "MSG * Irssi $J ($V) - https://irssi.org";
-  T = "TOPIC";
-  UB = "UNBAN";
-  UMODE = "MODE $N";
-  UNSET = "SET -clear";
-  W = "WHO";
-  WC = "WINDOW CLOSE";
-  WG = "WINDOW GOTO";
-  WJOIN = "JOIN -window";
-  WI = "WHOIS";
-  WII = "WHOIS $0 $0";
-  WL = "WINDOW LIST";
-  WN = "WINDOW NEW HIDDEN";
-  WQUERY = "QUERY -window";
-  WW = "WHOWAS";
   sl = "server list";
   s = "server";
   cl = "channel list";
   nl = "network list";
+  znc = "msg *status";
+  detach = "/msg *status detach $C";
+  q = "query";
+  d = "detach";
 };
 
-statusbar = {
-
-  items = {
-
-    barstart = "{sbstart}";
-    barend = "{sbend}";
-
-    topicbarstart = "{topicsbstart}";
-    topicbarend = "{topicsbend}";
-
-    time = "{sb $Z}";
-    user = "{sb {sbnickmode $cumode}$N{sbmode $usermode}{sbaway $A}}";
-
-    window = "{sb $winref:$tag/$itemname{sbmode $M}}";
-    window_empty = "{sb $winref{sbservertag $tag}}";
-
-    prompt = "{prompt $[.15]itemname}";
-    prompt_empty = "{prompt $winname}";
-
-    topic = " $topic";
-    topic_empty = " Irssi v$J - https://irssi.org";
-
-    lag = "{sb Lag: $0-}";
-    act = "{sb Act: $0-}";
-    more = "-- more --";
+settings = {
+  core = {
+    real_name = "zeroalpha";
+    user_name = "zeroalpha";
+    nick = "zeroalpha";
+    settings_autosave = "yes";
+    timestamp_format = "%H:%M:%S";
   };
-
+  "fe-text" = { show_server_time = "yes"; colors = "no"; };
+  "perl/core/scripts" = { awl_shared_sbar = "OFF"; awl_viewer = "no"; };
+};
+hilights = ( { text = "zeroalpha"; nick = "yes"; word = "yes"; } );
+ignores = ( { level = "JOINS PARTS QUITS"; } );
+logs = { };
+statusbar = {
   default = {
-
     window = {
-
-      disabled = "no";
-      type = "window";
-      placement = "bottom";
-      position = "1";
-      visible = "active";
-
       items = {
         barstart = { priority = "100"; };
         time = { };
@@ -149,91 +80,44 @@ statusbar = {
         window = { };
         window_empty = { };
         lag = { priority = "-1"; };
+        act = { priority = "10"; };
         more = { priority = "-1"; alignment = "right"; };
         barend = { priority = "100"; alignment = "right"; };
-      };
-    };
-
-    window_inact = {
-
-      type = "window";
-      placement = "bottom";
-      position = "1";
-      visible = "inactive";
-
-      items = {
-        barstart = { priority = "100"; };
-        window = { };
-        window_empty = { };
-        more = { priority = "-1"; alignment = "right"; };
-        barend = { priority = "100"; alignment = "right"; };
-      };
-    };
-
-    prompt = {
-
-      type = "root";
-      placement = "bottom";
-      position = "100";
-      visible = "always";
-
-      items = {
-        prompt = { priority = "-1"; };
-        prompt_empty = { priority = "-1"; };
-        input = { priority = "10"; };
-      };
-    };
-
-    topic = {
-
-      type = "root";
-      placement = "top";
-      position = "1";
-      visible = "always";
-
-      items = {
-        topicbarstart = { priority = "100"; };
-        topic = { };
-        topic_empty = { };
-        topicbarend = { priority = "100"; alignment = "right"; };
-      };
-    };
-    awl_0 = {
-      items = {
-        barstart = { priority = "100"; };
-        awl_0 = { };
-        barend = { priority = "100"; alignment = "right"; };
+        usercount = { };
       };
     };
   };
 };
-settings = {
-  core = {
-    real_name = "Alex";
-    user_name = "zeroalpha";
-    nick = "zeroalpha";
-    settings_autosave = "yes";
+windows = {
+  1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
+  2 = { };
+  3 = { };
+  4 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#lineageos";
+        tag = "me";
+      }
+    );
   };
-  "fe-text" = {
-    actlist_sort = "refnum";
-    paste_join_multiline = "no";
-    colors = "no";
-    colors_ansi_24bit = "no";
+  5 = {
+    items = (
+      { 
+        type = "QUERY";
+        chat_type = "IRC";
+        name = "*status";
+        tag = "me";
+      }
+    );
   };
-  "perl/core/scripts" = {
-    awl_shared_sbar = "OFF";
-    awl_viewer = "no";
-    awl_block = "-14";
-    trackbar_require_seen = "yes";
-    awl_all_disable = "yes";
-  };
-  "fe-common/core" = {
-    print_active_channel = "no";
-    theme = "tugg";
-    completion_auto = "yes";
-  };
-  "irc/core" = { alternate_nick = "xza"; };
 };
-hilights = ( { text = "zeroalpha"; nick = "yes"; word = "yes"; } );
-ignores = ( { level = "JOINS PARTS QUITS"; } );
-logs = { };
+mainwindows = {
+  1 = { 
+    first_line = "1";
+    lines = "55";
+    first_column = "0";
+    columns = "200";
+  };
+};
