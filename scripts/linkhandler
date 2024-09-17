@@ -200,6 +200,15 @@ sub menu {
     }
   }];
 
+
+  push @$tableref, ['Create QR code', sub {
+    my ($link) = @_;
+    detach sub {
+      system(qq(qrencode -d 300 -t png "$link" -o /tmp/qr.png));
+      system(qq(nsxiv /tmp/qr.png));
+    }
+  }];
+
   push @$tableref, ['Noecho News', sub {
     my ($link) = @_;
     detach sub {
