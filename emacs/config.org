@@ -2618,7 +2618,7 @@ And a function to rsync to my VPS:
     (org-roam-db-sync)
     (org-roam-update-org-id-locations))
 #+end_src
-*** Sync with OurHome
+*** Sync with Flatastic
 API work is handled via an external ruby script.
 
 #+begin_src emacs-lisp
@@ -2647,7 +2647,18 @@ API work is handled via an external ruby script.
         (insert "\n" (string-join org-flatastic-items "\n")))
       (message "Synced %d Flatastic tasks to inbox" (length api-data))))
 #+end_src
+*** Link to Thunderbird messages
+Create a custom link to open thunderbird emails by ID:
 
+#+begin_src emacs-lisp
+  (org-link-set-parameters
+   "thunderbird"
+   :follow #'za/org-link-thunderbird-follow)
+
+  (defun za/org-link-thunderbird-follow (messageid)
+    "Open the message with id `messageid` in Thunderbird"
+    (shell-command (format "thunderbird mid:%s" (shell-quote-argument messageid))))
+#+end_src
 *** org-caldav
 This lets me sync my Org agenda to my CalDAV server.
 The main reason is because Orgzly doesn't have a calendar view and can't (yet) search for events on a specific day, so if someone asks "are you free on that day", it's a bit hard for me to answer if I don't have my computer with me.
