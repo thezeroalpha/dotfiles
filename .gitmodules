@@ -10,9 +10,6 @@
 [submodule "shell/zsh-completions"]
 	path = shell/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
-[submodule "tools/bypass-paywalls-chrome"]
-	path = tools/bypass-paywalls-chrome
-	url = https://github.com/iamadamdev/bypass-paywalls-chrome.git
 [submodule "tools/solvitaire"]
 	path = tools/solvitaire
 	url = https://github.com/girst/solvitaire.git
