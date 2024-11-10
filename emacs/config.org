@@ -1649,7 +1649,8 @@ Install Org and require additional components that I use.
            ("C-c M-y" . org-yank-link-url)
            ("C-c N" . org-noter)
            ("C-M-i" . completion-at-point)
-           ("C-c SPC" . org-table-blank-field))
+           ("C-c SPC" . org-table-blank-field)
+           ("C-c C-w" . za/org-refile-wrapper))
     :hook ((org-mode . abbrev-mode)
            (org-mode . za/echo-area-tooltips)
            (org-mode . org-superstar-mode)
@@ -2114,6 +2115,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
   (setq org-agenda-custom-commands
         '(("n" "Next actions"
            todo "NEXT" ((org-agenda-overriding-header "Next actions:")
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline 'timestamp))
                         (org-agenda-sorting-strategy '(priority-down alpha-up))))
           ("q" "Query" (lambda (&rest _) (call-interactively #'org-ql-search)))
 
@@ -2121,11 +2123,15 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
           ("S" . "Saved for later...")
           ("Sw" "Saved to watch"
-           ((tags-todo "WATCH" ((org-agenda-overriding-header "To watch:")))))
+           ((tags-todo "WATCH" ((org-agenda-overriding-header "To watch:")
+                                (org-agenda-files `(,za/org-life-someday ,@org-agenda-files))))))
+
           ("Sr" "Saved to read"
-           ((tags-todo "READ" ((org-agenda-overriding-header "To read:")))))
+           ((tags-todo "READ" ((org-agenda-overriding-header "To read:")
+                               (org-agenda-files `(,za/org-life-someday ,@org-agenda-files))))))
           ("Sl" "Saved to listen"
-           ((tags-todo "LISTEN" ((org-agenda-overriding-header "To listen:")))))
+           ((tags-todo "LISTEN" ((org-agenda-overriding-header "To listen:")
+                                 (org-agenda-files `(,za/org-life-someday ,@org-agenda-files))))))
 
           ("a" . "Agenda with schedule only...")
           ("aw" "This week"
@@ -2659,6 +2665,32 @@ Create a custom link to open thunderbird emails by ID:
     "Open the message with id `messageid` in Thunderbird"
     (shell-command (format "thunderbird mid:%s" (shell-quote-argument messageid))))
 #+end_src
+*** Inverse refile
+#+begin_src emacs-lisp
+  (defun za/org-refile-to-point (refloc)
+    "Prompt for a heading and refile it to point."
+    (interactive (list (org-refile-get-location "Heading: ")))
+    (let* ((file (nth 1 refloc))
+           (pos (nth 3 refloc)))
+      (save-excursion
+        (with-current-buffer (find-file-noselect file 'noward)
+          (save-excursion
+            (save-restriction
+              (widen)
+              (goto-char pos)
+              (org-copy-subtree 1 t))))
+        (org-paste-subtree nil nil nil t))))
+
+
+  (defun za/org-refile-wrapper (arg)
+    "Wrap org-refile so that it does the inverse with a negative argument"
+    (interactive "P")
+    (if (minusp (prefix-numeric-value arg))
+        (call-interactively #'za/org-refile-to-point)
+      (org-refile arg)))
+
+#+end_src
+
 *** org-caldav
 This lets me sync my Org agenda to my CalDAV server.
 The main reason is because Orgzly doesn't have a calendar view and can't (yet) search for events on a specific day, so if someone asks "are you free on that day", it's a bit hard for me to answer if I don't have my computer with me.
@@ -2850,20 +2882,21 @@ Add to confluence by pressing ~ctrl + shift + d~ when editing a page and inserti
   (require 'ox-confluence)
   (org-export-define-derived-backend 'confluence-ext 'confluence
     :translate-alist '((drawer . za/org-confluence-drawer))
-     :menu-entry
+    :filters-alist '((:filter-src-block . za/org-confluence--code-block-remove-theme))
+    :menu-entry
     '(?F "Export to Confluence (ext)"
          ((?F "As Confluence buffer (ext)" za/org-confluence-export-as-confluence))))
 
   (defun za/org-confluence-export-as-confluence
-    (&optional async subtreep visible-only body-only ext-plist)
+      (&optional async subtreep visible-only body-only ext-plist)
     (interactive)
     (org-export-to-buffer 'confluence-ext "*org CONFLUENCE Export*"
       async subtreep visible-only body-only ext-plist (lambda () (text-mode))))
 
-  (defun za/org-confluence--block-remove-theme (s)
+  (defun za/org-confluence--code-block-remove-theme (block _backend _info)
     "Remove the theme from the block"
-    (replace-regexp-in-string (rx "\{code:theme=Emacs" (? "|")) "\{code:" s))
-  (advice-add #'org-confluence--block :filter-return #'za/org-confluence--block-remove-theme)
+    (replace-regexp-in-string (rx "\{code:theme=Emacs" (? "|")) "\{code:" block))
+
 
   (defun za/org-confluence-drawer (drawer contents info)
     "Handle custom drawers"
