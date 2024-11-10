@@ -353,6 +353,11 @@ return {
     },
   },
   {
+    "echasnovski/mini.ai",
+    opts = {},
+    event = "VeryLazy",
+  },
+  {
     "m00qek/baleia.nvim",
     version = "*",
     config = function()
