@@ -1,0 +1,50 @@
+[cursor]
+unfocused_hollow = true
+
+[font]
+size = 12.0
+
+[font.bold]
+style = "Bold"
+
+[font.bold_italic]
+style = "Bold Italic"
+
+[font.italic]
+style = "Italic"
+
+[font.normal]
+family = "MesloLGS NF"
+
+[[hints.enabled]]
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+hyperlinks = true
+mouse = { enabled = true, mods = "Command" }
+post_processing = true
+persist = false
+command = "linkhandler"
+binding = { key = "O", mods = "Command|Shift" }
+
+[window]
+decorations = "buttonless"
+dynamic_padding = true
+dynamic_title = true
+opacity = 0.85
+title = "Alacritty"
+option_as_alt = "Both"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[window.class]
+general = "Alacritty"
+instance = "Alacritty"
+
+[window.padding]
+x = 5
+y = 5
+
+[general]
+live_config_reload = true
+import = [ "./theme-light.toml"]
