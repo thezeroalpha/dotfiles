@@ -124,10 +124,10 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'junegunn/fzf', { 'dir': '$DOTFILES/tools/fzf', 'do': './install --all --xdg --no-fish'}
 Plug 'junegunn/fzf.vim'
 
-" Additional text objects
-Plug 'wellle/targets.vim'
-
 Plug 'mbbill/undotree'
+
+" Hide long links
+Plug 'qadzek/link.vim'
 
 " Vim-only
 if !has('nvim')
@@ -153,6 +153,8 @@ if !has('nvim')
   " Display ANSI color codes
   Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc' }
 
+  " Additional text objects
+  Plug 'wellle/targets.vim'
 endif
 call plug#end()
 
