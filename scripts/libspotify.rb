@@ -14,10 +14,6 @@ class Hash
 
     self[meth.to_s]
   end
-
-  def respond_to_missing?
-    true
-  end
 end
 
 # Client to access Spotify
@@ -151,11 +147,16 @@ class SpotifyClient
     total = artists.size
     print "Processing 0/#{total}"
     releases = artists.each.with_index.reduce([]) do |acc, (artist, i)|
-      print "\rProcessing #{i + 1}/#{total}"
-      response = api_call_get "artists/#{artist.id}/albums", { limit: 50, include_groups: 'album,single,appears_on' }
-      albums = response.items
-      albums.each { |album| album['release_date'] = album.release_date.split('-').size == 1 ? Date.iso8601("#{album.release_date}-01") : Date.iso8601(album.release_date) }
-      acc + albums
+      begin
+        print "\rProcessing #{i + 1}/#{total}"
+        response = api_call_get "artists/#{artist.id}/albums", { limit: 50, include_groups: 'album,single,appears_on' }
+        albums = response.items
+        albums.each { |album| album['release_date'] = album.release_date.split('-').size == 1 ? Date.iso8601("#{album.release_date}-01") : Date.iso8601(album.release_date) }
+        acc + albums
+      rescue Exception => e
+        puts "Could not process artist #{artist}: #{e}"
+        acc
+      end
     end.reject { |album| album.album_type == 'compilation' }
     print "\n"
 
