@@ -1,3 +1,15 @@
+# Syntax:
+# url <url>|/<re-url>/|m@<re-url>@i [exact]
+#   - <url> is plain
+#   - /<re-url>/ has to be surrounded in slashes
+#   - m@<re-url>@ allows custom delimiter. `i` means case-insentive
+#
+# substitute_url "<destination-url>"
+# url_charset <charset>
+# no_referer_from on|off
+# no_referer_to on|off
+# user_agent "string"
+
 # Redirect reddit to its old domain
 url m@https?://(www\.)*reddit\.com/@
 substitute_url "https://old.reddit.com/"
