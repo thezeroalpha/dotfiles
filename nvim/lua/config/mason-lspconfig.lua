@@ -91,6 +91,7 @@ local servers = {
     },
   },
   pyright = {},
+  rubocop = {},
   -- solargraph = {},
   -- bashls = {},
   -- jdtls = {},

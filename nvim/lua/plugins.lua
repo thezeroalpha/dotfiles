@@ -415,6 +415,7 @@ return {
       formatters_by_ft = {
         rust = { "rustfmt", lsp_format = "fallback" },
         python = { "ruff", lsp_format = "fallback" },
+        ruby = { "rubyfmt", lsp_format = "fallback" },
         -- python = { "black", lsp_format = "fallback" },
         --   -- lua = { 'stylua' },
         --   -- Conform can also run multiple formatters sequentially
