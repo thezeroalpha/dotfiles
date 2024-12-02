@@ -1009,6 +1009,7 @@ Hide some messages I don't need.
     :custom
     (dashboard-startup-banner 'logo)
     (dashboard-items '((gtd-inbox-counts . 3)
+                       (syncthing-status . 2)
                        (recents . 5)
                        (bookmarks . 5)))
 
@@ -1018,31 +1019,36 @@ Hide some messages I don't need.
                 ("sk" . za/st-kill)
                 ("J" . org-clock-goto))
     :config
+    (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts))
+    (add-to-list 'dashboard-item-generators '(syncthing-status . dashboard-insert-syncthing-status))
+
+    (defun za/quotes-from-my-site ()
+      (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
+             ;; Reformat quotes for display in dashboard
+             (file-contents (with-temp-buffer
+                              (insert-file-contents quotes-file)
+                              (re-search-forward (rx bol "> "))
+                              (delete-region (point-min) (pos-bol))
+                              (goto-char (point-min))
+                              (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
+                              (save-excursion (replace-regexp (rx eol "\n") "  "))
+                              (buffer-substring-no-properties (point-min) (point-max)))))
+        ;; Split file into individual quotes
+        (split-string file-contents "  ---  ")))
+
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
     (if (boundp 'za/my-website-dir)
-      (setq dashboard-footer-messages
-            (let* ((quotes-file (concat za/my-website-dir "content/quotes.md"))
-                   ;; Reformat quotes for display in dashboard
-                   (file-contents (with-temp-buffer
-                                    (insert-file-contents quotes-file)
-                                    (re-search-forward (rx bol "> "))
-                                    (delete-region (point-min) (pos-bol))
-                                    (goto-char (point-min))
-                                    (save-excursion (replace-regexp (rx bol ">" (* " ") (? "\n")) ""))
-                                    (save-excursion (replace-regexp (rx eol "\n") "  "))
-                                    (buffer-substring-no-properties (point-min) (point-max))))
-                   ;; Split file into individual quotes
-                   (quotes (split-string file-contents "  ---  ")))
-              ;; Run each quote through fill-region for better display
-              (require 's)
-              (mapcar (lambda (quote-line)
-                        (with-temp-buffer
-                          (insert (s-trim quote-line))
-                          (fill-region (point-min) (point-max))
-                          (buffer-substring-no-properties (point-min) (point-max))))
-                      quotes)))
-      (warn "za/my-website-dir not bound, not setting custom dashboard messages"))
-    (add-to-list 'dashboard-item-generators '(gtd-inbox-counts . dashboard-insert-gtd-inbox-counts)))
+        (setq dashboard-footer-messages
+              (let* ((quotes (za/quotes-from-my-site)))
+                ;; Run each quote through fill-region for better display
+                (require 's)
+                (mapcar (lambda (quote-line)
+                          (with-temp-buffer
+                            (insert (s-trim quote-line))
+                            (fill-region (point-min) (point-max))
+                            (buffer-substring-no-properties (point-min) (point-max))))
+                        quotes)))
+      (warn "za/my-website-dir not bound, not setting custom dashboard messages")))
 
   (defun dashboard-insert-gtd-inbox-counts (list-size)
     (require 'org-roam)
@@ -1071,6 +1077,39 @@ Hide some messages I don't need.
           (message "%s" (find-file (plist-get ',el :file))))
        ;; show how list is shown in dashboard ("el" is automatically assigned)
        (format "%s: %s" (plist-get el :name) (plist-get el :count)))))
+
+  (defun dashboard-insert-syncthing-status (list-size)
+    (when (and (get-buffer-process za/st-buffer-name)
+               (boundp 'za/syncthing-api-key))
+      (let* ((syncstatus (json-parse-string
+                          (shell-command-to-string
+                           (format "curl -sH 'Authorization: Bearer %s' 'http://localhost:8384/rest/db/completion'" za/syncthing-api-key))))
+             (completion (gethash "completion" syncstatus))
+             (devices (json-parse-string
+                       (shell-command-to-string
+                        (format "curl -sH 'Authorization: Bearer %s' 'http://localhost:8384/rest/system/connections'" za/syncthing-api-key))
+                       :object-type 'alist
+                       :false-object nil
+                       :null-object nil))
+             (connected-devices (length (seq-filter
+                                         (lambda (a)
+                                           (alist-get 'connected (cdr a))) (alist-get 'connections devices))))
+             (item-list `(,(format "Completion: %s%%" completion)
+                          ,(format "Connected devices: %s" connected-devices))))
+
+        (dashboard-insert-section
+         ;; Widget title
+         "Syncthing:"
+         ;; list generated for dashboard
+         item-list
+         list-size
+         'syncthing-status
+         ;; shortcut key for section
+         nil
+         ;; when clicked
+         (lambda (&rest _) ())
+         ;; show how list is shown in dashboard ("el" is automatically assigned)
+         (format "%s" el)))))
 
   (dashboard-setup-startup-hook)
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
@@ -3407,7 +3446,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 ** casual
 #+begin_src emacs-lisp
   (use-package casual
-    :bind (:map calc-mode-map ("C-o" . 'casual-main-menu)))
+    :bind (:map calc-mode-map ("C-o" . 'casual-calc-tmenu)))
 #+end_src
 ** casual-dired
 #+begin_src emacs-lisp
