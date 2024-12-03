@@ -217,6 +217,13 @@ sub menu {
     }
   }];
 
+  push @$tableref, ['Quicksilver', sub {
+    my ($link) = @_;
+    detach sub {
+      system(qq(printf '%s' '$link' | qs));
+    }
+  }];
+
   # Choose an option
   my @options = map { $_->[0] } @$tableref;
   my $choice = choose(\@options);
