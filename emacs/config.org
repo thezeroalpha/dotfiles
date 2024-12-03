@@ -1009,7 +1009,7 @@ Hide some messages I don't need.
     :custom
     (dashboard-startup-banner 'logo)
     (dashboard-items '((gtd-inbox-counts . 3)
-                       (syncthing-status . 2)
+                       (syncthing-status . 3)
                        (recents . 5)
                        (bookmarks . 5)))
 
@@ -1085,6 +1085,12 @@ Hide some messages I don't need.
                           (shell-command-to-string
                            (format "curl -sH 'Authorization: Bearer %s' 'http://localhost:8384/rest/db/completion'" za/syncthing-api-key))))
              (completion (gethash "completion" syncstatus))
+             (folders (json-parse-string
+                       (shell-command-to-string
+                        (format "curl -sH 'Authorization: Bearer %s' 'http://localhost:8384/rest/stats/folder'" za/syncthing-api-key))
+                       :false-object nil
+                       :null-object nil))
+             (org-lastsync (format-time-string "%H:%M:%S (%F)" (date-to-time (gethash "lastScan" (gethash "lifeorg" folders)))))
              (devices (json-parse-string
                        (shell-command-to-string
                         (format "curl -sH 'Authorization: Bearer %s' 'http://localhost:8384/rest/system/connections'" za/syncthing-api-key))
@@ -1095,7 +1101,8 @@ Hide some messages I don't need.
                                          (lambda (a)
                                            (alist-get 'connected (cdr a))) (alist-get 'connections devices))))
              (item-list `(,(format "Completion: %s%%" completion)
-                          ,(format "Connected devices: %s" connected-devices))))
+                          ,(format "Connected devices: %s" connected-devices)
+                          ,(format "Org last sync: %s" org-lastsync))))
 
         (dashboard-insert-section
          ;; Widget title
