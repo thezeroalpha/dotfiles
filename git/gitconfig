@@ -19,7 +19,9 @@
 
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --branches --remotes --tags --oneline --author-date-order
     lgv = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''%w(130,10,10)%C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all --author-date-order
-    lgvv = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''%w(130,13,13)%C(white)%s%C(reset) %C(dim white)- %an <%ce> (comm. %cn <%ce>)%C(reset)%n''%w(64,18,18)%b'  --all
+    llg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --oneline --author-date-order
+    llgv = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''%w(130,10,10)%C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all --author-date-order
+    llgvv = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''%w(130,13,13)%C(white)%s%C(reset) %C(dim white)- %an <%ce> (comm. %cn <%ce>)%C(reset)%n''%w(64,18,18)%b'  --all
     today = lgv --since='midnight'
     yesterday = lgv --since='yesterday midnight' --until='midnight'
     this-week = lgv --since='last-monday'
@@ -46,7 +48,7 @@
 
     rp = reset -p
 
-    ss = "!f(){ git stash push \"$@\" -- $(git diff --staged --name-only); }; f"
+    ss = stash push
     sp = stash pop
     sa = stash apply
     sd = stash drop
