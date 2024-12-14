@@ -458,6 +458,10 @@ elsif (checkstr($LINK, 'includes',  ['reddit.com'])) {
       my $link = shift;
       # Have to go via bash here to be able to pipe to `less`
       launch_in_terminal(qq(bash -c 'reddio print -c always "comments/\$(printf "%s" '$link' | cut -d/ -f7)" | less -+F -+X'));
+    }],
+    ['w3m', sub {
+      my $link = shift;
+      launch_in_terminal(qq(w3m -config ~/.config/w3m/config -T text/html '$link'));
     }]
   );
   my $selected_ref = menu(\@choices);
