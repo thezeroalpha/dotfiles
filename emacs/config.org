@@ -201,6 +201,16 @@ unless the app is in the background. [[https://github.com/julienXX/terminal-noti
 #+end_src
 
 * Editing
+** Everything is UTF-8
+#+begin_src emacs-lisp
+  (set-language-environment 'utf-8)
+  (setq locale-coding-system 'utf-8)
+  (setq buffer-file-coding-system 'utf-8-unix)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+end_src
 ** Overwrite selection on typing
 Normally, when I select something and start typing, Emacs clears the selection, i.e. it deselects and inserts text after the cursor.
 I want to replace the selection.
@@ -303,6 +313,11 @@ And a keybinding to toggle wrapping:
   (bind-key "C-c q w" #'za/toggle-wrap)
 #+end_src
 
+And fringe indicators:
+
+#+begin_src emacs-lisp
+  (setopt visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+#+end_src
 ** Pager toggle
 M-x view-mode enables pager behavior.
 I want read-only files to automatically use pager mode:
@@ -337,7 +352,7 @@ Emacs uses the rather old-fashioned convention of treating a period followed by 
 Let a period followed by a single space be treated as end of sentence:
 
 #+begin_src emacs-lisp
-  (setq sentence-end-double-space nil)
+  (setopt sentence-end-double-space nil)
 #+end_src
 * Keybindings
 ** Expansion/completion
@@ -790,6 +805,17 @@ So, I want a bar instead of a box:
 
 (I use ~setq-default~ here because cursor-type is automatically buffer-local when it's set)
 
+And enable cursorline:
+
+#+begin_src emacs-lisp
+  (global-hl-line-mode)
+#+end_src
+
+And visualize tab characters by stretching the cursor:
+
+#+begin_src emacs-lisp
+  (setq-default x-stretch-cursor t)
+#+end_src
 ** Matching parentheses
 Don't add a delay to show matching parenthesis.
 Must come before show-paren-mode enable.
@@ -861,6 +887,11 @@ For that, ~delight~ is a useful package; unlike ~diminish~, it can also change t
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 #+end_src
+** Frame title
+#+begin_src emacs-lisp
+  (setopt frame-title-format "%F--%b-[%f]--%Z")
+#+end_src
+
 ** Tab bar
 Only show tab bar if there's more than 1 tab:
 
@@ -1036,19 +1067,25 @@ Hide some messages I don't need.
         ;; Split file into individual quotes
         (split-string file-contents "  ---  ")))
 
+    (defun za/quotes-manual ()
+      (list "The Universe is under no obligation to make sense to you."
+        "I would like to die on Mars. Just not on impact."
+        "That's one small step for a man, one giant leap for mankind."
+        "We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard, because that goal will serve to organize and measure the best of our energies and skills, because that challenge is one that we are willing to accept, one we are unwilling to postpone, and one which we intend to win."
+        "Space is for everybody. It’s not just for a few people in science or math, or for a select group of astronauts. That’s our new frontier out there, and it’s everybody’s business to know about space."
+        "On one side are those who believe space travel is difficult work, but who go for it anyway. On the other are those who believe caring for a goldfish is, and who don’t go after much of anything. Where we choose to seed ourselves on the spectrum of what’s possible is what will ultimately define the size of our lives."))
+
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
-    (if (boundp 'za/my-website-dir)
-        (setq dashboard-footer-messages
-              (let* ((quotes (za/quotes-from-my-site)))
-                ;; Run each quote through fill-region for better display
-                (require 's)
-                (mapcar (lambda (quote-line)
-                          (with-temp-buffer
-                            (insert (s-trim quote-line))
-                            (fill-region (point-min) (point-max))
-                            (buffer-substring-no-properties (point-min) (point-max))))
-                        quotes)))
-      (warn "za/my-website-dir not bound, not setting custom dashboard messages")))
+    (setopt dashboard-footer-messages
+          (let* ((quotes (if (boundp 'za/my-website-dir) (za/quotes-from-my-site) (za/quotes-manual))))
+            ;; Run each quote through fill-region for better display
+            (require 's)
+            (mapcar (lambda (quote-line)
+                      (with-temp-buffer
+                        (insert (s-trim quote-line))
+                        (fill-region (point-min) (point-max))
+                        (buffer-substring-no-properties (point-min) (point-max))))
+                    quotes))))
 
   (defun dashboard-insert-gtd-inbox-counts (list-size)
     (require 'org-roam)
@@ -1122,10 +1159,29 @@ Hide some messages I don't need.
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 #+end_src
 
-** Pixel scroll mode
+** Scrolling
 #+begin_src emacs-lisp
+  (setopt scroll-step 1)
+  ;; Marker distance from center
+  (setopt scroll-conservatively 100000)
+  ;; Keep screen position on scroll
+  (setopt scroll-preserve-screen-position 1)
+  ;; Start scrolling when marker at top/bottom
+  (setopt scroll-margin 0)
+
+  ;; Mouse scrolls 1 line at a time
+  (setopt mouse-wheel-scroll-amount '(1))
+
+  ;; On a long mouse scroll keep scrolling by 1 line
+  (setq mouse-wheel-progressive-speed nil)
+
+  ;; Enable pixel scroll precision mode
   (unless (version< emacs-version "29")
     (pixel-scroll-precision-mode))
+
+  ;; Speed up cursor movement.
+  ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
+  (setopt auto-window-vscroll nil)
 #+end_src
 * General packages
 
@@ -1758,6 +1814,18 @@ Install Org and require additional components that I use.
                       "_1|_3|_5"
                       'agenda-with-archives))))
         (message "Modified %d entries." number-of-entries)))
+    (defun za/archive-finished-tickler ()
+      (interactive)
+      (progn
+        (find-file-other-window za/org-life-tickler)
+        (length (org-map-entries
+                 (lambda ()
+                   (org-fold-show-subtree)
+                   (when (y-or-n-p "Archive? ")
+                     (org-archive-subtree-default)
+                     (save-buffer)))
+                 "TIMESTAMP<*\"<today>\""
+                 'file))))
 
     (require 'org-tempo)
     (require 'org-habit)
@@ -2153,6 +2221,16 @@ For listing tasks without an energy level - skip if it has an energy level:
         keep)))
 #+end_src
 
+#+begin_src emacs-lisp
+  (defun za/skip-if-scheduled ()
+    (let* ((skip (save-excursion (org-end-of-subtree t)))
+           (keep nil)
+           (scheduled-time (org-get-scheduled-time (point))))
+      (if scheduled-time
+          skip
+        keep)))
+#+end_src
+
 Create custom agenda view based on those keywords.
 Agenda views are made up of blocks, appearing in the order that you declare them.
 The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
@@ -2161,8 +2239,8 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
   (setq org-agenda-custom-commands
         '(("n" "Next actions"
            todo "NEXT" ((org-agenda-overriding-header "Next actions:")
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline 'timestamp))
-                        (org-agenda-sorting-strategy '(priority-down alpha-up))))
+                        (org-agenda-sorting-strategy '(priority-down alpha-up))
+                        (org-agenda-skip-function #'za/skip-if-scheduled)))
           ("q" "Query" (lambda (&rest _) (call-interactively #'org-ql-search)))
 
           ("W" "Waiting"
@@ -2953,7 +3031,6 @@ Add to confluence by pressing ~ctrl + shift + d~ when editing a page and inserti
        "\{expand\}")))
 #+end_src
 *** TODO the path for org-roam export and data export should be configurable, not hard-coded
-
 ** Mail mode for neomutt
 When editing a message from neomutt, I want to use mail mode.
 Even though I won't be sending the email from there, I like the syntax highlighting :)
@@ -3453,16 +3530,14 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 ** casual
 #+begin_src emacs-lisp
   (use-package casual
-    :bind (:map calc-mode-map ("C-o" . 'casual-calc-tmenu)))
+    :bind (:map calc-mode-map
+           ("C-o" . 'casual-calc-tmenu)
+           :map dired-mode-map
+           ("C-o" . 'casual-dired-tmenu)
+           ("C-u C-o" . 'dired-display-file)
+           :map calendar-mode-map
+           ("C-o" . 'casual-calendar-tmenu)))
 #+end_src
-** casual-dired
-#+begin_src emacs-lisp
-  (use-package casual-dired
-    :bind (:map dired-mode-map
-                ("C-o" . 'casual-dired-tmenu)
-                ("C-u C-o" . 'dired-display-file)))
-#+end_src
-
 ** json
 #+begin_src emacs-lisp
   (use-package json-mode)
@@ -3470,6 +3545,12 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 ** rust
 #+begin_src emacs-lisp
   (use-package rust-mode)
+#+end_src
+** artist mode
+#+begin_src emacs-lisp
+  (use-package artist
+    :ensure nil ; included with emacs
+    :custom (artist-figlet-default-font "term"))
 #+end_src
 * Override some faces
 #+begin_src emacs-lisp

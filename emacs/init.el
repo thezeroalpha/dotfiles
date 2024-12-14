@@ -45,6 +45,10 @@
            (eql system-type 'darwin))
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
+;; Replace "yes/no" with "y"/"no"
+(when (fboundp 'y-or-n-p)
+  (fset 'yes-or-no-p 'y-or-n-p))
+
 ;; Set up packages
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
