@@ -56,23 +56,26 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end)
 vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end)
-vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR }) end)
-vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR }) end)
+vim.keymap.set('n', ']e',
+  function() vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR }) end)
+vim.keymap.set('n', '[e',
+  function() vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR }) end)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', function() vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR }) end)
 
 -- 'i' that indents correctly on empty lines
 vim.keymap.set('n', 'i', function()
-        if #vim.fn.getline(".") == 0 then
-          return [["_cc]]
-        else
-          return "i"
-        end
-end, {expr = true})
+  if #vim.fn.getline(".") == 0 then
+    return [["_cc]]
+  else
+    return "i"
+  end
+end, { expr = true })
 
 require('llm')
+require('netrw_target')
 
-vim.cmd ([[
+vim.cmd([[
 nnoremap <leader><C-e><C-u> :<c-u>exe "vsplit ~/.vim/snippets/"..&filetype..".snippets"<CR>
 ]])
 
