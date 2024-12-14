@@ -1,0 +1,10 @@
+#!/bin/sh
+case $BUTTON in
+  6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+n_sessions="$(tmux list-sessions | wc -l)"
+attached="$(tmux list-sessions | grep '(attached)')"
+if [ "$n_sessions" -gt 0 ] && [ -z "$attached" ]; then
+  printf "  %s" "$n_sessions"
+fi
