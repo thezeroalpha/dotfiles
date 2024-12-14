@@ -25,8 +25,8 @@ keymap C-d NEXT_HALF_PAGE
 keymap C-u PREV_HALF_PAGE
 
 # Misc
-keymap H BACK
-keymap L PREV
+keymap H PREV
+keymap L NEXT
 keymap ~ GOTO_HOME # specified in $WWW_HOME
 keymap C-l REDRAW
 keymap s PRINT
@@ -70,7 +70,7 @@ keymap r RELOAD
 keymap M-r REINIT
 
 # Macros
-keymap SPCr COMMAND 'END; PIPE_SHELL "readable $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))"'
+keymap SPCr COMMAND 'END; PIPE_SHELL "readable $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))"; REDRAW'
 keymap SPCm COMMAND 'END; PIPE_SHELL "smmry --html $W3M_URL | w3m -config ~/.config/w3m/config -T text/html -cols $(($(tput cols)*6/10))"'
 keymap SPCs EXEC_SHELL 'pocket save $W3M_URL'
 keymap SPCl EXEC_SHELL 'pocket save $W3M_CURRENT_LINK'
