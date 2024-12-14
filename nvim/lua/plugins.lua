@@ -15,6 +15,20 @@ return {
         'williamboman/mason-lspconfig.nvim',
         config = function()
           require 'config.mason-lspconfig'
+
+          -- Workaround: https://github.com/neovim/neovim/issues/30985
+          if vim.fn.has('nvim-0.11.0-dev') ~= 1 then
+            error("Check if you still need this LSP workaround")
+          end
+          for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+            local default_diagnostic_handler = vim.lsp.handlers[method]
+            vim.lsp.handlers[method] = function(err, result, context, config)
+              if err ~= nil and err.code == -32802 then
+                return
+              end
+              return default_diagnostic_handler(err, result, context, config)
+            end
+          end
         end,
       },
 
@@ -358,6 +372,32 @@ return {
     event = "VeryLazy",
   },
   {
+    "echasnovski/mini.animate",
+    config = function()
+      local animate = require('mini.animate')
+      animate.setup({
+        cursor = {
+          enable = false,
+        },
+        scroll = {
+          enable = false,
+          timing = animate.gen_timing.linear({ duration = 50, unit = 'total' }),
+        },
+        resize = {
+          enable = false,
+          timing = animate.gen_timing.linear({ duration = 50, unit = 'total' }),
+        },
+        open = {
+          enable = false,
+        },
+        close = {
+          enable = false,
+        },
+      })
+    end,
+    version = false,
+  },
+  {
     "m00qek/baleia.nvim",
     version = "*",
     config = function()
@@ -408,14 +448,15 @@ return {
         }
       end,
       formatters = {
-        ruff = {
-          prepend_args = { "--config", "~/Documents/cdmi/automation/meta-files/ruff.toml" },
+        ruff_format = {
+          inherit = true,
+          append_args = { "--config", "~/Documents/cdmi/automation/meta-files/ruff.toml" },
         },
       },
       formatters_by_ft = {
         rust = { "rustfmt", lsp_format = "fallback" },
-        python = { "ruff", lsp_format = "fallback" },
         ruby = { "rubyfmt", lsp_format = "fallback" },
+        python = { "ruff_format", "ruff_organize_imports", lsp_format = "fallback" },
         -- python = { "black", lsp_format = "fallback" },
         --   -- lua = { 'stylua' },
         --   -- Conform can also run multiple formatters sequentially

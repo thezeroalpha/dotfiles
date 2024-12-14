@@ -4,6 +4,40 @@ local mason_lspconfig = require 'mason-lspconfig'
 --  https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
+local rust_clippy = {
+  command = "clippy",
+  workspace = true,
+  extraArgs = {
+    "--no-deps",
+    "--",
+    "-D", "clippy::pedantic",
+    "-D", "clippy::nursery",
+    "-D", "clippy::restriction",
+    "-A", "clippy::blanket_clippy_restriction_lints",
+    "-A", "clippy::missing_docs_in_private_items",
+    "-A", "clippy::implicit_return",
+    "-A", "clippy::question_mark_used",
+    "-A", "clippy::min_ident_chars",
+    "-A", "clippy::pattern_type_mismatch",
+    "-A", "clippy::single_call_fn",
+    "-A", "clippy::as_conversions",
+    "-A", "clippy::pub_with_shorthand",
+    "-A", "clippy::shadow_reuse",
+    "-A", "clippy::separated_literal_suffix",
+    "-A", "clippy::float_arithmetic",
+    "-A", "clippy::pub_use",
+    "-A", "clippy::single_char_lifetime_names",
+    "-A", "clippy::missing_trait_methods",
+    -- "-A", "clippy::multiple_unsafe_ops_per_block", -- broken on 0.1.74
+    "-A", "clippy::mod_module_files",
+    "-A", "clippy::std_instead_of_alloc",
+    "-A", "clippy::integer_division_remainder_used",
+    "-D", "rust_2018_idioms",
+    "-D", "missing_docs",
+    "-D", "warnings",
+    "-A", "clippy::too_many_lines"
+  },
+}
 local servers = {
   ansiblels = {},
   lua_ls = {
@@ -34,60 +68,13 @@ local servers = {
   rust_analyzer = {
     ['rust-analyzer'] = {
       cargo = {
-        allFeatures = true,
-        loadOutDirsFromCheck = true,
-        runBuildScripts = true,
+        features = "all",
         -- extraEnv = {
         --   RUSTFLAGS = "--cfg tokio_unstable",
         -- },
       },
       -- Add clippy lints for Rust.
-      checkOnSave = {
-        allFeatures = true,
-        command = "clippy",
-        extraArgs = {
-          -- "--no-deps",
-          "--",
-          "-D", "clippy::pedantic",
-          "-D", "clippy::nursery",
-          "-D", "clippy::restriction",
-          "-A", "clippy::blanket_clippy_restriction_lints",
-          "-A", "clippy::missing_docs_in_private_items",
-          "-A", "clippy::implicit_return",
-          "-A", "clippy::question_mark_used",
-          "-A", "clippy::min_ident_chars",
-          "-A", "clippy::pattern_type_mismatch",
-          "-A", "clippy::single_call_fn",
-          "-A", "clippy::as_conversions",
-          "-A", "clippy::pub_with_shorthand",
-          "-A", "clippy::shadow_reuse",
-          "-A", "clippy::separated_literal_suffix",
-          "-A", "clippy::float_arithmetic",
-          "-A", "clippy::pub_use",
-          "-A", "clippy::single_char_lifetime_names",
-          "-A", "clippy::missing_trait_methods",
-          "-A", "clippy::multiple_unsafe_ops_per_block", -- broken on 0.1.74
-          "-A", "clippy::mod_module_files",
-          "-A", "clippy::std_instead_of_alloc",
-          "-A", "clippy::integer_division_remainder_used",
-          "-D", "rust_2018_idioms",
-          "-D", "missing_docs",
-          "-D", "warnings",
-          "-A", "clippy::too_many_lines"
-        },
-        --[[
-        command = "check",
-        ]]
-        -- extraArgs = { "--no-deps" },
-      },
-      procMacro = {
-        enable = true,
-        ignored = {
-          ["async-trait"] = { "async_trait" },
-          ["napi-derive"] = { "napi" },
-          ["async-recursion"] = { "async_recursion" },
-        },
-      },
+      check = rust_clippy,
     },
   },
   pyright = {},

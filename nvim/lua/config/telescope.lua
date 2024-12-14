@@ -26,6 +26,8 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').lsp_references, { desc = '[S]earch [R]eferences' })
 vim.keymap.set('n', '<leader>s<', require('telescope.builtin').lsp_incoming_calls, { desc = '[S]earch [I]ncoming calls' })
 vim.keymap.set('n', '<leader>s>', require('telescope.builtin').lsp_outgoing_calls, { desc = '[S]earch [O]utgoing calls' })
+vim.keymap.set('n', '<leader>st', require('telescope.builtin').current_buffer_fuzzy_find,
+  { desc = '[Search] [T]his buffer' })
 vim.keymap.set('n', '<leader>sI', require('telescope.builtin').lsp_implementations,
   { desc = '[S]earch [i]mplementations' })
 vim.keymap.set('n', '<leader>ss', function()
