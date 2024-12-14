@@ -11,6 +11,6 @@ $tsp_cmd -l | awk --traditional '
   $2 ~ /finished|skipped/ { finished++ }
   END {
     if (total > 0) {
-      printf("🧵 %s/%s", finished, total)
+      printf("🧵%s %s/%s", (finished == total ? "" : "➰"), finished, total)
     }
   }'
