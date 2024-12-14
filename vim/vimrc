@@ -75,14 +75,11 @@ Plug 'junegunn/vim-peekaboo'
 " Latex symbol to unicode
 Plug 'joom/latex-unicoder.vim'
 
-" Smooth ^U/^D scrolling
-Plug 'psliwka/vim-smoothie'
-
 " Asynchronous popery
 Plug 'tpope/vim-dispatch'
 
 " Vimscript testing
-Plug 'tpope/vim-scriptease', { 'on': 'Breakadd' }
+Plug 'tpope/vim-scriptease', { 'on': ['Breakadd', 'Runtime'] }
 
 " Set 'path', 'suffixesadd', 'include', 'includeexpr', 'define'
 "   automatically for selected filetypes.
@@ -131,6 +128,9 @@ Plug 'qadzek/link.vim'
 
 " Vim-only
 if !has('nvim')
+  " Smooth ^U/^D scrolling
+  Plug 'psliwka/vim-smoothie'
+
   " Alignment
   Plug 'junegunn/vim-easy-align'
 
