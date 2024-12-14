@@ -1,0 +1,11 @@
+#!/bin/sh
+set -x
+mac="$(bluetoothctl devices \
+  | ruby -e '
+      devices = ARGF.readlines.each_with_object(Hash.new) { |l,h| _, mac, *rest = l.chomp.split; h[rest.join(" ")] = mac }
+      choice = `printf '%s' "#{devices.keys.join("\n")}" | dmenu -i -l 5 -p "Bluetooth> "`.chomp
+      abort if choice.nil? or not devices.key? choice
+      print devices[choice]')"
+
+[ -n "$mac" ] || { printf 'Nothing selected.' >&2; exit 1; }
+bluetoothctl connect "$mac"
