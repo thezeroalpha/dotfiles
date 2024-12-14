@@ -1,0 +1,92 @@
+#!/usr/bin/expect
+set timeout -1
+match_max 100000
+
+if { $argc < 1 } {
+  send_user "No hostname provided\n"
+  exit 1
+}
+
+set command "ssh"
+for {set i 0} {$i < $argc} {incr i} {
+  switch -glob [lindex $argv $i] {
+    -J {
+      lappend command "-J" [lindex $argv [expr {$i + 1}]]
+      incr i
+    }
+    -R {
+      lappend command "-R" [lindex $argv [expr {$i + 1}]]
+      incr i
+    }
+    -L {
+      lappend command "-R" [lindex $argv [expr {$i + 1}]]
+      incr i
+    }
+    default {
+      lappend command [lindex $argv $i]
+    }
+  }
+}
+
+# Define a subroutine to read password
+proc read_password {} {
+  stty -echo
+  send_user "password: "
+  expect_user -re "(.*)\n"
+  stty echo
+  set pass "$expect_out(1,string)\r"
+  send_user "\n"
+  return $pass
+}
+
+# Read password from user
+set pass [read_password]
+
+# Define procedure to log in
+proc login {pass command} {
+  # Variables written in procedures don't change globally,
+  # but spawn_id has to be global for expect to work.
+  global spawn_id
+
+  # Connect
+  eval spawn $command
+
+  expect {
+    # Change password as needed
+    -ex "New password: " {
+      send -- "$pass"
+      expect -exact "Retype new password: "
+      send -- "$pass"
+      expect eof
+
+      # SSH closes the connection, so log in again
+      login $pass $command
+    }
+    # Accept fingerprint as needed
+    -ex "Are you sure you want to continue connecting (yes/no/\[fingerprint\])? " {
+      send -- "yes\r"
+      exp_continue
+    }
+    # On a shell prompt, stop expecting
+    " $" {}
+    # Catch all - we got something we didn't expect
+    default {
+      send_user "Got some unexpected output\n"
+      exit 1
+    }
+  }
+}
+
+# Log in
+login $pass $command
+
+# Elevate privileges
+send -- "sudo su\n"
+expect -re "password for \[^ \]+: "
+send -- "$pass"
+
+if { $argc == 2 } {
+  send -- "[lindex $argv 1]\n"
+}
+# Yield control
+interact
