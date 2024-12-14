@@ -91,3 +91,4 @@ link   LineHighlight                                            VisualNOS
 link   MkdLink           Type
 link   adaBegin,adaEnd   Function
 link   markdownCode      SpecialComment
+link   lspInlayHint      Comment
