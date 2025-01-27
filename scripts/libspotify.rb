@@ -113,7 +113,8 @@ class SpotifyClient
     request["Authorization"] = "Bearer #{@token}"
     request.body = JSON.dump(body)
     request.content_type = "application/json"
-    JSON.parse(@http.request(request).read_body)
+    response_body = @http.request(request).read_body
+    response_body.nil? ? nil : JSON.parse(response_body)
   end
 
   def api_call_get_unpaginate(endpoint, params, results_key = nil)
@@ -225,8 +226,7 @@ def process_new_releases(interactive = true)
   client = SpotifyClient.new
   artists = client.get_followed_artists
   releases = client.get_artists_releases(artists)
-  # last_checked = YAML.load_file("#{ENV["HOME"]}/.local/share/spot-last-checked", permitted_classes: [Date, Symbol])
-  last_checked = Date::parse("2024-11-20")
+  last_checked = YAML.load_file("#{ENV["HOME"]}/.local/share/spot-last-checked", permitted_classes: [Date, Symbol])
   albums, others = releases.select { |r| r.release_date >= last_checked }.partition { |x| x.album_type == "album" }
 
   albums_tracks = albums.reduce([]) do |acc, album|
@@ -311,27 +311,52 @@ def bulk_follow_artists
   end
 
   puts("Filtering already followed artists...")
-  artists_to_follow = artists.reject { |a| already_following.find { |af| af["uri"] == a["uri"] } }
+  artists_to_follow_ignore = if File.exist?("#{ENV["HOME"]}/.local/share/spot-artists-follow-ignore")
+    File.readlines("#{ENV["HOME"]}/.local/share/spot-artists-follow-ignore").map {
+      _1.chomp.split("\t")
+    }
+  else
+    []
+  end
+
+  artists_to_follow_without_followed_obj = artists
+    .reject { |a| already_following.find { |af| af["uri"] == a["uri"] } }
+  artists_to_follow_without_followed_arr = artists_to_follow_without_followed_obj
+    .map { |a| [a["name"], a["external_urls"]["spotify"], a["search_query"]] }
+  artists_to_follow = artists_to_follow_without_followed_arr - artists_to_follow_ignore
 
   tmpfile = Tempfile.new("artists_to_follow")
   begin
     tmpfile.write(
-      artists_to_follow.map { |a| [a["name"], a["external_urls"]["spotify"], a["search_query"]].join("\t") }.join("\n")
+      artists_to_follow.map { _1.join("\t") }.join("\n")
     )
     tmpfile.close
     system(ENV["EDITOR"], tmpfile.path)
     tmpfile.open
-    artists_to_follow = tmpfile.readlines(chomp: true).reduce([]) do |res, chosen|
-      name, href, _query = chosen.split("\t")
-      res << artists_to_follow.find { |a| a["name"] == name && a["external_urls"]["spotify"] == href }
-    end
+    new_artists_to_follow = tmpfile
+      .readlines(chomp: true)
+      .reduce([]) do |res, chosen|
+        name, href, _query = chosen.split("\t")
+        res << artists_to_follow_without_followed_obj.find { |a|
+          a["name"] == name && a["external_urls"]["spotify"] == href
+        }
+      end
+      .reject(&:empty?)
 
   ensure
     tmpfile.close
     tmpfile.unlink
   end
 
-  artists_to_follow.each_slice(50) do |artists_by_50|
+  to_subtract = new_artists_to_follow
+    .map { |a| [a["name"], a["external_urls"]["spotify"], a["search_query"]] }
+
+  to_add_to_ignore = (artists_to_follow - to_subtract)
+  puts("Adding #{to_add_to_ignore.size} artists to ignore file")
+  new_ignore = (artists_to_follow_ignore + to_add_to_ignore).uniq
+  File.write("#{ENV["HOME"]}/.local/share/spot-artists-follow-ignore", new_ignore.map { _1.join("\t") }.join("\n"))
+
+  new_artists_to_follow.each_slice(50) do |artists_by_50|
     ids = artists_by_50.map { _1["id"] }
     response = client.api_call_put("me/following", {ids: ids}, {type: :artist})
     puts(response)
