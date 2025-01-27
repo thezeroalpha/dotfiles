@@ -1852,6 +1852,9 @@ Install Org and require additional components that I use.
     ;; Improved search
     (use-package org-ql)
 
+    ;; My override for org clock resolve
+    (require 'org-clock-override)
+
     ;; Tempo expansions
     (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
     (add-to-list 'org-structure-template-alist '("sb" . "src bibtex"))
@@ -2038,7 +2041,7 @@ Templates for quick capture:
 
                              ("s" "Save for read/watch/listen" entry
                               (file+headline ,za/org-life-someday "Read/watch/listen")
-                              "* TODO %?[[%^{link}][%^{description}]] %^G"))))
+                              "* %?[[%^{link}][%^{description}]] %^g"))))
 #+end_src
 
 *** Todo & custom agenda views

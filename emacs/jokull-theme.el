@@ -90,6 +90,7 @@
         `(org-level-3 ((,class (:bold t :foreground ,fg4))))
         `(org-level-4 ((,class (:bold nil :foreground ,fg4))))
         `(org-date ((,class (:underline t :foreground ,var) )))
+        `(org-list-dt ((,class (:inherit default))))
         `(org-drawer ((,class (:foreground "#7d7d7d" :slant italic))))
         `(org-footnote  ((,class (:underline t :foreground ,fg4))))
         `(org-link ((,class (:underline t :foreground ,type ))))
