@@ -1147,11 +1147,6 @@
     (( $D > 0 || $H > 0 || $M > 0 )) && printf ':'
     printf '%02d' $S
   }
-  function prompt_bitwarden_session_status() {
-    if rbw unlocked >/dev/null 2>&1; then
-      p10k segment -f 2 -t "[🔓]"
-    fi
-  }
 
   # shell nest level
   function prompt_nest_level() {

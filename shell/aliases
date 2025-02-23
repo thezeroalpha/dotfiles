@@ -27,8 +27,6 @@ alias irrsi="irssi --home=~/.config/irssi"
 alias scim="sc-im"
 alias mbsync='mbsync -c $HOME/.config/mbsync/mbsyncrc'
 alias mutt="neomutt"
-alias bwu="rbw unlock"
-alias bwl="rbw lock"
 alias gotop='sudo gotop -C $XDG_CONFIG_HOME/gotop/gotop.conf'
 alias vim=nvim
 [ -n "$VIM_TERMINAL" ] && alias vim=vimsend

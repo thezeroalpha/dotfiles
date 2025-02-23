@@ -17,11 +17,13 @@ export LESS="-FRiX"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
-export LC_CTYPE="UTF-8"
+export LC_CTYPE="en_US.UTF-8"
 export LC_MESSAGES="en_US.UTF-8"
 export LC_MONETARY="en_US.UTF-8"
 export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
+
+export DISPLAY=":0"
 
 export TTRV_BROWSER=~/.scripts/linkhandler
 if command -v brave >/dev/null 2>&1; then
@@ -218,7 +220,7 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 [ -d "$XDG_STATE_HOME" ] || mkdir -p "$XDG_STATE_HOME"
 
-alias irssi='irssi --config="$XDG_CONFIG_HOME"/irssi/config --home="$XDG_DATA_HOME"/irssi'
+alias irssi='irssi --config="$XDG_CONFIG_HOME"/irssi/config --home="$XDG_CONFIG_HOME"/irssi'
 alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
 alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config -bookmark $XDG_CONFIG_HOME/w3m/bookmark.html'
 alias monero-wallet-cli='monero-wallet-cli --config-file ~/.config/bitmonero/monero-wallet-cli.conf'
