@@ -17,9 +17,9 @@ return {
           require 'config.mason-lspconfig'
 
           -- Workaround: https://github.com/neovim/neovim/issues/30985
-          if vim.fn.has('nvim-0.11.0-dev') ~= 1 then
-            error("Check if you still need this LSP workaround")
-          end
+          -- if vim.fn.has('nvim-0.11.0-dev') ~= 1 then
+          --   error("Check if you still need this LSP workaround")
+          -- end
           for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
             local default_diagnostic_handler = vim.lsp.handlers[method]
             vim.lsp.handlers[method] = function(err, result, context, config)
@@ -380,12 +380,11 @@ return {
           enable = false,
         },
         scroll = {
-          enable = false,
+          enable = true,
           timing = animate.gen_timing.linear({ duration = 50, unit = 'total' }),
         },
         resize = {
           enable = false,
-          timing = animate.gen_timing.linear({ duration = 50, unit = 'total' }),
         },
         open = {
           enable = false,
@@ -465,6 +464,23 @@ return {
         --   -- You can use 'stop_after_first' to run the first available formatter from the list
         --   -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
+    },
+  },
+  {
+    'sphamba/smear-cursor.nvim',
+    opts = {
+      cursor_color = '#a4a4a4',
+      legacy_computing_symbols_support = true,
+      stiffness = 0.8,               -- 0.6      [0, 1]
+      trailing_stiffness = 0.5,      -- 0.3      [0, 1]
+      distance_stop_animating = 0.5, -- 0.1      > 0
+    },
+  },
+  {
+    'max397574/colortils.nvim',
+    event = "VeryLazy",
+    opts = {
+      register = "0",
     },
   },
 }
