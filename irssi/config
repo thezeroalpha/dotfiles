@@ -1,5 +1,5 @@
 servers = (
-  { 
+  {
     address = "irc.undernet.org";
     chatnet = "Undernet";
     port = "6667";
@@ -104,7 +104,7 @@ windows = {
   };
   5 = {
     items = (
-      { 
+      {
         type = "QUERY";
         chat_type = "IRC";
         name = "*status";
@@ -114,7 +114,7 @@ windows = {
   };
 };
 mainwindows = {
-  1 = { 
+  1 = {
     first_line = "1";
     lines = "55";
     first_column = "0";
