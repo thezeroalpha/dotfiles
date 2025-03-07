@@ -1068,12 +1068,26 @@ Hide some messages I don't need.
         (split-string file-contents "  ---  ")))
 
     (defun za/quotes-manual ()
-      (list "The Universe is under no obligation to make sense to you."
+      '("The Universe is under no obligation to make sense to you."
         "I would like to die on Mars. Just not on impact."
         "That's one small step for a man, one giant leap for mankind."
         "We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard, because that goal will serve to organize and measure the best of our energies and skills, because that challenge is one that we are willing to accept, one we are unwilling to postpone, and one which we intend to win."
         "Space is for everybody. It’s not just for a few people in science or math, or for a select group of astronauts. That’s our new frontier out there, and it’s everybody’s business to know about space."
         "On one side are those who believe space travel is difficult work, but who go for it anyway. On the other are those who believe caring for a goldfish is, and who don’t go after much of anything. Where we choose to seed ourselves on the spectrum of what’s possible is what will ultimately define the size of our lives."))
+
+    ;; Have to redefine this, original one has wrong type
+    (defcustom dashboard-footer-messages
+    '("The one true editor, Emacs!"
+      "Who the hell uses VIM anyway? Go Evil!"
+      "Free as free speech, free as free Beer"
+      "Happy coding!"
+      "Vi Vi Vi, the editor of the beast"
+      "Welcome to the church of Emacs"
+      "While any text editor can save your files, only Emacs can save your soul"
+      "I showed you my source code, pls respond")
+    "A list of messages, one of which dashboard chooses to display."
+    :type '(repeat string)
+    :group 'dashboard)
 
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
     (setopt dashboard-footer-messages
@@ -1261,7 +1275,7 @@ Switched to this from Helm, it's more lightweight.
            ("C-x C-f" . counsel-find-file)
            ("M-y" . counsel-yank-pop)
            ("C-c c" . counsel-compile)
-           ("M-s g" . counsel-ag)
+           ("M-s g" . counsel-rg)
            ("M-s f" . counsel-fzf)
            ("C-c b" . counsel-bookmark)
            ("C-c p" . counsel-recentf)
@@ -1703,6 +1717,7 @@ Install Org and require additional components that I use.
     (org-format-latex-options (plist-put org-format-latex-options :scale 2.0) "Larger latex previews")
     (org-goto-interface 'outline-path-completion "Use outline path completion for org-goto, instead of its weird interface")
     (org-insert-heading-respect-content t "Insert headings after current subtree")
+    (org-clock-report-include-clocking-task t "Include currently active task in clocktable")
     (org-id-link-to-org-use-id 'create-if-interactive "If org-store-link is called directly, create an ID.")
     (org-clock-mode-line-total 'today)
     (org-return-follows-link t "Easier link following. Actual enter is still possible with ~C-q C-j~.")
@@ -1717,12 +1732,13 @@ Install Org and require additional components that I use.
     (org-link-elisp-confirm-function #'y-or-n-p)
     (org-link-elisp-skip-confirm-regexp "^org-noter$")
     (org-clock-sound (concat user-emacs-directory "notification.wav"))
-    (org-export-backends '(ascii html icalendar latex md odt org pandoc confluence-ext jira))
+    (org-export-backends '(ascii html icalendar latex md odt org pandoc jira))
     (org-catch-invisible-edits 'show-and-error
                                "Sometimes when text is folded away, I might accidentally edit text inside of it. This option prevents that. I wanted to do 'smart', but that has a 'fixme' so it might change in the future...Instead, show what's being edited, but don't perform the edit.")
     (org-src-tab-acts-natively t "a tab in a code block indents the code as it should")
     (org-attach-store-link-p 'attached)
     (org-attach-archive-delete 'query)
+    (org-archive-subtree-add-inherited-tags t)
     (org-stuck-projects '("/PROJ"
                           ("NEXT" "STARTED")
                           nil nil)
