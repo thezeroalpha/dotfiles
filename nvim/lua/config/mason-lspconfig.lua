@@ -35,7 +35,8 @@ local rust_clippy = {
     "-D", "rust_2018_idioms",
     "-D", "missing_docs",
     "-D", "warnings",
-    "-A", "clippy::too_many_lines"
+    "-A", "clippy::too_many_lines",
+    "-A", "clippy::arbitrary_source_item_ordering",
   },
 }
 local servers = {
@@ -67,17 +68,11 @@ local servers = {
   docker_compose_language_service = {},
   rust_analyzer = {
     ['rust-analyzer'] = {
-      cargo = {
-        features = "all",
-        -- extraEnv = {
-        --   RUSTFLAGS = "--cfg tokio_unstable",
-        -- },
-      },
-      -- Add clippy lints for Rust.
       check = rust_clippy,
     },
+    checkOnSave = { enable = false },
+    diagnostics = { enable = false },
   },
-  pyright = {},
   rubocop = {},
   -- solargraph = {},
   -- bashls = {},
@@ -148,3 +143,5 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+require('lspconfig').bacon_ls.setup({})
+require('lspconfig').pyright.setup({})

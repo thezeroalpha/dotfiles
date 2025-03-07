@@ -315,9 +315,12 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("treesitter-context").setup()
-    end
+    opts = {
+      enable = false,
+    },
+    keys = {
+      { "<leader>^", function() require('treesitter-context').toggle() end, desc = "Context" },
+    },
   },
 
   -- diagnostics
@@ -411,15 +414,6 @@ return {
       vim.api.nvim_create_user_command("BaleiaLogs", vim.g.baleia.logger.show, { bang = true })
     end,
   },
-  {
-    "OXY2DEV/markview.nvim",
-    lazy = false, -- Not needed, already handled by plugin
-
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons"
-    }
-  },
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -456,6 +450,7 @@ return {
         rust = { "rustfmt", lsp_format = "fallback" },
         ruby = { "rubyfmt", lsp_format = "fallback" },
         python = { "ruff_format", "ruff_organize_imports", lsp_format = "fallback" },
+        lua = { "stylua" },
         -- python = { "black", lsp_format = "fallback" },
         --   -- lua = { 'stylua' },
         --   -- Conform can also run multiple formatters sequentially
