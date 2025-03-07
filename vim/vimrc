@@ -45,9 +45,6 @@ Plug 'tpope/vim-repeat'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
-" Better CSV editing
-Plug 'mechatroner/rainbow_csv'
-
 " Disable hlsearch after finished searching
 Plug 'romainl/vim-cool'
 
@@ -111,8 +108,6 @@ Plug 'stefandtw/quickfix-reflector.vim'
 
 " Minesweeper
 Plug 'iqxd/vim-mine-sweeping'
-
-Plug 'jceb/vim-orgmode', { 'for': 'org' }
 
 " Rust
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
