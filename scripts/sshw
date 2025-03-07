@@ -7,9 +7,22 @@ if { $argc < 1 } {
   exit 1
 }
 
+set hosts {
+}
+
 set command "ssh"
 for {set i 0} {$i < $argc} {incr i} {
   switch -glob [lindex $argv $i] {
+    -h {
+      send_user "Targets: [join [dict keys $hosts] ","]\n"
+      exit 0
+    }
+    -M {
+      lappend command "-M"
+    }
+    sftp {
+      lset command 0 sftp
+    }
     -J {
       lappend command "-J" [lindex $argv [expr {$i + 1}]]
       incr i
@@ -18,15 +31,28 @@ for {set i 0} {$i < $argc} {incr i} {
       lappend command "-R" [lindex $argv [expr {$i + 1}]]
       incr i
     }
+    -D {
+      lappend command "-D" [lindex $argv [expr {$i + 1}]]
+      incr i
+    }
     -L {
       lappend command "-R" [lindex $argv [expr {$i + 1}]]
       incr i
     }
+    -C {
+      lappend command "-C"
+    }
     default {
-      lappend command [lindex $argv $i]
+      set host [lindex $argv $i]
+      if {[dict exists $hosts $host]} {
+        set host [dict get $hosts $host]
+      }
+      # TODO: conditionally add -M?
+      lappend command {*}$host
     }
   }
 }
+send_user "Connecting with $command\n"
 
 # Define a subroutine to read password
 proc read_password {} {
@@ -81,12 +107,11 @@ proc login {pass command} {
 login $pass $command
 
 # Elevate privileges
-send -- "sudo su\n"
-expect -re "password for \[^ \]+: "
-send -- "$pass"
-
-if { $argc == 2 } {
-  send -- "[lindex $argv 1]\n"
+if { [lindex $command 0] == "ssh" } {
+  send -- "sudo su\n"
+  expect -re "password for \[^ \]+: "
+  send -- "$pass"
 }
+
 # Yield control
 interact
