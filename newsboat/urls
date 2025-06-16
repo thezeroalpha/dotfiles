@@ -4,4 +4,4 @@
 "query:Music:tags # \"music\""
 "query:All HN blog articles:tags # \"HN\""
 "query:All blog articles:tags # \"blogs\""
-"query:All news articles:tags # \"news\""
+"query:All news articles:tags # \"news-secondary\""
