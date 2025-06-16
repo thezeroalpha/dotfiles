@@ -2,46 +2,40 @@
 set timeout -1
 match_max 100000
 
-if { $argc < 1 } {
-  send_user "No hostname provided\n"
-  exit 1
 }
 
-set hosts {
+if { $argc < 1 } {
+  send_user "No hostname provided\n"
+  send_user "Targets: [join [dict keys $hosts] ","]\n"
+  exit 1
 }
 
 set command "ssh"
 for {set i 0} {$i < $argc} {incr i} {
+  set ssharg [lindex $argv $i]
   switch -glob [lindex $argv $i] {
     -h {
       send_user "Targets: [join [dict keys $hosts] ","]\n"
       exit 0
     }
-    -M {
-      lappend command "-M"
-    }
     sftp {
       lset command 0 sftp
     }
+    -C -
+    -A -
+    -X -
+    -Y -
+    -M {
+      lappend command $ssharg
+    }
+    -R -
+    -D -
+    -L -
     -J {
-      lappend command "-J" [lindex $argv [expr {$i + 1}]]
+      lappend command $ssharg [lindex $argv [expr {$i + 1}]]
       incr i
     }
-    -R {
-      lappend command "-R" [lindex $argv [expr {$i + 1}]]
-      incr i
-    }
-    -D {
-      lappend command "-D" [lindex $argv [expr {$i + 1}]]
-      incr i
-    }
-    -L {
-      lappend command "-R" [lindex $argv [expr {$i + 1}]]
-      incr i
-    }
-    -C {
-      lappend command "-C"
-    }
+
     default {
       set host [lindex $argv $i]
       if {[dict exists $hosts $host]} {
@@ -94,7 +88,7 @@ proc login {pass command} {
       exp_continue
     }
     # On a shell prompt, stop expecting
-    " $" {}
+    "\$ $" {}
     # Catch all - we got something we didn't expect
     default {
       send_user "Got some unexpected output\n"
