@@ -55,6 +55,7 @@ case "$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]')" in
       *) ;;
     esac
     ;;
+  *.ko) modinfo "$1";;
   *)
     case $(file --mime-type "$1" -bL) in
       application/x-executable) readelf -h "$1" ;;
