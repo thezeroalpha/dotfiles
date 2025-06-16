@@ -4,7 +4,11 @@ sink="$(pactl get-default-sink)"
 source="$(pactl get-default-source)"
 case "$BUTTON" in
   1)
-    pgrep -f pulsemixer || setsid -f "$TERMINAL" -e pulsemixer
+    if pgrep -f pulsemixer >/dev/null 2>&1; then
+      wmctrl -Fa pulsemixer
+    else
+      setsid -f "$TERMINAL" -e pulsemixer
+    fi
     pkill -RTMIN+6 dwmblocks;;
   3)
     pactl -- set-source-mute "$source" toggle

@@ -3,7 +3,11 @@
 
 case "$BUTTON" in
   1)
-    pgrep -f nmtui || "$TERMINAL" -e bluetoothctl
+    if pgrep -f bluetoothctl >/dev/null 2>&1; then
+      wmctrl -Fa bluetoothctl
+    else
+      "$TERMINAL" -e bluetoothctl
+    fi
     pkill -RTMIN+8 dwmblocks
     ;;
   3)

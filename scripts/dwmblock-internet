@@ -3,16 +3,20 @@
 # Show wifi 📶 and percent strength or 📡 if none.
 # Show 🌐 if connected to ethernet or ❎ if none.
 # Show 🔒 if a vpn connection is active
-
+set -x
 # Interfaces:
 # (list with `nmcli --get-values GENERAL.DEVICE,GENERAL.TYPE device show`)
-wired=enxc84bd604a6e7
+wired="enp0s31f6 eth0"
 wireless=wlp0s20f3
 # there's probably a way to change these but I'd have to know all files to update...
 
 case "$BUTTON" in
   1)
-    pgrep -f nmtui || "$TERMINAL" -e nmtui
+    if pgrep -f nmtui >/dev/null 2>&1; then
+      wmctrl -Fa 'nmtui'
+    else
+      "$TERMINAL" -e nmtui
+    fi
     pkill -RTMIN+5 dwmblocks ;;
   2) notify "Connected to $(/sbin/iwgetid -r)" '' ;;
   3) notify Wireless "Toggling wireless..."
@@ -21,6 +25,7 @@ case "$BUTTON" in
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
+# Wireless
 case "$(cat /sys/class/net/$wireless/operstate 2>/dev/null)" in
   down)
     if rfkill list wlan | grep 'Soft blocked: no' >/dev/null 2>&1; then
@@ -33,8 +38,18 @@ case "$(cat /sys/class/net/$wireless/operstate 2>/dev/null)" in
   # up) wifiicon="$(awk '/^\s*e/ { print "📶", int($3 * 100 / 70) "% " }' /proc/net/wireless)" ;;
 esac
 
-ethicon="$(sed 's/down/❎/;s/up/🌐/' /sys/class/net/$wired/operstate 2>/dev/null)"
-if nmcli --terse device status | grep '^tun.*:connected' >/dev/null 2>&1; then
+# Wired
+ethicon=""
+for eth in $wired; do
+  ethicon="$ethicon$(cat /sys/class/net/$eth/operstate 2>/dev/null)"
+done
+case "$ethicon" in
+  *up*) ethicon='🌐';;
+  *) ethicon='❎';;
+esac
+
+# VPN
+if nmcli --terse device status | grep -e ':[^:]*tun[^:]*:connected' | grep -Ev '^(virbr|vnet|vboxnet)' >/dev/null 2>&1; then
   vpnicon=' 🔒'
 else
   vpnicon=' '

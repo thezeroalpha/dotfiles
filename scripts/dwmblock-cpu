@@ -4,7 +4,13 @@
 cache=/tmp/cpubarscache
 
 case "$BUTTON" in
-  1) pgrep -f /usr/bin/top || setsid -f "$TERMINAL" -e top ;;
+  1)
+    if pgrep -f /usr/bin/top >/dev/null 2>&1; then
+      wmctrl -Fa 'top'
+    else
+      setsid -f "$TERMINAL" -e top
+    fi
+    ;;
   6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
