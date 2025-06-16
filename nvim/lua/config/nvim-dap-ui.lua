@@ -1,7 +1,0 @@
-require('dapui').setup()
-vim.keymap.set({'n', 'v'}, '<localleader>dh', function()
-  require('dapui').eval(nil, {})
-end, { desc = 'Eval current expression' })
-vim.keymap.set('n', '<localleader>do', function()
-  require('dapui').toggle()
-end, { desc = '[D]ebug toggle UI' })
