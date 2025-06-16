@@ -112,7 +112,7 @@
     conflictstyle = diff3
 
 [mergetool "nvimdiff"]
-    cmd = nvim -d \"$LOCAL\" \"$MERGED\" \"$BASE\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd J\"
+    cmd = nvim -u NONE -d \"$LOCAL\" \"$MERGED\" \"$BASE\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd J\"
 [diff]
   algorithm = histogram
 [core]
