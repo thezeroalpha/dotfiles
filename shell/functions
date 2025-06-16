@@ -5,7 +5,7 @@ mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                 # make d
 procinfo() { pgrep -f "$1"; }                                           # get info about a process (by name)
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove empty directories
 hr() { : $((i=0)); while [ $((i<$(tput cols))) -ne 0 ]; do printf "#"; _=$((i=i+1)); done; echo; }  # insert a <hr> in the terminal
-vimq() { vim -q <(eval "$(fc -nl -1)"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
+vimq() { vim -q <(eval "$(fc -nl -1 | sed 's/^rg\b/rgv/')"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
 gpip(){ PIP_REQUIRE_VIRTUALENV="" pip "$@"; }                           # Access global pip while using virtualenvs
 nls() { printf $((`ls -l | wc -l | xargs echo` - 1)); }                        # Count the number of files in the directory
 reload-completions() { rm ~/.zcompdump && compinit; }
