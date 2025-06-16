@@ -48,6 +48,7 @@ unbind-key :
 bind-key ; cmdline
 bind-key s sort
 bind-key S rev-sort
+bind-key * save
 
 color background white default
 color listnormal white default
