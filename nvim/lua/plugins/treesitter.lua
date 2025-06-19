@@ -62,6 +62,7 @@ local config = function()
     },
   }
 end
+
 return {
   {
     'nvim-treesitter/nvim-treesitter',
@@ -77,13 +78,8 @@ return {
   -- Show context
   {
     "nvim-treesitter/nvim-treesitter-context",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    -- opts = {
-    --   enable = false,
-    -- },
-    -- keys = {
-    --   { "<leader>^", require('treesitter-context').toggle, desc = "Context" },
-    -- },
+    keys = {
+      { "<leader>^", function() require('treesitter-context').toggle() end, desc = "Context" },
+    },
   },
-
 }
