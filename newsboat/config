@@ -1,7 +1,8 @@
 urls-source "miniflux"
 miniflux-url "https://miniflux.alex.balgavy.eu"
 miniflux-login "admin"
-miniflux-passwordeval "rbw get miniflux.alex.balgavy.eu"
+miniflux-passwordeval "security find-generic-password -a admin -s miniflux -w"
+miniflux-flag-star s
 
 auto-reload no
 reload-threads 8

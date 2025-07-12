@@ -11,8 +11,6 @@ case "$os" in
   darwin*)
     while pgrep RotMG; do sleep 60; done
     while pgrep pinentry; do sleep 60; done
-    /usr/local/bin/alacritty -e /usr/local/bin/rbw unlock
-    /usr/local/bin/rbw unlocked || notidie "Vdirsyncer: error syncing" "Vault is locked"
     ;;
 esac
 
