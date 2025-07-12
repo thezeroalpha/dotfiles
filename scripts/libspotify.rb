@@ -6,6 +6,7 @@ require "json"
 require "date"
 require "yaml"
 require "webrick"
+require "byebug"
 
 # Add easy access to hash members for JSON stuff
 class Hash
@@ -97,7 +98,24 @@ class SpotifyClient
   def url_call_get(url)
     request = Net::HTTP::Get.new(url)
     request["Authorization"] = "Bearer #{@token}"
-    JSON.parse(@http.request(request).read_body)
+    resp = @http.request(request)
+    if resp.code_type == Net::HTTPTooManyRequests
+      wait_seconds = resp["Retry-After"].to_i
+      wait_min = wait_seconds / 60
+      if wait_min > 30
+        puts("Rate limited to wait more than half an hour (#{wait_min} min), exiting")
+        exit(1)
+      end
+
+      # Wait and retry
+      sleep(wait_seconds)
+      return url_call_get(url)
+    elsif resp.code_type != Net::HTTPOK
+      puts("Request #{url} returned #{resp}")
+      exit(1)
+    end
+
+    JSON.parse(resp.read_body)
   end
 
   def url_call_post(url, body)
@@ -155,22 +173,17 @@ class SpotifyClient
       .each
       .with_index
       .reduce([]) do |acc, (artist, i)|
-        begin
-          print("\rProcessing #{i + 1}/#{total}")
-          response = api_call_get(
-            "artists/#{artist.id}/albums",
-            {limit: 50, include_groups: "album,single,appears_on"}
-          )
-          albums = response.items
-          albums.each { |album|
-            album["release_date"] = album.release_date.split("-").size == 1 ? Date.iso8601("#{album.release_date}-01") : Date
-              .iso8601(album.release_date)
-          }
-          acc + albums
-        rescue Exception => e
-          puts("Could not process artist #{artist}: #{e}")
-          acc
-        end
+        print("\rProcessing #{i + 1}/#{total}")
+        response = api_call_get(
+          "artists/#{artist.id}/albums",
+          {limit: 50, include_groups: "album,single,appears_on"}
+        )
+        albums = response.items
+        albums.each { |album|
+          album["release_date"] = album.release_date.split("-").size == 1 ? Date.iso8601("#{album.release_date}-01") : Date
+            .iso8601(album.release_date)
+        }
+        acc + albums
       end
       .reject { |album| album.album_type == "compilation" }
     print("\n")
@@ -230,11 +243,15 @@ def process_new_releases(interactive = true)
   albums, others = releases.select { |r| r.release_date >= last_checked }.partition { |x| x.album_type == "album" }
 
   albums_tracks = albums.reduce([]) do |acc, album|
-    acc + client.api_call_get_unpaginate("albums/#{album.id}/tracks", {limit: 50})
+    album_tracks = client.api_call_get_unpaginate("albums/#{album.id}/tracks", {limit: 50})
+    album_tracks.each { |track| track["album"] = album["name"] }
+    acc + album_tracks
   end
 
   others_tracks = others.reduce([]) do |acc, album|
-    acc + client.api_call_get_unpaginate("albums/#{album.id}/tracks", {limit: 50})
+    album_tracks = client.api_call_get_unpaginate("albums/#{album.id}/tracks", {limit: 50})
+    album_tracks.each { |track| track["album"] = album["name"] }
+    acc + album_tracks
   end
 
   if interactive
@@ -244,11 +261,11 @@ def process_new_releases(interactive = true)
     albumfile_path = albumfile.path
 
     albums_tracks.each do |t|
-      albumfile.puts([t.artists.map(&:name).join(", "), t.name, t.uri].join("\t"))
+      albumfile.puts([t.artists.map(&:name).join(", "), t.name, t.album, t.uri].join("\t"))
     end
 
     others_tracks.each do |t|
-      trackfile.puts([t.artists.map(&:name).join(", "), t.name, t.uri].join("\t"))
+      trackfile.puts([t.artists.map(&:name).join(", "), t.name, t.album, t.uri].join("\t"))
     end
 
     trackfile.close
@@ -337,9 +354,10 @@ def bulk_follow_artists
       .readlines(chomp: true)
       .reduce([]) do |res, chosen|
         name, href, _query = chosen.split("\t")
-        res << artists_to_follow_without_followed_obj.find { |a|
-          a["name"] == name && a["external_urls"]["spotify"] == href
-        }
+        res <<
+          artists_to_follow_without_followed_obj.find { |a|
+            a["name"] == name && a["external_urls"]["spotify"] == href
+          }
       end
       .reject(&:empty?)
 
