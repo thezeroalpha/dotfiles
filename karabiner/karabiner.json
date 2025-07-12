@@ -695,6 +695,10 @@
                         {
                             "from": { "key_code": "non_us_backslash" },
                             "to": [{ "key_code": "application" }]
+                        },
+                        {
+                            "from": { "key_code": "right_option" },
+                            "to": [{ "key_code": "left_command" }]
                         }
                     ]
                 },
@@ -704,7 +708,6 @@
                         "product_id": 12316,
                         "vendor_id": 16700
                     },
-                    "ignore": false,
                     "simple_modifications": [
                         {
                             "from": { "pointing_button": "button4" },
