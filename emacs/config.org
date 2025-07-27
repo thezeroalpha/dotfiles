@@ -200,6 +200,12 @@ unless the app is in the background. [[https://github.com/julienXX/terminal-noti
     (advice-remove #'user-error #'za/send-notification-interactivity-required))
 #+end_src
 
+* URLs
+#+begin_src emacs-lisp
+  (defun za/browse-url-quicksilver (url &rest args)
+    (call-process-shell-command (format "printf '%s' | qs -" url)))
+  (setopt browse-url-handlers `((,(rx "http" (? ?s) "://") . za/browse-url-quicksilver)))
+#+end_src
 * Editing
 ** Everything is UTF-8
 #+begin_src emacs-lisp
@@ -1775,7 +1781,8 @@ Install Org and require additional components that I use.
            (org-mode . org-indent-mode)
            (org-mode . za/settings-on-org-mode)
            (org-mode . org-pretty-table-mode)
-           (org-mode . variable-pitch-mode))
+           (org-mode . variable-pitch-mode)
+           (ediff-prepare-buffer . org-show-all))
     :config
     (za/package-vc-install :repo "Fuco1/org-pretty-table")
     (require 'org-pretty-table)
@@ -2387,14 +2394,23 @@ I tried org-edna but I couldn't get it working after an hour of effort. So a bit
       (org-back-to-heading)
       (when (buffer-narrowed-p)
         (widen))
+      ;; org-state is set automatically in the hook
       (when (and (member org-state org-done-keywords)
                  (not (member "PROJECT" (org-get-tags nil 'local)))
                  (member "PROJECT" (let ((org-use-tag-inheritance t))
                                      (org-get-tags nil))))
         (when (org-goto-sibling)
-          (org-entry-put (point) "TODO" "NEXT")))))
-
-  (add-hook #'org-after-todo-state-change-hook #'za/gtd-auto-next)
+          ;; if TODO and scheduled => no change
+          ;; if not TODO => no change
+          ;; else => change
+          (let* ((is-todo-state (string= "TODO" (org-get-todo-state)))
+                 (is-scheduled (or (org-get-scheduled-time nil)
+                                   (org-get-deadline-time nil)))
+                 (should-change-state (cond ((and is-todo-state is-scheduled) nil)
+                                            ((not is-todo-state) nil)
+                                            (t t))))
+            (when should-change-state
+              (org-entry-put (point) "TODO" "NEXT")))))))
 #+end_src
 
 *** Logging for tasks
