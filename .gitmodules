@@ -1,6 +1,3 @@
-[submodule "shell/z"]
-	path = shell/z
-	url = https://github.com/rupa/z.git
 [submodule "shell/powerlevel10k"]
 	path = shell/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
