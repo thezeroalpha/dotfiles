@@ -1,22 +1,509 @@
 # -*- mode: shell-script; -*-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# vim: foldmethod=marker foldlevel=0
+srcpath="$HOME/Documents/dotfiles/shell"
+export DOTFILES="$HOME/Documents/dotfiles"
+[ -f "$DOTFILES/shell/secret_env" ] && . "$DOTFILES/shell/secret_env"
+
+if [ -n "$VIM_TERMINAL" ]; then EDITOR=vimsend
+elif [ -n "$INSIDE_EMACS" ]; then EDITOR=emacsclient
+elif command -v nvim >/dev/null 2>&1; then EDITOR="$(command -v nvim)"
+else EDITOR="$(command -v vim)"; fi
+export EDITOR
+
+export CHOOSER=dmenuchoose
+export MUSIC_DIR="/Volumes/HDD/Music/Libraries/Mine"
+export PAGER="less"
+export LESS="-RicX"
+
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_MONETARY="en_US.UTF-8"
+export LC_NUMERIC="en_US.UTF-8"
+export LC_TIME="en_US.UTF-8"
+
+[ -z "$DISPLAY" ] && export DISPLAY=":0"
+
+export TTRV_BROWSER=~/.scripts/linkhandler
+if command -v brave >/dev/null 2>&1; then
+  export BROWSER=brave
+else
+  export BROWSER="open"
 fi
 
-srcpath="$HOME/.dotfiles/shell"
-. "$srcpath"/env
-. "$srcpath"/paths
-unset srcpath
+[ -f "$HOME"/.nix-profile/etc/profile.d/hm-session-vars.sh ] && . "$HOME"/.nix-profile/etc/profile.d/hm-session-vars.sh
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  export WORKON_HOME=$HOME/.config/virtualenvs
+  VIRTUALENVWRAPPER_PYTHON=$(which python3); export VIRTUALENVWRAPPER_PYTHON
+  export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+fi
+
+export WWW_HOME="https://tab.alex.balgavy.eu"
+# Icons for lf {{{1
+export LF_ICONS="\
+bd=:\
+cd=:\
+di=:\
+st=:\
+tw=:\
+ow=:\
+pi=ﳣ:\
+fi=:\
+sg=:\
+su=:\
+so=杻:\
+ln=:\
+or=:\
+ex=:\
+*.vimrc=:\
+*.viminfo=:\
+*.gitignore=:\
+*.c=:\
+*.cc=:\
+*.clj=:\
+*.coffee=:\
+*.cpp=:\
+*.css=:\
+*.d=:\
+*.dart=:\
+*.erl=:\
+*.exs=:\
+*.fs=:\
+*.go=:\
+*.h=:\
+*.hh=:\
+*.hpp=:\
+*.hs=:\
+*.html=:\
+*.java=:\
+*.jl=:\
+*.js=:\
+*.json=:\
+*.lua=:\
+*.md=:\
+*.php=:\
+*.pl=:\
+*.pro=:\
+*.py=:\
+*.rb=:\
+*.rs=:\
+*.scala=:\
+*.ts=:\
+*.vim=:\
+*.cmd=:\
+*.ps1=:\
+*.sh=:\
+*.bash=:\
+*.zsh=:\
+*.fish=:\
+*.tar=:\
+*.tgz=:\
+*.arc=:\
+*.arj=:\
+*.taz=:\
+*.lha=:\
+*.lz4=:\
+*.lzh=:\
+*.lzma=:\
+*.tlz=:\
+*.txz=:\
+*.tzo=:\
+*.t7z=:\
+*.zip=:\
+*.z=:\
+*.dz=:\
+*.gz=:\
+*.lrz=:\
+*.lz=:\
+*.lzo=:\
+*.xz=:\
+*.zst=:\
+*.tzst=:\
+*.bz2=:\
+*.bz=:\
+*.tbz=:\
+*.tbz2=:\
+*.tz=:\
+*.deb=:\
+*.rpm=:\
+*.jar=:\
+*.war=:\
+*.ear=:\
+*.sar=:\
+*.rar=:\
+*.alz=:\
+*.ace=:\
+*.zoo=:\
+*.cpio=:\
+*.7z=:\
+*.rz=:\
+*.cab=:\
+*.wim=:\
+*.swm=:\
+*.dwm=:\
+*.esd=:\
+*.jpg=:\
+*.jpeg=:\
+*.mjpg=:\
+*.mjpeg=:\
+*.gif=:\
+*.bmp=:\
+*.pbm=:\
+*.pgm=:\
+*.ppm=:\
+*.tga=:\
+*.xbm=:\
+*.xpm=:\
+*.tif=:\
+*.tiff=:\
+*.png=:\
+*.svg=:\
+*.svgz=:\
+*.mng=:\
+*.pcx=:\
+*.mov=:\
+*.mpg=:\
+*.mpeg=:\
+*.m2v=:\
+*.mkv=:\
+*.webm=:\
+*.ogm=:\
+*.mp4=:\
+*.m4v=:\
+*.mp4v=:\
+*.vob=:\
+*.qt=:\
+*.nuv=:\
+*.wmv=:\
+*.asf=:\
+*.rm=:\
+*.rmvb=:\
+*.flc=:\
+*.avi=:\
+*.fli=:\
+*.flv=:\
+*.gl=:\
+*.dl=:\
+*.xcf=:\
+*.xwd=:\
+*.yuv=:\
+*.cgm=:\
+*.emf=:\
+*.ogv=:\
+*.ogx=:\
+*.aac=:\
+*.au=:\
+*.flac=:\
+*.m4a=:\
+*.mid=:\
+*.midi=:\
+*.mka=:\
+*.mp3=:\
+*.mpc=:\
+*.ogg=:\
+*.ra=:\
+*.wav=:\
+*.oga=:\
+*.opus=:\
+*.spx=:\
+*.xspf=:\
+*.pdf=:\
+*.nix=:\
+"
+# Force use of XDG Base Directory {{{1
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+[ -d "$XDG_CONFIG_HOME" ] || mkdir -p "$XDG_CONFIG_HOME"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+[ -d "$XDG_DATA_HOME" ] || mkdir -p "$XDG_DATA_HOME"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+[ -d "$XDG_CACHE_HOME" ] || mkdir -p "$XDG_CACHE_HOME"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+[ -d "$XDG_STATE_HOME" ] || mkdir -p "$XDG_STATE_HOME"
+
+# Other env {{{1
+export GOPATH="$XDG_DATA_HOME"/go
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
+export _Z_DATA="$XDG_CACHE_HOME/z/z-data"
+export HTTPIE_CONFIG_DIR="$XDG_CONFIG_HOME/httpie"
+export CABAL_DIR="$XDG_CONFIG_HOME/cabal"
+export GHCUP_INSTALL_BASE_PREFIX="$XDG_CONFIG_HOME"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+# export GEM_HOME="$XDG_DATA_HOME/gem"
+# export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch/config"
+export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export R_PROFILE_USER="$XDG_CONFIG_HOME/R/Rprofile"
+export MAILCAPS="$XDG_CONFIG_HOME/mailcap"
+eval "$(perl -I$XDG_DATA_HOME/perl5/lib/perl5 -Mlocal::lib=$XDG_DATA_HOME/perl5)"
+alias glow='glow --config "$XDG_CONFIG_HOME/glow/glow.yml"'
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RBENV_ROOT="$XDG_DATA_HOME/rbenv"
+export ANDROID_HOME="$XDG_DATA_HOME/android"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
+alias gdb='gdb -n -x $XDG_CONFIG_HOME/gdb/init'
+export GDBHISTFILE="$XDG_CONFIG_HOME"/gdb/.gdb_history
+export SCREENRC="$XDG_CONFIG_HOME"/screen/screenrc
+export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+export STACK_ROOT="$XDG_DATA_HOME"/stack
+export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 export ZDOTDIR=$HOME/.config/zsh
 export HISTFILE=$ZDOTDIR/.zsh_history
+# }}}
+
+# Paths {{{1
+[ -x /usr/libexec/path_helper ] && unset PATH && eval "$(/usr/libexec/path_helper -s)"
+
+[ -d "$HOME/.local/bin" ] || [ -L "$HOME/.local/bin" ]                           && [ -n "${PATH##*"$HOME/.local/bin"*}" ]                  && PATH="$HOME/.local/bin:$PATH"
+[ -d "$GOPATH/bin" ] || [ -L "$GOPATH/bin" ]                                     && [ -n "${PATH##*"$GOPATH/bin"*}" ]                       && PATH="$GOPATH/bin:$PATH"
+[ -d "/usr/local/opt/util-linux/bin" ] || [ -L "/usr/local/opt/util-linux/bin" ] && [ -n "${PATH##*"/usr/local/opt/util-linux/bin"*}" ]     && PATH="/usr/local/opt/util-linux/bin:$PATH"
+[ -d "$XDG_CONFIG_HOME/.ghcup/bin" ] || [ -L "$XDG_CONFIG_HOME/.ghcup/bin" ]     && [ -n "${PATH##*"$XDG_CONFIG_HOME/.ghcup/bin"*}" ]       && PATH="$XDG_CONFIG_HOME/.ghcup/bin:$PATH"
+[ -d "/usr/local/sbin" ] || [ -L "/usr/local/sbin" ]                             && [ -n "${PATH##*"/usr/local/sbin"*}" ]                   && PATH="/usr/local/sbin:$PATH"
+[ -d "$HOME/.local/gnat/bin" ] || [ -L "$HOME/.local/gnat/bin" ]                 && [ -n "${PATH##*"$HOME/.local/gnat/bin"*}" ]             && PATH="$HOME/.local/gnat/bin:$PATH"
+[ -d "$HOME/bin" ] || [ -L "$HOME/bin" ]                                         && [ -n "${PATH##*"$HOME/bin"*}" ]                         && PATH="$HOME/bin:$PATH"
+[ -d "$HOME/.bin" ] || [ -L "$HOME/.bin" ]                                       && [ -n "${PATH##*"$HOME/.bin"*}" ]                        && PATH="$HOME/.bin:$PATH"
+[ -d "$DOTFILES/scripts" ] || [ -L "$DOTFILES/scripts" ]                               && [ -n "${PATH##*"$DOTFILES/scripts"*}" ]                    && PATH="$DOTFILES/scripts:$PATH"
+[ -d "$XDG_DATA_HOME/gem/bin" ] || [ -L "$XDG_DATA_HOME/gem/bin" ]               && [ -n "${PATH##*"$XDG_DATA_HOME/gem/bin"*}" ]            && PATH="$XDG_DATA_HOME/gem/bin:$PATH"
+[ -d "$HOME/.elan/bin" ]                                                         && [ -n "${PATH##*"$HOME/.elan/bin"*}" ]                   && PATH="$HOME/.elan/bin:$PATH"
+[ -d /usr/local/opt/man-db/libexec/bin ]                                         && [ -n "${PATH##*"/usr/local/opt/man-db/libexec/bin"*}" ] && PATH="/usr/local/opt/man-db/libexec/bin:$PATH"
+[ -d "$DOTFILES/tools/shfm" ]                                                    && [ -n "${PATH##*"$DOTFILES/tools/shfm"*}" ]              && PATH="$DOTFILES/tools/shfm:$PATH"
+[ -d "$DOTFILES/tools/pfetch" ]                                                  && [ -n "${PATH##*"$DOTFILES/tools/pfetch"*}" ]            && PATH="$DOTFILES/tools/pfetch:$PATH"
+[ -d "$DOTFILES/tools/tuxi" ]                                                    && [ -n "${PATH##*"$DOTFILES/tools/tuxi"*}" ]              && PATH="$DOTFILES/tools/tuxi:$PATH"
+[ -d "$DOTFILES/tools/speedread" ]                                               && [ -n "${PATH##*"$DOTFILES/tools/speedread"*}" ]         && PATH="$DOTFILES/tools/speedread:$PATH"
+[ -d "$DOTFILES/tools/fzf/bin" ]                                                 && [ -n "${PATH##*"$DOTFILES/tools/fzf/bin"*}" ]           && PATH="$DOTFILES/tools/fzf/bin:$PATH"
+[ -d "$DOTFILES/tools/solvitaire" ]                                              && [ -n "${PATH##*"$DOTFILES/tools/solvitaire"*}" ]        && PATH="$DOTFILES/tools/solvitaire:$PATH"
+[ -d "$XDG_DATA_HOME/perl5/bin" ]                                                && [ -n "${PATH##*"$XDG_DATA_HOME/perl5/bin"*}" ]          && PATH="$XDG_DATA_HOME/perl5/bin:$PATH"
+[ -d "$HOME/.jenv/bin" ]                                                         && [ -n "${PATH##*"$HOME/.jenv/bin"*}" ]                   && PATH="$HOME/.jenv/bin:$PATH"
+[ -d "$XDG_DATA_HOME/cargo/bin" ]                                                && [ -n "${PATH##*"$XDG_DATA_HOME/cargo/bin"*}" ]          && PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
+[ -d "/usr/local/go/bin" ] || [ -L "/usr/local/go/bin" ]                         && [ -n "${PATH##*"/usr/local/go/bin"*}" ]                 && PATH="/usr/local/go/bin:$PATH"
+[ -d "/usr/local/opt/ruby/bin" ] || [ -L "/usr/local/opt/ruby/bin" ]             && [ -n "${PATH##*"/usr/local/opt/ruby/bin"*}" ]           && PATH="/usr/local/opt/ruby/bin:$PATH"
+[ -d "/usr/local/opt/sqlite" ]                                                   && [ -n "${PATH##*"/usr/local/opt/sqlite/bin"*}" ]         && PATH="/usr/local/opt/sqlite/bin:$PATH"
+[ -d "$HOME/.rvm/bin" ]                                                   && [ -n "${PATH##*"$HOME/.rvm/bin"*}" ]         && PATH="$HOME/.rvm/bin:$PATH"
+[ -d "$HOME/.local/share/gem/bin" ]                                                   && [ -n "${PATH##*"$HOME/.local/share/gem/bin"*}" ]         && PATH="$HOME/.local/share/gem/bin:$PATH"
+export PATH
+# }}}
 
 # ZSH-specific inits
-. "$DOTFILES"/shell/rc
+if command -v startx >/dev/null 2>&1 && [ "$(tty)" = "/dev/tty1" ]; then
+  pgrep dwm || startx
+fi
+[ -n "$DOTFILES" ] || { printf '$DOTFILES not set, press enter to quit' && read -r && exit 1; }
 
-source_if_exists() { [ -f "$1" ] && . "$1"; }
+(cat ~/.cache/wal/sequences &)
+. ~/.cache/wal/colors-tty.sh
+
+# Enable custom aliases and functions
+alias irssi='irssi --config="$XDG_CONFIG_HOME"/irssi/config --home="$XDG_CONFIG_HOME"/irssi'
+alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
+alias w3m='w3m -config $XDG_CONFIG_HOME/w3m/config -bookmark $XDG_CONFIG_HOME/w3m/bookmark.html'
+alias monero-wallet-cli='monero-wallet-cli --config-file ~/.config/bitmonero/monero-wallet-cli.conf'
+alias docker='sudo -E docker'
+alias fucking="sudo"                                                            # Because sometimes I'm frustrated
+alias cp='cp -ivR'                                                              # Prompt if overwrite, verbose
+alias grep='grep --color=auto'
+alias mv='mv -iv'                                                               # Prompt if overwrite, verbose
+alias lynx='lynx -vikeys'
+alias mkdir='mkdir -pv'                                                         # Create intermediate dirs, verbose
+alias ls="command ls -lh"                                                       # List in long format, human-readable sizes
+alias l="command ls -lah"                                                       # Ls but with all files
+alias ll="command ls -FGlAhpO@"                                                 # Ls but show everything you can
+alias l.="command ls -a | grep '^\.'"                                           # Ls but only dotfiles
+alias less='less -RicX'                                                         # Search ig case, fix ANSI colors, don't send init strings, clear screen
+alias du="du -sh"                                                              # Show entry for each file, human-readable sizes
+alias df="df -h"                                                                # Show human-readable sizes
+alias bc="bc -ql"                                                               # Don't print welcome message, use the standard math lib
+alias jobs="jobs -l"                                                            # Show everything including PIDs
+alias g='git'                                                                   # Make git easier to type
+alias wheredef='type -a'                                                        # Where is a function defined?
+alias j='joplin'
+alias tree="tree -CAFa -I 'CVS|*.*.package|.svn|.git|node_modules' --dirsfirst" # Colorize, ANSI graphics hack, indicate ft with appendices, print all files, ignore certain patterns, list dirs first
+alias lsblk="lsblk -o NAME,LABEL,PARTLABEL,TYPE,FSTYPE,SIZE,MOUNTPOINT,STATE"   # The columns I want to see in lsblk
+alias confucius="curl confucius-quote.herokuapp.com"                            # A joke curl service I made
+alias tx="tmuxinator"
+alias mpva="mpv --no-audio-display --no-video --volume=50"
+alias irrsi="irssi --home=~/.config/irssi"
+# alias irssi="ssh -t vps 'screen -r irssi'"
+alias scim="sc-im"
+alias mbsync='mbsync -c $HOME/.config/mbsync/mbsyncrc'
+alias mutt="neomutt"
+alias gotop='sudo gotop -C $XDG_CONFIG_HOME/gotop/gotop.conf'
+alias vim=nvim
+[ -n "$VIM_TERMINAL" ] && alias vim=vimsend
+[ -f "$DOTFILES"/docs/pbib/README.md ] && alias pbib='vim +$(nl -b a '$DOTFILES"/docs/pbib/README.md | fzf --with-nth 2.. -e -q '^# ' | sed 's/[^0-9]//g') "$DOTFILES"/docs/pbib/README.md"
+command -v scrcpy >/dev/null 2>&1 && alias scrcpy='scrcpy --no-audio --shortcut-mod=ralt -b2M -S'
+command -v lazydocker >/dev/null 2>&1 && alias lzd=lazydocker
+cd() { builtin cd -P "$@" || return; }                                  # list contents after cding
+mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                 # make dir and cd at the same time
+procinfo() { pgrep -f "$1"; }                                           # get info about a process (by name)
+rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove empty directories
+hr() { : $((i=0)); while [ $((i<$(tput cols))) -ne 0 ]; do printf "#"; _=$((i=i+1)); done; echo; }  # insert a <hr> in the terminal
+vimq() { vim -q <(eval "$(fc -nl -1 | sed 's/^rg\b/rgv/')"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
+nls() { printf $((`ls -l | wc -l | xargs echo` - 1)); }                        # Count the number of files in the directory
+reload-completions() { rm ~/.zcompdump && compinit; }
+reload() {
+  local START_TIME=$SECONDS
+  if [[ $SHELL = *"zsh"* ]]; then
+    source "$HOME"/.zshrc
+  elif [[ $SHELL = *"bash"* ]]; then
+    source "$HOME"/.bash_profile
+  fi
+  echo "Reloaded config ($(( SECONDS-START_TIME )) sec)."
+}
+extract () {
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf "$1"     ;;
+      *.tar.gz)    tar xzf "$1"     ;;
+      *.bz2)       bunzip2 "$1"     ;;
+      *.rar)       unrar e "$1"     ;;
+      *.gz)        gunzip "$1"      ;;
+      *.tar)       tar xf "$1"      ;;
+      *.tbz2)      tar xjf "$1"     ;;
+      *.tgz)       tar xzf "$1"     ;;
+      *.zip)       unzip "$1"       ;;
+      *.Z)         uncompress "$1"  ;;
+      *.7z)        7z x "$1"        ;;
+      *)     echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Docker functions
+if command -v docker &>/dev/null; then
+  eslint_here() {
+    docker run -it --rm -v $(pwd):/data cytopia/eslint . -f unix;
+  }
+fi
+
+# Applescript-reliant functions
+if command -v osascript &> /dev/null; then
+  # cd to current Finder directory
+  cdf() {
+    target="$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')"
+    if [ -n "$target" ]; then
+      cd "$target" || printf "Could not cd to %s.\n" >&2
+      pwd
+    else
+      printf 'No Finder window found.\n' >&2
+    fi
+  }
+
+  # echo current Finder directory
+  gdf() {
+    osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'
+  }
+  # echo selected Finder file
+  gsf() {
+    osascript -e 'tell application "Finder" to return POSIX path of (first item of (get selection as alias list) as alias)' | rev | sed 's/^\///' | rev;
+  }
+fi
+
+if command -v qlmanage &> /dev/null; then
+  qlf() { qlmanage -p "$@" &> /dev/null; }
+fi
+
+# fzf-reliant functions
+if command -v fzf >/dev/null 2>&1; then
+  { [ -f ~/.config/dark-theme ] && export BAT_THEME='1337'; } || export BAT_THEME='GitHub'
+  export FZF_DEFAULT_OPTS="--preview-window right:100:hidden:wrap --bind '?:toggle-preview' --preview='(bat --style=numbers --theme=$BAT_THEME --color=always {} || cat {}) 2>/dev/null | head -500'"
+  export FZF_DEFAULT_COMMAND="rg -l -H \"\""
+  # script edit
+  se() {
+    local files
+    IFS=$'\n' files=($(command find "$DOTFILES/scripts" -type f -or -type l -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  }
+  # script create
+  sc() {
+    [ -z "$1" ] && echo "Filename must be passed as an argument." && return 1
+    vim $DOTFILES/scripts/"$1" && chmod +x $DOTFILES/scripts/"$1"
+  }
+
+  # script find
+  sf() {
+    local f
+    IFS=$'\n' f=($(command find "$DOTFILES"/scripts -type f -not -ipath "*/.git/*" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
+    [[ -n "$f" ]] && printf "$f"
+  }
+
+  # config edit
+  ce() {
+    local files
+    IFS=$'\n' files=($(command find "$DOTFILES" -type f ! -ipath "*/scripts/*" ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf -m --inline-info --prompt="edit> " --height=40 --reverse))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  }
+
+  # config find
+  cf() {
+    local f
+    IFS=$'\n' f=($(command find "$DOTFILES" -type f ! -ipath "*/.git/*" ! -ipath "*/bin/*" ! -ipath "*/oh-my-zsh/*" ! -name ".DS_Store" | fzf +m --prompt="find> " --height=40 --reverse --cycle))
+    [[ -n "$f" ]] && printf "$f"
+  }
+
+  # vim setting edit
+  ve() {
+    local files
+    IFS=$'\n' files=($(command find ~/.dotfiles/vim -type f -not -ipath "*/.git/*" | fzf -m --inline-info --prompt="edit (vim)> " --height=40 --reverse))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  }
+  # run python
+  rp() {
+    fzf --print-query --preview-window=right:50% --preview 'python -c {q}' <<<''
+  }
+  # Run ruby
+  rr() {
+    fzf --print-query --preview-window=right:50% --preview 'ruby -e {q}' <<<''
+  }
+  # run bash
+  rb() {
+    fzf --print-query --preview-window=right:50% --preview 'bash -c {q}' <<<''
+  }
+  # run json
+  rj() {
+    fzf --preview "cat $1 | jq {q}"
+  }
+
+  # list man pages
+  mans() {
+    sec="${1:-1|4}"
+    # (sorry, couldn't be arsed to deal with escaping parentheses for variable passing in awk)
+    manlist=$(man -k . 2>/dev/null | awk "$(printf 'BEGIN {FS=OFS="- "} /\([%s]\)/ {gsub(/\([0-9]\)/, "", $1); if (!seen[$0]++) { print }}' "$sec")" | fzf) \
+      && man "$(echo "$manlist" | awk -F' |,' '{print $1}')" \
+      && unset manlist
+  }
+
+  # list env variables
+  envs() {
+    var=$(printenv | cut -d= -f1 | fzf) \
+      && echo "$var=$(printenv "$var")" \
+      && unset var
+  }
+fi
+
+if command -v rg >/dev/null 2>&1; then
+  alias rgv='rg --vimgrep'
+fi
+# lf-reliant functions
+if command -v lf >/dev/null 2>&1; then
+  lfcd() {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+      dir="$(cat "$tmp")"
+      rm "$tmp"
+      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" || return
+    fi
+  }
+fi
 
 # Options
 if [ -n "$VIMRUNTIME" ]; then set -o vi
@@ -47,8 +534,8 @@ setopt histreduceblanks    # Remove blank lines from history
 setopt histverify          # Show expansion first before executing
 
 # Enable extra completions
-fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/osx-zsh-completions/ $DOTFILES/shell/zsh-completions-mine/ $fpath)
-autoload -Uz compinit && compinit
+# fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/osx-zsh-completions/ $DOTFILES/shell/zsh-completions-mine/ $fpath)
+autoload -U compinit && compinit
 source $DOTFILES/shell/oh-my-zsh-defaults/completion.zsh
 source $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
 source $DOTFILES/shell/oh-my-zsh-defaults/history.zsh
@@ -71,19 +558,10 @@ setopt correct_all
 # Built-in Tetris (because why not)
 alias tetris="autoload -Uz tetriscurses && tetriscurses"
 
-# Powerlevel10k theme
-source_if_exists ~/.p10k.zsh
-source_if_exists $DOTFILES/shell/powerlevel10k/powerlevel10k.zsh-theme
-
 # FZF for fuzzy finding
-source_if_exists "$DOTFILES"/tools/fzf/shell/completion.zsh
-source_if_exists "$DOTFILES"/tools/fzf/shell/key-bindings.zsh
-source_if_exists "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
-
-# Ruby bundler plugin, automatically runs binstub in .bin or `bundle exec`s
-source_if_exists $DOTFILES/shell/zsh-plugins/bundler.plugin.zsh
-source_if_exists $DOTFILES/shell/zsh-plugins/gitignore.plugin.zsh
-source_if_exists $DOTFILES/shell/zsh-plugins/insulter.plugin.zsh
+. "$DOTFILES"/tools/fzf/shell/completion.zsh
+. "$DOTFILES"/tools/fzf/shell/key-bindings.zsh
+. "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 insert-arg-of-prev-cmd() {
 : ${NUMERIC:-1}
@@ -101,24 +579,18 @@ bindkey '\e^]' vi-find-prev-char
 bindkey -s '\el' '\C-e| less'
 bindkey -s '\e&' '\C-e&>/dev/null'
 
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'left' vi-backward-char
-bindkey -M menuselect 'down' vi-down-line-or-history
-bindkey -M menuselect 'up' vi-up-line-or-history
-bindkey -M menuselect 'right' vi-forward-char
-
 # Bind lfcd (lf with cd) to ctrl-o
 bindkey -s '^o' '^ulfcd\n'
 
+# Ctrl-Z to fg
 _zsh_cli_fg() { fg; }
 zle -N _zsh_cli_fg
 bindkey '^Z' _zsh_cli_fg
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-source_if_exists $DOTFILES/shell/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+. $DOTFILES/shell/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Zoxide
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
+
+. "$XDG_DATA_HOME/cargo/env"
+eval "$(starship init zsh)"

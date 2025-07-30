@@ -1,12 +1,76 @@
-format = """
+# Quickref:
+# [text to style](style string)
+# style string can be e.g. bold fg:blue bg:black
+# ($var) - doesn't show up if var is empty
+
+# Left prompt
+format = """\
 $username\
 $directory\
-$vcsh\
-$fossil_branch\
 $git_branch\
 $git_commit\
 $git_state\
 $git_metrics\
 $git_status\
 $package\
+$status\
 $character"""
+
+add_newline = false
+
+# Right prompt
+right_format = """\
+$jobs\
+$cmd_duration\
+$time"""
+
+continuation_prompt = '▶▶ '
+
+[jobs]
+symbol = ''
+
+[cmd_duration]
+format = '[$duration]($style) '
+# Notifications would be nice, but they work even if I edit something with vim - that's a lot of noise
+# show_notifications = true
+# min_time_to_notify = 15
+
+[status]
+disabled = false
+symbol = '✘'
+format = '[$symbol( $maybe_int)( $common_meaning)]($style) '
+style = 'red'
+pipestatus = true
+
+[directory]
+# Show the path even in a git repo
+truncate_to_repo = false
+style = 'blue'
+# Truncate the path by truncating each component to 3 chars (otherwise it would
+# just remove the components)
+fish_style_pwd_dir_length = 3
+
+[git_branch]
+# Truncate branch name to 20 chars
+truncation_length = 20
+format = '[$symbol$branch(:$remote_branch)]($style) '
+style = 'green'
+
+[time]
+disabled = false
+format = '[$time]($style) '
+style = 'cyan'
+
+[git_status]
+# Defaults don't have the count in there
+stashed = '\$${count}'
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕${count}"
+conflicted = "=${count}"
+deleted = "✘${count}"
+renamed = "»${count}"
+modified = "!${count}"
+staged = "+${count}"
+untracked = "?${count}"
+style = 'yellow'
