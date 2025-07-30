@@ -10,7 +10,7 @@ mailcap: ~/.config/mailcap
 # Config: utilities
 keynav: ~/.config/keynav
 calcure/config.ini: ~/.config/calcure/config.ini
-compton: ~/.config/compton
+picom.conf: ~/.config/picom.conf
 ctags: ~/.config/ctags
 gdb:
 - gdbinit: ~/.config/gdb/init
