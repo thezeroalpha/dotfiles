@@ -13,8 +13,17 @@ status="$(battery | tac | tr -d '\n' | sed '
     s/Unknown/‽‽/' \
   | tac | tr -d '\n')"
 
+if command -v upower >/dev/null 2>&1; then
+  time_remaining=" ($(upower -i /org/freedesktop/UPower/devices/battery_BAT0 \
+    | awk -F': ' '
+        /^  *time to / {
+          sub("^ *", "", $2);
+          sub(" minutes", "min", $2);
+          print $2
+        }'))"
+fi
 case "$status" in
   ‼*) notify "Battery low" "$status%" battery critical;;
   ✅*) notify "Battery charged" "$status%" battery;;
 esac
-printf "%s%%\n" "$status"
+printf "%s%%%s\n" "$status" "${time_remaining:-}"
