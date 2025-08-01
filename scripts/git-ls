@@ -1,0 +1,5 @@
+#!/bin/sh
+for file in $(git ls-files "${1:-.}"); do
+  data="$(git log -1 --pretty=format:'%an,%h,%ar (%aI)' -- "$file")"
+  printf "$file,$data\n"
+done | column --table --separator ','
