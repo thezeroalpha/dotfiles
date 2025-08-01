@@ -1685,6 +1685,41 @@ Gives ideas for phrases to use in academic writing.
     (advice-add 'annotate-shutdown :after #'za/annotate-shutdown-extra-hooks))
 
 #+end_src
+** org-remark
+#+begin_src emacs-lisp
+  (use-package org-remark
+    :bind (;; :bind keyword also implicitly defers org-remark itself.
+           ;; Keybindings before :map is set for global-map. Adjust the keybinds
+           ;; as you see fit.
+           :map org-mode-map
+           ("C-c C-/ m" . org-remark-mark-strong-yellow)
+           ("C-c C-/ l" . org-remark-mark-line)
+           :map org-remark-mode-map
+           ("C-c C-/ o" . org-remark-open)
+           ("C-c C-/ ]" . org-remark-view-next)
+           ("C-c C-/ [" . org-remark-view-prev)
+           ("C-c C-/ r" . org-remark-remove)
+           ("C-c C-/ d" . org-remark-delete)))
+
+  (use-package org-remark-global-tracking
+    ;; It is recommended that `org-remark-global-tracking-mode' be
+    ;; enabled when Emacs initializes. You can set it in
+    ;; `after-init-hook'.
+    :hook after-init
+    :after org-remark
+    :ensure nil  ;; already installed in org-remark
+    :config
+    ;; Selectively keep or comment out the following if you want to use
+    ;; extensions for Info-mode, EWW, and NOV.el (EPUB) respectively.
+    ;; (use-package org-remark-info :after info :config (org-remark-info-mode +1))
+    ;; (use-package org-remark-eww  :after eww  :config (org-remark-eww-mode +1))
+    ;; (use-package org-remark-nov  :after nov  :config (org-remark-nov-mode +1))
+
+    ;; Custom pens
+    (org-remark-create "strong-yellow"
+                     '(:background "yellow")
+                     '(CATEGORY "important")))
+#+end_src
 ** yasnippet
 #+begin_src emacs-lisp
   (use-package yasnippet
