@@ -2372,7 +2372,8 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("k" "Kanban view"
            ((todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
             (todo "STARTED" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
-            (todo "NEXT" ((org-agenda-overriding-header "To do:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))))
+            (todo "NEXT" ((org-agenda-overriding-header "To do:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
+            (todo "WAITING" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))))
 
           ("p" "Projects"
            ((todo "PROJ" ((org-agenda-overriding-header "Projects:")
