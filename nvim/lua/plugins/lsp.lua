@@ -127,7 +127,6 @@ local config = function()
             "-A", "clippy::pub_use",
             "-A", "clippy::single_char_lifetime_names",
             "-A", "clippy::missing_trait_methods",
-            "-A", "clippy::multiple_unsafe_ops_per_block", -- broken on 0.1.74
             "-A", "clippy::mod_module_files",
             "-A", "clippy::std_instead_of_alloc",
             "-A", "clippy::integer_division_remainder_used",
@@ -136,6 +135,7 @@ local config = function()
             "-D", "warnings",
             "-A", "clippy::too_many_lines",
             "-A", "clippy::arbitrary_source_item_ordering",
+            "-A", "clippy::redundant_test_prefix",
           },
         }
       }
@@ -200,13 +200,46 @@ local config = function()
     filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
   })
   vim.lsp.enable('vue_ls')
+
+  vim.lsp.enable('terraformls')
+
+  vim.lsp.config('ruby_lsp', {
+    init_options = {
+      formatter = 'standard',
+      linters = { 'standard' },
+    },
+  })
+  vim.lsp.enable('ruby_lsp')
 end
 
 return {
-  'neovim/nvim-lspconfig',
-  config = config,
-  dependencies = {
-    -- Useful status updates for LSP.
-    { 'j-hui/fidget.nvim', opts = {} },
+  {
+    'neovim/nvim-lspconfig',
+    config = config,
+    dependencies = {
+      -- Useful status updates for LSP.
+      { 'j-hui/fidget.nvim', opts = {} },
+    }
+  },
+  {
+    'mfussenegger/nvim-lint',
+    config = function()
+      local lint = require('lint')
+      lint.linters_by_ft = {
+        sh = { 'shellcheck' },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        group = lint_augroup,
+        callback = function()
+          -- Only run the linter in buffers that you can modify in order to
+          -- avoid superfluous noise
+          if vim.bo.modifiable then
+            lint.try_lint()
+          end
+        end,
+      })
+    end
   }
 }
