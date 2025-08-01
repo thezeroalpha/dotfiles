@@ -65,4 +65,3 @@ macro SPACE set browser "open -g %u"; open-in-browser; set browser "linkhandler 
 macro i set browser "youtube-dl --get-title --get-duration --get-description %u | less"; open-in-browser; set browser "linkhandler %u" -- "Get media info"
 macro c set browser "printf '%s' %u | clc" ; open-in-browser ; set browser "linkhandler %u" -- "Copy link"
 macro u set browser "urlview"; open-in-browser ; set browser "linkhandler %u" -- "Urlview"
-macro s set browser "pocket save %u && notify 'Saved to Pocket' %u 'pocket' || notify 'Could not save' %u 'pocket'"; open-in-browser ; set browser "linkhandler %u" -- "Save to Pocket"
