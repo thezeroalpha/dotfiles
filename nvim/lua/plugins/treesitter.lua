@@ -28,6 +28,8 @@ local config = function()
           ['if'] = '@function.inner',
           ['ac'] = '@class.outer',
           ['ic'] = '@class.inner',
+          ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
+
         },
       },
       move = {

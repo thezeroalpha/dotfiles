@@ -23,11 +23,8 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('v', '<leader>ra', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[C]ode [A]ction' })
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -104,6 +101,13 @@ local config = function()
     on_attach = on_attach,
     settings = {
       ['rust-analyzer'] = {
+        workspace = {
+          symbol = {
+            search = {
+              kind = "all_symbols",
+            },
+          },
+        },
         check = {
           command = "clippy",
           features = "all",
@@ -216,10 +220,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     config = config,
-    dependencies = {
-      -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
-    }
   },
   {
     'mfussenegger/nvim-lint',
