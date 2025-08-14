@@ -1,7 +1,7 @@
 # -*- mode: shell-script; -*-
 # vim: foldmethod=marker foldlevel=0
-srcpath="$HOME/Documents/dotfiles/shell"
-export DOTFILES="$HOME/Documents/dotfiles"
+# zmodload zsh/zprof
+export DOTFILES="$HOME/.dotfiles"
 [ -f "$DOTFILES/shell/secret_env" ] && . "$DOTFILES/shell/secret_env"
 
 if [ -n "$VIM_TERMINAL" ]; then EDITOR=vimsend
@@ -10,7 +10,7 @@ elif command -v nvim >/dev/null 2>&1; then EDITOR="$(command -v nvim)"
 else EDITOR="$(command -v vim)"; fi
 export EDITOR
 
-export CHOOSER=dmenuchoose
+export CHOOSER=fzfchoose
 export MUSIC_DIR="/Volumes/HDD/Music/Libraries/Mine"
 export PAGER="less"
 export LESS="-RicX"
@@ -31,13 +31,6 @@ if command -v brave >/dev/null 2>&1; then
   export BROWSER=brave
 else
   export BROWSER="open"
-fi
-
-[ -f "$HOME"/.nix-profile/etc/profile.d/hm-session-vars.sh ] && . "$HOME"/.nix-profile/etc/profile.d/hm-session-vars.sh
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-  export WORKON_HOME=$HOME/.config/virtualenvs
-  VIRTUALENVWRAPPER_PYTHON=$(which python3); export VIRTUALENVWRAPPER_PYTHON
-  export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 fi
 
 export WWW_HOME="https://tab.alex.balgavy.eu"
@@ -287,6 +280,8 @@ export HISTFILE=$ZDOTDIR/.zsh_history
 [ -d "/usr/local/opt/sqlite" ]                                                   && [ -n "${PATH##*"/usr/local/opt/sqlite/bin"*}" ]         && PATH="/usr/local/opt/sqlite/bin:$PATH"
 [ -d "$HOME/.rvm/bin" ]                                                   && [ -n "${PATH##*"$HOME/.rvm/bin"*}" ]         && PATH="$HOME/.rvm/bin:$PATH"
 [ -d "$HOME/.local/share/gem/bin" ]                                                   && [ -n "${PATH##*"$HOME/.local/share/gem/bin"*}" ]         && PATH="$HOME/.local/share/gem/bin:$PATH"
+[ -d "/run/current-system/sw/bin" ]                                                   && [ -n "${PATH##*"/run/current-system/sw/bin "*}" ]         && PATH="/run/current-system/sw/bin:$PATH"
+
 export PATH
 # }}}
 
@@ -346,7 +341,7 @@ rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove
 hr() { : $((i=0)); while [ $((i<$(tput cols))) -ne 0 ]; do printf "#"; _=$((i=i+1)); done; echo; }  # insert a <hr> in the terminal
 vimq() { vim -q <(eval "$(fc -nl -1 | sed 's/^rg\b/rgv/')"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
 nls() { printf $((`ls -l | wc -l | xargs echo` - 1)); }                        # Count the number of files in the directory
-reload-completions() { rm ~/.zcompdump && compinit; }
+reload-completions() { rm $ZDOTDIR/.zcompdump && compinit; }
 reload() {
   local START_TIME=$SECONDS
   if [[ $SHELL = *"zsh"* ]]; then
@@ -535,11 +530,17 @@ setopt histverify          # Show expansion first before executing
 
 # Enable extra completions
 # fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/osx-zsh-completions/ $DOTFILES/shell/zsh-completions-mine/ $fpath)
-autoload -U compinit && compinit
-source $DOTFILES/shell/oh-my-zsh-defaults/completion.zsh
-source $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
-source $DOTFILES/shell/oh-my-zsh-defaults/history.zsh
-source $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
+# Smarter completion initialization
+autoload -Uz compinit
+if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' $ZDOTDIR/.zcompdump 2>/dev/null)" ]; then
+    compinit
+else
+    compinit -C
+fi
+. $DOTFILES/shell/oh-my-zsh-defaults/completion.zsh
+. $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
+. $DOTFILES/shell/oh-my-zsh-defaults/history.zsh
+. $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
 
 # Allow pasting bare URLs
 autoload -Uz url-quote-magic
@@ -592,5 +593,20 @@ bindkey '^Z' _zsh_cli_fg
 # Zoxide
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  # if PATH does *not* contain `~/.nix-profile/bin`
+  if [ -n "${PATH##*.nix-profile/bin*}" ]; then
+
+    # If this flag is set, `nix-daemon.sh` returns early
+    # https://github.com/NixOS/nix/issues/5298
+    unset __ETC_PROFILE_NIX_SOURCED
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+  fi
+fi
+# End Nix
+
+
 . "$XDG_DATA_HOME/cargo/env"
 eval "$(starship init zsh)"
+# zprof
