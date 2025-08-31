@@ -1,16 +1,16 @@
 -- Autoformat
 return {
-  'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
-  cmd = { 'ConformInfo' },
+  "stevearc/conform.nvim",
+  event = { "BufWritePre" },
+  cmd = { "ConformInfo" },
   keys = {
     {
-      'gQ',
+      "gQ",
       function()
-        require('conform').format { async = true, lsp_fallback = true }
+        require("conform").format({ async = true, lsp_fallback = true })
       end,
-      mode = '',
-      desc = '[F]ormat buffer',
+      mode = "",
+      desc = "[F]ormat buffer",
     },
   },
   opts = {
@@ -29,6 +29,10 @@ return {
       ruff_format = {
         inherit = true,
         append_args = { "--config", "~/Documents/cdmi/automation/meta-files/ruff.toml" },
+      },
+      stylua = {
+        inherit = true,
+        append_args = { "--indent-width", "2", "--indent-type", "Spaces" },
       },
     },
     formatters_by_ft = {
