@@ -249,6 +249,7 @@ export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 export ZDOTDIR=$HOME/.config/zsh
 export HISTFILE=$ZDOTDIR/.zsh_history
+export GEM_HOME=$XDG_DATA_HOME/.gems
 # }}}
 
 # Paths {{{1
