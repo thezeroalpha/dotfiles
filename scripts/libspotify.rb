@@ -6,7 +6,6 @@ require "json"
 require "date"
 require "yaml"
 require "webrick"
-require "byebug"
 
 # Add easy access to hash members for JSON stuff
 class Hash
