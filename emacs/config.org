@@ -1786,9 +1786,8 @@ Install Org and require additional components that I use.
                         "List projects that are stuck (don't have a next action)")
     (org-tag-alist (let ((za/org-tag-energy-levels
                           '((:startgroup)
-                            ("sport" . ?h) ; Sport (deep focus, long tasks, no interruptions, at least an hour)
-                            ("cruise" . ?l) ; Cruise (shallow focus, can be interrupted, can batch lots of quick tasks together)
-                            ("parked" . ?e) ; Parked (take a break, look into the distance, walk the dog, stretch, etc.)
+                            ("deep" . ?h)
+                            ("quick-shallow" . ?l)
                             ("errand" . ?o) ; Errand (anything that involves me being out of the house)
                             (:endgroup)))
                          (za/org-tag-1-3-5
@@ -2266,7 +2265,7 @@ For listing tasks without an energy level - skip if it has an energy level:
     (let ((skip (save-excursion (org-end-of-subtree t)))
           (keep nil)
           (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags)))
-          (energy-tag-p (lambda (s) (member s '("sport" "cruise" "parked" "errand")))))
+          (energy-tag-p (lambda (s) (member s '("deep" "quick-shallow" "errand")))))
       (if (cl-some energy-tag-p item-tags-without-inherited)
           skip
         keep)))
@@ -2434,6 +2433,7 @@ I tried org-edna but I couldn't get it working after an hour of effort. So a bit
                                             (t t))))
             (when should-change-state
               (org-entry-put (point) "TODO" "NEXT")))))))
+  (add-hook #'org-after-todo-state-change-hook #'za/gtd-auto-next)
 #+end_src
 
 *** Logging for tasks
