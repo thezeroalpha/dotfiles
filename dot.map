@@ -66,6 +66,7 @@ helix: ~/.config/helix
 bitmonero: ~/.config/bitmonero
 spotify/spot-last-checked: ~/.local/share/spot-last-checked
 ripgrep: ~/.config/ripgrep
+hammerspoon: ~/.hammerspoon
 
 # Config: sioyek
 # for macOS:
