@@ -1787,7 +1787,7 @@ Install Org and require additional components that I use.
     (org-tag-alist (let ((za/org-tag-energy-levels
                           '((:startgroup)
                             ("deep" . ?h)
-                            ("quick-shallow" . ?l)
+                            ("quick_shallow" . ?l)
                             ("errand" . ?o) ; Errand (anything that involves me being out of the house)
                             (:endgroup)))
                          (za/org-tag-1-3-5
@@ -2265,7 +2265,7 @@ For listing tasks without an energy level - skip if it has an energy level:
     (let ((skip (save-excursion (org-end-of-subtree t)))
           (keep nil)
           (item-tags-without-inherited (let ((org-use-tag-inheritance nil)) (org-get-tags)))
-          (energy-tag-p (lambda (s) (member s '("deep" "quick-shallow" "errand")))))
+          (energy-tag-p (lambda (s) (member s '("deep" "quick_shallow" "errand")))))
       (if (cl-some energy-tag-p item-tags-without-inherited)
           skip
         keep)))
