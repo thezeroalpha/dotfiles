@@ -225,7 +225,6 @@ export HTTPIE_CONFIG_DIR="$XDG_CONFIG_HOME/httpie"
 export CABAL_DIR="$XDG_CONFIG_HOME/cabal"
 export GHCUP_INSTALL_BASE_PREFIX="$XDG_CONFIG_HOME"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-# export GEM_HOME="$XDG_DATA_HOME/gem"
 # export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch/config"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
@@ -280,7 +279,7 @@ export GEM_HOME=$XDG_DATA_HOME/.gems
 [ -d "/usr/local/opt/ruby/bin" ] || [ -L "/usr/local/opt/ruby/bin" ]             && [ -n "${PATH##*"/usr/local/opt/ruby/bin"*}" ]           && PATH="/usr/local/opt/ruby/bin:$PATH"
 [ -d "/usr/local/opt/sqlite" ]                                                   && [ -n "${PATH##*"/usr/local/opt/sqlite/bin"*}" ]         && PATH="/usr/local/opt/sqlite/bin:$PATH"
 [ -d "$HOME/.rvm/bin" ]                                                   && [ -n "${PATH##*"$HOME/.rvm/bin"*}" ]         && PATH="$HOME/.rvm/bin:$PATH"
-[ -d "$HOME/.local/share/gem/bin" ]                                                   && [ -n "${PATH##*"$HOME/.local/share/gem/bin"*}" ]         && PATH="$HOME/.local/share/gem/bin:$PATH"
+[ -d "$GEM_HOME/bin" ]                                                   && [ -n "${PATH##*"$GEM_HOME/bin"*}" ]         && PATH="$GEM_HOME/bin:$PATH"
 [ -d "/run/current-system/sw/bin" ]                                                   && [ -n "${PATH##*"/run/current-system/sw/bin "*}" ]         && PATH="/run/current-system/sw/bin:$PATH"
 
 export PATH
