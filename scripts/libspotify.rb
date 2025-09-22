@@ -97,7 +97,14 @@ class SpotifyClient
   def url_call_get(url)
     request = Net::HTTP::Get.new(url)
     request["Authorization"] = "Bearer #{@token}"
-    resp = @http.request(request)
+    begin
+      resp = @http.request(request)
+    rescue
+      puts("Connection broke, retrying request to #{url}")
+      sleep(2)
+      return url_call_get(url)
+    end
+
     if resp.code_type == Net::HTTPTooManyRequests
       wait_seconds = resp["Retry-After"].to_i
       wait_min = wait_seconds / 60
