@@ -16,10 +16,42 @@ class Hash
   end
 end
 
+require "securerandom"
+require "digest"
+require "base64"
+
 # Client to access Spotify
 class SpotifyClient
-  def set_token
-    client_id = "c747e580651248da8e1035c88b3d2065"
+  CLIENT_ID = "c747e580651248da8e1035c88b3d2065"
+  REDIRECT_URI = "http://localhost:4815/callback"
+
+  # OAUTH functions
+  def self.generate_random_string(length)
+    possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    values = SecureRandom.random_bytes(length).bytes
+    values.reduce("") { |acc, x| acc + possible[x % possible.length] }
+  end
+
+  def auth_refresh_token(refresh_token)
+    url = URI("https://accounts.spotify.com/api/token")
+    body = {
+      grant_type: :refresh_token,
+      refresh_token: refresh_token,
+      client_id: CLIENT_ID
+    }
+    request = Net::HTTP::Post.new(url)
+    request.body = URI.encode_www_form(body)
+    request.content_type = "application/x-www-form-urlencoded"
+    http = Net::HTTP::new(url.host, url.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    response = http.request(request)
+    resp = JSON.parse(response.read_body)
+    store_refresh_token(resp["refresh_token"])
+    return resp["access_token"]
+  end
+
+  def auth_obtain_code(state, code_challenge)
     scope = %w[
       user-read-private
       playlist-read-collaborative
@@ -39,27 +71,29 @@ class SpotifyClient
       user-read-currently-playing
       user-read-recently-played
     ]
-      .join("%20")
-    redirect_uri = "http://localhost:4815/callback"
-    url = "https://accounts.spotify.com/authorize?client_id=#{client_id}&response_type=token&scope=#{scope}&show_dialog=false&redirect_uri=#{redirect_uri}"
+      .join(" ")
+    params = {
+      client_id: CLIENT_ID,
+      response_type: :code,
+      scope: scope,
+      show_dialog: false,
+      redirect_uri: REDIRECT_URI,
+      state: state,
+      code_challenge_method: :S256,
+      code_challenge: code_challenge
+    }
+    url = URI("https://accounts.spotify.com/authorize")
+    url.query = URI.encode_www_form(params)
+
     server = WEBrick::HTTPServer.new(
       Port: 4815,
       Logger: WEBrick::Log.new("/dev/null"),
       AccessLog: []
     )
-    server.mount_proc("/callback") do |_req, res|
-      res.body = <<-HTML
-        <!DOCTYPE html>
-        <html><body><script>
-          const hash = window.location.hash.substring(1);
-          fetch('/token?'+hash).then(() => {window.close()})
-        </script></body></html>
-      HTML
-    end
-
-    server.mount_proc("/token") do |req, res|
+    server.mount_proc("/callback") do |req, res|
       res.status = 200
-      @token = req.query["access_token"]
+      abort("Mismatched state") if req.query["state"] != state
+      @auth_code = req.query["code"]
       server.stop
     end
 
@@ -69,8 +103,58 @@ class SpotifyClient
     t.join
   end
 
+  def auth_request_token(state, code_verifier)
+    url = URI("https://accounts.spotify.com/api/token")
+    body = {
+      grant_type: :authorization_code,
+      code: @auth_code,
+      redirect_uri: REDIRECT_URI,
+      client_id: CLIENT_ID,
+      code_verifier: code_verifier
+    }
+    request = Net::HTTP::Post.new(url)
+    request.body = URI.encode_www_form(body)
+    request.content_type = "application/x-www-form-urlencoded"
+    http = Net::HTTP::new(url.host, url.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    response = http.request(request)
+    resp = JSON.parse(response.read_body)
+    store_refresh_token(resp["refresh_token"])
+    return resp["access_token"]
+  end
+
+  # Carry out OAUTH authorization with PKCE flow
+  def auth_obtain_token
+    code_verifier = SpotifyClient.generate_random_string(64)
+    code_challenge = Base64.strict_encode64(Digest::SHA256.digest(code_verifier)).tr("+/", "-_").gsub("=", "")
+
+    state = Base64.strict_encode64(Digest::SHA256.digest(SpotifyClient.generate_random_string(64)))
+    auth_obtain_code(state, code_challenge)
+    abort("No auth code") if @auth_code.nil?
+    return auth_request_token(state, code_verifier)
+  end
+
+  def get_refresh_token
+    `security find-generic-password -a spotify -s spotify_refresh_token -w`
+  end
+
+  def store_refresh_token(token)
+    system("security add-generic-password -a spotify -s spotify_refresh_token -w \"#{token}\"")
+  end
+
+  def auth
+    refresh_token = get_refresh_token
+
+    if refresh_token.empty?
+      @token = auth_obtain_token
+    else
+      @token = auth_refresh_token(refresh_token)
+    end
+  end
+
   def initialize
-    set_token
+    auth
     @base_url = URI("https://api.spotify.com/v1/")
     @http = Net::HTTP.new(@base_url.host, @base_url.port)
     @http.use_ssl = true
