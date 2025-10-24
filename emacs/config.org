@@ -41,7 +41,7 @@ Emacs 29 ships with a way to install packages from source, here's a small wrappe
                               (package-desc-dir (package-get-descriptor pac-name))
                               load))))
       (unless (package-installed-p pac-name)
-        (package-vc-install url iname rev backend))
+        (package-vc-install url rev backend iname))
       (when load
         (unless (file-directory-p to-load)
           (user-error "Not a readable dir: %s" to-load))
@@ -1204,7 +1204,24 @@ Hide some messages I don't need.
   (setopt auto-window-vscroll nil)
 #+end_src
 * General packages
-
+** hyperbole
+#+begin_src emacs-lisp
+  (use-package hyperbole
+    :config
+    (defib za/ib-cdmidev ()
+      "CDMIDEV links"
+      (if (or (looking-at "CDMIDEV-[0-9]+")
+              (save-excursion
+                (backward-word-strictly)
+                (looking-at "CDMIDEV-[0-9]+"))
+              (save-excursion
+                (backward-word-strictly 2)
+                (looking-at "CDMIDEV-[0-9]+")))
+          (let ((work-item (apply #'buffer-substring-no-properties (seq-take (match-data) 2))))
+            (ibut:label-set work-item)
+            (hact 'www-url (concat "https://csde.esa.int/jira/browse/" work-item))))))
+  (hyperbole-mode 1)
+#+end_src
 ** which-key
 Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 
@@ -1543,10 +1560,10 @@ This lets me select a window to jump to using a single key, sort of like ~avy~.
     ;; I want something a little more contrasty
     (aw-leading-char-face ((t (:inherit font-lock-keyword-face :height 2.0))))
 
-    :bind ("M-o" . ace-window))
+    :bind ("M-O" . ace-window))
 #+end_src
 ** decide-mode for dice rolling
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package decide
     :init (za/package-vc-install :repo "lifelike/decide-mode" :name "decide")
     :ensure nil
@@ -1897,7 +1914,8 @@ Install Org and require additional components that I use.
        (ruby . t)
        (shell . t)
        (sqlite . t)
-       (rust . t)))
+       (rust . t)
+       (passthrough . t)))
     (use-package inf-ruby)
     (use-package org-superstar
       :custom
@@ -2346,20 +2364,14 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
             (todo "STARTED" ((org-agenda-overriding-header "In progress:")))
-            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))
-            (agenda "" ((org-agenda-overriding-header "Habits:")
-                        (org-agenda-span 'day)
-                        (org-agenda-use-time-grid nil)
-                        (org-agenda-skip-function 'za/skip-unless-habit)
-                        (org-habit-show-habits t) (org-habit-show-habits-only-for-today nil)
-                        (org-habit-show-all-today t)))))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
 
 
           ("k" "Kanban view"
-           ((todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
-            (todo "STARTED" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
+           ((todo "STARTED" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
             (todo "NEXT" ((org-agenda-overriding-header "To do:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
-            (todo "WAITING" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
+            (todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))))
 
           ("p" "Projects"
            ((todo "PROJ" ((org-agenda-overriding-header "Projects:")
@@ -2933,15 +2945,20 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
     (with-eval-after-load 'org-roam-dailies
       (makunbound 'org-roam-dailies-directory))
     (defun za/org-roam-dailies-goto-latest-note ()
-      (interactive)
-      (unless (boundp 'org-roam-dailies-directory)
-        (za/org-roam-dailies-select-dir))
-      (let* ((dailies (org-roam-dailies--list-files))
-             (latest-note (car (last dailies))))
-        (unless latest-note
-          (user-error "Can't find latest note"))
-        (find-file latest-note)
-        (run-hooks 'org-roam-dailies-find-file-hook)))
+    (interactive)
+    (unless (boundp 'org-roam-dailies-directory)
+      (za/org-roam-dailies-select-dir))
+    (let* ((dailies (seq-filter
+                     (lambda (e) (let ((file-date (file-name-base e)))
+                                   (and (not (string= "marginalia" file-date))
+                                        (or (time-less-p (date-to-time file-date) (current-time))
+                                            (time-equal-p (date-to-time file-date) (current-time))))))
+                     (org-roam-dailies--list-files)))
+           (latest-note (car (last dailies))))
+      (unless latest-note
+        (user-error "Can't find latest note"))
+      (find-file latest-note)
+      (run-hooks 'org-roam-dailies-find-file-hook)))
     (org-roam-setup)
     (bind-keys :prefix "C-c w"
                :prefix-map za/org-roam-map
@@ -3609,7 +3626,10 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 #+begin_src emacs-lisp
   (use-package artist
     :ensure nil ; included with emacs
-    :custom (artist-figlet-default-font "term"))
+    :custom (artist-figlet-default-font "term")
+    :bind
+    (:map artist-mode-map
+          ([down-mouse-3] . artist-mouse-choose-operation)))
 #+end_src
 * Override some faces
 #+begin_src emacs-lisp
@@ -3621,7 +3641,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 Set a better keybinding (I'm never gonna use ~view-hello-file~ anyways):
 
 #+begin_src emacs-lisp
-  (bind-key "C-h h" #'shortdoc-display-group)
+  (bind-key "C-h z" #'shortdoc-display-group)
 #+end_src
 * Upcoming new features
 In a new version of use-package, I can use the :vc keyword, so check for when that's available.
