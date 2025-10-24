@@ -40,6 +40,8 @@ return {
       ruby = { "rubyfmt", lsp_format = "fallback" },
       python = { "ruff_format", "ruff_organize_imports", lsp_format = "fallback" },
       lua = { "stylua" },
+      cpp = { "clang-format", lsp_format = "fallback" },
+
       -- python = { "black", lsp_format = "fallback" },
       --   -- lua = { 'stylua' },
       --   -- Conform can also run multiple formatters sequentially

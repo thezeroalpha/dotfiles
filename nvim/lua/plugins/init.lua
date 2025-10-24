@@ -19,7 +19,7 @@ return {
   },
 
   {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     opts = {
       mappings = {
         start_with_preview = 'ga',
@@ -27,8 +27,27 @@ return {
     },
   },
   {
-    "echasnovski/mini.ai",
+    "nvim-mini/mini.ai",
     opts = {},
+    event = "VeryLazy",
+  },
+  {
+    "nvim-mini/mini.surround",
+    config = function()
+      require('mini.surround').setup({
+        mappings = {
+          add = 'ys',
+          delete = 'ds',
+        }
+      })
+
+      -- Remap adding surrounding to Visual mode selection
+      vim.keymap.del('x', 'ys')
+      vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+
+      -- Make special mapping for "add surrounding for line"
+      vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+    end,
     event = "VeryLazy",
   },
   {

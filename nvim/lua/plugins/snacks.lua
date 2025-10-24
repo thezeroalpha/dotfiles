@@ -119,15 +119,30 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
-    picker = {},
+    picker = {
+      sources =
+      {
+        ---@class snacks.picker.Explorer.Config
+        explorer = {
+          win = {
+            list = {
+              keys = {
+                ["-"] = "explorer_up",
+              }
+            }
+          },
+        },
+      }
+    },
     animate = {},
     notifier = {},
     indent = {
       enabled = true,
       indent = {
         char = '┊',
-      }
+      },
     },
+    input = {},
   },
   keys = keys,
 }
