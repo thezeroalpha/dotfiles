@@ -3,7 +3,6 @@
 # Show wifi 📶 and percent strength or 📡 if none.
 # Show 🌐 if connected to ethernet or ❎ if none.
 # Show 🔒 if a vpn connection is active
-set -x
 # Interfaces:
 # (list with `nmcli --get-values GENERAL.DEVICE,GENERAL.TYPE device show`)
 wired="enp0s31f6 eth0"
