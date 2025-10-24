@@ -1,6 +1,6 @@
 super + o
   "$TERMINAL" -e lf "$HOME"
-ctrl + shift + r
+ctrl + super + r
   pkill -SIGUSR1 sxhkd; notify "sxhkd reloaded" ""
 alt + shift + 3
   scrot -f -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
@@ -25,6 +25,9 @@ super + shift + m; d
 super + shift + m; b
   dmenu-dwmblocks
 
+super + shift + m; c
+  dmenu-bluetoothctl
+
 super + ctrl + space
   dmenusymbols
 
@@ -41,9 +44,12 @@ super + shift + i
   nerd-dictation begin &; pkill -RTMIN+6 dwmblocks
 super + shift + o
   nerd-dictation end; pkill -RTMIN+6 dwmblocks
+@super + alt + v
+  xclip -out -selection clipboard | xdotool type --file -
+
 
 super + c
-  clipmenu
+  clipmenu -i
 
 super + ctrl + i
   dmenu-colorpicker
