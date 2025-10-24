@@ -249,6 +249,7 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 export ZDOTDIR=$HOME/.config/zsh
 export HISTFILE=$ZDOTDIR/.zsh_history
 export GEM_HOME=$XDG_DATA_HOME/.gems
+export CARGO_TARGET_DIR=$XDG_CACHE_HOME/cargo/target/
 # }}}
 
 # Paths {{{1
@@ -339,6 +340,7 @@ mkcd() { mkdir -p -- "$1" && cd -P -- "$1" || return; }                 # make d
 procinfo() { pgrep -f "$1"; }                                           # get info about a process (by name)
 rmempty() { find "${1-.}"  -type d -empty -depth -delete; }             # remove empty directories
 hr() { : $((i=0)); while [ $((i<$(tput cols))) -ne 0 ]; do printf "#"; _=$((i=i+1)); done; echo; }  # insert a <hr> in the terminal
+history() { builtin fc $@ -l 1 -1; }
 vimq() { vim -q <(eval "$(fc -nl -1 | sed 's/^rg\b/rgv/')"); }                                  # load results of last command (often ag) in vim quickfix. eval necessary to handle escaped quotes.
 nls() { printf $((`ls -l | wc -l | xargs echo` - 1)); }                        # Count the number of files in the directory
 reload-completions() { rm $ZDOTDIR/.zcompdump && compinit; }
@@ -508,7 +510,6 @@ setopt alwaystoend         # On completion, move cursor to end of word
 setopt autocd              # If I forget 'cd' before a path
 setopt autopushd           # Make cd push old directory onto stack
 setopt completeinword      # Completion from both ends of word
-setopt extendedhistory     # Save timestamp and duration of commands in histfile
 setopt interactivecomments # Allow comments
 setopt monitor             # Allow job control
 setopt nocaseglob          # Globs should be case insensitive
@@ -518,18 +519,23 @@ setopt pushdignoredups     # Don't pushd duplicate directories
 setopt pushdminus          # Exchange meanings of + and - on directory stack
 
 # History options
+## History file configuration
+HISTSIZE=100000
+SAVEHIST=100000
+setopt extendedhistory     # Save timestamp and duration of commands in histfile
 setopt sharehistory        # Import commands from histfile and append typed to histfile
 setopt appendhistory       # Append to history
 setopt incappendhistory    # Append immediately, not at shell exit
-setopt histexpiredupsfirst # When trimming history, remove duplicates first
 setopt histignoredups      # Don't save command into history if duplicate of previous
 setopt histignorespace     # Don't save command into history if starts with space
 setopt histfindnodups      # Ignore duplicates when searching
 setopt histreduceblanks    # Remove blank lines from history
 setopt histverify          # Show expansion first before executing
+setopt histexpiredupsfirst # Expire duplicates first when trimming
 
 # Enable extra completions
 # fpath=($DOTFILES/shell/zsh-completions/src $DOTFILES/shell/osx-zsh-completions/ $DOTFILES/shell/zsh-completions-mine/ $fpath)
+# fpath=($DOTFILES/shell/zsh-completions-mine/ $fpath)
 # Smarter completion initialization
 autoload -Uz compinit
 if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' $ZDOTDIR/.zcompdump 2>/dev/null)" ]; then
@@ -539,7 +545,6 @@ else
 fi
 . $DOTFILES/shell/oh-my-zsh-defaults/completion.zsh
 . $DOTFILES/shell/oh-my-zsh-defaults/directories.zsh
-. $DOTFILES/shell/oh-my-zsh-defaults/history.zsh
 . $DOTFILES/shell/oh-my-zsh-defaults/keys.zsh
 
 # Allow pasting bare URLs
