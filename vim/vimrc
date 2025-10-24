@@ -26,9 +26,6 @@ Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'markdown'] }
 " Endwise - smart do-end, if-fi, if-end, case-esac, etc.
 Plug 'tpope/vim-endwise'
 
-" Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
-Plug 'tpope/vim-surround'
-
 " Eunuch - shell commands but in vim
 Plug 'tpope/vim-eunuch'
 
@@ -150,6 +147,10 @@ if !has('nvim')
 
   " Additional text objects
   Plug 'wellle/targets.vim'
+
+  " Surround - super useful plugin for surrounding stuff with quotes/brackets/tags
+  Plug 'tpope/vim-surround'
+
 endif
 call plug#end()
 
