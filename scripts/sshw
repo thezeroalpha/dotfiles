@@ -31,6 +31,7 @@ for {set i 0} {$i < $argc} {incr i} {
     -R -
     -D -
     -L -
+    -i -
     -J {
       lappend command $ssharg [lindex $argv [expr {$i + 1}]]
       incr i
@@ -67,9 +68,16 @@ proc login {pass command} {
   # Variables written in procedures don't change globally,
   # but spawn_id has to be global for expect to work.
   global spawn_id
+  global spawn_out
 
   # Connect
   eval spawn $command
+
+  trap {
+    set rows [stty rows]
+      set cols [stty columns]
+      stty rows $rows columns $cols < $spawn_out(slave,name)
+  } WINCH
 
   expect {
     # Change password as needed
