@@ -55,8 +55,6 @@
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
 (customize-set-variable 'package-install-upgrade-built-in t "Upgrade built-in packages")
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
 
 ;; Custom lisp files directory
 (defconst za/manually-installed-package-dir (concat user-emacs-directory "lisp/") "The directory for packages (.lisp) that I manually install.")
@@ -75,18 +73,14 @@
 
 ;; Always auto-install packages:
 (require 'use-package-ensure)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure nil)
 
 (defun za/ignore-builtin (pkg)
   "Ignore built-in package PKG."
   (assq-delete-all pkg package--builtins)
   (assq-delete-all pkg package--builtin-versions))
 (za/ignore-builtin 'org)
-
-;; :pin does not actually install from GNU. See
-;; https://github.com/jwiegley/use-package/issues/319 and
-;; https://github.com/jwiegley/use-package/issues/955
-(use-package org :pin gnu)
+(use-package org)
 
 ;; Follow symlinks without prompting (the org file is a symlink)
 (setq vc-follow-symlinks t)

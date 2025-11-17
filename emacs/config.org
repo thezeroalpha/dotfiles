@@ -1210,17 +1210,18 @@ Hide some messages I don't need.
     :config
     (defib za/ib-cdmidev ()
       "CDMIDEV links"
-      (if (or (looking-at "CDMIDEV-[0-9]+")
+      (if (or (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+")
               (save-excursion
                 (backward-word-strictly)
-                (looking-at "CDMIDEV-[0-9]+"))
+                (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+"))
               (save-excursion
                 (backward-word-strictly 2)
-                (looking-at "CDMIDEV-[0-9]+")))
+                (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+")))
           (let ((work-item (apply #'buffer-substring-no-properties (seq-take (match-data) 2))))
             (ibut:label-set work-item)
             (hact 'www-url (concat "https://csde.esa.int/jira/browse/" work-item))))))
   (hyperbole-mode 1)
+  (hkey-ace-window-setup)
 #+end_src
 ** which-key
 Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
@@ -1940,7 +1941,6 @@ Install Org and require additional components that I use.
 **** Agenda mode settings
 #+begin_src emacs-lisp
   (use-package org-agenda
-    :ensure org
     :bind (:map org-agenda-mode-map
                 ("C-c TAB" . za/org-agenda-goto-narrowed-subtree)
                 ("@" . za/org-agenda-show-context-tags))
@@ -2084,7 +2084,6 @@ Also with a conditional binding:
 *** Refiling & archiving
 #+begin_src emacs-lisp
   (use-package org-refile
-    :ensure org
     :custom
     (org-refile-targets `((,za/org-life-main :maxlevel . 3)
                           (,za/org-life-someday :level . 1)
@@ -2108,7 +2107,6 @@ Templates for quick capture:
 
 #+begin_src emacs-lisp
   (use-package org-capture
-    :ensure org
     :custom
     (org-capture-templates `(("t" "Todo [inbox]" entry
                               (file ,za/org-life-inbox)
@@ -2371,7 +2369,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
            ((todo "STARTED" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
             (todo "NEXT" ((org-agenda-overriding-header "To do:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
             (todo "WAITING" ((org-agenda-overriding-header "Waiting:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
-            (todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))))
+            (todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(tsia-down))))))
 
           ("p" "Projects"
            ((todo "PROJ" ((org-agenda-overriding-header "Projects:")
@@ -2879,7 +2877,7 @@ Create a custom link to open thunderbird emails by ID:
   (defun za/org-refile-wrapper (arg)
     "Wrap org-refile so that it does the inverse with a negative argument"
     (interactive "P")
-    (if (minusp (prefix-numeric-value arg))
+    (if (cl-minusp (prefix-numeric-value arg))
         (call-interactively #'za/org-refile-to-point)
       (org-refile arg)))
 
@@ -3604,6 +3602,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
   (use-package casual
     :config
     (require 'casual-image)
+    (require 'casual-ediff)
     :bind (:map calc-mode-map
            ("C-o" . 'casual-calc-tmenu)
            :map dired-mode-map
@@ -3612,7 +3611,9 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
            :map calendar-mode-map
            ("C-o" . 'casual-calendar-tmenu)
            :map image-mode-map
-           ("C-o" . 'casual-image-tmenu)))
+           ("C-o" . 'casual-image-tmenu)
+           :map ediff-mode-map
+           ("C-o" . 'casual-ediff-tmenu)))
 #+end_src
 ** json
 #+begin_src emacs-lisp
