@@ -21,10 +21,15 @@ add_newline = false
 # Right prompt
 right_format = """\
 $jobs\
+$python\
 $cmd_duration\
 $time"""
 
 continuation_prompt = '▶▶ '
+
+[python]
+pyenv_version_name = true
+format = '[(${symbol}$virtualenv )]($style)'
 
 [jobs]
 symbol = ''
