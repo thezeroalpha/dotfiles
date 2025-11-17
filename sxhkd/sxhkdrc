@@ -5,11 +5,11 @@ ctrl + super + r
 alt + shift + 3
   scrot -f -u -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
 ctrl + alt + shift + 3
-  scrot -f -u -e 'xclip -selection clipboard -target image/png -i $f;  notify "Screenshot copied" "On clipboard"'
+  bash -c 'scrot -f -u -F - | xclip -selection clipboard -target image/png; notify "Screenshot copied" "On clipboard"'
 alt + shift + 4
   scrot -f -s -e 'mv $f ~/Pictures/Screenshots/; notify "Screenshot saved" "~/Pictures/Screenshots/$f"'
 ctrl + alt + shift + 4
-  scrot -f -s -e 'xclip -selection clipboard -target image/png -i $f;  notify "Screenshot copied" "On clipboard"'
+  bash -c 'scrot -f -s -F - | xclip -selection clipboard -target image/png;  notify "Screenshot copied" "On clipboard"'
 super + shift + m; m
   dmenuman
 
@@ -40,13 +40,15 @@ super + e
 super + u
   linkhandler "$(clp)"
 
-super + shift + i
-  nerd-dictation begin &; pkill -RTMIN+6 dwmblocks
-super + shift + o
-  nerd-dictation end; pkill -RTMIN+6 dwmblocks
 @super + alt + v
   xclip -out -selection clipboard | xdotool type --file -
 
+## super + shift + i
+#F11
+#  nerd-dictation begin &; pkill -RTMIN+6 dwmblocks
+## super + shift + o
+#F12
+#  nerd-dictation end; pkill -RTMIN+6 dwmblocks
 
 super + c
   clipmenu -i
