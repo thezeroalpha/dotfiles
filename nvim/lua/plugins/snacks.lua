@@ -120,6 +120,14 @@ return {
   ---@type snacks.Config
   opts = {
     picker = {
+      win = {
+        preview = {
+          wo = {
+            foldlevel = 99,
+            foldenable = false,
+          },
+        },
+      },
       sources =
       {
         ---@class snacks.picker.Explorer.Config

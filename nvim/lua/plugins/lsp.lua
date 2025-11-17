@@ -169,7 +169,7 @@ local config = function()
 
   vim.lsp.config("nixd", { on_attach = on_attach })
   vim.lsp.enable("nixd", {
-    opts =  {
+    opts = {
       root_markers = { "flake.nix", ".git", "darwin-configuration.nix" },
     },
   })
@@ -207,11 +207,11 @@ local config = function()
 
   vim.lsp.enable("basedpyright")
 
-  vim.lsp.config("vue_ls", {
-    -- add filetypes for typescript, javascript and vue
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-  })
-  vim.lsp.enable("vue_ls")
+  -- vim.lsp.config("vue_ls", {
+  --   -- add filetypes for typescript, javascript and vue
+  --   filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+  -- })
+  -- vim.lsp.enable("vue_ls")
 
   vim.lsp.enable("terraformls")
 

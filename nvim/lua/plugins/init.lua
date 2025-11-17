@@ -1,6 +1,4 @@
 return {
-  'numToStr/Comment.nvim', -- "gc" to comment visual regions/lines
-
   {
     "folke/which-key.nvim",
     config = function()
@@ -34,10 +32,15 @@ return {
   {
     "nvim-mini/mini.surround",
     config = function()
+      -- Mappings similar to tpope/vim-surround
       require('mini.surround').setup({
         mappings = {
           add = 'ys',
           delete = 'ds',
+          find = '',
+          find_left = '',
+          highlight = '',
+          replace = 'cs',
         }
       })
 
@@ -50,6 +53,7 @@ return {
     end,
     event = "VeryLazy",
   },
+  { "nvim-mini/mini.operators", opts = {} },
   {
     "m00qek/baleia.nvim",
     version = "*",
