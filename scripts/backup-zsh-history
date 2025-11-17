@@ -1,0 +1,9 @@
+#!/bin/sh
+HIST="$HOME/.config/zsh/.zsh_history"
+BACKUPDIR="$HOME/.config/zsh"
+TIMESTAMP="$(date "+%F_%T")"
+
+if [ -s "$HIST" ]; then
+  zstd < "$HIST" > "$BACKUPDIR/zsh_history_$TIMESTAMP.zstd"
+fi
+# find . -type f -name 'zsh_history_*.zstd' -exec stat --printf '%Y %n\0' {} \; | sort -znr | sed -zn '3,${s/[^ ]\+ //; p}' | xargs -0 rm
