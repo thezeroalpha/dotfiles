@@ -21,6 +21,9 @@ for {set i 0} {$i < $argc} {incr i} {
     sftp {
       lset command 0 sftp
     }
+    pwonly {
+      set pwonly 1
+    }
     -C -
     -A -
     -X -
@@ -107,6 +110,11 @@ proc login {pass command} {
 
 # Log in
 login $pass $command
+
+if { [info exists pwonly] } {
+  send -- "exit\r"
+  exit 0
+}
 
 # Elevate privileges
 if { [lindex $command 0] == "ssh" } {
