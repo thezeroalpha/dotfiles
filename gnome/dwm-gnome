@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+# Register with gnome-session so that it does not kill the whole session thinking it is dead.
+test -n "$DESKTOP_AUTOSTART_ID" && {
+  dbus-send --print-reply --session --dest=org.gnome.SessionManager "/org/gnome/SessionManager" org.gnome.SessionManager.RegisterClient "string:dwm-gnome" "string:$DESKTOP_AUTOSTART_ID"
+}
+
+if [ -z "$DOTFILES" ]; then
+  export DOTFILES="$HOME/Documents/dotfiles"
+  . "$DOTFILES/shell/zshrc"
+fi
+
+[ -z "$TERMINAL" ] && export TERMINAL="st"
+export _JAVA_AWT_WM_NONREPARENTING=1 # otherwise Ghidra shows a blank screen
+
+LOGS=$HOME/.local/share/logs
+dunst >"$LOGS"/dunst.log 2>&1 &
+unclutter-xfixes &
+sxhkd >"$LOGS"/sxhkd.log 2>&1 &
+xset r rate 300 50 &
+picom >"$LOGS"/picom.log 2>&1 &
+{ "$HOME"/.local/bin/wal -R; xdotool key "super+shift+r"; } &
+libinput-gestures-setup start &
+keynav daemonize &
+CM_IGNORE_WINDOW="KeePassXC" clipmenud &
+
+dwmblocks >"$LOGS"/dwmblocks.log 2>&1 &
+keepassxc &
+brave-browser &
+emacsclient -c -a '' &
+
+SHLVL=0 dwm
+
+test -n "$DESKTOP_AUTOSTART_ID" && {
+  dbus-send --print-reply --session --dest=org.gnome.SessionManager "/org/gnome/SessionManager" org.gnome.SessionManager.Logout "uint32:1"
+}
