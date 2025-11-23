@@ -1804,9 +1804,11 @@ Install Org and require additional components that I use.
                         "List projects that are stuck (don't have a next action)")
     (org-tag-alist (let ((za/org-tag-energy-levels
                           '((:startgroup)
-                            ("deep" . ?h)
-                            ("quick_shallow" . ?l)
-                            ("errand" . ?o) ; Errand (anything that involves me being out of the house)
+                            ("focused" . ?f)
+                            ("quick" . ?q)
+                            ("errand" . ?e)
+                            ("think" . ?t)
+                            ("call" . ?c)
                             (:endgroup)))
                          (za/org-tag-1-3-5
                           '(; 1-3-5 tagging
@@ -2362,7 +2364,14 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
             (todo "STARTED" ((org-agenda-overriding-header "In progress:")))
-            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))
+            (agenda "" ((org-agenda-overriding-header "Habits:")
+                        (org-agenda-span 'day)
+                        (org-agenda-use-time-grid nil)
+                        (org-agenda-skip-function 'za/skip-unless-habit)
+                        (org-habit-show-habits t)
+                        (org-habit-show-habits-only-for-today nil)
+                        (org-habit-show-all-today t)))))
 
 
           ("k" "Kanban view"
@@ -2875,7 +2884,7 @@ Create a custom link to open thunderbird emails by ID:
 
 
   (defun za/org-refile-wrapper (arg)
-    "Wrap org-refile so that it does the inverse with a negative argument"
+    "Wrap org-refile so that it refiles some heading to point with a negative argument"
     (interactive "P")
     (if (cl-minusp (prefix-numeric-value arg))
         (call-interactively #'za/org-refile-to-point)
