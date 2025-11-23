@@ -4,6 +4,7 @@ return {
     local paperWmMod = mods.paperWmMod
     local paperWmMoveMod = mods.paperWmMoveMod
 
+    PaperWM.window_ratios = { 1 / 3, 1 / 2, 2 / 3 }
     PaperWM:bindHotkeys({
       -- switch to a new focused window in tiled grid
       focus_left = { paperWmMod, "left" },
@@ -36,7 +37,7 @@ return {
       center_window = { paperWmMod, "c" },
       full_width = { paperWmMod, "f" },
       cycle_width = { paperWmMod, "r" },
-      cycle_height = { paperWmMoveMod, "r" },
+      reverse_cycle_width = { paperWmMoveMod, "r" },
 
       -- increase/decrease width
       increase_width = { paperWmMod, "l" },
@@ -61,5 +62,17 @@ return {
       move_window_9 = { paperWmMoveMod, "9" },
     })
     PaperWM:start()
+
+    local set_window_width = function(width)
+      local old_ratios = PaperWM.window_ratios
+      PaperWM.window_ratios = { width }
+      PaperWM.windows.cycleWindowSize(PaperWM.windows.Direction.WIDTH, PaperWM.windows.Direction.ASCENDING)
+      PaperWM.window_ratios = old_ratios
+    end
+
+    -- set to equal size
+    hs.hotkey.bind(paperWmMod, "=", function()
+      set_window_width(1 / 2)
+    end)
   end,
 }

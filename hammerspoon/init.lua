@@ -40,6 +40,9 @@ bindkey(hyper, "r", function()
   hs.notify.show("Config reloaded", "New config applied", "")
 end)
 
+bindkey({}, "f3", hs.spaces.toggleMissionControl)
+bindkey({}, "f4", hs.spaces.toggleLaunchPad)
+
 -- Copy current mouse position
 bindkey(hyper, "m", function()
   local pos = mouse.pos()
