@@ -55,6 +55,17 @@ return {
   },
   { "nvim-mini/mini.operators", opts = {} },
   {
+    "nvim-mini/mini.snippets",
+    opts = function(_, opts)
+      local snippets = require('mini.snippets')
+      opts.snippets = {
+        snippets.gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+        snippets.gen_loader.from_file('~/.config/nvim/snippets/global.lua'),
+        snippets.gen_loader.from_lang(),
+      }
+    end,
+  },
+  {
     "m00qek/baleia.nvim",
     version = "*",
     config = function()

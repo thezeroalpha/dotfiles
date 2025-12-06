@@ -207,6 +207,15 @@ local config = function()
 
   vim.lsp.enable("basedpyright")
 
+  -- vim.lsp.config("ty", {
+  --   settings = {
+  --     ty = {
+  --       diagnosticMode = 'workspace',
+  --     },
+  --   },
+  -- })
+  -- vim.lsp.enable("ty")
+
   -- vim.lsp.config("vue_ls", {
   --   -- add filetypes for typescript, javascript and vue
   --   filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
