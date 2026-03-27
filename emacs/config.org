@@ -1744,6 +1744,10 @@ Gives ideas for phrases to use in academic writing.
     :config (yas-global-mode)
     :delight)
 #+end_src
+** evil
+#+begin_src emacs-lisp
+  (use-package evil)
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Custom functions
@@ -3575,7 +3579,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
 #+begin_src emacs-lisp
   (use-package calc
     :config
-    (setq math-additional-units
+    (setopt math-additional-units
      ;; elements:
      ;; - symbol identifying the unit,
      ;; - expression indicatingv alue of unit or nil for fundamental units
@@ -3603,8 +3607,11 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
        (Gib "1024 * Mib" "Gibibit")
        (Kb "1000 * b" "Kilobit")
        (Mb "1000 * Kb" "Megabit")
-       (Gb "1000 * Mb" "Gigabit")))
-    (setq math-units-table nil))
+       (Gb "1000 * Mb" "Gigabit")
+       (Kbps "Kb / s" "Kilobits per second")
+       (Mbps "Mb / s" "Megabits per second")
+       (Gbps "Gb /s" "Gigabits per second")))
+    (setopt math-units-table nil))
 #+end_src
 ** casual
 #+begin_src emacs-lisp
