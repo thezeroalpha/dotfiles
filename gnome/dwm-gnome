@@ -13,6 +13,9 @@ fi
 [ -z "$TERMINAL" ] && export TERMINAL="st"
 export _JAVA_AWT_WM_NONREPARENTING=1 # otherwise Ghidra shows a blank screen
 
+# Some gnome things refuse to launch if this isn't set, like gnome-control-center
+export XDG_CURRENT_DESKTOP=GNOME
+
 LOGS=$HOME/.local/share/logs
 dunst >"$LOGS"/dunst.log 2>&1 &
 unclutter-xfixes &
