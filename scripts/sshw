@@ -24,6 +24,27 @@ for {set i 0} {$i < $argc} {incr i} {
     pwonly {
       set pwonly 1
     }
+    get {
+      send_user -- [lrange $command 1 end]
+      exit 0
+    }
+    # mount /path/to/local /path/to/remote
+    # You may need to add your own public key to your own ~/.ssh/authorized_keys
+    mount {
+      set fwport 3848
+      set localmount [lindex $argv [expr {$i + 1}]]
+      set remotemount [lindex $argv [expr {$i + 2}]]
+      incr i 3
+      if {$i != $argc} {
+        send_user "`mount` is only usable as a final command\n"
+        exit 1
+      }
+      lappend command "-A"
+      lappend command "-o RequestTTY=yes"
+      lappend command "-R $fwport:localhost:22"
+      lappend command "sshfs -o uid=`id -u`,gid=`id -g` localhost:$localmount $remotemount -o port=$fwport; /bin/bash -li; fusermount -u $remotemount"
+      break
+    }
     -C -
     -A -
     -X -
@@ -45,14 +66,13 @@ for {set i 0} {$i < $argc} {incr i} {
       if {[dict exists $hosts $host]} {
         set host [dict get $hosts $host]
       }
-      # TODO: conditionally add -M?
       lappend command {*}$host
     }
   }
 }
 send_user "Connecting with $command\n"
 
-# Define a subroutine to read password
+# Define a procedure to read password
 proc read_password {} {
   stty -echo
   send_user "password: "
@@ -72,10 +92,12 @@ proc login {pass command} {
   # but spawn_id has to be global for expect to work.
   global spawn_id
   global spawn_out
+  global current_password
 
   # Connect
   eval spawn $command
 
+  # Handle window resizing
   trap {
     set rows [stty rows]
       set cols [stty columns]
@@ -83,6 +105,10 @@ proc login {pass command} {
   } WINCH
 
   expect {
+    -ex "Current password:" {
+      send -- "${current_password}\r"
+      exp_continue
+    }
     # Change password as needed
     -ex "New password: " {
       send -- "$pass"
