@@ -26,7 +26,7 @@ local keys = {
         end
       end
       if #explorer_pickers == 0 then
-        Snacks.picker.explorer()
+        Snacks.explorer.reveal()
       end
     end,
 
@@ -75,6 +75,8 @@ local keys = {
   { "gd",         function() Snacks.picker.lsp_definitions() end,                         desc = "Goto Definition" },
   { "gD",         function() Snacks.picker.lsp_declarations() end,                        desc = "Goto Declaration" },
   { "<leader>sr", function() Snacks.picker.lsp_references() end,                          nowait = true,                     desc = "References" },
+  { "<leader>s<", function() Snacks.picker.lsp_incoming_calls() end,                      nowait = true,                     desc = "Go to call sites" },
+  { "<leader>s>", function() Snacks.picker.lsp_outgoing_calls() end,                      nowait = true,                     desc = "Go to called functions" },
   { "gI",         function() Snacks.picker.lsp_implementations() end,                     desc = "Goto Implementation" },
   { "gy",         function() Snacks.picker.lsp_type_definitions() end,                    desc = "Goto T[y]pe Definition" },
   { "<leader>ss", symbols,                                                                desc = "LSP Symbols" },

@@ -16,6 +16,7 @@ return
       vim.keymap.set('n', ']~', function() require('gitsigns').diffthis() end, { buffer = true })
       vim.keymap.set('n', ']-', function() require('gitsigns').preview_hunk() end, { buffer = true })
       vim.keymap.set('n', ']+', function() require('gitsigns').select_hunk() end, { buffer = true })
+      vim.keymap.set({ 'o', 'x' }, 'i+', '<Cmd>Gitsigns select_hunk<CR>')
     end,
   },
 }

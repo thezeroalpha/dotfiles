@@ -95,6 +95,48 @@ local on_attach = function(_, bufnr)
   end, { desc = "Inspect LSP config" })
 end
 
+
+local check_command_clippy = {
+  command = "clippy",
+  features = "all",
+  extraArgs = {
+    "--no-deps",
+    "--",
+    "-D", "clippy::pedantic",
+    "-D", "clippy::nursery",
+    "-D", "clippy::restriction",
+    "-A", "clippy::blanket_clippy_restriction_lints",
+    "-A", "clippy::missing_docs_in_private_items",
+    "-A", "clippy::implicit_return",
+    "-A", "clippy::question_mark_used",
+    "-A", "clippy::min_ident_chars",
+    "-A", "clippy::pattern_type_mismatch",
+    "-A", "clippy::single_call_fn",
+    "-A", "clippy::as_conversions",
+    "-A", "clippy::pub_with_shorthand",
+    "-A", "clippy::shadow_reuse",
+    "-A", "clippy::separated_literal_suffix",
+    "-A", "clippy::float_arithmetic",
+    "-A", "clippy::pub_use",
+    "-A", "clippy::single_char_lifetime_names",
+    "-A", "clippy::missing_trait_methods",
+    "-A", "clippy::mod_module_files",
+    "-A", "clippy::std_instead_of_alloc",
+    "-A", "clippy::integer_division_remainder_used",
+    "-D", "rust_2018_idioms",
+    "-D", "missing_docs",
+    "-D", "warnings",
+    "-A", "clippy::too_many_lines",
+    "-A", "clippy::arbitrary_source_item_ordering",
+    "-A", "clippy::redundant_test_prefix",
+    "-A", "clippy::cognitive_complexity",
+  },
+
+}
+local check_command = {
+  command = "check",
+  features = "all",
+}
 -- :h lspconfig-all
 local config = function()
   vim.lsp.config("rust_analyzer", {
@@ -108,42 +150,7 @@ local config = function()
             },
           },
         },
-        check = {
-          command = "clippy",
-          features = "all",
-          extraArgs = {
-            "--",
-            "--no-deps",
-            "-D", "clippy::pedantic",
-            "-D", "clippy::nursery",
-            "-D", "clippy::restriction",
-            "-A", "clippy::blanket_clippy_restriction_lints",
-            "-A", "clippy::missing_docs_in_private_items",
-            "-A", "clippy::implicit_return",
-            "-A", "clippy::question_mark_used",
-            "-A", "clippy::min_ident_chars",
-            "-A", "clippy::pattern_type_mismatch",
-            "-A", "clippy::single_call_fn",
-            "-A", "clippy::as_conversions",
-            "-A", "clippy::pub_with_shorthand",
-            "-A", "clippy::shadow_reuse",
-            "-A", "clippy::separated_literal_suffix",
-            "-A", "clippy::float_arithmetic",
-            "-A", "clippy::pub_use",
-            "-A", "clippy::single_char_lifetime_names",
-            "-A", "clippy::missing_trait_methods",
-            "-A", "clippy::mod_module_files",
-            "-A", "clippy::std_instead_of_alloc",
-            "-A", "clippy::integer_division_remainder_used",
-            "-D", "rust_2018_idioms",
-            "-D", "missing_docs",
-            "-D", "warnings",
-            "-A", "clippy::too_many_lines",
-            "-A", "clippy::arbitrary_source_item_ordering",
-            "-A", "clippy::redundant_test_prefix",
-            "-A", "clippy::cognitive_complexity",
-          },
-        },
+        check = check_command_clippy,
       },
     },
   })

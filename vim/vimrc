@@ -862,6 +862,7 @@ if has('terminal')
   tnoremap <C-w>; <C-w>:
 endif
 
+nnoremap <C-w>[ <C-w>v<C-]>
 " To keep the old functionality of ;
 nnoremap : ;
 vnoremap : ;
