@@ -1,63 +1,129 @@
 #!/usr/bin/env ruby
-# Client to query Discogs
-require "discogs-wrapper" # Needed for API access
+require "net/http"
+require "openssl"
+require "json"
 
-my_user_token = ENV['DISCOGS_API_TOKEN']
+# Add easy access to hash members for JSON stuff
+class Hash
+  def method_missing(meth, *_args, &_block)
+    raise NoMethodError unless key?(meth.to_s)
 
-if my_user_token == nil
-  raise "No user token set."
+    self[meth.to_s]
+  end
 end
 
-# Create a wrapper
-wrapper=Discogs::Wrapper.new("iTunesStyleGetter", user_token: my_user_token)
+class Discogs
+  def initialize_http
+    @http = Net::HTTP.new(@base_url.host, @base_url.port)
+    @http.use_ssl = true
+    @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  end
+
+  def auth
+    my_user_token = ENV["DISCOGS_API_TOKEN"]
+
+    if my_user_token.nil?
+      raise "No user token set."
+    end
+
+    @token = my_user_token
+  end
+
+  def initialize
+    auth
+    @base_url = URI("https://api.discogs.com")
+    initialize_http
+  end
+
+  def url_call_get(url)
+    request = Net::HTTP::Get.new(url)
+    request["Authorization"] = "Discogs token=#{@token}"
+    begin
+      resp = @http.request(request)
+    rescue Exception => e
+      puts("Connection broke (#{e}), retrying request to #{url}")
+      binding.irb if File.exist?("/tmp/rubydebug")
+
+      sleep(2)
+      initialize_http
+      return url_call_get(url)
+    end
+
+    if resp["X-Discogs-Ratelimit-Remaining"].to_i == 0
+      sleep(60)
+      return url_call_get(url)
+    elsif resp.code_type != Net::HTTPOK
+      puts("Request #{url} returned #{resp}")
+      exit(1)
+    end
+
+    JSON.parse(resp.read_body)
+  end
+
+  def api_call_get(endpoint, params = {})
+    url = @base_url + endpoint
+    url.query = URI.encode_www_form(params)
+    url_call_get(url)
+  end
+
+  def search(query)
+    return api_call_get("/database/search", {q: query})
+  end
+
+end
 
 # Join the rest of the arguments into a search string
-query=ARGV.join(" ")
+query = ARGV.join(" ")
 
 # Initialise arrays
-genres,styles=[],[]
+genres, styles = [], []
 
 # Search for the query
-search=wrapper.search("#{query}")
+discogs = Discogs::new
+search = discogs.search("#{query}")
 
 if search.results.empty?
-  STDERR.puts 'discogs: no search results'
-  exit 1
+  STDERR.puts("discogs: no search results")
+  exit(1)
 end
 
 # Add the genres of the first result
-search.results.each do |result|
-  if result.genre? && !result.genre.empty?
-    result.genre.each do |g|
-      if g.include? ","
-        g.split(",").each { |x| genres.push "#{x}" }
-      else
-        genres.push "#{g}"
-      end
-    end
+search["results"].each do |result|
+  if result.include?("genre") && !result["genre"].empty?
+    genres.push(result["genre"].first)
+    # result.genre.each do |g|
+    #   if g.include? ","
+    #     g.split(",").each { |x| genres.push "#{x}" }
+    #   else
+    #     genres.push "#{g}"
+    #   end
+    # end
     break
   end
 end
 
 # Add the styles of the first result
-search.results.each do |result|
-  if result.style? && !result.style.empty?
-    result.style.to_a.each {|x| styles.push "#{x}"}
+search["results"].each do |result|
+  if result.include?("style") && !result["style"].empty?
+    styles.push(result["style"].to_a.first)
+    # result.style.to_a.each { |x| styles.push("#{x}") }
   end
+
   break
 end
 
 # Add the url of the first result
-url = "http://discogs.com#{search.results[0].uri}".split(" ")
+# url = "http://discogs.com#{search.results[0].uri}".split(" ")
 
 # Join everything together into a 2d array
 # 2 different separators ("~", ",") because bash
-result = [genres.join("~"), styles.join("~"), url]
+# result = [genres.join("~"), styles.join("~"), url]
+result = [genres.join("~"), styles.join("~")]
 
 # Unless only asking for genre, also add title
-if !(ARGV.include?('-g') || ARGV.include?('--genre'))
+if !(ARGV.include?("-g") || ARGV.include?("--genre"))
   result = [search.results.first.title] + result
 end
 
 # Send result to stdout
-p result
+puts(result.join("/"))
