@@ -27,6 +27,10 @@ while [ $(($#)) -ne 0 ]; do
       number="$2"
       shift 2
       ;;
+    -g|--genre)
+      genre="$2"
+      shift 2
+      ;;
     -i|--image)
       image="$2"
       shift 2
@@ -41,7 +45,7 @@ while [ $(($#)) -ne 0 ]; do
       ;;
     -h|--help)
       printf 'Supported usage\n'
-      printf '%s -b albumartist -t title -l album -r artist -n tracknumber -i IMG_PATH:DESCRIPTION \n' "$0"
+      printf '%s -b albumartist -t title -l album -r artist -n tracknumber -g genre -i IMG_PATH:DESCRIPTION \n' "$0"
       printf '%s [--extract|-x] "filename_spec" FILE\n' "$0"
       printf '%s [--clear|-c] FILE\n' "$0"
       exit 0
@@ -83,12 +87,14 @@ printf '%s\n' "$FILES" | while IFS='' read -r file; do
         taffy --extract "$spec" "$file"
       else
         command -v eyeD3 >/dev/null 2>&1 || die 'eyeD3 must be installed.'
-        set -- --to-v2.4
+        # v2.3 is more common and compatible than v2.4
+        set -- --to-v2.3
         [ -n "$band" ] && set -- "$@" -b "$band"
         [ -n "$title" ] && set -- "$@" -t "$title"
         [ -n "$album" ] && set -- "$@" -A "$album"
         [ -n "$artist" ] && set -- "$@" -a "$artist"
         [ -n "$number" ] && set -- "$@" -n "$number"
+        [ -n "$genre" ] && set -- "$@" -G "$genre"
 
         if [ -n "$image" ]; then
           img_path="${image%%:*}"
@@ -115,6 +121,7 @@ printf '%s\n' "$FILES" | while IFS='' read -r file; do
         [ -n "$album" ] && set -- "$@" -metadata ALBUM="$album"
         [ -n "$artist" ] && set -- "$@" -metadata ARTIST="$artist"
         [ -n "$number" ] && set -- "$@" -metadata TRACKNUMBER="$number"
+        [ -n "$genre" ] && set -- "$@" -metadata GENRE="$genre"
 
         tempdir="$(mktemp -d)"
         ffmpeg "$@" "$tempdir/output.opus" \
@@ -134,6 +141,7 @@ printf '%s\n' "$FILES" | while IFS='' read -r file; do
         [ -n "$album" ] && set -- "$@" --set-tag=ALBUM="$album"
         [ -n "$artist" ] && set -- "$@" --set-tag=ARTIST="$artist"
         [ -n "$number" ] && set -- "$@" --set-tag=TRACKNUMBER="$number"
+        [ -n "$genre" ] && set -- "$@" --set-tag=GENRE="$genre"
 
         if [ -n "$image" ]; then
           img_path="${image%%:*}"
