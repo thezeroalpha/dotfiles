@@ -32,29 +32,33 @@ local keyNoDelay = function(modifiers, character)
 end
 
 local binds = {
-  [86] = function()
-    keyNoDelay({}, "left")
-  end,
-  [91] = function()
-    keyNoDelay({}, "up")
-  end,
-  [88] = function()
-    keyNoDelay({}, "right")
-  end,
-  [84] = function()
-    keyNoDelay({}, "down")
-  end,
-  [89] = function()
-    keyNoDelay({}, "home")
-  end,
-  [83] = function()
-    keyNoDelay({}, "end")
-  end,
-  [71] = function()
-    keypad_cursor:exit()
-  end,
+  [86] = "left",
+  [91] = "up",
+  [88] = "right",
+  [84] = "down",
+  [89] = "home",
+  [83] = "end",
 }
 
-for k, f in pairs(binds) do
-  keypad_cursor:bind({}, k, f, nil, f)
+local modifiers = { {}, { "shift" } }
+
+for k, c in pairs(binds) do
+  for _, mod in pairs(modifiers) do
+    local f = function()
+      keyNoDelay(mod, c)
+    end
+    keypad_cursor:bind(mod, k, f, nil, f)
+  end
 end
+
+keypad_cursor:bind(
+  {},
+  71,
+  function()
+    keypad_cursor:exit()
+  end,
+  nil,
+  function()
+    keypad_cursor:exit()
+  end
+)
