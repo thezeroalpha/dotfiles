@@ -1081,19 +1081,6 @@ Hide some messages I don't need.
         "Space is for everybody. It’s not just for a few people in science or math, or for a select group of astronauts. That’s our new frontier out there, and it’s everybody’s business to know about space."
         "On one side are those who believe space travel is difficult work, but who go for it anyway. On the other are those who believe caring for a goldfish is, and who don’t go after much of anything. Where we choose to seed ourselves on the spectrum of what’s possible is what will ultimately define the size of our lives."))
 
-    ;; Have to redefine this, original one has wrong type
-    (defcustom dashboard-footer-messages
-    '("The one true editor, Emacs!"
-      "Who the hell uses VIM anyway? Go Evil!"
-      "Free as free speech, free as free Beer"
-      "Happy coding!"
-      "Vi Vi Vi, the editor of the beast"
-      "Welcome to the church of Emacs"
-      "While any text editor can save your files, only Emacs can save your soul"
-      "I showed you my source code, pls respond")
-    "A list of messages, one of which dashboard chooses to display."
-    :type '(repeat string)
-    :group 'dashboard)
 
     ;; Use my saved quotes in the dashboard (https://alex.balgavy.eu/quotes/)
     (setopt dashboard-footer-messages
@@ -1128,7 +1115,7 @@ Hide some messages I don't need.
        item-list
        list-size
        'gtd
-       "t"
+       nil
        ;; decide what to do when clicked ("el" is automatically assigned)
        `(lambda (&rest _)
           (message "%s" (find-file (plist-get ',el :file))))
@@ -1409,8 +1396,11 @@ Basically provides a way to show the org agenda as a standard GUI calendar app w
   (use-package calfw
     :config
     (use-package calfw-org)
+    :bind (:map calfw-calendar-mode-map
+                ("k" . calfw-navi-previous-week-command)
+                ("j" . calfw-navi-next-week-command))
     :custom
-    (cfw:org-overwrite-default-keybinding t))
+    (calfw-org-overwrite-default-keybinding t))
 #+end_src
 
 ** vanish: hide parts of the file
@@ -2313,6 +2303,17 @@ For listing tasks without an energy level - skip if it has an energy level:
         keep)))
 #+end_src
 
+#+begin_src emacs-lisp
+  (defun za/skip-if-not-prio (prio)
+    (let* ((skip (save-excursion (org-end-of-subtree t)))
+           (keep nil)
+           (current-prio (org-entry-get nil "PRIORITY")))
+      (if (not (string= current-prio prio))
+          skip
+        keep)))
+
+#+end_src
+
 Create custom agenda view based on those keywords.
 Agenda views are made up of blocks, appearing in the order that you declare them.
 The first two strings are what shows up in the agenda dispatcher (the key to press and the description).
@@ -2368,6 +2369,13 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                         (org-agenda-span 'day)
                         (org-habit-show-habits nil)))
             (todo "STARTED" ((org-agenda-overriding-header "In progress:")))
+            (todo "NEXT" ((org-agenda-overriding-header "NEXT #A:")
+                          (org-agenda-skip-function
+                           ;; or takes first non-nil value
+                           ;; keep is nil, skip is non-nil
+                           (lambda () (or (za/skip-if-not-prio "A")
+                                          (za/skip-if-scheduled))))
+                          (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
             (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))
             (agenda "" ((org-agenda-overriding-header "Habits:")
                         (org-agenda-span 'day)
@@ -2379,8 +2387,11 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
 
 
           ("k" "Kanban view"
-           ((todo "STARTED" ((org-agenda-overriding-header "In progress:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
-            (todo "NEXT" ((org-agenda-overriding-header "To do:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
+           ((todo "STARTED" ((org-agenda-overriding-header "In progress:")
+                             (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
+            (todo "NEXT" ((org-agenda-overriding-header "To do:")
+                          (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))
+                          (org-agenda-skip-function #'za/skip-if-scheduled)))
             (todo "WAITING" ((org-agenda-overriding-header "Waiting:") (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
             (todo "DONE" ((org-agenda-overriding-header "Done:") (org-agenda-sorting-strategy '(tsia-down))))))
 
@@ -2404,7 +2415,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
           ("c" "Calendar view" (lambda (&rest _)
                                  (interactive)
                                  (let ((org-agenda-skip-function 'za/skip-if-habit))
-                                   (cfw:open-org-calendar))))
+                                   (calfw-org-open-calendar))))
           ("f" . "Find & fix...")
           ("f@" "Next actions missing context"
            todo "NEXT" ((org-agenda-overriding-header "Missing context:")
