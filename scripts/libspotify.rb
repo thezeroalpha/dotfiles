@@ -23,7 +23,7 @@ require "base64"
 # Client to access Spotify
 class SpotifyClient
   CLIENT_ID = "c747e580651248da8e1035c88b3d2065"
-  REDIRECT_URI = "http://localhost:4815/callback"
+  REDIRECT_URI = "http://127.0.0.1:4815/callback"
 
   # OAUTH functions
   def self.generate_random_string(length)
@@ -136,11 +136,11 @@ class SpotifyClient
   end
 
   def get_refresh_token
-    `security find-generic-password -a spotify -s spotify_refresh_token -w`
+    `security find-generic-password -a spotify -s spotify_refresh_token -w`.strip
   end
 
   def store_refresh_token(token)
-    system("security add-generic-password -a spotify -s spotify_refresh_token -w \"#{token}\"")
+    system("security add-generic-password -U -a spotify -s spotify_refresh_token -w \"#{token}\"")
   end
 
   def auth
@@ -153,12 +153,16 @@ class SpotifyClient
     end
   end
 
-  def initialize
-    auth
-    @base_url = URI("https://api.spotify.com/v1/")
+  def initialize_http
     @http = Net::HTTP.new(@base_url.host, @base_url.port)
     @http.use_ssl = true
     @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  end
+
+  def initialize
+    auth
+    @base_url = URI("https://api.spotify.com/v1/")
+    initialize_http
   end
 
   def api_call_get(endpoint, params = {})
@@ -183,9 +187,12 @@ class SpotifyClient
     request["Authorization"] = "Bearer #{@token}"
     begin
       resp = @http.request(request)
-    rescue
-      puts("Connection broke, retrying request to #{url}")
+    rescue Exception => e
+      puts("Connection broke (#{e}), retrying request to #{url}")
+      binding.irb if File.exist?("/tmp/rubydebug")
+
       sleep(2)
+      initialize_http
       return url_call_get(url)
     end
 
@@ -213,7 +220,15 @@ class SpotifyClient
     request["Authorization"] = "Bearer #{@token}"
     request.body = JSON.dump(body)
     request.content_type = "application/json"
-    JSON.parse(@http.request(request).read_body)
+    begin
+      JSON.parse(@http.request(request).read_body)
+    rescue Exception => e
+      puts("Connection broke (#{e}), retrying request to #{url}")
+      binding.irb if File.exist?("/tmp/rubydebug")
+      sleep(2)
+      initialize_http
+      return url_call_post(url, body)
+    end
   end
 
   def url_call_put(url, body)
