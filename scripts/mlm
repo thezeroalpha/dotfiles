@@ -3,8 +3,8 @@
 die() { printf '%s\n' "$1" >&2 && exit 1; }
 checkdeps() {
   for com in "$@"; do
-    command -v "$com" >/dev/null 2>&1 \
-      || { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
+    command -v "$com" >/dev/null 2>&1 ||
+      { printf '%s required but not found.\n' "$com" >&2 && exit 1; }
   done
 }
 checkdeps rsync mpc eyeD3 ffprobe
@@ -19,19 +19,25 @@ MPD_LOGFILE="$XDG_DATA_HOME"/mpd/mpd.log
 import() {
   if [ -n "$(find . -mindepth 1 -maxdepth 1 -name '*.mp3')" ]; then
     printf "MP3 files found in current directory!\nAre you sure you want to import? [Y/n] "
-    stty raw; yn="$(dd bs=1 count=1 2>/dev/null)"; stty -raw
+    stty raw
+    yn="$(dd bs=1 count=1 2>/dev/null)"
+    stty -raw
     case "$yn" in
-      Y*|y*);;
-      *) die 'User cancelled.';;
+    Y* | y*) ;;
+    *) die 'User cancelled.' ;;
     esac
   fi
 
   printf "Did you already run mp3gain? [Y/n] "
-  stty raw; yn="$(dd bs=1 count=1 2>/dev/null)"; stty -raw
+  stty raw
+  yn="$(dd bs=1 count=1 2>/dev/null)"
+  stty -raw
   printf '\n'
   case "$yn" in
-    Y*|y*);;
-    *) die 'Run it now then. mp3gain -s i. add -a for albums.';;
+  Y* | y*) ;;
+  *) die "Run it now then.
+    albums: parallel mp3gain -s i -a "{}/*.mp3' ::: */*
+    tracks: parallel mp3gain -s i -r '{}/*.mp3' ::: */' ;;
   esac
 
   # Sync current dir into music dir, (u)pdated only, (r)ecursively, (p)reserve
@@ -52,21 +58,21 @@ import() {
 
   # MPD logs all additions to the library, so extract from that.
   # Sort for use in comm (1)
-  tac ~/.local/share/mpd/mpd.log \
-    | awk -F 'added ' '/update: added/ { print $2 }' \
-    | sort > "$tempdir"/sorted_newly_added.log
+  tac ~/.local/share/mpd/mpd.log |
+    awk -F 'added ' '/update: added/ { print $2 }' |
+    sort >"$tempdir"/sorted_newly_added.log
 
   # Get the current contents of the recently added playlist, without M3U metadata
   # Sort for use in comm (1)
-  grep -v '^#' "$MUSIC_DIR"/recently-added.m3u > "$tempdir"/current_recently_added.m3u
-  sort "$tempdir"/current_recently_added.m3u > "$tempdir"/sorted_recently_added.m3u
+  grep -v '^#' "$MUSIC_DIR"/recently-added.m3u >"$tempdir"/current_recently_added.m3u
+  sort "$tempdir"/current_recently_added.m3u >"$tempdir"/sorted_recently_added.m3u
 
   # Find the lines that have been logged by MPD as added but are not yet in the recently added playlist
   #   via comm (1), excluding lines present only in file 2 (MPD logfile) and in both.
   # Then, add an M3U header, and concatenate with the current recently added playlist.
   # The result is: [M3U header, newly added tracks, rest of current recently added playlist]
   cat - "$tempdir"/current_recently_added.m3u \
-    > "$MUSIC_DIR"/recently-added.m3u \
+    >"$MUSIC_DIR"/recently-added.m3u \
     <<PLAYLIST_END
 #EXTM3U
 #PLAYLIST:Recently Added
@@ -85,7 +91,8 @@ verify_playlist_rust() {
 
   tmpbin=$(mktemp)
   trap 'rm $tmpbin' INT TERM EXIT
-  { rustc - -o "$tmpbin" <<EOF
+  {
+    rustc - -o "$tmpbin" <<EOF
 use std::path::PathBuf;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
@@ -123,15 +130,18 @@ verify_playlist() {
   playlist_path="$MUSIC_DIR/$1"
   [ -f "$playlist_path" ] || die "Playlist $playlist_path not found."
 
-  lns="$(wc -l < "$playlist_path" | tr -d '[:space:]')"
-  ctr=1;
+  lns="$(wc -l <"$playlist_path" | tr -d '[:space:]')"
+  ctr=1
   while read -r f; do
     f="$(printf '%s' "$f" | tr -d '\r\n')"
-    printf '%s' "$f" | grep '^#' >/dev/null 2>&1 && { ctr=$((ctr+1)); continue; }
+    printf '%s' "$f" | grep '^#' >/dev/null 2>&1 && {
+      ctr=$((ctr + 1))
+      continue
+    }
     printf "\r%d/%d" $ctr "$lns"
-    stat "$MUSIC_DIR/$f" >/dev/null 2>&1 || printf "\t%s\n" "$f";
-    ctr=$((ctr+1));
-  done < "$playlist_path"
+    stat "$MUSIC_DIR/$f" >/dev/null 2>&1 || printf "\t%s\n" "$f"
+    ctr=$((ctr + 1))
+  done <"$playlist_path"
 }
 
 embed_lyrics() {
@@ -139,17 +149,17 @@ embed_lyrics() {
   [ -d "$LYRICS_DIR" ] || die "Lyrics dir $LYRICS_DIR not found."
   find "$LYRICS_DIR" -type f -size 0 -delete
 
-  find "$LYRICS_DIR" -type f \
-    | while read -r lyricsfile; do
-      printf "Processing: %s\n" "$lyricsfile" \
-        && fname="$(printf "%s" "${lyricsfile##*/}" | awk -F " - " '{gsub(".txt", "", $2); print "albumartist " "\"" $1 "\"" " title " "\"" $2 "\"" }' | xargs mpc find | head -n 1)" \
-        && if [ -n "$fname" ]; then
-             eyeD3 --to-v2.4 --remove-all-lyrics --add-lyrics "$lyricsfile" "$MUSIC_DIR/$fname" \
-               && rm "$lyricsfile"
-           else
-             rm "$lyricsfile"
-           fi
-      done
+  find "$LYRICS_DIR" -type f |
+    while read -r lyricsfile; do
+      printf "Processing: %s\n" "$lyricsfile" &&
+        fname="$(printf "%s" "${lyricsfile##*/}" | awk -F " - " '{gsub(".txt", "", $2); print "albumartist " "\"" $1 "\"" " title " "\"" $2 "\"" }' | xargs mpc find | head -n 1)" &&
+        if [ -n "$fname" ]; then
+          eyeD3 --to-v2.4 --remove-all-lyrics --add-lyrics "$lyricsfile" "$MUSIC_DIR/$fname" &&
+            rm "$lyricsfile"
+        else
+          rm "$lyricsfile"
+        fi
+    done
 }
 
 # args: source_dir, dest_dir
@@ -163,7 +173,7 @@ organize_files() {
   dst="$(realpath "$2")"
   cd "$dst" || die "Could not cd to $dst"
   mkdir -p _failed
-  find "$src" -name '*.mp3' 2>/dev/null | \
+  find "$src" -name '*.mp3' 2>/dev/null |
     while read -r i; do
       artist="$(ffprobe -loglevel error -show_entries format_tags=album_artist -of default=noprint_wrappers=1:nokey=1 "$i" | tr -d ':' | tr '/+!@#$%^&*:?"|\\>' '_' | sed 's/\.\.*$//' | perl -Mopen=locale -Mutf8 -pe 's/[\x{0300}-\x{036F}]//g')"
       [ -n "$artist" ] || { mv "$i" _failed/ && continue; }
@@ -174,26 +184,38 @@ organize_files() {
       printf "%s -> %s\n" "$i" "$artist/$album/$fname"
       mv "$i" "$artist/$album/$fname"
     done
-    rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
+  rmdir _failed 1>/dev/null 2>&1 || printf "Some tracks were not organised automatically, they are in ./_failed/"
+}
+
+# Show current song info & albumart
+current() {
+  tmp="$(mktemp)"
+  trap 'rm $tmp' INT TERM EXIT
+  mpc readpicture "$(mpc current -f %file%)" >"$tmp" && mpv --keep-open=always --ontop "$tmp"
+  rm "$tmp"
+  trap - INT TERM EXIT
 }
 
 case "$1" in
-  import) import;;
-  check-recent)
-    if command -v rustc >/dev/null 2>&1; then
-      verify_playlist_rust 'recently-added.m3u'
-    else
-      verify_playlist 'recently-added.m3u'
-    fi
-    ;;
-  check-playlist)
-    if command -v rustc >/dev/null 2>&1; then
-      verify_playlist_rust "$2"
-    else
-      verify_playlist "$2"
-    fi
-    ;;
-  embed-lyrics) embed_lyrics;;
-  organise|organize) organize_files "$2" "$3";;
-  *) printf "Supported commands: import, check-recent, check-playlist, embed-lyrics, organise\n"; exit 0;;
+import) import ;;
+check-recent)
+  if command -v rustc >/dev/null 2>&1; then
+    verify_playlist_rust 'recently-added.m3u'
+  else
+    verify_playlist 'recently-added.m3u'
+  fi
+  ;;
+check-playlist)
+  if command -v rustc >/dev/null 2>&1; then
+    verify_playlist_rust "$2"
+  else
+    verify_playlist "$2"
+  fi
+  ;;
+embed-lyrics) embed_lyrics ;;
+organise | organize) organize_files "$2" "$3" ;;
+*)
+  printf "Supported commands: import, check-recent, check-playlist, embed-lyrics, organise\n"
+  exit 0
+  ;;
 esac
