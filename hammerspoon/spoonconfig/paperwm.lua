@@ -6,25 +6,15 @@ return {
 
     PaperWM.window_ratios = { 1 / 3, 1 / 2, 2 / 3 }
     PaperWM:bindHotkeys({
-      -- switch to a new focused window in tiled grid
-      focus_left = { paperWmMod, "left" },
-      focus_right = { paperWmMod, "right" },
-      focus_up = { paperWmMod, "up" },
-      focus_down = { paperWmMod, "down" },
-
       -- switch windows by cycling forward/backward
       -- (forward = down or right, backward = up or left)
       focus_prev = { paperWmMod, "k" },
       focus_next = { paperWmMod, "j" },
 
       -- move windows around in tiled grid
-      swap_left = { paperWmMoveMod, "left" },
       swap_left = { paperWmMoveMod, "h" },
-      swap_right = { paperWmMoveMod, "right" },
       swap_right = { paperWmMoveMod, "l" },
-      swap_up = { paperWmMoveMod, "up" },
       swap_up = { paperWmMoveMod, "k" },
-      swap_down = { paperWmMoveMod, "down" },
       swap_down = { paperWmMoveMod, "j" },
 
       -- alternative: swap entire columns, rather than
