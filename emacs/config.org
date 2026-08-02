@@ -1738,6 +1738,13 @@ Gives ideas for phrases to use in academic writing.
 #+begin_src emacs-lisp
   (use-package evil)
 #+end_src
+** org-reschedule-overdue
+#+begin_src emacs-lisp
+  (use-package org-reschedule-overdue
+    :ensure nil
+    :bind (:map org-mode-map
+                ("C-c C-s" . org-reschedule-overdue-org-schedule-wrapper)))
+#+end_src
 * Mode/language specific packages
 ** Org
 *** Custom functions
