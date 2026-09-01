@@ -154,7 +154,7 @@
         `(undo-tree-visualizer-unmodified-face ((,class :foreground ,var)))
         `(undo-tree-visualizer-register-face ((,class :foreground ,type)))
 	`(slime-repl-inputed-output-face ((,class (:foreground ,type))))
-        `(trailing-whitespace ((,class :foreground nil :background ,warning)))
+        `(trailing-whitespace ((,class :foreground unspecified :background ,warning)))
         `(rainbow-delimiters-depth-1-face ((,class :foreground ,fg1)))
         `(rainbow-delimiters-depth-2-face ((,class :foreground ,type)))
         `(rainbow-delimiters-depth-3-face ((,class :foreground ,var)))
@@ -211,7 +211,7 @@
         `(helm-grep-file ((,class (:foreground ,fg1 :background ,bg1))))
         `(helm-grep-finish ((,class (:foreground ,fg2 :background ,bg1))))
         `(helm-grep-lineno ((,class (:foreground ,fg1 :background ,bg1))))
-        `(helm-grep-match ((,class (:foreground nil :background nil :inherit helm-match))))
+        `(helm-grep-match ((,class (:foreground undefined :background nil :inherit helm-match))))
         `(helm-grep-running ((,class (:foreground ,func :background ,bg1))))
         `(helm-moccur-buffer ((,class (:foreground ,func :background ,bg1))))
         `(helm-source-go-package-godoc-description ((,class (:foreground ,str))))
@@ -248,7 +248,8 @@
         `(jde-java-font-lock-constant-face ((t (:foreground ,const))))
         `(jde-java-font-lock-modifier-face ((t (:foreground ,fg2))))
         `(jde-jave-font-lock-protected-face ((t (:foreground ,keyword))))
-        `(jde-java-font-lock-number-face ((t (:foreground ,var)))))
+        `(jde-java-font-lock-number-face ((t (:foreground ,var))))
+        `(hywiki--word-face ((t (:foreground ,const :underline t)))))
   ;; emacs >= 26.1
   (when (>= emacs-major-version 26)
     (custom-theme-set-faces

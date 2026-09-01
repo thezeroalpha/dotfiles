@@ -580,6 +580,10 @@ The "(interactive)" means that it can be called from a keybinding or from M-x.
 #+begin_src emacs-lisp
   (bind-key (kbd "C-x x n") #'clone-indirect-buffer)
 #+end_src
+** Find function source code
+#+begin_src emacs-lisp
+  (bind-key "C-h M-k" #'find-function-on-key)
+#+end_src
 * Custom functions
 ** Make region readonly or writable
 #+begin_src emacs-lisp
@@ -1194,6 +1198,9 @@ Hide some messages I don't need.
 ** hyperbole
 #+begin_src emacs-lisp
   (use-package hyperbole
+    :custom
+    (hyrolo-file-list za/hyrolo-file-list)
+    (hywiki-directory za/hywiki-directory)
     :config
     (defib za/ib-cdmidev ()
       "CDMIDEV links"
@@ -1206,9 +1213,12 @@ Hide some messages I don't need.
                 (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+")))
           (let ((work-item (apply #'buffer-substring-no-properties (seq-take (match-data) 2))))
             (ibut:label-set work-item)
-            (hact 'www-url (concat "https://csde.esa.int/jira/browse/" work-item))))))
-  (hyperbole-mode 1)
-  (hkey-ace-window-setup)
+            (hact 'www-url (concat "https://csde.esa.int/jira/browse/" (upcase work-item))))))
+    (hyperbole-mode 1)
+    (hkey-ace-window-setup)
+    (hywiki-mode :all)
+    (require 'hywiki-alias)
+    (zetta-hywiki-alias-mode 1))
 #+end_src
 ** which-key
 Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
