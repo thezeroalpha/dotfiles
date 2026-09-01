@@ -37,11 +37,14 @@ super + l
   /usr/local/bin/slock
 super + e
   emacsclient -c -a ''
+super + shift + e
+  emacsclient -c -a '' -e '(calc)'
 super + u
   linkhandler "$(clp)"
 
 @super + alt + v
-  xclip -out -selection clipboard | xdotool type --file -
+  sleep 2; xclip -out -selection clipboard | xdotool type --file -
+
 
 ## super + shift + i
 #F11
@@ -86,5 +89,7 @@ ctrl + shift + super + space
   dunstctl close-all
 super + grave
   dunstctl history-pop
+super + shift + grave
+  st -e bash -c "dunstctl history | jq '.data[0][0].body.data' | less"
 ctrl + shift + period
   dunstctl context
