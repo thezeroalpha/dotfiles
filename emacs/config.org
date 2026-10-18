@@ -6,6 +6,10 @@ I install with ~--HEAD --with-dbus --with-cocoa --with-xwidgets --with-native-co
 - provides bind-key by default
 - is mostly just macros that wrap the needed stuff from package.el. can check that with ~macroexpand~.
 - adds a bunch of performance improvements
+* Lexical binding
+#+begin_src emacs-lisp
+  ;; -*- lexical-binding: t; -*-
+#+end_src
 * Let me know when we're at a certain version
 #+begin_src emacs-lisp
   (when (version<= "30" emacs-version)
@@ -1230,147 +1234,187 @@ Minor mode for Emacs that displays the key bindings following your currently ent
     (which-key-mode))
 #+end_src
 
-** counsel + ivy + swiper + prescient
-Better incremental completion and selection narrowing.
-And a bunch more.
-Generally makes for nicer interactivity, like ido mode on steroids.
-Switched to this from Helm, it's more lightweight.
+** vertico
+Vertico: vertical completion UI
 
-*** ivy: generic completion mechanism
 #+begin_src emacs-lisp
-  (use-package ivy
-    :delight
+  (use-package vertico
+    :init
+    (vertico-mode)
+    (vertico-multiform-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package vertico-posframe
     :custom
-    (ivy-use-virtual-buffers t "extend searching to bookmarks")
-    (ivy-height 20 "set height of the ivy window")
-    (ivy-count-format "(%d/%d) " "count format, from the ivy help page")
-    (ivy-display-style 'fancy)
-    (ivy-format-function 'ivy-format-function-line)
-    (ivy-use-selectable-prompt t "to let me select exactly what I'm typing as a candidate")
+    (vertico-multiform-commands
+     '((consult-line
+        posframe
+        (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
+        (vertico-posframe-border-width . 10)
+        ;; NOTE: This is useful when emacs is used in both in X and
+        ;; terminal, for posframe do not work well in terminal, so
+        ;; vertico-buffer-mode will be used as fallback at the
+        ;; moment.
+        (vertico-posframe-fallback-mode . vertico-buffer-mode))
+       (t posframe)))
+    )
+#+end_src
+** orderless
+Orderless: an additional completion style to match pattern in any order
 
-    :bind (("C-x b" . ivy-switch-buffer)
-           ("C-c v" . ivy-push-view)
-           ("C-c V" . ivy-pop-view)
+#+begin_src emacs-lisp
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles partial-completion))))
+    (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+#+end_src
 
-           ;; accidentally pressing shift-space deletes input, because
-           ;; by default, shift-space is bound to
-           ;; ~ivy-restrict-to-matches~ in the ivy minibuffer.
-           :map ivy-minibuffer-map
-           ("S-SPC" . (lambda () (interactive) (insert ?\s)))
-           ("<backtab>" . ivy-restrict-to-matches))
+** marginalia
+Marginalia: annotate items in completion list
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+    ;; available in the *Completions* buffer, add it to the
+    ;; `completion-list-mode-map'.
+    :bind (:map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+
+    ;; The :init section is always executed.
+    :init
+
+    ;; Marginalia must be activated in the :init section of use-package such that
+    ;; the mode gets enabled right away. Note that this forces loading the
+    ;; package.
+    (marginalia-mode))
+#+end_src
+
+** consult
+Consult: enhances basic emacs commands via completing-read
+#+begin_src emacs-lisp
+  ;; Example configuration for Consult
+  (use-package consult
+    :ensure t
+    ;; Replace bindings. Lazily loaded by `use-package'.
+    :bind (;; C-c bindings in `mode-specific-map'
+           ("C-s" . consult-line)
+           ("C-r" . consult-line)
+           ("C-c p" . consult-recent-file)
+           ("C-c M-x" . consult-mode-command)
+           ("C-c h" . consult-history)
+           ("C-c k" . consult-kmacro)
+           ("C-c m" . consult-man)
+           ("C-c i" . consult-info)
+           ([remap Info-search] . consult-info)
+           ;; C-x bindings in `ctl-x-map'
+           ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+           ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+           ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+           ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+           ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+           ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+           ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+           ;; Custom M-# bindings for fast register access
+           ("M-#" . consult-register-load)
+           ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+           ("C-M-#" . consult-register)
+           ;; Other custom bindings
+           ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+           ;; M-g bindings in `goto-map'
+           ("M-g e" . consult-compile-error)
+           ("M-g r" . consult-grep-match)
+           ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+           ("M-g g" . consult-goto-line)             ;; orig. goto-line
+           ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+           ("C-c o" . consult-outline)               ;; Alternative: consult-org-heading
+           ("M-g m" . consult-mark)
+           ("M-g k" . consult-global-mark)
+           ("M-g i" . consult-imenu)
+           ("M-g I" . consult-imenu-multi)
+           ;; M-s bindings in `search-map'
+           ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+           ("M-s c" . consult-locate)
+           ("M-s g" . consult-grep)
+           ("M-s G" . consult-git-grep)
+           ("M-s r" . consult-ripgrep)
+           ("M-s l" . consult-line)
+           ("M-s L" . consult-line-multi)
+           ("M-s k" . consult-keep-lines)
+           ("M-s u" . consult-focus-lines)
+           ;; Isearch integration
+           ("M-s e" . consult-isearch-history)
+           :map isearch-mode-map
+           ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+           ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+           ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+           ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+           ;; Minibuffer history
+           :map minibuffer-local-map
+           ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+           ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+    ;; The :init configuration is always executed (Not lazy)
+    :init
+
+    ;; Tweak the register preview for `consult-register-load',
+    ;; `consult-register-store' and the built-in commands.  This improves the
+    ;; register formatting, adds thin separator lines, register sorting and hides
+    ;; the window mode line.
+    (advice-add #'register-preview :override #'consult-register-window)
+    (setq register-preview-delay 0.5)
+
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+
+    ;; Configure other variables and modes in the :config section,
+    ;; after lazily loading the package.
     :config
-    (ivy-add-actions
-     'counsel-dired
-     '(("f" (lambda (dir) (counsel-fzf nil dir)) "Fzf in directory")
-       ("g" (lambda (dir) (counsel-ag nil dir)) "Ag in directory")))
-    (ivy-add-actions
-     'dired
-     '(("f" (lambda (dir) (ivy-exit-with-action (counsel-fzf nil dir))) "Fzf in directory")
-       ("g" (lambda (dir) (ivy-exit-with-action (counsel-ag nil dir))) "Ag in directory")))
-    (ivy-add-actions
-     'counsel-describe-function
-     '(("d" (lambda (fun) (ivy-exit-with-action (edebug-instrument-function (intern fun)))) "Edebug instrument function")))
-    (ivy-mode)
 
-    (defun edit-script ()
-      "Edit a file in ~/.scripts/"
-      (interactive)
-      (let ((input (ivy--input)))
-        (ivy-quit-and-run (counsel-file-jump nil "~/.scripts/"))))
+    ;; Optionally configure preview. The default value
+    ;; is 'any, such that any key triggers the preview.
+    ;; (setq consult-preview-key 'any)
+    ;; (setq consult-preview-key "M-.")
+    ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
+    ;; For some commands and buffer sources it is useful to configure the
+    ;; :preview-key on a per-command basis using the `consult-customize' macro.
+    (consult-customize
+     consult-theme :preview-key '(:debounce 0.2 any)
+     consult-ripgrep consult-git-grep consult-grep consult-man
+     consult-bookmark consult-recent-file consult-xref
+     consult-source-bookmark consult-source-file-register
+     consult-source-recent-file consult-source-project-recent-file
+     ;; :preview-key "M-."
+     :preview-key '(:debounce 0.4 any))
 
-    (defun edit-config ()
-      "Edit a file in ~/.dotfiles/"
-      (interactive)
-      (let ((input (ivy--input)))
-        (ivy-quit-and-run (counsel-file-jump nil "~/.dotfiles/")))))
+    ;; Optionally configure the narrowing key.
+    ;; Both < and C-+ work reasonably well.
+    (setq consult-narrow-key "<") ;; "C-+"
+
+    ;; Optionally make narrowing help available in the minibuffer.
+    ;; You may want to use `embark-prefix-help-command' or which-key instead.
+    ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+  )
 #+end_src
 
-*** counsel: collection of common Emacs commands enhanced using ivy
-#+begin_src emacs-lisp
-  (use-package counsel
-    :demand
-    :delight
-    :config
-    (counsel-mode)
-    :bind (("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("M-y" . counsel-yank-pop)
-           ("C-c c" . counsel-compile)
-           ("M-s g" . counsel-rg)
-           ("M-s f" . counsel-fzf)
-           ("C-c b" . counsel-bookmark)
-           ("C-c p" . counsel-recentf)
-           ("C-c o" . counsel-outline)
-           ("C-h f" . counsel-describe-function)
-           ("C-h v" . counsel-describe-variable)
-           ("C-h o" . counsel-describe-symbol)
-           ("C-c g j" . counsel-org-agenda-headlines)))
-#+end_src
-*** swiper: search enhanced using ivy
-#+begin_src emacs-lisp
-  (use-package swiper
-    :bind (("C-s" . swiper-isearch)
-           ("C-r" . swiper-isearch-backward)))
-#+end_src
-*** prescient: scoring system for M-x
-#+begin_src emacs-lisp
-  (use-package prescient
-    :config (prescient-persist-mode))
-
-  (use-package ivy-prescient
-    :after counsel
-    :custom (ivy-prescient-retain-classic-highlighting t)
-    :config (ivy-prescient-mode))
-#+end_src
-
-*** ivy-posframe: ivy in a popup
-I like having ivy in a popup.
-Problem: posframe does not work if emacs is too old and on macos.
-See here: https://github.com/tumashu/posframe/issues/30
-On Mac, ~brew install --HEAD emacs~ doesn't work either.
-Solution: ~brew tap daviderestivo/emacs-head && brew install emacs-head@28 --with-cocoa~
+** embark
+Embark: perform actions on things
 
 #+begin_src emacs-lisp
-  (if (and (version< emacs-version "28") (equal system-type 'darwin))
-      (message "ivy-posframe won't work properly, run `brew install daviderestivo/emacs-head/emacs-head@28 --with-cocoa`")
-    (use-package ivy-posframe
-      :delight
-      :custom
-      (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-      (ivy-posframe-parameters
-       '((left-fringe . 8)
-         (right-fringe . 8)))
-      (ivy-posframe-border-width 3)
-      (ivy-truncate-lines nil) ;; otherwise the cursor gets hidden by long lines in posframe
-      :custom-face
-      (ivy-posframe-border ((t (:inherit mode-line-inactive))))
-      :config
-      (ivy-posframe-mode 1)))
+  (use-package embark
+    :bind (("C-." . embark-act)
+           :map minibuffer-local-map
+           ("C-c C-c" . embark-collect)
+           ("C-c C-e" . embark-export)))
+
+  ;; The `embark-consult' package is glue code to tie together `embark'
+  ;; and `consult'.
+  (use-package embark-consult)
 #+end_src
 
-[[https://github.com/tumashu/ivy-posframe/issues/123][See here]] for cursor going offscreen in the posframe. Currently 'solved' with ~ivy-truncate-lines~ nil.
-
-** DISABLED vertico + consult + marginalia + embark + posframe + prescient
-Alternative to counsel/ivy/swiper, will probably switch to this at some point.
-[[https://old.reddit.com/r/emacs/comments/qfrxgb/using_emacs_episode_80_vertico_marginalia_consult/hi6mfh7/][Here]] is a good comparison.
-
-A [[https://old.reddit.com/r/emacs/comments/11lqkbo/weekly_tips_tricks_c_thread/jbe06qv/][comment here to follow]] when I switch to vertico.
-#+begin_src emacs-lisp :tangle no
-  (dolist (pack '(vertico consult marginalia embark vertico-posframe vertico-prescient))
-    (unless (package-installed-p pack)
-      (package-install pack))
-    (require pack))
-
-  (vertico-mode 1)
-  (vertico-posframe-mode 1)
-  (marginalia-mode 1)
-  (vertico-prescient-mode 1)
-  (setq completion-styles '(basic substring partial-completion flex))
-
-  (global-set-key (kbd "M-o") #'embark-act)
-  (global-set-key (kbd "C-s") #'consult-line)
-
-#+end_src
 ** company: completion mechanism
 #+begin_src emacs-lisp
   (use-package company)
@@ -1495,8 +1539,6 @@ I want to highlight TODO keywords in comments:
 
 #+begin_src emacs-lisp
   (use-package hl-todo
-    :custom-face
-    (hl-todo ((t (:inherit hl-todo :underline t))))
     :custom
     (hl-todo-keyword-faces '(("TODO"   . "#ff7060")
                              ("FIXME"  . "#caa000")))
@@ -1556,12 +1598,13 @@ This lets me select a window to jump to using a single key, sort of like ~avy~.
   (use-package ace-window
     :custom
     (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l) "I prefer using home-row keys instead of numbers")
+    (aw-dispatch-always nil)
 
     :custom-face
     ;; I want something a little more contrasty
     (aw-leading-char-face ((t (:inherit font-lock-keyword-face :height 2.0))))
 
-    :bind ("M-O" . ace-window))
+    :bind ("C-x o" . ace-window))
 #+end_src
 ** decide-mode for dice rolling
 #+begin_src emacs-lisp :tangle no

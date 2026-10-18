@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; Initial bootstrap
 ;; Start in fullscreen mode
 (message (concat "Starting: " (emacs-uptime)))
@@ -29,6 +30,9 @@
 
 ;; Hide 'package CL is deprecated' warning
 (setq byte-compile-warnings '(cl-functions))
+
+;; Set a consistent shell
+(setopt shell-file-name "/bin/sh")
 
 ;; Set up custom opener command
 (defun za/open (what)
@@ -79,7 +83,7 @@
   "Ignore built-in package PKG."
   (assq-delete-all pkg package--builtins)
   (assq-delete-all pkg package--builtin-versions))
-(za/ignore-builtin 'org)
+;; (za/ignore-builtin 'org)
 (use-package org)
 
 ;; Follow symlinks without prompting (the org file is a symlink)

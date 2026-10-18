@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun za/org-clock-resolve-clock
     (clock resolve-to clock-out-time close restart fail-quietly)
   "Resolve CLOCK given the time RESOLVE-TO, and the present.

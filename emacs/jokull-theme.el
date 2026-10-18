@@ -1,4 +1,4 @@
-;;; jokull-theme.el --- Theme
+;;; jokull-theme.el --- Theme  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2021 ,
 
