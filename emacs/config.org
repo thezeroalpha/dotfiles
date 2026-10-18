@@ -2832,7 +2832,8 @@ And here's the custom publish function that adds/removes the necessary advice:
                                           (file-name-concat (plist-get plist :base-directory) (plist-get plist :sitemap-filename)))
                             nil)
                            (t
-                            (member "locked" (org-roam-node-tags node)))))
+                            (member "locked" (org-get-tags)))))
+           (private-p (member "nopublish" (org-get-tags)))
            (advice '((org-gfm-inner-template :override za/org-md-template-zola)
                      (org-md-link :filter-return za/org-md-link-zola)
                      (org-html--format-image :filter-args za/org-html--format-image)
@@ -2845,7 +2846,7 @@ And here's the custom publish function that adds/removes the necessary advice:
                  (unwind-protect
                      (org-gfm-publish-to-gfm plist filename pub-dir)
                    (advice-remove #'org-export-output-file-name org-export-output-file-name-locked)))
-                (t
+                ((not private-p)
                  (org-gfm-publish-to-gfm plist filename pub-dir)))
         (dolist (orig-type-new advice)
           (advice-remove (nth 0 orig-type-new)
@@ -2988,7 +2989,7 @@ This way, I can just check my calendar.
         (org-icalendar-include-todo nil)
         (org-icalendar-use-deadline '(event-if-todo-not-done))
         (org-icalendar-use-scheduled '(event-if-todo-not-done))
-        (org-caldav-exclude-tags '("HABIT")
+        (org-caldav-exclude-tags '("HABIT" "NOCAL")
                                  "I don't want to export habits, because those will just clutter up my calendar. The calendar is supposed to be for one-off stuff, or rarely repeating stuff. Yes, I have to manually add the HABIT tag to every habit. Perhaps nicer would be to exclude based on the property ~:STYLE: habit~, but I haven't figured that one out yet.")
         (org-caldav-todo-percent-states '((0 "TODO")
                                           (0 "WAITING")
@@ -3066,7 +3067,7 @@ Maybe check [[https://old.reddit.com/r/orgmode/comments/8rl8ep/making_orgcaldav_
     (defun za/org-roam-dailies--daily-note-p (&optional file)
       "Replacement of default function. Return t if FILE is an Org-roam daily-note, nil otherwise.
   If FILE is not specified, use the current buffer's file-path."
-      (when-let ((path (expand-file-name
+      (when-let* ((path (expand-file-name
                         (or file
                             (buffer-file-name (buffer-base-buffer)))))
                  (directory (expand-file-name org-roam-dailies-directory org-roam-directory)))
@@ -3602,13 +3603,13 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
     (defun za/helpful-next ()
       "Go to the next Helpful buffer."
       (interactive)
-      (when-let (buf (za/helpful--next))
+      (when-let* (buf (za/helpful--next))
         (funcall helpful-switch-buffer-function buf)))
 
     (defun za/helpful-previous ()
       "Go to the previous Helpful buffer."
       (interactive)
-      (when-let (buf (za/helpful--previous))
+      (when-let* (buf (za/helpful--previous))
         (funcall helpful-switch-buffer-function buf))))
 #+end_src
 ** Tex-mode
