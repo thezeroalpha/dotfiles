@@ -1208,13 +1208,13 @@ Hide some messages I don't need.
     :config
     (defib za/ib-cdmidev ()
       "CDMIDEV links"
-      (if (or (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+")
+      (if (or (looking-at "\\(CDMI\\|cdmi\\)\\(?:DEV\\|dev\\|OPS\\|ops\\)-[0-9]+")
               (save-excursion
                 (backward-word-strictly)
-                (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+"))
+                (looking-at "\\(CDMI\\|cdmi\\)\\(?:DEV\\|dev\\|OPS\\|ops\\)-[0-9]+"))
               (save-excursion
                 (backward-word-strictly 2)
-                (looking-at "CDMI\\(?:DEV\\|OPS\\)-[0-9]+")))
+                (looking-at "\\(CDMI\\|cdmi\\)\\(?:DEV\\|dev\\|OPS\\|ops\\)-[0-9]+")))
           (let ((work-item (apply #'buffer-substring-no-properties (seq-take (match-data) 2))))
             (ibut:label-set work-item)
             (hact 'www-url (concat "https://csde.esa.int/jira/browse/" (upcase work-item))))))
@@ -1308,6 +1308,7 @@ Consult: enhances basic emacs commands via completing-read
            ("C-c k" . consult-kmacro)
            ("C-c m" . consult-man)
            ("C-c i" . consult-info)
+           ("C-c g j" . consult-org-agenda)
            ([remap Info-search] . consult-info)
            ;; C-x bindings in `ctl-x-map'
            ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
@@ -1406,6 +1407,7 @@ Embark: perform actions on things
 #+begin_src emacs-lisp
   (use-package embark
     :bind (("C-." . embark-act)
+           ("C-h b" . embark-bindings)
            :map minibuffer-local-map
            ("C-c C-c" . embark-collect)
            ("C-c C-e" . embark-export)))
@@ -2431,14 +2433,7 @@ The first two strings are what shows up in the agenda dispatcher (the key to pre
                            (lambda () (or (za/skip-if-not-prio "A")
                                           (za/skip-if-scheduled))))
                           (org-agenda-sorting-strategy '(deadline-up priority-down alpha-up))))
-            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))
-            (agenda "" ((org-agenda-overriding-header "Habits:")
-                        (org-agenda-span 'day)
-                        (org-agenda-use-time-grid nil)
-                        (org-agenda-skip-function 'za/skip-unless-habit)
-                        (org-habit-show-habits t)
-                        (org-habit-show-habits-only-for-today nil)
-                        (org-habit-show-all-today t)))))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting:")))))
 
 
           ("k" "Kanban view"
@@ -2924,6 +2919,28 @@ API work is handled via an external ruby script.
         (goto-char (point-max))
         (insert "\n" (string-join org-flatastic-items "\n")))
       (message "Synced %d Flatastic tasks to inbox" (length api-data))))
+#+end_src
+*** Link to Brave private window
+#+begin_src emacs-lisp
+  (org-link-set-parameters
+   "brave-private"
+   :follow #'za/org-link-brave-private)
+
+  (defun za/org-link-brave-private (link)
+    "Open the web link `link` in a Brave private window"
+    (shell-command (format "brave-origin --incognito %s" (shell-quote-argument link))))
+#+end_src
+*** Link to command in tmux
+#+begin_src emacs-lisp
+  (org-link-set-parameters
+   "st-tmux"
+   :follow #'za/org-link-st-tmux)
+
+  (defun za/org-link-st-tmux (link)
+    "Open the web link `link` in a Brave private window"
+    (shell-command (format "st -e tmux new-session -A -d \\; new-window '%s' \\; attach" link)))
+
+
 #+end_src
 *** Link to Thunderbird messages
 Create a custom link to open thunderbird emails by ID:
@@ -3621,7 +3638,7 @@ Also, counsel doesn't provide some keybindings that I can get from helpful.
                 (setq-local outline-regexp (rx (* blank)))
                 (outline-minor-mode))))
 #+end_src
-** emacs
+** corfu
 #+begin_src emacs-lisp
   (use-package corfu
     :init
